@@ -1,14 +1,15 @@
 {
-   "openapi" : "3.0.0",
+   "openapi" : "3.0.3",
    "info" : {
       "version" : "5",
-      "title" : "Adyen MarketPay Notifications",
-      "description" : "The Notification API sends notifications to the endpoints specified in a given subscription. Subscriptions are managed through the Notification Configuration API. The API specifications listed here detail the format of each notification.\n\nFor further information on MarketPay notifications, please visit the [MarketPay documentation](https://docs.adyen.com/marketpay).",
+      "x-publicVersion" : true,
+      "title" : "Adyen for Platforms: Notifications",
+      "description" : "The Notification API sends notifications to the endpoints specified in a given subscription. Subscriptions are managed through the Notification Configuration API. The API specifications listed here detail the format of each notification.\n\nFor more information, refer to our [documentation](https://docs.adyen.com/platforms/notifications).",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
-         "name" : "Adyen Support",
-         "url" : "https://support.adyen.com/",
-         "email" : "support@adyen.com"
+         "name" : "Adyen Developer Experience team",
+         "url" : "https://www.adyen.help/hc/en-us/community/topics",
+         "email" : "developer-experience@adyen.com"
       }
    },
    "x-groups" : [
@@ -24,11 +25,17 @@
          "post" : {
             "summary" : "Triggered upon the closure of an account.",
             "description" : "This notification is sent when an account has been closed.",
+            "operationId" : "post-ACCOUNT_CLOSED",
             "x-groupName" : "Accounts",
             "x-sortIndex" : 3,
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "accountClosed" : {
+                           "$ref" : "#/components/examples/post-ACCOUNT_CLOSED-accountClosed"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/AccountCloseNotification"
                      }
@@ -39,6 +46,11 @@
                "200" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "accountClosed" : {
+                              "$ref" : "#/components/examples/WebhookAck"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/NotificationResponse"
                         }
@@ -53,6 +65,7 @@
          "post" : {
             "summary" : "Triggered upon the creation of an account.",
             "description" : "This notification is sent when an account has been created.",
+            "operationId" : "post-ACCOUNT_CREATED",
             "x-groupName" : "Accounts",
             "x-sortIndex" : 1,
             "requestBody" : {
@@ -78,10 +91,41 @@
             }
          }
       },
+      "/ACCOUNT_FUNDS_BELOW_THRESHOLD" : {
+         "post" : {
+            "summary" : "Triggered when a liable account current funds are below configured threshold.",
+            "description" : "This notification is sent when a liable account's current funds are below configured threshold from the Adyen platform.",
+            "operationId" : "post-ACCOUNT_FUNDS_BELOW_THRESHOLD",
+            "x-groupName" : "Fund management",
+            "x-sortIndex" : 7,
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "schema" : {
+                        "$ref" : "#/components/schemas/AccountFundsBelowThresholdNotification"
+                     }
+                  }
+               }
+            },
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/NotificationResponse"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded."
+               }
+            }
+         }
+      },
       "/ACCOUNT_HOLDER_CREATED" : {
          "post" : {
             "summary" : "Triggered upon the creation of an account holder.",
             "description" : "This notification is sent when an account holder has been created.",
+            "operationId" : "post-ACCOUNT_HOLDER_CREATED",
             "x-groupName" : "Account holders",
             "x-sortIndex" : 1,
             "requestBody" : {
@@ -111,6 +155,7 @@
          "post" : {
             "summary" : "Triggered upon a payout to an account holder.",
             "description" : "This notification is sent when a payout request to an account holder has been processed and the payout has been scheduled.",
+            "operationId" : "post-ACCOUNT_HOLDER_PAYOUT",
             "x-groupName" : "Fund management",
             "x-sortIndex" : 1,
             "requestBody" : {
@@ -140,6 +185,7 @@
          "post" : {
             "summary" : "Triggered upon the status change of an account holder.",
             "description" : "This notification is sent when the status of an account holder has been changed.",
+            "operationId" : "post-ACCOUNT_HOLDER_STATUS_CHANGE",
             "x-groupName" : "Account holders",
             "x-sortIndex" : 4,
             "requestBody" : {
@@ -169,6 +215,7 @@
          "post" : {
             "summary" : "Triggered upon the status change of a store tied to an account holder.",
             "description" : "This notification is sent when the status of a store tied to an account holder has been changed.",
+            "operationId" : "post-ACCOUNT_HOLDER_STORE_STATUS_CHANGE",
             "x-groupName" : "Account holders",
             "x-sortIndex" : 4,
             "requestBody" : {
@@ -198,6 +245,7 @@
          "post" : {
             "summary" : "Triggered upon an upcoming deadline.",
             "description" : "This notification is sent when an Account Holder has a deadline, to fulfill the requirements of a specific event, coming up.",
+            "operationId" : "post-ACCOUNT_HOLDER_UPCOMING_DEADLINE",
             "x-groupName" : "Account holders",
             "x-sortIndex" : 1,
             "requestBody" : {
@@ -227,6 +275,7 @@
          "post" : {
             "summary" : "Triggered upon the update of an account holder.",
             "description" : "This notification is sent when an account holder has been updated.",
+            "operationId" : "post-ACCOUNT_HOLDER_UPDATED",
             "x-groupName" : "Account holders",
             "x-sortIndex" : 2,
             "requestBody" : {
@@ -256,6 +305,7 @@
          "post" : {
             "summary" : "Triggered upon the receipt of KYC Verification results.",
             "description" : "This notification is sent when KYC Verification results are made available.",
+            "operationId" : "post-ACCOUNT_HOLDER_VERIFICATION",
             "x-groupName" : "Account holders",
             "x-sortIndex" : 3,
             "requestBody" : {
@@ -285,6 +335,7 @@
          "post" : {
             "summary" : "Triggered upon the update of an account.",
             "description" : "This notification is sent when an account has been updated.",
+            "operationId" : "post-ACCOUNT_UPDATED",
             "x-groupName" : "Accounts",
             "x-sortIndex" : 2,
             "requestBody" : {
@@ -314,6 +365,7 @@
          "post" : {
             "summary" : "Triggered upon the setup of a beneficiary.",
             "description" : "This notification is sent when a benefactor/beneficiary relationship between accounts has been set up.",
+            "operationId" : "post-BENEFICIARY_SETUP",
             "x-groupName" : "Fund management",
             "x-sortIndex" : 3,
             "requestBody" : {
@@ -343,6 +395,7 @@
          "post" : {
             "summary" : "Triggered upon the compensation of negative account balances.",
             "description" : "This notification is sent when funds have been transferred from the Marketplace's liable account to an overdrawn account in order to compensate for the overdraft.",
+            "operationId" : "post-COMPENSATE_NEGATIVE_BALANCE",
             "x-groupName" : "Fund management",
             "x-sortIndex" : 5,
             "requestBody" : {
@@ -372,6 +425,7 @@
          "post" : {
             "summary" : "Triggered when an automated direct debit is initiated.",
             "description" : "This notification is sent when an automated direct debit is initiated from the Adyen platform.",
+            "operationId" : "post-DIRECT_DEBIT_INITIATED",
             "x-groupName" : "Fund management",
             "x-sortIndex" : 7,
             "requestBody" : {
@@ -401,6 +455,7 @@
          "post" : {
             "summary" : "Triggered upon an account payment failure.",
             "description" : "This notification is sent when a payment to an account has failed. In these cases, the funds which were meant for the account are redirected to the Marketplace's liable account.",
+            "operationId" : "post-PAYMENT_FAILURE",
             "x-groupName" : "Other",
             "x-sortIndex" : 1,
             "requestBody" : {
@@ -430,6 +485,7 @@
          "post" : {
             "summary" : "Triggered upon the transfer refund of funds between accounts.",
             "description" : "This notification is sent when the refund of funds from an account have been transferred to another account.",
+            "operationId" : "post-REFUND_FUNDS_TRANSFER",
             "x-groupName" : "Fund management",
             "x-sortIndex" : 6,
             "requestBody" : {
@@ -459,6 +515,7 @@
          "post" : {
             "summary" : "Triggered when a report is made available.",
             "description" : "This notification is sent when a report has been made available.",
+            "operationId" : "post-REPORT_AVAILABLE",
             "x-groupName" : "Other",
             "x-sortIndex" : 2,
             "requestBody" : {
@@ -488,6 +545,7 @@
          "post" : {
             "summary" : "Triggered upon the scheduling of refunds requested by a 'Refund Transfers Not Paid Out' call.",
             "description" : "This notification is sent when a 'Refund Transfers Not Paid Out' call has been processed and the associated refunds have been scheduled.",
+            "operationId" : "post-SCHEDULED_REFUNDS",
             "x-groupName" : "Fund management",
             "x-sortIndex" : 4,
             "requestBody" : {
@@ -517,6 +575,7 @@
          "post" : {
             "summary" : "Triggered upon the transfer of funds between accounts.",
             "description" : "This notification is sent when the funds from an account have been transferred to another account.",
+            "operationId" : "post-TRANSFER_FUNDS",
             "x-groupName" : "Fund management",
             "x-sortIndex" : 2,
             "requestBody" : {
@@ -524,6 +583,36 @@
                   "application/json" : {
                      "schema" : {
                         "$ref" : "#/components/schemas/TransferFundsNotification"
+                     }
+                  }
+               }
+            },
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/NotificationResponse"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded."
+               }
+            }
+         }
+      },
+      "/TRANSFER_NOT_PAIDOUT_TRANSFERS" : {
+         "post" : {
+            "summary" : "Triggered when not paid out transfers are transferred to liable.",
+            "description" : "This notification is sent when not paidout transfers from an account have been transferred to the configured liable account.",
+            "operationId" : "post-TRANSFER_NOT_PAIDOUT_TRANSFERS",
+            "x-groupName" : "Fund management",
+            "x-sortIndex" : 9,
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "schema" : {
+                        "$ref" : "#/components/schemas/TransferNotPaidoutTransfersNotification"
                      }
                   }
                }
@@ -552,10 +641,12 @@
                   "$ref" : "#/components/schemas/CloseAccountResponse"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -593,10 +684,12 @@
                   "$ref" : "#/components/schemas/CreateAccountResponse"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -630,7 +723,7 @@
          "AccountEvent" : {
             "properties" : {
                "event" : {
-                  "description" : "The event.\n>Permitted values: `InactivateAccount`, `RefundNotPaidOutTransfers`.\nFor more information, refer to [Verification checks](https://docs.adyen.com/marketpay/onboarding-and-verification/verification-checks).",
+                  "description" : "The event.\n>Permitted values: `InactivateAccount`, `RefundNotPaidOutTransfers`.\nFor more information, refer to [Verification checks](https://docs.adyen.com/platforms/verification-checks).",
                   "enum" : [
                      "InactivateAccount",
                      "RefundNotPaidOutTransfers"
@@ -653,6 +746,77 @@
                "reason"
             ]
          },
+         "AccountFundsBelowThresholdNotification" : {
+            "properties" : {
+               "content" : {
+                  "description" : "Details of the liable account with funds under threshold.",
+                  "$ref" : "#/components/schemas/AccountFundsBelowThresholdNotificationContent"
+               },
+               "error" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
+                  "$ref" : "#/components/schemas/NotificationErrorContainer"
+               },
+               "eventDate" : {
+                  "x-addedInVersion" : 4,
+                  "description" : "The date and time when an event has been completed.",
+                  "format" : "date-time",
+                  "type" : "string"
+               },
+               "eventType" : {
+                  "description" : "The event type of the notification.",
+                  "type" : "string"
+               },
+               "executingUserKey" : {
+                  "description" : "The user or process that has triggered the notification.",
+                  "type" : "string"
+               },
+               "live" : {
+                  "description" : "Indicates whether the notification originated from the live environment or the test environment. If true, the notification originated from the live environment. If false, the notification originated from the test environment.",
+                  "type" : "boolean"
+               },
+               "pspReference" : {
+                  "description" : "The PSP reference of the request from which the notification originates.",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "executingUserKey",
+               "pspReference",
+               "eventType",
+               "live",
+               "eventDate"
+            ]
+         },
+         "AccountFundsBelowThresholdNotificationContent" : {
+            "properties" : {
+               "accountCode" : {
+                  "description" : "The code of the account with funds under threshold",
+                  "type" : "string"
+               },
+               "balanceDate" : {
+                  "description" : "The date of the funds were found to be below threshold.",
+                  "$ref" : "#/components/schemas/LocalDate"
+               },
+               "currentFunds" : {
+                  "description" : "The current funds in the liable account.",
+                  "$ref" : "#/components/schemas/Amount"
+               },
+               "fundThreshold" : {
+                  "description" : "The configured fund threshold for the liable account",
+                  "$ref" : "#/components/schemas/Amount"
+               },
+               "merchantAccountCode" : {
+                  "description" : "The code of the merchant account.",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "accountCode",
+               "merchantAccountCode",
+               "fundThreshold"
+            ]
+         },
          "AccountHolderCreateNotification" : {
             "properties" : {
                "content" : {
@@ -660,10 +824,12 @@
                   "$ref" : "#/components/schemas/CreateAccountHolderResponse"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -701,14 +867,19 @@
                   "$ref" : "#/components/schemas/ViasAddress"
                },
                "bankAccountDetails" : {
-                  "description" : "Each of the bank accounts associated with the account holder.\n> Each array entry should represent one bank account.\n> For comprehensive detail regarding the required `BankAccountDetail` fields, please refer to the [KYC Verification documentation](https://docs.adyen.com/marketpay/onboarding-and-verification/verification-checks).",
+                  "description" : "Array of bank accounts associated with the account holder. For details about the required `BankAccountDetail` fields, refer to [Bank account check](https://docs.adyen.com/platforms/verification-checks/bank-account-check).",
                   "items" : {
                      "$ref" : "#/components/schemas/BankAccountDetail"
                   },
                   "type" : "array"
                },
+               "bankAggregatorDataReference" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "The opaque reference value returned by the Adyen API during bank account login.",
+                  "type" : "string"
+               },
                "businessDetails" : {
-                  "description" : "Details applicable to `Business` legal entities.\nPopulated only if the account holder's legal entity is of type `Business`.\n> Required when being used in a `/createAccountHolder` request in which the legal entity is `Business`.",
+                  "description" : "Details about the business or nonprofit account holder.\nRequired when creating an account holder with `legalEntity` **Business** or **NonProfit**.",
                   "$ref" : "#/components/schemas/BusinessDetails"
                },
                "email" : {
@@ -720,7 +891,7 @@
                   "type" : "string"
                },
                "individualDetails" : {
-                  "description" : "Details applicable to `Individual` legal entities.\nPopulated only if the account holder's legal entity is of type `Individual`.\n> Required when being used in a `/createAccountHolder` request in which the legal entity is `Individual`.",
+                  "description" : "Details about the individual account holder.\nRequired when creating an account holder with `legalEntity` **Individual**.\n",
                   "$ref" : "#/components/schemas/IndividualDetails"
                },
                "merchantCategoryCode" : {
@@ -728,13 +899,25 @@
                   "type" : "string"
                },
                "metadata" : {
+                  "additionalProperties" : {
+                     "type" : "string"
+                  },
                   "description" : "A set of key and value pairs for general use by the account holder or merchant.\nThe keys do not have specific names and may be used for storing miscellaneous data as desired.\n> The values being stored have a maximum length of eighty (80) characters and will be truncated if necessary.\n> Note that during an update of metadata, the omission of existing key-value pairs will result in the deletion of those key-value pairs.",
                   "type" : "object"
                },
                "payoutMethods" : {
-                  "description" : "Each of the card tokens associated with the account holder.\n> Each array entry should represent one card token.\n> For comprehensive detail regarding the required `CardToken` fields, please refer to the [KYC Verification documentation](https://docs.adyen.com/marketpay/onboarding-and-verification/verification-checks).",
+                  "x-addedInVersion" : 5,
+                  "description" : "Array of tokenized card details associated with the account holder. For details about how you can use the tokens to pay out, refer to [Pay out to cards](https://docs.adyen.com/platforms/payout-to-cards).",
                   "items" : {
                      "$ref" : "#/components/schemas/PayoutMethod"
+                  },
+                  "type" : "array"
+               },
+               "storeDetails" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "Array of stores associated with the account holder. Required when onboarding account holders that have an Adyen [point of sale](https://docs.adyen.com/platforms/platforms-for-pos).",
+                  "items" : {
+                     "$ref" : "#/components/schemas/StoreDetail"
                   },
                   "type" : "array"
                },
@@ -756,10 +939,12 @@
                   "$ref" : "#/components/schemas/AccountHolderPayoutNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -820,10 +1005,12 @@
                   "type" : "string"
                },
                "estimatedArrivalDate" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The estimated date of arrival.",
                   "$ref" : "#/components/schemas/LocalDate"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Invalid fields list.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -831,11 +1018,23 @@
                   "type" : "array"
                },
                "merchantReference" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The merchant reference.",
                   "type" : "string"
                },
                "originalPspReference" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The PSP reference of the original payout.",
+                  "type" : "string"
+               },
+               "payoutSpeed" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "Speed with which payouts for this account are processed. Permitted values: `STANDARD`, `SAME_DAY`.",
+                  "enum" : [
+                     "INSTANT",
+                     "SAME_DAY",
+                     "STANDARD"
+                  ],
                   "type" : "string"
                },
                "status" : {
@@ -881,11 +1080,7 @@
                }
             },
             "required" : [
-               "status",
-               "statusReason",
-               "processingState",
-               "payoutState",
-               "events"
+               "status"
             ]
          },
          "AccountHolderStatusChangeNotification" : {
@@ -895,10 +1090,12 @@
                   "$ref" : "#/components/schemas/AccountHolderStatusChangeNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -935,6 +1132,7 @@
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "in case the account holder has not been updated, contains account holder fields, that did not pass the validation.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -942,10 +1140,12 @@
                   "type" : "array"
                },
                "newStatus" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The new status of the account holder.",
                   "$ref" : "#/components/schemas/AccountHolderStatus"
                },
                "oldStatus" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The former status of the account holder.",
                   "$ref" : "#/components/schemas/AccountHolderStatus"
                },
@@ -957,8 +1157,7 @@
             "required" : [
                "accountHolderCode",
                "oldStatus",
-               "newStatus",
-               "reason"
+               "newStatus"
             ]
          },
          "AccountHolderStoreStatusChangeNotification" : {
@@ -968,10 +1167,12 @@
                   "$ref" : "#/components/schemas/AccountHolderStoreStatusChangeNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -1004,10 +1205,12 @@
          "AccountHolderStoreStatusChangeNotificationContent" : {
             "properties" : {
                "accountHolderCode" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The code of the account holder.",
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "In case the store status has not been updated, contains fields that did not pass the validation.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -1015,6 +1218,7 @@
                   "type" : "array"
                },
                "newStatus" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The new status of the account holder.",
                   "enum" : [
                      "Active",
@@ -1026,6 +1230,7 @@
                   "type" : "string"
                },
                "oldStatus" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The former status of the account holder.",
                   "enum" : [
                      "Active",
@@ -1037,14 +1242,17 @@
                   "type" : "string"
                },
                "reason" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The reason for the status change.",
                   "type" : "string"
                },
                "store" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Alphanumeric identifier of the store.",
                   "type" : "string"
                },
                "storeReference" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Store store reference.",
                   "type" : "string"
                }
@@ -1054,8 +1262,7 @@
                "store",
                "storeReference",
                "oldStatus",
-               "newStatus",
-               "reason"
+               "newStatus"
             ]
          },
          "AccountHolderUpcomingDeadlineNotification" : {
@@ -1065,10 +1272,12 @@
                   "$ref" : "#/components/schemas/AccountHolderUpcomingDeadlineNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -1108,17 +1317,19 @@
                   "description" : "The event name that will be trigger if no action is taken.",
                   "enum" : [
                      "AccessPii",
+                     "ApiTierUpdate",
                      "CloseAccount",
                      "CloseStores",
                      "DeleteBankAccounts",
-                     "DeletePayoutInstrumentTokens",
                      "DeletePayoutMethods",
                      "DeleteShareholders",
                      "InactivateAccount",
+                     "KYCDeadlineExtension",
                      "RecalculateAccountStatusAndProcessingTier",
                      "RefundNotPaidOutTransfers",
                      "ResolveEvents",
                      "SaveAccountHolder",
+                     "SaveCriminalityAndPEPChecks",
                      "SaveKYCCheckStatus",
                      "SuspendAccount",
                      "UnSuspendAccount",
@@ -1129,7 +1340,8 @@
                },
                "executionDate" : {
                   "description" : "The execution date scheduled for the event.",
-                  "$ref" : "#/components/schemas/LocalDate"
+                  "format" : "date-time",
+                  "type" : "string"
                },
                "reason" : {
                   "description" : "The reason that leads to scheduling of the event.",
@@ -1144,10 +1356,12 @@
                   "$ref" : "#/components/schemas/UpdateAccountHolderResponse"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -1185,10 +1399,12 @@
                   "$ref" : "#/components/schemas/AccountHolderVerificationNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -1230,6 +1446,7 @@
                   "type" : "string"
                },
                "kycCheckStatusData" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Information on the verification status",
                   "$ref" : "#/components/schemas/KYCCheckStatusData"
                },
@@ -1257,6 +1474,7 @@
                   "type" : "boolean"
                },
                "notAllowedReason" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The reason why payouts (to all of the account holder's accounts) have been disabled (by Adyen). If payouts have been disabled by Adyen, this field will explain why. If this field is blank, payouts have not been disabled by Adyen.",
                   "type" : "string"
                },
@@ -1265,19 +1483,12 @@
                   "$ref" : "#/components/schemas/Amount"
                },
                "tierNumber" : {
+                  "x-addedInVersion" : 3,
                   "description" : "The payout tier that the account holder occupies.",
                   "format" : "int32",
                   "type" : "integer"
                }
-            },
-            "required" : [
-               "allowPayout",
-               "disabled",
-               "tierNumber",
-               "disableReason",
-               "payoutLimit",
-               "notAllowedReason"
-            ]
+            }
          },
          "AccountProcessingState" : {
             "properties" : {
@@ -1298,18 +1509,12 @@
                   "$ref" : "#/components/schemas/Amount"
                },
                "tierNumber" : {
+                  "x-addedInVersion" : 3,
                   "description" : "The processing tier that the account holder occupies.",
                   "format" : "int32",
                   "type" : "integer"
                }
-            },
-            "required" : [
-               "disabled",
-               "disableReason",
-               "processedFrom",
-               "processedTo",
-               "tierNumber"
-            ]
+            }
          },
          "AccountUpdateNotification" : {
             "properties" : {
@@ -1318,10 +1523,12 @@
                   "$ref" : "#/components/schemas/UpdateAccountResponse"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -1361,7 +1568,7 @@
                   "type" : "string"
                },
                "value" : {
-                  "description" : "The payable amount that can be charged for the transaction.\n\nThe transaction amount needs to be represented in minor units according to the [following table](https://docs.adyen.com/development-resources/currency-codes).",
+                  "description" : "The amount of the transaction, in [minor units](https://docs.adyen.com/development-resources/currency-codes).",
                   "format" : "int64",
                   "type" : "integer"
                }
@@ -1374,11 +1581,11 @@
          "BankAccountDetail" : {
             "properties" : {
                "accountNumber" : {
-                  "description" : "The bank account number (without separators).\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The bank account number (without separators).\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "accountType" : {
-                  "description" : "The type of bank account.\nOnly applicable to bank accounts held in the USA.\nThe permitted values are: `checking`, `savings`.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The type of bank account.\nOnly applicable to bank accounts held in the USA.\nThe permitted values are: `checking`, `savings`.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "bankAccountName" : {
@@ -1386,6 +1593,7 @@
                   "type" : "string"
                },
                "bankAccountReference" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Merchant reference to the bank account.",
                   "type" : "string"
                },
@@ -1394,47 +1602,47 @@
                   "type" : "string"
                },
                "bankBicSwift" : {
-                  "description" : "The bank identifier code.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The bank identifier code.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "bankCity" : {
-                  "description" : "The city in which the bank branch is located.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The city in which the bank branch is located.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "bankCode" : {
-                  "description" : "The bank code of the banking institution with which the bank account is registered.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The bank code of the banking institution with which the bank account is registered.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "bankName" : {
-                  "description" : "The name of the banking institution with which the bank account is held.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The name of the banking institution with which the bank account is held.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "branchCode" : {
-                  "description" : "The branch code of the branch under which the bank account is registered. The value to be specified in this parameter depends on the country of the bank account:\n* United States - Routing number\n* United Kingdom - Sort code\n* Germany - Bankleitzahl\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The branch code of the branch under which the bank account is registered. The value to be specified in this parameter depends on the country of the bank account:\n* United States - Routing number\n* United Kingdom - Sort code\n* Germany - Bankleitzahl\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "checkCode" : {
-                  "description" : "The check code of the bank account.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The check code of the bank account.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "countryCode" : {
-                  "description" : "The two-letter country code in which the bank account is registered.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The two-letter country code in which the bank account is registered.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "currencyCode" : {
-                  "description" : "The currency in which the bank account deals.\n>The permitted currency codes are defined in ISO-4217 (e.g. 'EUR').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The currency in which the bank account deals.\n>The permitted currency codes are defined in ISO-4217 (e.g. 'EUR').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "iban" : {
-                  "description" : "The international bank account number.\n>The IBAN standard is defined in ISO-13616.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The international bank account number.\n>The IBAN standard is defined in ISO-13616.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerCity" : {
-                  "description" : "The city of residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The city of residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerCountryCode" : {
-                  "description" : "The country code of the country of residence of the bank account owner.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The country code of the country of residence of the bank account owner.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerDateOfBirth" : {
@@ -1442,27 +1650,27 @@
                   "type" : "string"
                },
                "ownerHouseNumberOrName" : {
-                  "description" : "The house name or number of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The house name or number of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerName" : {
-                  "description" : "The name of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The name of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerNationality" : {
-                  "description" : "The country code of the country of nationality of the bank account owner.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The country code of the country of nationality of the bank account owner.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerPostalCode" : {
-                  "description" : "The postal code of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The postal code of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerState" : {
-                  "description" : "The state of residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The state of residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerStreet" : {
-                  "description" : "The street name of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The street name of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "primaryAccount" : {
@@ -1470,11 +1678,11 @@
                   "type" : "boolean"
                },
                "taxId" : {
-                  "description" : "The tax ID number.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The tax ID number.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "urlForVerification" : {
-                  "description" : "The URL to be used for bank account verification.\nThis may be generated on bank account creation.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The URL to be used for bank account verification.\nThis may be generated on bank account creation.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                }
             }
@@ -1486,10 +1694,12 @@
                   "$ref" : "#/components/schemas/BeneficiarySetupNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -1531,6 +1741,7 @@
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "A listing of the invalid fields which have caused the Setup Beneficiary request to fail. If this is empty, the Setup Beneficiary request has succeeded.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -1574,13 +1785,21 @@
                   "type" : "string"
                },
                "registrationNumber" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The registration number of the company.",
                   "type" : "string"
                },
                "shareholders" : {
-                  "description" : "Each of the shareholders associated with the company.\nEach array entry should represent one shareholder.",
+                  "description" : "Array containing information about individuals associated with the account holder either through ownership or control. For details about how you can identify them, refer to [Identity check](https://docs.adyen.com/platforms/verification-checks/identity-check).",
                   "items" : {
                      "$ref" : "#/components/schemas/ShareholderContact"
+                  },
+                  "type" : "array"
+               },
+               "signatories" : {
+                  "description" : "Signatories associated with the company.\nEach array entry should represent one signatory.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/SignatoryContact"
                   },
                   "type" : "array"
                },
@@ -1593,10 +1812,12 @@
          "CloseAccountResponse" : {
             "properties" : {
                "accountCode" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The account code of the account that is closed.",
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Contains field validation errors that would prevent requests from being processed.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -1604,7 +1825,7 @@
                   "type" : "array"
                },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
@@ -1612,6 +1833,7 @@
                   "type" : "string"
                },
                "status" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The new status of the account.\n>Permitted values: `Active`, `Inactive`, `Suspended`, `Closed`.",
                   "enum" : [
                      "Active",
@@ -1623,7 +1845,6 @@
                }
             },
             "required" : [
-               "pspReference",
                "status"
             ]
          },
@@ -1634,10 +1855,12 @@
                   "$ref" : "#/components/schemas/CompensateNegativeBalanceNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -1718,14 +1941,17 @@
                   "$ref" : "#/components/schemas/AccountHolderDetails"
                },
                "accountHolderStatus" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The status of the new account holder.",
                   "$ref" : "#/components/schemas/AccountHolderStatus"
                },
                "description" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The description of the new account holder.",
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "A list of fields that caused the `/createAccountHolder` request to fail.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -1733,6 +1959,7 @@
                   "type" : "array"
                },
                "legalEntity" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The type of legal entity of the new account holder.",
                   "enum" : [
                      "Business",
@@ -1744,11 +1971,12 @@
                   "type" : "string"
                },
                "primaryCurrency" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes), with which the prospective account holder primarily deals.",
                   "type" : "string"
                },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
@@ -1756,12 +1984,12 @@
                   "type" : "string"
                },
                "verification" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The details of KYC Verification of the account holder.",
-                  "$ref" : "#/components/schemas/KYCVerificationResult"
+                  "$ref" : "#/components/schemas/KYCVerificationResult2"
                }
             },
             "required" : [
-               "pspReference",
                "accountHolderCode",
                "accountHolderStatus",
                "accountHolderDetails",
@@ -1779,11 +2007,18 @@
                   "description" : "The code of the account holder.",
                   "type" : "string"
                },
+               "bankAccountUUID" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "The bankAccountUUID of the bank account held by the account holder to couple the account with. Scheduled payouts in currencies matching the currency of this bank account will be sent to this bank account. Payouts in different currencies will be sent to a matching bank account of the account holder.",
+                  "type" : "string"
+               },
                "description" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The description of the account.",
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "A list of fields that caused the `/createAccount` request to fail.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -1791,17 +2026,34 @@
                   "type" : "array"
                },
                "metadata" : {
+                  "x-addedInVersion" : 5,
                   "additionalProperties" : {
                      "type" : "string"
                   },
+                  "description" : "A set of key and value pairs containing metadata.",
                   "type" : "object"
+               },
+               "payoutMethodCode" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "The payout method code held by the account holder to couple the account with. Scheduled card payouts will be sent using this payout method code.",
+                  "type" : "string"
                },
                "payoutSchedule" : {
                   "description" : "The payout schedule of the account.",
                   "$ref" : "#/components/schemas/PayoutScheduleResponse"
                },
+               "payoutSpeed" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "Speed with which payouts for this account are processed. Permitted values: `STANDARD`, `SAME_DAY`.",
+                  "enum" : [
+                     "INSTANT",
+                     "SAME_DAY",
+                     "STANDARD"
+                  ],
+                  "type" : "string"
+               },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
@@ -1809,6 +2061,7 @@
                   "type" : "string"
                },
                "status" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The status of the account.\n>Permitted values: `Active`.",
                   "enum" : [
                      "Active",
@@ -1820,7 +2073,6 @@
                }
             },
             "required" : [
-               "pspReference",
                "accountHolderCode",
                "accountCode",
                "status"
@@ -1833,10 +2085,12 @@
                   "$ref" : "#/components/schemas/DirectDebitInitiatedNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -1880,9 +2134,23 @@
                   "description" : "The date of the debit initiation.",
                   "$ref" : "#/components/schemas/LocalDate"
                },
+               "invalidFields" : {
+                  "description" : "Invalid fields list.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/ErrorFieldType"
+                  },
+                  "type" : "array"
+               },
                "merchantAccountCode" : {
                   "description" : "The code of the merchant account.",
                   "type" : "string"
+               },
+               "splits" : {
+                  "description" : "The split data for the debit request",
+                  "items" : {
+                     "$ref" : "#/components/schemas/Split"
+                  },
+                  "type" : "array"
                },
                "status" : {
                   "description" : "Direct debit status.",
@@ -1944,6 +2212,7 @@
                      "checkCode",
                      "city",
                      "companyRegistration",
+                     "constitutionalDocument",
                      "country",
                      "countryCode",
                      "currency",
@@ -1964,6 +2233,7 @@
                      "drivingLicense",
                      "email",
                      "firstName",
+                     "formType",
                      "fullPhoneNumber",
                      "gender",
                      "hopWebserviceUser",
@@ -1975,7 +2245,19 @@
                      "idNumber",
                      "identityDocument",
                      "individualDetails",
+                     "jobTitle",
                      "lastName",
+                     "legalArrangement",
+                     "legalArrangementCode",
+                     "legalArrangementEntity",
+                     "legalArrangementEntityCode",
+                     "legalArrangementLegalForm",
+                     "legalArrangementMember",
+                     "legalArrangementName",
+                     "legalArrangementReference",
+                     "legalArrangementRegistrationNumber",
+                     "legalArrangementTaxNumber",
+                     "legalArrangementType",
                      "legalBusinessName",
                      "legalEntity",
                      "legalEntityType",
@@ -2007,10 +2289,20 @@
                      "schedule",
                      "shareholder",
                      "shareholderCode",
+                     "shareholderType",
+                     "shopperInteraction",
+                     "signatory",
                      "socialSecurityNumber",
                      "sourceAccountCode",
+                     "splitAccount",
+                     "splitCurrency",
+                     "splitValue",
+                     "splits",
                      "stateOrProvince",
                      "status",
+                     "stockExchange",
+                     "stockNumber",
+                     "stockTicker",
                      "store",
                      "storeDetail",
                      "storeName",
@@ -2022,9 +2314,11 @@
                      "transferCode",
                      "unknown",
                      "value",
+                     "verificationType",
                      "virtualAccount",
                      "visaNumber",
-                     "webAddress"
+                     "webAddress",
+                     "year"
                   ],
                   "type" : "string"
                },
@@ -2059,13 +2353,24 @@
                   },
                   "type" : "array"
                }
-            },
-            "required" : [
-               "checks",
-               "bankAccountUUID"
-            ]
+            }
          },
-         "KYCCheckResult" : {
+         "KYCCardCheckResult" : {
+            "properties" : {
+               "checks" : {
+                  "description" : "A list of the checks and their statuses.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/KYCCheckStatusData"
+                  },
+                  "type" : "array"
+               },
+               "payoutMethodCode" : {
+                  "description" : "The unique ID of the card to which the check applies.",
+                  "type" : "string"
+               }
+            }
+         },
+         "KYCCheckResult2" : {
             "properties" : {
                "checks" : {
                   "description" : "A list of the checks and their statuses.",
@@ -2074,10 +2379,7 @@
                   },
                   "type" : "array"
                }
-            },
-            "required" : [
-               "checks"
-            ]
+            }
          },
          "KYCCheckStatusData" : {
             "properties" : {
@@ -2108,32 +2410,41 @@
                   "$ref" : "#/components/schemas/KYCCheckSummary"
                },
                "type" : {
-                  "description" : "The type of check.\n>Permitted Values: `COMPANY_VERIFICATION`, `IDENTITY_VERIFICATION`, `PASSPORT_VERIFICATION`, `BANK_ACCOUNT_VERIFICATION`, `NONPROFIT_VERIFICATION`.",
+                  "description" : "The type of check.\n>Permitted Values: `COMPANY_VERIFICATION`, `IDENTITY_VERIFICATION`, `PASSPORT_VERIFICATION`, `BANK_ACCOUNT_VERIFICATION`, `NONPROFIT_VERIFICATION`, `CARD_VERIFICATION`.",
                   "enum" : [
                      "BANK_ACCOUNT_VERIFICATION",
+                     "CARD_VERIFICATION",
                      "COMPANY_VERIFICATION",
+                     "CRIMINAL_BACKGROUND_EXTENSIVE_VERIFICATION",
+                     "CRIMINAL_BACKGROUND_MEDIUM_VERIFICATION",
                      "IDENTITY_VERIFICATION",
+                     "LEGAL_ARRANGEMENT_VERIFICATION",
                      "NONPROFIT_VERIFICATION",
-                     "PASSPORT_VERIFICATION"
+                     "PASSPORT_VERIFICATION",
+                     "PAYOUT_METHOD_VERIFICATION",
+                     "PCI_SELF_ASSESSMENT_PRESENCE_VERIFICATION",
+                     "PCI_VERIFICATION",
+                     "POLITICALLY_EXPOSED_IDENTIFICATION_VERIFICATION",
+                     "POLITICALLY_EXPOSED_VERIFICATION"
                   ],
                   "type" : "string"
                }
             },
             "required" : [
                "type",
-               "status",
-               "summary",
-               "requiredFields"
+               "status"
             ]
          },
          "KYCCheckSummary" : {
             "properties" : {
                "kycCheckCode" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The code of the check.",
                   "format" : "int32",
                   "type" : "integer"
                },
                "kycCheckDescription" : {
+                  "x-addedInVersion" : 5,
                   "description" : "A description of the check.",
                   "type" : "string"
                }
@@ -2152,22 +2463,26 @@
                   "description" : "The code of the shareholder to which the check applies.",
                   "type" : "string"
                }
-            },
-            "required" : [
-               "checks",
-               "shareholderCode"
-            ]
+            }
          },
-         "KYCVerificationResult" : {
+         "KYCVerificationResult2" : {
             "properties" : {
                "accountHolder" : {
                   "description" : "The result(s) of the checks on the account holder.",
-                  "$ref" : "#/components/schemas/KYCCheckResult"
+                  "$ref" : "#/components/schemas/KYCCheckResult2"
                },
                "bankAccounts" : {
                   "description" : "The result(s) of the checks on the bank account(s).",
                   "items" : {
                      "$ref" : "#/components/schemas/KYCBankAccountCheckResult"
+                  },
+                  "type" : "array"
+               },
+               "cards" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "The result(s) of the checks on the card(s).",
+                  "items" : {
+                     "$ref" : "#/components/schemas/KYCCardCheckResult"
                   },
                   "type" : "array"
                },
@@ -2178,12 +2493,7 @@
                   },
                   "type" : "array"
                }
-            },
-            "required" : [
-               "accountHolder",
-               "shareholders",
-               "bankAccounts"
-            ]
+            }
          },
          "LocalDate" : {
             "properties" : {
@@ -2224,13 +2534,10 @@
          "NotificationResponse" : {
             "properties" : {
                "notificationResponse" : {
-                  "description" : "Set this property to **[accepted]** to acknowledge that you received a notification from Adyen.",
+                  "description" : "Set this parameter to **[accepted]** to acknowledge that you received a notification from Adyen.",
                   "type" : "string"
                }
-            },
-            "required" : [
-               "notificationResponse"
-            ]
+            }
          },
          "OperationStatus" : {
             "properties" : {
@@ -2251,10 +2558,12 @@
                   "$ref" : "#/components/schemas/PaymentFailureNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -2347,6 +2656,7 @@
                      "DAILY_6PM",
                      "DAILY_AU",
                      "DAILY_EU",
+                     "DAILY_SG",
                      "DAILY_US",
                      "DEFAULT",
                      "EVERY_6_HOURS_FROM_MIDNIGHT",
@@ -2360,32 +2670,31 @@
                }
             },
             "required" : [
-               "schedule",
-               "nextScheduledPayout"
+               "schedule"
             ]
          },
          "PersonalDocumentData" : {
             "properties" : {
                "expirationDate" : {
-                  "description" : "The expiration date of the document.\nThe date should be in ISO-8601 format yyyy-mm-dd (e.g. 2000-01-31).",
+                  "description" : "The expiry date of the document, \n in ISO-8601 YYYY-MM-DD format. For example, **2000-01-31**.",
                   "type" : "string"
                },
                "issuerCountry" : {
-                  "description" : "The two-character country code of the issuer.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').",
+                  "description" : "The country where the document was issued, in the two-character \n[ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format. For example, **NL**.",
                   "maxLength" : 2,
                   "minLength" : 2,
                   "type" : "string"
                },
                "issuerState" : {
-                  "description" : "The state issued the document (if applicable)",
+                  "description" : "The state where the document was issued (if applicable).",
                   "type" : "string"
                },
                "number" : {
-                  "description" : "The number of the document. Delete the given type if the value empty.",
+                  "description" : "The number in the document.",
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of the document. More then one item pert type does not allowed.\nValid values: ID, PASSPORT, VISA, DRIVINGLICENSE",
+                  "description" : "The type of the document. Possible values: **ID**, **DRIVINGLICENSE**, **PASSPORT**, **SOCIALSECURITY**, **VISA**.\n\nTo delete an existing entry for a document `type`, send only the `type` field in your request. ",
                   "enum" : [
                      "DRIVINGLICENSE",
                      "ID",
@@ -2397,8 +2706,7 @@
                }
             },
             "required" : [
-               "type",
-               "number"
+               "type"
             ]
          },
          "RefundFundsTransferNotification" : {
@@ -2408,10 +2716,12 @@
                   "$ref" : "#/components/schemas/RefundFundsTransferNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -2449,6 +2759,7 @@
                   "$ref" : "#/components/schemas/Amount"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Invalid fields list.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -2500,10 +2811,12 @@
                   "$ref" : "#/components/schemas/ReportAvailableNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -2566,10 +2879,12 @@
                   "$ref" : "#/components/schemas/ScheduledRefundsNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -2611,6 +2926,7 @@
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Invalid fields list.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -2632,49 +2948,240 @@
             "required" : [
                "accountHolderCode",
                "accountCode",
-               "refundResults",
-               "lastPayout"
+               "refundResults"
             ]
          },
          "ShareholderContact" : {
             "properties" : {
                "address" : {
-                  "description" : "The address of the contact.",
+                  "description" : "The address of the person.",
                   "$ref" : "#/components/schemas/ViasAddress"
                },
                "email" : {
-                  "description" : "The e-mail address of the contact.",
+                  "description" : "The e-mail address of the person.",
                   "type" : "string"
                },
                "fullPhoneNumber" : {
-                  "description" : "The phone number of the contact provided as a single string.  It will be handled as a landline phone.\n**Examples:** \"0031 6 11 22 33 44\", \"+316/1122-3344\", \"(0031) 611223344\"",
+                  "description" : "The phone number of the person provided as a single string.  It will be handled as a landline phone.\nExamples: \"0031 6 11 22 33 44\", \"+316/1122-3344\", \"(0031) 611223344\"",
+                  "type" : "string"
+               },
+               "jobTitle" : {
+                  "description" : "Job title of the person. Required when the `shareholderType` is **Controller**.\n\nExample values: **Chief Executive Officer**, **Chief Financial Officer**, **Chief Operating Officer**, **President**, **Vice President**, **Executive President**, **Managing Member**, **Partner**, **Treasurer**, **Director**, or **Other**.",
                   "type" : "string"
                },
                "name" : {
-                  "description" : "The name of the contact.",
+                  "description" : "The name of the person.",
                   "$ref" : "#/components/schemas/ViasName"
                },
                "personalData" : {
-                  "description" : "Personal data of the Shareholder.",
+                  "description" : "Contains information about the person.",
                   "$ref" : "#/components/schemas/ViasPersonalData"
                },
                "phoneNumber" : {
-                  "description" : "The phone number of the contact.",
+                  "description" : "The phone number of the person.",
                   "$ref" : "#/components/schemas/ViasPhoneNumber"
                },
                "shareholderCode" : {
-                  "description" : "The unique identifier (UUID) of the Shareholder.\n>**If, during an Account Holder create or update request, this field is left blank (but other fields provided), a new Shareholder will be created with a procedurally-generated UUID.**\n\n>**If, during an Account Holder create request, a UUID is provided, the creation of the Shareholder will fail while the creation of the Account Holder will continue.**\n\n>**If, during an Account Holder update request, a UUID that is not correlated with an existing Shareholder is provided, the update of the Shareholder will fail.**\n\n>**If, during an Account Holder update request, a UUID that is correlated with an existing Shareholder is provided, the existing Shareholder will be updated.**\n",
+                  "description" : "The unique identifier (UUID) of the shareholder entry.\n>**If, during an Account Holder create or update request, this field is left blank (but other fields provided), a new Shareholder will be created with a procedurally-generated UUID.**\n\n>**If, during an Account Holder create request, a UUID is provided, the creation of the Shareholder will fail while the creation of the Account Holder will continue.**\n\n>**If, during an Account Holder update request, a UUID that is not correlated with an existing Shareholder is provided, the update of the Shareholder will fail.**\n\n>**If, during an Account Holder update request, a UUID that is correlated with an existing Shareholder is provided, the existing Shareholder will be updated.**\n",
                   "type" : "string"
                },
                "shareholderReference" : {
-                  "description" : "Merchant reference to the Shareholder.",
+                  "x-addedInVersion" : 5,
+                  "description" : "Your reference for the shareholder entry.",
+                  "type" : "string"
+               },
+               "shareholderType" : {
+                  "description" : "Specifies how the person is associated with the account holder. \n\nPossible values: \n\n* **Owner**: Individuals who directly or indirectly own 25% or more of a company.\n\n* **Controller**: Individuals who are members of senior management staff responsible for managing a company or organization.",
+                  "enum" : [
+                     "Controller",
+                     "Owner",
+                     "Signatory"
+                  ],
                   "type" : "string"
                },
                "webAddress" : {
-                  "description" : "The URL of the website of the contact.",
+                  "description" : "The URL of the person's website.",
                   "type" : "string"
                }
             }
+         },
+         "SignatoryContact" : {
+            "properties" : {
+               "address" : {
+                  "description" : "The address of the person.",
+                  "$ref" : "#/components/schemas/ViasAddress"
+               },
+               "email" : {
+                  "description" : "The e-mail address of the person.",
+                  "type" : "string"
+               },
+               "fullPhoneNumber" : {
+                  "description" : "The phone number of the person provided as a single string.  It will be handled as a landline phone.\nExamples: \"0031 6 11 22 33 44\", \"+316/1122-3344\", \"(0031) 611223344\"",
+                  "type" : "string"
+               },
+               "jobTitle" : {
+                  "description" : "Job title of the signatory.\n\nExample values: **Chief Executive Officer**, **Chief Financial Officer**, **Chief Operating Officer**, **President**, **Vice President**, **Executive President**, **Managing Member**, **Partner**, **Treasurer**, **Director**, or **Other**.",
+                  "type" : "string"
+               },
+               "name" : {
+                  "description" : "The name of the person.",
+                  "$ref" : "#/components/schemas/ViasName"
+               },
+               "personalData" : {
+                  "description" : "Contains information about the person.",
+                  "$ref" : "#/components/schemas/ViasPersonalData"
+               },
+               "phoneNumber" : {
+                  "description" : "The phone number of the person.",
+                  "$ref" : "#/components/schemas/ViasPhoneNumber"
+               },
+               "signatoryCode" : {
+                  "description" : "The unique identifier (UUID) of the Signatory.\n>**If, during an Account Holder create or update request, this field is left blank (but other fields provided), a new Signatory will be created with a procedurally-generated UUID.**\n\n>**If, during an Account Holder create request, a UUID is provided, the creation of the Signatory will fail while the creation of the Account Holder will continue.**\n\n>**If, during an Account Holder update request, a UUID that is not correlated with an existing Signatory is provided, the update of the Signatory will fail.**\n\n>**If, during an Account Holder update request, a UUID that is correlated with an existing Signatory is provided, the existing Signatory will be updated.**\n",
+                  "type" : "string"
+               },
+               "signatoryReference" : {
+                  "description" : "Your reference for the Signatory.",
+                  "type" : "string"
+               },
+               "webAddress" : {
+                  "description" : "The URL of the person's website.",
+                  "type" : "string"
+               }
+            }
+         },
+         "Split" : {
+            "properties" : {
+               "account" : {
+                  "description" : "Unique identifier of the account where the split amount should be sent. This is required if `type` is **MarketPlace** or **BalanceAccount**.\n\n",
+                  "type" : "string"
+               },
+               "amount" : {
+                  "description" : "The amount of this split.",
+                  "$ref" : "#/components/schemas/SplitAmount"
+               },
+               "description" : {
+                  "description" : "A description of this split.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the split, which you can use to link the split to other operations such as captures and refunds.\n\nThis is required if `type` is **MarketPlace** or **BalanceAccount**. For the other types, we also recommend sending a reference so you can reconcile the split and the associated payment in the transaction overview and in the reports. If the reference is not provided, the split is reported as part of the aggregated [TransferBalance record type](https://docs.adyen.com/reporting/marketpay-payments-accounting-report) in Adyen for Platforms.",
+                  "type" : "string"
+               },
+               "type" : {
+                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**.",
+                  "enum" : [
+                     "BalanceAccount",
+                     "Commission",
+                     "Default",
+                     "MarketPlace",
+                     "PaymentFee",
+                     "VAT",
+                     "Verification"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "amount",
+               "type"
+            ]
+         },
+         "SplitAmount" : {
+            "properties" : {
+               "currency" : {
+                  "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).\n\nIf this value is not provided, the currency in which the payment is made will be used.",
+                  "maxLength" : 3,
+                  "minLength" : 3,
+                  "type" : "string"
+               },
+               "value" : {
+                  "description" : "The amount in [minor units](https://docs.adyen.com/development-resources/currency-codes).",
+                  "format" : "int64",
+                  "type" : "integer"
+               }
+            },
+            "required" : [
+               "value"
+            ]
+         },
+         "StoreDetail" : {
+            "properties" : {
+               "address" : {
+                  "description" : "The address of the physical store where the account holder will process payments from.",
+                  "$ref" : "#/components/schemas/ViasAddress"
+               },
+               "fullPhoneNumber" : {
+                  "description" : "The phone number of the store provided as a single string.  It will be handled as a landline phone.\n\nExamples: \"0031 6 11 22 33 44\", \"+316/1122-3344\", \"(0031) 611223344\"",
+                  "type" : "string"
+               },
+               "merchantAccount" : {
+                  "description" : "The merchant account to which the store belongs.",
+                  "type" : "string"
+               },
+               "merchantCategoryCode" : {
+                  "description" : "The merchant category code (MCC) that classifies the business of the account holder.",
+                  "type" : "string"
+               },
+               "phoneNumber" : {
+                  "description" : "The phone number of the store.",
+                  "readOnly" : true,
+                  "$ref" : "#/components/schemas/ViasPhoneNumber"
+               },
+               "shopperInteraction" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "The sales channel. Possible values: **Ecommerce**, **POS**.",
+                  "enum" : [
+                     "Ecommerce",
+                     "POS"
+                  ],
+                  "type" : "string"
+               },
+               "splitConfigurationUUID" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "The unique reference for the split configuration, returned when you configure splits in your Customer Area. When this is provided, the `virtualAccount` is also required. Adyen uses the configuration and the `virtualAccount` to split funds between accounts in your platform.",
+                  "type" : "string"
+               },
+               "status" : {
+                  "description" : "The status of the store. Possible values: **Pending**, **Active**, **Inactive**, **InactiveWithModifications**, **Closed**.",
+                  "enum" : [
+                     "Active",
+                     "Closed",
+                     "Inactive",
+                     "InactiveWithModifications",
+                     "Pending"
+                  ],
+                  "readOnly" : true,
+                  "type" : "string"
+               },
+               "store" : {
+                  "description" : "Adyen-generated unique alphanumeric identifier (UUID) for the store, returned in the response when you create a store. Required when updating an existing store in an `/updateAccountHolder` request.",
+                  "type" : "string"
+               },
+               "storeName" : {
+                  "description" : "The name of the account holder's store, between  3 to 22 characters in length.\nThis value will be shown in shopper statements.",
+                  "type" : "string"
+               },
+               "storeReference" : {
+                  "description" : "Your unique identifier for the store, between 3 to 128 characters in length.\nThis value will be shown as the store description in your Customer Area.",
+                  "type" : "string"
+               },
+               "virtualAccount" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "The account holder's `accountCode` where the split amount will be sent. Required when you provide the `splitConfigurationUUID`.",
+                  "type" : "string"
+               },
+               "webAddress" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "URL of the ecommerce store.",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "storeReference",
+               "merchantCategoryCode",
+               "address",
+               "merchantAccount"
+            ]
          },
          "Transaction" : {
             "properties" : {
@@ -2720,10 +3227,12 @@
                   "type" : "string"
                },
                "paymentPspReference" : {
+                  "x-addedInVersion" : 3,
                   "description" : "The psp reference of the related authorisation or transfer.",
                   "type" : "string"
                },
                "payoutPspReference" : {
+                  "x-addedInVersion" : 3,
                   "description" : "The psp reference of the related payout.",
                   "type" : "string"
                },
@@ -2736,27 +3245,40 @@
                   "type" : "string"
                },
                "transactionStatus" : {
-                  "description" : "The status of the transaction.\n>Permitted values: `PendingCredit`, `CreditFailed`, `Credited`, `Converted`, `PendingDebit`, `DebitFailed`, `Debited`, `DebitReversedReceived`, `DebitedReversed`, `ChargebackReceived`, `Chargeback`, `ChargebackReversedReceived`, `ChargebackReversed`, `Payout`, `PayoutReversed`, `FundTransfer`, `PendingFundTransfer`, `ManualCorrected`.",
+                  "description" : "The status of the transaction.\n>Permitted values: `PendingCredit`, `CreditFailed`, `CreditClosed`, `CreditSuspended`, `Credited`, `Converted`, `PendingDebit`, `DebitFailed`, `Debited`, `DebitReversedReceived`, `DebitedReversed`, `ChargebackReceived`, `Chargeback`, `ChargebackReversedReceived`, `ChargebackReversed`, `Payout`, `PayoutReversed`, `FundTransfer`, `PendingFundTransfer`, `ManualCorrected`.",
                   "enum" : [
+                     "BalanceNotPaidOutTransfer",
                      "Chargeback",
                      "ChargebackCorrection",
                      "ChargebackCorrectionReceived",
                      "ChargebackReceived",
                      "ChargebackReversed",
+                     "ChargebackReversedCorrection",
+                     "ChargebackReversedCorrectionReceived",
                      "ChargebackReversedReceived",
                      "Converted",
+                     "CreditClosed",
                      "CreditFailed",
                      "CreditReversed",
                      "CreditReversedReceived",
+                     "CreditSuspended",
                      "Credited",
                      "DebitFailed",
                      "DebitReversedReceived",
                      "Debited",
                      "DebitedReversed",
+                     "DepositCorrectionCredited",
+                     "DepositCorrectionDebited",
                      "Fee",
                      "FundTransfer",
                      "FundTransferReversed",
+                     "InvoiceDeductionCredited",
+                     "InvoiceDeductionDebited",
                      "ManualCorrected",
+                     "ManualCorrectionCredited",
+                     "ManualCorrectionDebited",
+                     "MerchantPayin",
+                     "MerchantPayinReversed",
                      "Payout",
                      "PayoutReversed",
                      "PendingCredit",
@@ -2780,10 +3302,12 @@
                   "$ref" : "#/components/schemas/TransferFundsNotificationContent"
                },
                "error" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
                   "$ref" : "#/components/schemas/NotificationErrorContainer"
                },
                "eventDate" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The date and time when an event has been completed.",
                   "format" : "date-time",
                   "type" : "string"
@@ -2825,6 +3349,7 @@
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Invalid fields list.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -2832,6 +3357,7 @@
                   "type" : "array"
                },
                "merchantReference" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The reference provided by the merchant.",
                   "type" : "string"
                },
@@ -2855,6 +3381,82 @@
                "transferCode"
             ]
          },
+         "TransferNotPaidoutTransfersNotification" : {
+            "properties" : {
+               "content" : {
+                  "description" : "Details of the fund transfer.",
+                  "$ref" : "#/components/schemas/TransferNotPaidoutTransfersNotificationContent"
+               },
+               "error" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "Error information of failed request. No value provided here if no error occurred on processing.",
+                  "$ref" : "#/components/schemas/NotificationErrorContainer"
+               },
+               "eventDate" : {
+                  "x-addedInVersion" : 4,
+                  "description" : "The date and time when an event has been completed.",
+                  "format" : "date-time",
+                  "type" : "string"
+               },
+               "eventType" : {
+                  "description" : "The event type of the notification.",
+                  "type" : "string"
+               },
+               "executingUserKey" : {
+                  "description" : "The user or process that has triggered the notification.",
+                  "type" : "string"
+               },
+               "live" : {
+                  "description" : "Indicates whether the notification originated from the live environment or the test environment. If true, the notification originated from the live environment. If false, the notification originated from the test environment.",
+                  "type" : "boolean"
+               },
+               "pspReference" : {
+                  "description" : "The PSP reference of the request from which the notification originates.",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "executingUserKey",
+               "pspReference",
+               "eventType",
+               "live",
+               "eventDate",
+               "content"
+            ]
+         },
+         "TransferNotPaidoutTransfersNotificationContent" : {
+            "properties" : {
+               "amount" : {
+                  "description" : "The amount transferred.",
+                  "$ref" : "#/components/schemas/Amount"
+               },
+               "destinationAccountCode" : {
+                  "description" : "The code of the Account to which funds were credited.",
+                  "type" : "string"
+               },
+               "invalidFields" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "Invalid fields list.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/ErrorFieldType"
+                  },
+                  "type" : "array"
+               },
+               "sourceAccountCode" : {
+                  "description" : "The code of the Account from which funds were debited.",
+                  "type" : "string"
+               },
+               "status" : {
+                  "description" : "The status of the fund transfer.",
+                  "$ref" : "#/components/schemas/OperationStatus"
+               }
+            },
+            "required" : [
+               "sourceAccountCode",
+               "destinationAccountCode",
+               "amount"
+            ]
+         },
          "UpdateAccountHolderResponse" : {
             "properties" : {
                "accountHolderCode" : {
@@ -2866,14 +3468,17 @@
                   "$ref" : "#/components/schemas/AccountHolderDetails"
                },
                "accountHolderStatus" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The new status of the account holder.",
                   "$ref" : "#/components/schemas/AccountHolderStatus"
                },
                "description" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The description of the account holder.",
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "in case the account holder has not been updated, contains account holder fields, that did not pass the validation.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -2881,6 +3486,7 @@
                   "type" : "array"
                },
                "legalEntity" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The legal entity of the account holder.",
                   "enum" : [
                      "Business",
@@ -2892,11 +3498,12 @@
                   "type" : "string"
                },
                "primaryCurrency" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes), with which the prospective account holder primarily deals.",
                   "type" : "string"
                },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
@@ -2904,12 +3511,12 @@
                   "type" : "string"
                },
                "verification" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The details of KYC Verification of the account holder.",
-                  "$ref" : "#/components/schemas/KYCVerificationResult"
+                  "$ref" : "#/components/schemas/KYCVerificationResult2"
                }
             },
             "required" : [
-               "pspReference",
                "accountHolderStatus",
                "verification",
                "legalEntity"
@@ -2921,11 +3528,18 @@
                   "description" : "The code of the account.",
                   "type" : "string"
                },
+               "bankAccountUUID" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "The bankAccountUUID of the bank account held by the account holder to couple the account with. Scheduled payouts in currencies matching the currency of this bank account will be sent to this bank account. Payouts in different currencies will be sent to a matching bank account of the account holder.",
+                  "type" : "string"
+               },
                "description" : {
+                  "x-addedInVersion" : 4,
                   "description" : "The description of the account.",
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "A list of fields that caused the `/updateAccount` request to fail.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -2933,17 +3547,34 @@
                   "type" : "array"
                },
                "metadata" : {
+                  "x-addedInVersion" : 5,
                   "additionalProperties" : {
                      "type" : "string"
                   },
+                  "description" : "A set of key and value pairs containing metadata.",
                   "type" : "object"
+               },
+               "payoutMethodCode" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "The payout method code held by the account holder to couple the account with. Scheduled card payouts will be sent using this payout method code.",
+                  "type" : "string"
                },
                "payoutSchedule" : {
                   "description" : "The payout schedule of the account.",
                   "$ref" : "#/components/schemas/PayoutScheduleResponse"
                },
+               "payoutSpeed" : {
+                  "x-addedInVersion" : 5,
+                  "description" : "Speed with which payouts for this account are processed. Permitted values: `STANDARD`, `SAME_DAY`.",
+                  "enum" : [
+                     "INSTANT",
+                     "SAME_DAY",
+                     "STANDARD"
+                  ],
+                  "type" : "string"
+               },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
@@ -2952,9 +3583,7 @@
                }
             },
             "required" : [
-               "pspReference",
-               "accountCode",
-               "payoutSchedule"
+               "accountCode"
             ]
          },
          "ViasAddress" : {
@@ -3002,7 +3631,6 @@
                      "UNKNOWN"
                   ],
                   "maxLength" : 1,
-                  "minLength" : 1,
                   "type" : "string"
                },
                "infix" : {
@@ -3016,25 +3644,25 @@
             },
             "required" : [
                "firstName",
-               "lastName",
-               "gender"
+               "lastName"
             ]
          },
          "ViasPersonalData" : {
             "properties" : {
                "dateOfBirth" : {
-                  "description" : "The date of birth of the person.\nThe date should be in ISO-8601 format yyyy-mm-dd (e.g. 2000-01-31).",
+                  "description" : "The person's date of birth, in ISO-8601 YYYY-MM-DD format. For example, **2000-01-31**.",
                   "type" : "string"
                },
                "documentData" : {
-                  "description" : "Key value pairs of document type and identify numbers",
+                  "x-addedInVersion" : 3,
+                  "description" : "Array that contains information about the person's identification document. You can submit only one entry per document type.",
                   "items" : {
                      "$ref" : "#/components/schemas/PersonalDocumentData"
                   },
                   "type" : "array"
                },
                "nationality" : {
-                  "description" : "The nationality of the person represented by a two-character country code.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').",
+                  "description" : "The nationality of the person represented by a two-character country code,  in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format. For example, **NL**.\n",
                   "maxLength" : 2,
                   "minLength" : 2,
                   "type" : "string"
@@ -3066,6 +3694,55 @@
                "phoneCountryCode",
                "phoneNumber"
             ]
+         }
+      },
+      "securitySchemes" : {
+         "ApiKeyAuth" : {
+            "in" : "header",
+            "name" : "X-API-Key",
+            "type" : "apiKey"
+         },
+         "BasicAuth" : {
+            "scheme" : "basic",
+            "type" : "http"
+         }
+      },
+      "examples" : {
+         "WebhookAck" : {
+            "summary" : "Acknowledge Webhook",
+            "value" : {
+               "notificationResponse" : "[accepted]"
+            }
+         },
+         "post-ACCOUNT_CLOSED-accountClosed" : {
+            "summary" : "ACCOUNT CLOSED example",
+            "value" : {
+               "error" : {
+                  "errorCode" : "000",
+                  "message" : "test error message"
+               },
+               "eventDate" : "2019-01-01T01:00:00+01:00",
+               "eventType" : "ACCOUNT_CLOSED",
+               "executingUserKey" : "executing-user-key",
+               "live" : false,
+               "pspReference" : "TSTPSPR0001",
+               "content" : {
+                  "invalidFields" : [
+                     {
+                        "errorCode" : 1,
+                        "errorDescription" : "Field is missing",
+                        "fieldType" : {
+                           "field" : "AccountHolderDetails.BusinessDetails.Shareholders.unknown",
+                           "fieldName" : "unknown",
+                           "shareholderCode" : "SH00001"
+                        }
+                     }
+                  ],
+                  "pspReference" : "TSTPSPR0001",
+                  "resultCode" : "Success",
+                  "status" : "Closed"
+               }
+            }
          }
       }
    }

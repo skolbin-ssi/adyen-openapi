@@ -1,5 +1,5 @@
 {
-   "openapi" : "3.0.0",
+   "openapi" : "3.0.3",
    "servers" : [
       {
          "url" : "https://cal-test.adyen.com/cal/services/Fund/v5"
@@ -7,13 +7,14 @@
    ],
    "info" : {
       "version" : "5",
-      "title" : "Adyen MarketPay Fund API",
-      "description" : "The MarketPay Funding API provides endpoints for managing the funds in MarketPay accounts. These management operations include actions such as the transfer of funds from one account to another, the payout of funds to an account holder, and the retrieval of balances in an account.\n\nFor further information on MarketPay fund management, please visit the [MarketPay documentation](https://docs.adyen.com/marketpay).\n## Authentication\nTo connect to the MarketPay API, you must use basic authentication credentials of your web service user. If you don't have one, please contact the [Adyen Support Team](https://support.adyen.com/hc/en-us/requests/new). Then use its credentials to authenticate your request, for example:\n\n```\ncurl\n-U \"ws@MarketPlace.YourMarketPlace\":\"YourWsPassword\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\nNote that when going live, you need to generate new web service user credentials to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\n## Versioning\nMarketPay API supports versioning of its endpoints through a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://cal-test.adyen.com/cal/services/Fund/v5/accountHolderBalance\n```",
+      "x-publicVersion" : true,
+      "title" : "Adyen for Platforms: Fund API",
+      "description" : "The Fund API provides endpoints for managing the funds in the accounts on your platform. These management operations include actions such as the transfer of funds from one account to another, the payout of funds to an account holder, and the retrieval of balances in an account.\n\nFor more information, refer to our [documentation](https://docs.adyen.com/platforms).\n## Authentication\nTo connect to the Fund API, you must use basic authentication credentials of your web service user. If you don't have one, please contact the [Adyen Support Team](https://support.adyen.com/hc/en-us/requests/new). Then use its credentials to authenticate your request, for example:\n\n```\ncurl\n-U \"ws@MarketPlace.YourMarketPlace\":\"YourWsPassword\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\nNote that when going live, you need to generate new web service user credentials to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\n## Versioning\nThe Fund API supports versioning of its endpoints through a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://cal-test.adyen.com/cal/services/Fund/v5/accountHolderBalance\n```",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
-         "name" : "Adyen Support",
-         "url" : "https://support.adyen.com/",
-         "email" : "support@adyen.com"
+         "name" : "Adyen Developer Experience team",
+         "url" : "https://www.adyen.help/hc/en-us/community/topics",
+         "email" : "developer-experience@adyen.com"
       }
    },
    "x-groups" : [
@@ -24,11 +25,17 @@
          "post" : {
             "summary" : "Retrieve the balance(s) of an account holder.",
             "description" : "This endpoint is used to retrieve the balance(s) of the accounts of an account holder. An account's balances are on a per-currency basis (i.e., an account may have multiple balances: one per currency).",
+            "operationId" : "post-accountHolderBalance",
             "x-groupName" : "General",
             "x-sortIndex" : 1,
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "basic" : {
+                           "$ref" : "#/components/examples/post-accountHolderBalance-basic"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/AccountHolderBalanceRequest"
                      }
@@ -47,19 +54,54 @@
                   "description" : "OK - the request has succeeded."
                },
                "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Bad Request - a problem reading or understanding the request."
                },
-               "422" : {
-                  "description" : "Unprocessable Entity - a request validation error."
-               },
                "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Unauthorized - authentication required."
                },
-               "500" : {
-                  "description" : "Internal Server Error - the server could not process the request."
-               },
                "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
                }
             }
          }
@@ -68,6 +110,7 @@
          "post" : {
             "summary" : "Retrieve a list of transactions.",
             "description" : "This endpoint is used to retrieve a list of Transactions for an account holder's accounts. The accounts and Transaction Statuses to be included on the list can be specified. Each call will return a maximum of fifty (50) Transactions per account; in order to retrieve the following set of Transactions another call should be made with the 'page' value incremented. Note that Transactions are ordered with most recent first.",
+            "operationId" : "post-accountHolderTransactionList",
             "x-groupName" : "General",
             "x-sortIndex" : 2,
             "requestBody" : {
@@ -91,19 +134,54 @@
                   "description" : "OK - the request has succeeded."
                },
                "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Bad Request - a problem reading or understanding the request."
                },
-               "422" : {
-                  "description" : "Unprocessable Entity - a request validation error."
-               },
                "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Unauthorized - authentication required."
                },
-               "500" : {
-                  "description" : "Internal Server Error - the server could not process the request."
-               },
                "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
                }
             }
          }
@@ -112,11 +190,17 @@
          "post" : {
             "summary" : "Disburse a specified amount from an account to the account holder.",
             "description" : "This endpoint is used to pay out a specified amount from an account to the bank account of the account's account holder.",
+            "operationId" : "post-payoutAccountHolder",
             "x-groupName" : "General",
             "x-sortIndex" : 3,
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "oneOff" : {
+                           "$ref" : "#/components/examples/post-payoutAccountHolder-oneOff"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/PayoutAccountHolderRequest"
                      }
@@ -134,20 +218,65 @@
                   },
                   "description" : "OK - the request has succeeded."
                },
+               "202" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PayoutAccountHolderResponse"
+                        }
+                     }
+                  },
+                  "description" : "Accepted - the request has been accepted for processing, but the processing has not been completed."
+               },
                "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Bad Request - a problem reading or understanding the request."
                },
-               "422" : {
-                  "description" : "Unprocessable Entity - a request validation error."
-               },
                "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Unauthorized - authentication required."
                },
-               "500" : {
-                  "description" : "Internal Server Error - the server could not process the request."
-               },
                "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
                }
             }
          }
@@ -156,11 +285,17 @@
          "post" : {
             "summary" : "Make a refund of the existing transfer funds transfer.",
             "description" : "This endpoint is used to refund funds transferred from one account to another. Both accounts must be in the same marketplace, but can have different account holders. ",
+            "operationId" : "post-refundFundsTransfer",
             "x-groupName" : "General",
             "x-sortIndex" : 5,
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "basic" : {
+                           "$ref" : "#/components/examples/post-refundFundsTransfer-basic"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/RefundFundsTransferRequest"
                      }
@@ -178,20 +313,65 @@
                   },
                   "description" : "OK - the request has succeeded."
                },
+               "202" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/RefundFundsTransferResponse"
+                        }
+                     }
+                  },
+                  "description" : "Accepted - the request has been accepted for processing, but the processing has not been completed."
+               },
                "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Bad Request - a problem reading or understanding the request."
                },
-               "422" : {
-                  "description" : "Unprocessable Entity - a request validation error."
-               },
                "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Unauthorized - authentication required."
                },
-               "500" : {
-                  "description" : "Internal Server Error - the server could not process the request."
-               },
                "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
                }
             }
          }
@@ -200,11 +380,17 @@
          "post" : {
             "summary" : "Refund all transactions of an account since the most recent payout.",
             "description" : "This endpoint is used to refund all the transactions of an account which have taken place since the most recent payout. This request is on a per-account basis (as opposed to a per-payment basis), so only the portion of the payment which was made to the specified account will be refunded. The commission(s), fee(s), and payment(s) to other account(s), will remain in the accounts to which they were sent as designated by the original payment's split details.",
+            "operationId" : "post-refundNotPaidOutTransfers",
             "x-groupName" : "General",
             "x-sortIndex" : 7,
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "basic" : {
+                           "$ref" : "#/components/examples/post-refundNotPaidOutTransfers-basic"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/RefundNotPaidOutTransfersRequest"
                      }
@@ -222,20 +408,65 @@
                   },
                   "description" : "OK - the request has succeeded."
                },
+               "202" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/RefundNotPaidOutTransfersResponse"
+                        }
+                     }
+                  },
+                  "description" : "Accepted - the request has been accepted for processing, but the processing has not been completed."
+               },
                "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Bad Request - a problem reading or understanding the request."
                },
-               "422" : {
-                  "description" : "Unprocessable Entity - a request validation error."
-               },
                "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Unauthorized - authentication required."
                },
-               "500" : {
-                  "description" : "Internal Server Error - the server could not process the request."
-               },
                "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
                }
             }
          }
@@ -244,11 +475,17 @@
          "post" : {
             "summary" : "Designate an account to be the beneficiary of a separate account and transfer the benefactor's current balance to the beneficiary.",
             "description" : "This endpoint is used to define a benefactor and a beneficiary relationship between two accounts. At the time of benefactor/beneficiary setup, the funds in the benefactor account are transferred to the beneficiary account, and any further payments to the benefactor account are automatically sent to the beneficiary account. Note that a series of benefactor/beneficiaries may not exceed four (4) beneficiaries and may not have a cycle in it.",
+            "operationId" : "post-setupBeneficiary",
             "x-groupName" : "General",
             "x-sortIndex" : 6,
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "basic" : {
+                           "$ref" : "#/components/examples/post-setupBeneficiary-basic"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/SetupBeneficiaryRequest"
                      }
@@ -266,20 +503,65 @@
                   },
                   "description" : "OK - the request has succeeded."
                },
+               "202" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/SetupBeneficiaryResponse"
+                        }
+                     }
+                  },
+                  "description" : "Accepted - the request has been accepted for processing, but the processing has not been completed."
+               },
                "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Bad Request - a problem reading or understanding the request."
                },
-               "422" : {
-                  "description" : "Unprocessable Entity - a request validation error."
-               },
                "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Unauthorized - authentication required."
                },
-               "500" : {
-                  "description" : "Internal Server Error - the server could not process the request."
-               },
                "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
                }
             }
          }
@@ -288,11 +570,17 @@
          "post" : {
             "summary" : "Transfer funds from one platform account to another.",
             "description" : "This endpoint is used to transfer funds from one account to another account. Both accounts must be in the same marketplace, but can have different account holders. The transfer must include a transfer code, which should be determined by the marketplace, in compliance with local regulations.",
+            "operationId" : "post-transferFunds",
             "x-groupName" : "General",
             "x-sortIndex" : 4,
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "basic" : {
+                           "$ref" : "#/components/examples/post-transferFunds-basic"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/TransferFundsRequest"
                      }
@@ -310,20 +598,65 @@
                   },
                   "description" : "OK - the request has succeeded."
                },
+               "202" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/TransferFundsResponse"
+                        }
+                     }
+                  },
+                  "description" : "Accepted - the request has been accepted for processing, but the processing has not been completed."
+               },
                "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Bad Request - a problem reading or understanding the request."
                },
-               "422" : {
-                  "description" : "Unprocessable Entity - a request validation error."
-               },
                "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Unauthorized - authentication required."
                },
-               "500" : {
-                  "description" : "Internal Server Error - the server could not process the request."
-               },
                "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
                   "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
                }
             }
          }
@@ -364,6 +697,7 @@
                   "type" : "array"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Contains field validation errors that would prevent requests from being processed.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -371,7 +705,7 @@
                   "type" : "array"
                },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
@@ -382,10 +716,7 @@
                   "description" : "The total balance of the account holder.",
                   "$ref" : "#/components/schemas/DetailBalance"
                }
-            },
-            "required" : [
-               "pspReference"
-            ]
+            }
          },
          "AccountHolderTransactionListRequest" : {
             "properties" : {
@@ -401,28 +732,41 @@
                   "type" : "array"
                },
                "transactionStatuses" : {
-                  "description" : "A list of statuses to include in the transaction list. If left blank, all transactions will be included.\n>Permitted values:\n>* `PendingCredit` - a pending balance credit.\n>* `CreditFailed` - a pending credit failure; the balance will not be credited.\n>* `Credited` - a credited balance.\n>* `PendingDebit` - a pending balance debit (e.g., a refund).\n>* `DebitFailed` - a pending debit failure; the balance will not be debited.\n>* `Debited` - a debited balance (e.g., a refund).\n>* `DebitReversedReceived` - a pending refund reversal.\n>* `DebitedReversed` - a reversed refund.\n>* `ChargebackReceived` - a received chargeback request.\n>* `Chargeback` - a processed chargeback.\n>* `ChargebackReversedReceived` - a pending chargeback reversal.\n>* `ChargebackReversed` - a reversed chargeback.\n>* `Converted` - converted.\n>* `ManualCorrected` - manual booking/adjustment by Adyen.\n>* `Payout` - a payout.\n>* `PayoutReversed` - a reversed payout.\n>* `PendingFundTransfer` - a pending transfer of funds from one account to another.\n>* `FundTransfer` - a transfer of funds from one account to another.",
+                  "description" : "A list of statuses to include in the transaction list. If left blank, all transactions will be included.\n>Permitted values:\n>* `PendingCredit` - a pending balance credit.\n>* `CreditFailed` - a pending credit failure; the balance will not be credited.\n>* `Credited` - a credited balance.\n>* `PendingDebit` - a pending balance debit (e.g., a refund).\n>* `CreditClosed` - a pending credit closed; the balance will not be credited.\n>* `CreditSuspended` - a pending credit closed; the balance will not be credited.\n>* `DebitFailed` - a pending debit failure; the balance will not be debited.\n>* `Debited` - a debited balance (e.g., a refund).\n>* `DebitReversedReceived` - a pending refund reversal.\n>* `DebitedReversed` - a reversed refund.\n>* `ChargebackReceived` - a received chargeback request.\n>* `Chargeback` - a processed chargeback.\n>* `ChargebackReversedReceived` - a pending chargeback reversal.\n>* `ChargebackReversed` - a reversed chargeback.\n>* `Converted` - converted.\n>* `ManualCorrected` - manual booking/adjustment by Adyen.\n>* `Payout` - a payout.\n>* `PayoutReversed` - a reversed payout.\n>* `PendingFundTransfer` - a pending transfer of funds from one account to another.\n>* `FundTransfer` - a transfer of funds from one account to another.",
                   "items" : {
                      "enum" : [
+                        "BalanceNotPaidOutTransfer",
                         "Chargeback",
                         "ChargebackCorrection",
                         "ChargebackCorrectionReceived",
                         "ChargebackReceived",
                         "ChargebackReversed",
+                        "ChargebackReversedCorrection",
+                        "ChargebackReversedCorrectionReceived",
                         "ChargebackReversedReceived",
                         "Converted",
+                        "CreditClosed",
                         "CreditFailed",
                         "CreditReversed",
                         "CreditReversedReceived",
+                        "CreditSuspended",
                         "Credited",
                         "DebitFailed",
                         "DebitReversedReceived",
                         "Debited",
                         "DebitedReversed",
+                        "DepositCorrectionCredited",
+                        "DepositCorrectionDebited",
                         "Fee",
                         "FundTransfer",
                         "FundTransferReversed",
+                        "InvoiceDeductionCredited",
+                        "InvoiceDeductionDebited",
                         "ManualCorrected",
+                        "ManualCorrectionCredited",
+                        "ManualCorrectionDebited",
+                        "MerchantPayin",
+                        "MerchantPayinReversed",
                         "Payout",
                         "PayoutReversed",
                         "PendingCredit",
@@ -450,6 +794,7 @@
                   "type" : "array"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Contains field validation errors that would prevent requests from being processed.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -457,17 +802,14 @@
                   "type" : "array"
                },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
                   "description" : "The result code.",
                   "type" : "string"
                }
-            },
-            "required" : [
-               "pspReference"
-            ]
+            }
          },
          "AccountTransactionList" : {
             "properties" : {
@@ -497,7 +839,7 @@
                   "type" : "string"
                },
                "value" : {
-                  "description" : "The payable amount that can be charged for the transaction.\n\nThe transaction amount needs to be represented in minor units according to the [following table](https://docs.adyen.com/development-resources/currency-codes).",
+                  "description" : "The amount of the transaction, in [minor units](https://docs.adyen.com/development-resources/currency-codes).",
                   "format" : "int64",
                   "type" : "integer"
                }
@@ -510,11 +852,11 @@
          "BankAccountDetail" : {
             "properties" : {
                "accountNumber" : {
-                  "description" : "The bank account number (without separators).\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The bank account number (without separators).\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "accountType" : {
-                  "description" : "The type of bank account.\nOnly applicable to bank accounts held in the USA.\nThe permitted values are: `checking`, `savings`.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The type of bank account.\nOnly applicable to bank accounts held in the USA.\nThe permitted values are: `checking`, `savings`.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "bankAccountName" : {
@@ -522,6 +864,7 @@
                   "type" : "string"
                },
                "bankAccountReference" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Merchant reference to the bank account.",
                   "type" : "string"
                },
@@ -530,47 +873,47 @@
                   "type" : "string"
                },
                "bankBicSwift" : {
-                  "description" : "The bank identifier code.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The bank identifier code.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "bankCity" : {
-                  "description" : "The city in which the bank branch is located.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The city in which the bank branch is located.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "bankCode" : {
-                  "description" : "The bank code of the banking institution with which the bank account is registered.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The bank code of the banking institution with which the bank account is registered.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "bankName" : {
-                  "description" : "The name of the banking institution with which the bank account is held.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The name of the banking institution with which the bank account is held.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "branchCode" : {
-                  "description" : "The branch code of the branch under which the bank account is registered. The value to be specified in this parameter depends on the country of the bank account:\n* United States - Routing number\n* United Kingdom - Sort code\n* Germany - Bankleitzahl\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The branch code of the branch under which the bank account is registered. The value to be specified in this parameter depends on the country of the bank account:\n* United States - Routing number\n* United Kingdom - Sort code\n* Germany - Bankleitzahl\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "checkCode" : {
-                  "description" : "The check code of the bank account.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The check code of the bank account.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "countryCode" : {
-                  "description" : "The two-letter country code in which the bank account is registered.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The two-letter country code in which the bank account is registered.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "currencyCode" : {
-                  "description" : "The currency in which the bank account deals.\n>The permitted currency codes are defined in ISO-4217 (e.g. 'EUR').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The currency in which the bank account deals.\n>The permitted currency codes are defined in ISO-4217 (e.g. 'EUR').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "iban" : {
-                  "description" : "The international bank account number.\n>The IBAN standard is defined in ISO-13616.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The international bank account number.\n>The IBAN standard is defined in ISO-13616.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerCity" : {
-                  "description" : "The city of residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The city of residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerCountryCode" : {
-                  "description" : "The country code of the country of residence of the bank account owner.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The country code of the country of residence of the bank account owner.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerDateOfBirth" : {
@@ -578,27 +921,27 @@
                   "type" : "string"
                },
                "ownerHouseNumberOrName" : {
-                  "description" : "The house name or number of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The house name or number of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerName" : {
-                  "description" : "The name of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The name of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerNationality" : {
-                  "description" : "The country code of the country of nationality of the bank account owner.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The country code of the country of nationality of the bank account owner.\n>The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerPostalCode" : {
-                  "description" : "The postal code of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The postal code of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerState" : {
-                  "description" : "The state of residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The state of residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "ownerStreet" : {
-                  "description" : "The street name of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The street name of the residence of the bank account owner.\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "primaryAccount" : {
@@ -606,11 +949,11 @@
                   "type" : "boolean"
                },
                "taxId" : {
-                  "description" : "The tax ID number.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The tax ID number.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                },
                "urlForVerification" : {
-                  "description" : "The URL to be used for bank account verification.\nThis may be generated on bank account creation.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/marketpay/onboarding-and-verification) section for details on field requirements.",
+                  "description" : "The URL to be used for bank account verification.\nThis may be generated on bank account creation.\n\n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification) section for details on field requirements.",
                   "type" : "string"
                }
             }
@@ -625,6 +968,7 @@
                   "type" : "array"
                },
                "onHoldBalance" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The list of on hold balances held by the account.",
                   "items" : {
                      "$ref" : "#/components/schemas/Amount"
@@ -689,6 +1033,7 @@
                      "checkCode",
                      "city",
                      "companyRegistration",
+                     "constitutionalDocument",
                      "country",
                      "countryCode",
                      "currency",
@@ -709,6 +1054,7 @@
                      "drivingLicense",
                      "email",
                      "firstName",
+                     "formType",
                      "fullPhoneNumber",
                      "gender",
                      "hopWebserviceUser",
@@ -720,7 +1066,19 @@
                      "idNumber",
                      "identityDocument",
                      "individualDetails",
+                     "jobTitle",
                      "lastName",
+                     "legalArrangement",
+                     "legalArrangementCode",
+                     "legalArrangementEntity",
+                     "legalArrangementEntityCode",
+                     "legalArrangementLegalForm",
+                     "legalArrangementMember",
+                     "legalArrangementName",
+                     "legalArrangementReference",
+                     "legalArrangementRegistrationNumber",
+                     "legalArrangementTaxNumber",
+                     "legalArrangementType",
                      "legalBusinessName",
                      "legalEntity",
                      "legalEntityType",
@@ -752,10 +1110,20 @@
                      "schedule",
                      "shareholder",
                      "shareholderCode",
+                     "shareholderType",
+                     "shopperInteraction",
+                     "signatory",
                      "socialSecurityNumber",
                      "sourceAccountCode",
+                     "splitAccount",
+                     "splitCurrency",
+                     "splitValue",
+                     "splits",
                      "stateOrProvince",
                      "status",
+                     "stockExchange",
+                     "stockNumber",
+                     "stockTicker",
                      "store",
                      "storeDetail",
                      "storeName",
@@ -767,9 +1135,11 @@
                      "transferCode",
                      "unknown",
                      "value",
+                     "verificationType",
                      "virtualAccount",
                      "visaNumber",
-                     "webAddress"
+                     "webAddress",
+                     "year"
                   ],
                   "type" : "string"
                },
@@ -799,14 +1169,28 @@
                },
                "description" : {
                   "description" : "A description of the payout. Maximum 35 characters.\nAllowed: **abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/?:().,'+ \";**",
+                  "maxLength" : 35,
                   "type" : "string"
                },
                "merchantReference" : {
+                  "x-addedInVersion" : 2,
                   "description" : "A value that can be supplied at the discretion of the executing user in order to link multiple transactions to one another.",
                   "type" : "string"
                },
                "payoutMethodCode" : {
+                  "x-addedInVersion" : 5,
                   "description" : "The unique ID of the payout method held by the Account Holder to which the payout is to be made.\nIf left blank, a payout instrument is automatically selected.",
+                  "type" : "string"
+               },
+               "payoutSpeed" : {
+                  "x-addedInVersion" : 5,
+                  "default" : "STANDARD",
+                  "description" : "Speed with which payouts for this account are processed. Permitted values: `STANDARD`, `SAME_DAY`.",
+                  "enum" : [
+                     "INSTANT",
+                     "SAME_DAY",
+                     "STANDARD"
+                  ],
                   "type" : "string"
                }
             },
@@ -823,6 +1207,7 @@
                   "type" : "string"
                },
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Contains field validation errors that would prevent requests from being processed.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -830,21 +1215,30 @@
                   "type" : "array"
                },
                "merchantReference" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The value supplied by the executing user when initiating the transfer; may be used to link multiple transactions.",
                   "type" : "string"
                },
+               "payoutSpeed" : {
+                  "x-addedInVersion" : 5,
+                  "default" : "STANDARD",
+                  "description" : "Speed with which payouts for this account are processed. Permitted values: `STANDARD`, `SAME_DAY`.",
+                  "enum" : [
+                     "INSTANT",
+                     "SAME_DAY",
+                     "STANDARD"
+                  ],
+                  "type" : "string"
+               },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
                   "description" : "The result code.",
                   "type" : "string"
                }
-            },
-            "required" : [
-               "pspReference"
-            ]
+            }
          },
          "RefundFundsTransferRequest" : {
             "properties" : {
@@ -869,6 +1263,7 @@
          "RefundFundsTransferResponse" : {
             "properties" : {
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Contains field validation errors that would prevent requests from being processed.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -880,6 +1275,7 @@
                   "type" : "string"
                },
                "message" : {
+                  "description" : "The message of the response.",
                   "type" : "string"
                },
                "originalReference" : {
@@ -887,17 +1283,14 @@
                   "type" : "string"
                },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
                   "description" : "The result code.",
                   "type" : "string"
                }
-            },
-            "required" : [
-               "pspReference"
-            ]
+            }
          },
          "RefundNotPaidOutTransfersRequest" : {
             "properties" : {
@@ -918,6 +1311,7 @@
          "RefundNotPaidOutTransfersResponse" : {
             "properties" : {
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Contains field validation errors that would prevent requests from being processed.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -925,17 +1319,39 @@
                   "type" : "array"
                },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
                   "description" : "The result code.",
                   "type" : "string"
                }
-            },
-            "required" : [
-               "pspReference"
-            ]
+            }
+         },
+         "ServiceError" : {
+            "properties" : {
+               "errorCode" : {
+                  "description" : "The error code mapped to the error message.",
+                  "type" : "string"
+               },
+               "errorType" : {
+                  "description" : "The category of the error.",
+                  "type" : "string"
+               },
+               "message" : {
+                  "description" : "A short explanation of the issue.",
+                  "type" : "string"
+               },
+               "pspReference" : {
+                  "description" : "The PSP reference of the payment.",
+                  "type" : "string"
+               },
+               "status" : {
+                  "description" : "The HTTP response status.",
+                  "format" : "int32",
+                  "type" : "integer"
+               }
+            }
          },
          "SetupBeneficiaryRequest" : {
             "properties" : {
@@ -954,13 +1370,13 @@
             },
             "required" : [
                "sourceAccountCode",
-               "destinationAccountCode",
-               "merchantReference"
+               "destinationAccountCode"
             ]
          },
          "SetupBeneficiaryResponse" : {
             "properties" : {
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Contains field validation errors that would prevent requests from being processed.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -968,17 +1384,14 @@
                   "type" : "array"
                },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
                   "description" : "The result code.",
                   "type" : "string"
                }
-            },
-            "required" : [
-               "pspReference"
-            ]
+            }
          },
          "Transaction" : {
             "properties" : {
@@ -1024,10 +1437,12 @@
                   "type" : "string"
                },
                "paymentPspReference" : {
+                  "x-addedInVersion" : 3,
                   "description" : "The psp reference of the related authorisation or transfer.",
                   "type" : "string"
                },
                "payoutPspReference" : {
+                  "x-addedInVersion" : 3,
                   "description" : "The psp reference of the related payout.",
                   "type" : "string"
                },
@@ -1040,27 +1455,40 @@
                   "type" : "string"
                },
                "transactionStatus" : {
-                  "description" : "The status of the transaction.\n>Permitted values: `PendingCredit`, `CreditFailed`, `Credited`, `Converted`, `PendingDebit`, `DebitFailed`, `Debited`, `DebitReversedReceived`, `DebitedReversed`, `ChargebackReceived`, `Chargeback`, `ChargebackReversedReceived`, `ChargebackReversed`, `Payout`, `PayoutReversed`, `FundTransfer`, `PendingFundTransfer`, `ManualCorrected`.",
+                  "description" : "The status of the transaction.\n>Permitted values: `PendingCredit`, `CreditFailed`, `CreditClosed`, `CreditSuspended`, `Credited`, `Converted`, `PendingDebit`, `DebitFailed`, `Debited`, `DebitReversedReceived`, `DebitedReversed`, `ChargebackReceived`, `Chargeback`, `ChargebackReversedReceived`, `ChargebackReversed`, `Payout`, `PayoutReversed`, `FundTransfer`, `PendingFundTransfer`, `ManualCorrected`.",
                   "enum" : [
+                     "BalanceNotPaidOutTransfer",
                      "Chargeback",
                      "ChargebackCorrection",
                      "ChargebackCorrectionReceived",
                      "ChargebackReceived",
                      "ChargebackReversed",
+                     "ChargebackReversedCorrection",
+                     "ChargebackReversedCorrectionReceived",
                      "ChargebackReversedReceived",
                      "Converted",
+                     "CreditClosed",
                      "CreditFailed",
                      "CreditReversed",
                      "CreditReversedReceived",
+                     "CreditSuspended",
                      "Credited",
                      "DebitFailed",
                      "DebitReversedReceived",
                      "Debited",
                      "DebitedReversed",
+                     "DepositCorrectionCredited",
+                     "DepositCorrectionDebited",
                      "Fee",
                      "FundTransfer",
                      "FundTransferReversed",
+                     "InvoiceDeductionCredited",
+                     "InvoiceDeductionDebited",
                      "ManualCorrected",
+                     "ManualCorrectionCredited",
+                     "ManualCorrectionDebited",
+                     "MerchantPayin",
+                     "MerchantPayinReversed",
                      "Payout",
                      "PayoutReversed",
                      "PendingCredit",
@@ -1105,6 +1533,7 @@
                   "type" : "string"
                },
                "merchantReference" : {
+                  "x-addedInVersion" : 2,
                   "description" : "A value that can be supplied at the discretion of the executing user in order to link multiple transactions to one another.",
                   "type" : "string"
                },
@@ -1127,6 +1556,7 @@
          "TransferFundsResponse" : {
             "properties" : {
                "invalidFields" : {
+                  "x-addedInVersion" : 5,
                   "description" : "Contains field validation errors that would prevent requests from being processed.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -1134,21 +1564,89 @@
                   "type" : "array"
                },
                "merchantReference" : {
+                  "x-addedInVersion" : 2,
                   "description" : "The value supplied by the executing user when initiating the transfer; may be used to link multiple transactions.",
                   "type" : "string"
                },
                "pspReference" : {
-                  "description" : "The reference of a request.  Can be used to uniquely identify the request.",
+                  "description" : "The reference of a request. Can be used to uniquely identify the request.",
                   "type" : "string"
                },
                "resultCode" : {
                   "description" : "The result code.",
                   "type" : "string"
                }
-            },
-            "required" : [
-               "pspReference"
-            ]
+            }
+         }
+      },
+      "securitySchemes" : {
+         "ApiKeyAuth" : {
+            "in" : "header",
+            "name" : "X-API-Key",
+            "type" : "apiKey"
+         },
+         "BasicAuth" : {
+            "scheme" : "basic",
+            "type" : "http"
+         }
+      },
+      "examples" : {
+         "post-accountHolderBalance-basic" : {
+            "summary" : "Review the account holder balance",
+            "value" : {
+               "accountHolderCode" : "CODE_OF_ACCOUNT_HOLDER"
+            }
+         },
+         "post-payoutAccountHolder-oneOff" : {
+            "summary" : "One-off payout",
+            "value" : {
+               "accountCode" : "118731451",
+               "amount" : {
+                  "currency" : "EUR",
+                  "value" : 99792
+               },
+               "accountHolderCode" : "CODE_OF_ACCOUNT_HOLDER",
+               "description" : "12345 – Test",
+               "bankAccountUUID" : "000b81aa-ae7e-4492-aa7e-72b2129dce0c"
+            }
+         },
+         "post-refundFundsTransfer-basic" : {
+            "summary" : "Refund the fund transfer",
+            "value" : {
+               "originalReference" : "PSP_REFERENCE_OF_TRANSFER_TO_REFUND",
+               "amount" : {
+                  "currency" : "EUR",
+                  "value" : 1000
+               },
+               "merchantReference" : "YOUR_REFERENCE_ID"
+            }
+         },
+         "post-refundNotPaidOutTransfers-basic" : {
+            "summary" : "Refund last transactions",
+            "value" : {
+               "accountHolderCode" : "CODE_OF_ACCOUNT_HOLDER",
+               "accountCode" : "189184578"
+            }
+         },
+         "post-setupBeneficiary-basic" : {
+            "summary" : "Set up a beneficiary",
+            "value" : {
+               "destinationAccountCode" : "128952522",
+               "merchantReference" : "YOUR_REFERENCE_ID",
+               "sourceAccountCode" : "134498192"
+            }
+         },
+         "post-transferFunds-basic" : {
+            "summary" : "Transfer funds from one account to another",
+            "value" : {
+               "sourceAccountCode" : "100000000",
+               "destinationAccountCode" : "190324759",
+               "amount" : {
+                  "currency" : "EUR",
+                  "value" : 2000
+               },
+               "transferCode" : "TransferCode_1"
+            }
          }
       }
    }
