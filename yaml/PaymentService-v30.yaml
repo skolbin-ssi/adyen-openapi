@@ -65,12 +65,22 @@ paths:
     post:
       summary: Increases or decreases the authorised amount.
       description: 'Allows you to increase or decrease the authorised amount after
-        the initial authorisation has taken place. This functionality enables tipping,
-        improving the chances your authorisation will be valid, charging the shopper
-        when they have already left the merchant premises, etc.
+        the initial authorisation has taken place. This functionality enables for
+        example tipping, improving the chances your authorisation will be valid, or
+        charging the shopper when they have already left the merchant premises.
 
 
-        For more information, refer to [Adjust Authorisation](https://docs.adyen.com/online-payments/adjust-authorisation).'
+        > This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce).
+
+        > If you have a [newer integration](https://docs.adyen.com/online-payments),
+        and are doing:
+
+        > * [Asynchronous adjustments](https://docs.adyen.com/online-payments/adjust-authorisation#asynchronous-or-synchronous-adjustment),
+        use the [`/payments/{paymentPspReference}/amountUpdates`](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/{paymentPspReference}/amountUpdates)
+        endpoint on Checkout API.
+
+        > * [Synchronous adjustments](https://docs.adyen.com/online-payments/adjust-authorisation#asynchronous-or-synchronous-adjustment),
+        use this endpoint.'
       x-addedInVersion: 30
       operationId: post-adjustAuthorisation
       x-groupName: Modifications
@@ -150,6 +160,19 @@ paths:
       requestBody:
         content:
           application/json:
+            examples:
+              authorise-3dsecure:
+                $ref: '#/components/examples/post-authorise-authorise-3dsecure'
+              authorise-card:
+                $ref: '#/components/examples/post-authorise-authorise-card'
+              authorise-recurringcontauth:
+                $ref: '#/components/examples/post-authorise-authorise-recurringcontauth'
+              authorise-recurringoneclick:
+                $ref: '#/components/examples/post-authorise-authorise-recurringoneclick'
+              authorise-recurringstore:
+                $ref: '#/components/examples/post-authorise-authorise-recurringstore'
+              authorise-split:
+                $ref: '#/components/examples/post-authorise-authorise-split'
             schema:
               $ref: '#/components/schemas/PaymentRequest'
       responses:
@@ -162,12 +185,18 @@ paths:
         '400':
           content:
             application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
         '401':
           content:
             application/json:
+              examples:
+                generic-401:
+                  $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -186,6 +215,9 @@ paths:
         '500':
           content:
             application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
@@ -266,7 +298,13 @@ paths:
         for payment methods that support distinct authorisations and captures.
 
 
-        For more information, refer to [Cancel](https://docs.adyen.com/online-payments/cancel).'
+        For more information, refer to [Cancel](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/cancel).
+
+
+        > This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce).
+        If using a [newer integration](https://docs.adyen.com/online-payments), use
+        the [`/payments/{paymentPspReference}/cancels`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/{paymentPspReference}/cancels)
+        endpoint under Checkout API instead.'
       operationId: post-cancel
       x-groupName: Modifications
       x-sortIndex: 2
@@ -327,15 +365,19 @@ paths:
   /cancelOrRefund:
     post:
       summary: Cancels or refunds a payment.
-      description: 'Cancels a payment if it has not been captured yet, or refunds
-        it if it has already been captured. This is useful when it is not certain
-        if the payment has been captured or not (for example, when using auto-capture).
-
-
-        > Do not use this request for payments that involve (multiple) partial captures.
-
-
-        For more information, refer to [Cancel or refund](https://docs.adyen.com/online-payments/cancel-or-refund).'
+      description: "Cancels a payment if it has not been captured yet, or refunds\
+        \ it if it has already been captured. This is useful when it is not certain\
+        \ if the payment has been captured or not (for example, when using auto-capture).\n\
+        \nDo not use this endpoint for payments that involve:\n * [Multiple partial\
+        \ captures](https://docs.adyen.com/online-payments/capture).\n * [Split data](https://docs.adyen.com/platforms/processing-payments#providing-split-information)\
+        \ either at time of payment or capture for Adyen for Platforms.\n\n Instead,\
+        \ check if the payment has been captured and make a corresponding [`/refund`](https://docs.adyen.com/api-explorer/#/Payment/refund)\
+        \ or [`/cancel`](https://docs.adyen.com/api-explorer/#/Payment/cancel) call.\n\
+        \nFor more information, refer to [Cancel or refund](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/cancel-or-refund).\n\
+        \n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce).\
+        \ If using a [newer integration](https://docs.adyen.com/online-payments),\
+        \ use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/{paymentPspReference}/reversals)\
+        \ endpoint under Checkout API instead."
       operationId: post-cancelOrRefund
       x-groupName: Modifications
       x-sortIndex: 4
@@ -405,13 +447,22 @@ paths:
         cancelling the remaining authorisation balance.
 
 
-        Payment methods, which automatically capture as part of authorisation, don''t
-        need to be captured, but submitting a capture request on these transactions
+        Payment methods that are captured automatically after authorisation don''t
+        need to be captured. However, submitting a capture request on these transactions
         will not result in double charges. If immediate or delayed auto-capture is
         enabled, calling the capture method is not neccessary.
 
 
-        For more information, refer to [Capture](https://docs.adyen.com/online-payments/capture).'
+        For more information refer to [Capture](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/capture).
+
+
+        > This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce).
+        If using a [newer integration](https://docs.adyen.com/online-payments), use
+        the [`/payments/{paymentPspReference}/captures`](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/{paymentPspReference}/captures)
+        endpoint on Checkout API instead.
+
+
+        '
       operationId: post-capture
       x-groupName: Modifications
       x-sortIndex: 1
@@ -483,13 +534,19 @@ paths:
         instead.
 
 
-        > Some payment methods/gateways do not support partial/multiple refunds.
+        Some payment methods/gateways do not support partial/multiple refunds.
 
-        > A margin above the captured limit can be configured to cover shipping/handling
+        A margin above the captured limit can be configured to cover shipping/handling
         costs.
 
 
-        For more information, refer to [Refund](https://docs.adyen.com/online-payments/refund).'
+        For more information, refer to [Refund](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/refund).
+
+
+        > This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce).
+        If using a [newer integration](https://docs.adyen.com/online-payments), use
+        the [`/payments/{paymentPspReference}/refunds`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/{paymentPspReference}/refunds)
+        endpoint under Checkout API instead.'
       operationId: post-refund
       x-groupName: Modifications
       x-sortIndex: 3
@@ -553,15 +610,14 @@ paths:
   /technicalCancel:
     post:
       summary: Cancels a payment using your custom reference.
-      description: 'This endpoint allows you to cancel a payment if you do not have
-        the PSP reference of the original payment request available.
-
-
-        In your call, refer to the original payment by using the `reference` that
-        you specified in your payment request.
-
-
-        For more information, see [Technical cancel](https://docs.adyen.com/online-payments/cancel#technical-cancel).'
+      description: "This endpoint allows you to cancel a payment if you do not have\
+        \ the PSP reference of the original payment request available.\n\nIn your\
+        \ call, refer to the original payment by using the `reference` that you specified\
+        \ in your payment request.\n\nFor more information, see [Technical cancel](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/cancel#technical-cancel).\
+        \ \n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce).\
+        \ If using a [newer integration](https://docs.adyen.com/online-payments),\
+        \ use the [`/cancels`](https://docs.adyen.com/api-explorer/#/CheckoutService/cancels)\
+        \ endpoint under Checkout API instead."
       x-addedInVersion: 30
       operationId: post-technicalCancel
       x-groupName: Modifications
@@ -645,10 +701,10 @@ paths:
         content:
           application/json:
             examples:
-              voidpendingrefund-tenderreference:
-                $ref: '#/components/examples/post-voidPendingRefund-voidpendingrefund-tenderreference'
               voidpendingrefund-pspreference:
                 $ref: '#/components/examples/post-voidPendingRefund-voidpendingrefund-pspreference'
+              voidpendingrefund-tenderreference:
+                $ref: '#/components/examples/post-voidPendingRefund-voidpendingrefund-tenderreference'
             schema:
               $ref: '#/components/schemas/VoidPendingRefundRequest'
       responses:
@@ -656,10 +712,10 @@ paths:
           content:
             application/json:
               examples:
-                voidpendingrefund-tenderreference-200:
-                  $ref: '#/components/examples/post-voidPendingRefund-voidpendingrefund-tenderreference-200'
                 voidpendingrefund-pspreference-200:
                   $ref: '#/components/examples/post-voidPendingRefund-voidpendingrefund-pspreference-200'
+                voidpendingrefund-tenderreference-200:
+                  $ref: '#/components/examples/post-voidPendingRefund-voidpendingrefund-tenderreference-200'
               schema:
                 $ref: '#/components/schemas/ModificationResult'
           description: OK - the request has succeeded.
@@ -2152,7 +2208,7 @@ components:
     Address:
       properties:
         city:
-          description: The name of the city.
+          description: 'The name of the city. Maximum length: 3000 characters.'
           type: string
         country:
           description: 'The two-character country code as defined in ISO-3166-1 alpha-2.
@@ -2162,7 +2218,7 @@ components:
             the shopper, provide `country` as `ZZ`.'
           type: string
         houseNumberOrName:
-          description: The number or name of the house.
+          description: 'The number or name of the house. Maximum length: 3000 characters.'
           type: string
         postalCode:
           description: A maximum of five digits for an address in the US, or a maximum
@@ -2175,7 +2231,7 @@ components:
             > Required for the US and Canada.'
           type: string
         street:
-          description: 'The name of the street.
+          description: 'The name of the street. Maximum length: 3000 characters.
 
             > The house number should not be included in this field; it should be
             separately provided via `houseNumberOrName`.'
@@ -2794,11 +2850,6 @@ components:
         firstName:
           description: The first name.
           type: string
-        infix:
-          description: 'The name''s infix, if applicable.
-
-            >A maximum length of twenty (20) characters is imposed.'
-          type: string
         lastName:
           description: The last name.
           type: string
@@ -3101,7 +3152,7 @@ components:
         shopperStatement:
           description: "The text to be shown on the shopper's bank statement. To enable\
             \ this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n\
-            \ We recommend sending a maximum of 25 characters, otherwise banks might\
+            \ We recommend sending a maximum of 22 characters, otherwise banks might\
             \ truncate the string."
           type: string
         socialSecurityNumber:
@@ -3402,7 +3453,7 @@ components:
         shopperStatement:
           description: "The text to be shown on the shopper's bank statement. To enable\
             \ this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n\
-            \ We recommend sending a maximum of 25 characters, otherwise banks might\
+            \ We recommend sending a maximum of 22 characters, otherwise banks might\
             \ truncate the string."
           type: string
         socialSecurityNumber:
@@ -3656,6 +3707,13 @@ components:
           description: 'Information provided by the issuer to the cardholder. If this
             field is present, you need to display this information to the cardholder. '
           type: string
+        cavv:
+          description: The Cardholder Authentication Verification Value (CAVV) for
+            the 3D Secure authentication session, as a Base64-encoded 20-byte array.
+          type: string
+        cavvAlgorithm:
+          description: The CAVV algorithm used.
+          type: string
         scaExemptionRequested:
           description: "Shows the [exemption type](https://docs.adyen.com/payments-fundamentals/psd2-sca-compliance-and-implementation-guide#specifypreferenceinyourapirequest)\
             \ that Adyen requested for the payment.\n\n Possible values:\n* **lowValue**\
@@ -3779,6 +3837,9 @@ components:
 
             Example: 58747'
           type: string
+        authorisationMid:
+          description: Merchant ID known by the acquirer.
+          type: string
         authorisedAmountCurrency:
           description: The currency of the authorised amount, as a three-character
             [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
@@ -3811,6 +3872,9 @@ components:
 
 
             > Only relevant for SEPA Direct Debit transactions.'
+          type: string
+        coBrandedWith:
+          description: Includes the co-branded card information.
           type: string
         cvcResult:
           description: The result of CVC verification.
@@ -3855,6 +3919,15 @@ components:
         fraudCheck-[itemNr]-[FraudCheckname]:
           description: The fraud score due to a particular fraud check. The fraud
             check name is found in the key of the key-value pair.
+          type: string
+        fraudManualReview:
+          description: Indicates if the payment is sent to manual review.
+          type: string
+        fraudResultType:
+          description: The fraud result properties of the payment.
+          enum:
+          - GREEN
+          - FRAUD
           type: string
         fundingSource:
           description: 'Information regarding the funding type of the card. The possible
@@ -3937,6 +4010,9 @@ components:
 
             * Non-reloadable prepaid card'
           type: string
+        isCardCommercial:
+          description: Indicates if the card is used for business purposes only.
+          type: string
         issuerCountry:
           description: 'The issuing country of the card based on the BIN list that
             Adyen maintains.
@@ -3944,12 +4020,19 @@ components:
 
             Example: JP'
           type: string
+        liabilityShift:
+          description: A Boolean value indicating whether a liability shift was offered
+            for this payment.
+          type: string
         mcBankNetReferenceNumber:
           description: 'The `mcBankNetReferenceNumber`, is a minimum of six characters
             and a maximum of nine characters long.
 
 
             > Contact Support Team to enable this field.'
+          type: string
+        merchantReference:
+          description: The reference provided for the transaction.
           type: string
         networkTxReference:
           description: 'Returned in the response if you are not tokenizing with Adyen
@@ -3976,6 +4059,9 @@ components:
           description: The Payment Account Reference (PAR) value links a network token
             with the underlying primary account number (PAN). The PAR value consists
             of 29 uppercase alphanumeric characters.
+          type: string
+        paymentMethod:
+          description: The payment method used in the transaction.
           type: string
         paymentMethodVariant:
           description: 'The Adyen sub-variant of the payment method used for the payment
@@ -4525,6 +4611,116 @@ components:
       value:
         pspReference: 851617892360718D
         response: '[adjustAuthorisation-received]'
+    post-authorise-authorise-3dsecure:
+      summary: Initiate a 3D Secure payment
+      value:
+        amount:
+          value: 1500
+          currency: EUR
+        browserInfo:
+          userAgent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008052912
+            Firefox/3.0
+          acceptHeader: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+        card:
+          number: '5212345678901234'
+          expiryMonth: '03'
+          expiryYear: '2030'
+          cvc: '737'
+          holderName: John Smith
+        reference: YOUR_REFERENCE
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-authorise-authorise-card:
+      summary: Authorise a card payment
+      value:
+        card:
+          number: '4111111111111111'
+          expiryMonth: '03'
+          expiryYear: '2030'
+          cvc: '737'
+          holderName: John Smith
+        amount:
+          value: 1500
+          currency: EUR
+        reference: YOUR_REFERENCE
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-authorise-authorise-recurringcontauth:
+      summary: Authorise a recurring payment
+      value:
+        amount:
+          value: 2000
+          currency: EUR
+        reference: YOUR_REFERENCE
+        shopperEmail: s.hopper@test.com
+        shopperIP: 61.294.12.12
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        selectedRecurringDetailReference: LATEST
+        recurring:
+          contract: RECURRING
+        shopperInteraction: ContAuth
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-authorise-authorise-recurringoneclick:
+      summary: Authorise a one-click payment
+      value:
+        amount:
+          value: 2000
+          currency: EUR
+        card:
+          cvc: '737'
+        reference: YOUR_REFERENCE
+        shopperEmail: s.hopper@test.com
+        shopperIP: 61.294.12.12
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        selectedRecurringDetailReference: LATEST
+        recurring:
+          contract: ONECLICK
+        shopperInteraction: Ecommerce
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-authorise-authorise-recurringstore:
+      summary: Store card details for recurring payments
+      value:
+        amount:
+          value: 2000
+          currency: EUR
+        card:
+          number: '4111111111111111'
+          expiryMonth: '03'
+          expiryYear: '2030'
+          cvc: '737'
+          holderName: John Smith
+        reference: YOUR_REFERENCE
+        shopperEmail: s.hopper@test.com
+        shopperIP: 61.294.12.12
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        recurring:
+          contract: RECURRING,ONECLICK
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-authorise-authorise-split:
+      summary: Split a payment between a sub-merchant and a platform account
+      value:
+        card:
+          number: '4111111111111111'
+          cvc: '737'
+          expiryMonth: '03'
+          expiryYear: '2030'
+          holderName: John Smith
+        amount:
+          value: 6200
+          currency: EUR
+        additionalData:
+          split.api: '1'
+          split.nrOfItems: '2'
+          split.totalAmount: '6200'
+          split.currencyCode: EUR
+          split.item1.amount: '6000'
+          split.item1.type: MarketPlace
+          split.item1.account: '151272963'
+          split.item1.reference: '6124145'
+          split.item1.description: 'Porcelain Doll: Eliza (20cm)'
+          split.item2.amount: '200'
+          split.item2.type: Commission
+          split.item2.reference: '6124146'
+        reference: YOUR_REFERENCE
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
     post-authorise3d-authorise3d:
       summary: Complete a 3D Secure payment
       value:

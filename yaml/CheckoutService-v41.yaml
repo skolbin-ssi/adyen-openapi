@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 servers:
 - url: https://checkout-test.adyen.com/v41
 info:
@@ -60,10 +60,111 @@ info:
 x-groups:
 - Payments
 - Payment links
+- Modifications
 - Orders
 - Classic Checkout SDK
 - Utility
 paths:
+  /cancels:
+    post:
+      summary: Cancels an authorised payment.
+      description: 'Cancels the authorisation on a payment that has not yet been [captured](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/captures),
+        and returns a unique reference for this request. You get the outcome of the
+        request asynchronously, in a [**TECHNICAL_CANCEL** webhook](https://docs.adyen.com/online-payments/cancel#cancellation-webhook).
+
+
+        If you want to cancel a payment using the [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference),
+        use the [`/payments/{paymentPspReference}/cancels`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/cancels)
+        endpoint instead.
+
+
+        If you want to cancel a payment but are not sure whether it has been captured,
+        use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/reversals)
+        endpoint instead.
+
+
+        For more information, refer to [Cancel](https://docs.adyen.com/online-payments/cancel).'
+      operationId: post-cancels
+      x-groupName: Modifications
+      x-sortIndex: 3
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStandalonePaymentCancelRequest'
+      parameters:
+      - $ref: '#/components/parameters/Idempotency-Key'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandalonePaymentCancelResource'
+          description: OK - the request has succeeded.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandalonePaymentCancelResource'
+          description: Created - the request has been fulfilled and has resulted in
+            one or more new resources being created.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '400':
+          content:
+            application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              examples:
+                generic-401:
+                  $ref: '#/components/examples/generic-401'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '500':
+          content:
+            application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
   /orders:
     post:
       summary: Creates an order for the given amount.
@@ -73,6 +174,9 @@ paths:
       operationId: post-orders
       x-groupName: Orders
       x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -153,6 +257,9 @@ paths:
       operationId: post-orders-cancel
       x-groupName: Orders
       x-sortIndex: 3
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -237,6 +344,9 @@ paths:
       operationId: post-originKeys
       x-groupName: Utility
       x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -320,6 +430,9 @@ paths:
       operationId: post-paymentLinks
       x-groupName: Payment links
       x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -407,6 +520,9 @@ paths:
       operationId: get-paymentLinks-linkId
       x-groupName: Payment links
       x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the payment link.
         name: linkId
@@ -483,6 +599,9 @@ paths:
       operationId: patch-paymentLinks-linkId
       x-groupName: Payment links
       x-sortIndex: 3
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -576,16 +695,19 @@ paths:
       operationId: post-paymentMethods
       x-groupName: Payments
       x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
             examples:
+              basic:
+                $ref: '#/components/examples/post-paymentMethods-basic'
               filtered:
                 $ref: '#/components/examples/post-paymentMethods-filtered'
               include-oneclick:
                 $ref: '#/components/examples/post-paymentMethods-include-oneclick'
-              basic:
-                $ref: '#/components/examples/post-paymentMethods-basic'
             schema:
               $ref: '#/components/schemas/PaymentMethodsRequest'
       parameters:
@@ -597,10 +719,10 @@ paths:
               examples:
                 basic-200:
                   $ref: '#/components/examples/post-paymentMethods-basic-200'
-                include-oneclick-200:
-                  $ref: '#/components/examples/post-paymentMethods-include-oneclick-200'
                 filtered-200:
                   $ref: '#/components/examples/post-paymentMethods-filtered-200'
+                include-oneclick-200:
+                  $ref: '#/components/examples/post-paymentMethods-include-oneclick-200'
               schema:
                 $ref: '#/components/schemas/PaymentMethodsResponse'
           description: OK - the request has succeeded.
@@ -664,14 +786,17 @@ paths:
       operationId: post-paymentMethods-balance
       x-groupName: Orders
       x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
             examples:
-              plastix:
-                $ref: '#/components/examples/post-paymentMethods-balance-plastix'
               basic:
                 $ref: '#/components/examples/post-paymentMethods-balance-basic'
+              plastix:
+                $ref: '#/components/examples/post-paymentMethods-balance-plastix'
             schema:
               $ref: '#/components/schemas/CheckoutBalanceCheckRequest'
       parameters:
@@ -719,6 +844,9 @@ paths:
         '422':
           content:
             application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -747,16 +875,23 @@ paths:
       operationId: post-paymentSession
       x-groupName: Classic Checkout SDK
       x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
             examples:
               android:
                 $ref: '#/components/examples/post-paymentSession-android'
-              ios:
-                $ref: '#/components/examples/post-paymentSession-ios'
               enableOneClick:
                 $ref: '#/components/examples/post-paymentSession-enableOneClick'
+              ios:
+                $ref: '#/components/examples/post-paymentSession-ios'
+              split:
+                $ref: '#/components/examples/post-paymentSession-split'
+              web:
+                $ref: '#/components/examples/post-paymentSession-web'
             schema:
               $ref: '#/components/schemas/PaymentSetupRequest'
       parameters:
@@ -766,10 +901,10 @@ paths:
           content:
             application/json:
               examples:
-                web-200:
-                  $ref: '#/components/examples/post-paymentSession-web-200'
                 enableOneClick-200:
                   $ref: '#/components/examples/post-paymentSession-enableOneClick-200'
+                web-200:
+                  $ref: '#/components/examples/post-paymentSession-web-200'
               schema:
                 $ref: '#/components/schemas/PaymentSetupResponse'
           description: OK - the request has succeeded.
@@ -779,6 +914,9 @@ paths:
         '400':
           content:
             application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -794,6 +932,9 @@ paths:
         '403':
           content:
             application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -812,6 +953,9 @@ paths:
         '500':
           content:
             application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
@@ -829,18 +973,47 @@ paths:
       operationId: post-payments
       x-groupName: Payments
       x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
             examples:
+              applepay:
+                $ref: '#/components/examples/post-payments-applepay'
+              card-3d-secure-2-web:
+                $ref: '#/components/examples/post-payments-card-3d-secure-2-web'
               card-3d-secure-direct:
                 $ref: '#/components/examples/post-payments-card-3d-secure-direct'
+              card-3d-secure-securedfields:
+                $ref: '#/components/examples/post-payments-card-3d-secure-securedfields'
+              card-direct:
+                $ref: '#/components/examples/post-payments-card-direct'
+              card-securedfields:
+                $ref: '#/components/examples/post-payments-card-securedfields'
+              enableOneClick-SF:
+                $ref: '#/components/examples/post-payments-enableOneClick-SF'
+              enableOneClick-raw:
+                $ref: '#/components/examples/post-payments-enableOneClick-raw'
+              giropay:
+                $ref: '#/components/examples/post-payments-giropay'
+              googlepay:
+                $ref: '#/components/examples/post-payments-googlepay'
+              ideal:
+                $ref: '#/components/examples/post-payments-ideal'
               klarna:
                 $ref: '#/components/examples/post-payments-klarna'
               oneclick-direct:
                 $ref: '#/components/examples/post-payments-oneclick-direct'
-              card-3d-secure-2-web:
-                $ref: '#/components/examples/post-payments-card-3d-secure-2-web'
+              oneclick-securedfields:
+                $ref: '#/components/examples/post-payments-oneclick-securedfields'
+              recurring:
+                $ref: '#/components/examples/post-payments-recurring'
+              sofort:
+                $ref: '#/components/examples/post-payments-sofort'
+              split:
+                $ref: '#/components/examples/post-payments-split'
             schema:
               $ref: '#/components/schemas/PaymentRequest'
       parameters:
@@ -849,6 +1022,25 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                card-3d-secure-2-web-200:
+                  $ref: '#/components/examples/post-payments-card-3d-secure-2-web-200'
+                card-3d-secure-direct-200:
+                  $ref: '#/components/examples/post-payments-card-3d-secure-direct-200'
+                card-3d-secure-securedfields-200:
+                  $ref: '#/components/examples/post-payments-card-3d-secure-securedfields-200'
+                card-direct-200:
+                  $ref: '#/components/examples/post-payments-card-direct-200'
+                card-securedfields-200:
+                  $ref: '#/components/examples/post-payments-card-securedfields-200'
+                enableOneClick-raw-200:
+                  $ref: '#/components/examples/post-payments-enableOneClick-raw-200'
+                giropay-200:
+                  $ref: '#/components/examples/post-payments-giropay-200'
+                ideal-200:
+                  $ref: '#/components/examples/post-payments-ideal-200'
+                sofort-200:
+                  $ref: '#/components/examples/post-payments-sofort-200'
               schema:
                 $ref: '#/components/schemas/PaymentResponse'
           description: OK - the request has succeeded.
@@ -858,24 +1050,36 @@ paths:
         '400':
           content:
             application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
         '401':
           content:
             application/json:
+              examples:
+                generic-401:
+                  $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
         '403':
           content:
             application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
         '422':
           content:
             application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -885,6 +1089,9 @@ paths:
         '500':
           content:
             application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
@@ -901,9 +1108,21 @@ paths:
       operationId: post-payments-details
       x-groupName: Payments
       x-sortIndex: 3
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
+            examples:
+              3d-secure:
+                $ref: '#/components/examples/post-payments-details-3d-secure'
+              3d-secure-2-challenge:
+                $ref: '#/components/examples/post-payments-details-3d-secure-2-challenge'
+              3d-secure-2-fingerprint:
+                $ref: '#/components/examples/post-payments-details-3d-secure-2-fingerprint'
+              redirect:
+                $ref: '#/components/examples/post-payments-details-redirect'
             schema:
               $ref: '#/components/schemas/DetailsRequest'
       parameters:
@@ -921,6 +1140,9 @@ paths:
         '400':
           content:
             application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -936,12 +1158,18 @@ paths:
         '403':
           content:
             application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
         '422':
           content:
             application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -951,6 +1179,9 @@ paths:
         '500':
           content:
             application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
@@ -965,6 +1196,9 @@ paths:
       operationId: post-payments-result
       x-groupName: Classic Checkout SDK
       x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -1015,6 +1249,530 @@ paths:
         '422':
           content:
             application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '500':
+          content:
+            application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /payments/{paymentPspReference}/amountUpdates:
+    post:
+      summary: Increases or decreases the authorised amount.
+      description: 'Increases or decreases the authorised payment amount and returns
+        a unique reference for this request. You get the outcome of the request asynchronously,
+        in an [**AUTHORISATION_ADJUSTMENT** webhook](https://docs.adyen.com/development-resources/webhooks/understand-notifications#event-codes).
+
+
+        You can only update authorised amounts that have not yet been [captured](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/captures).
+
+
+        The amount you specify in the request is the updated amount, which is larger
+        or smaller than the initial authorised amount.
+
+
+        For more information, refer to [Authorisation adjustment](https://docs.adyen.com/online-payments/adjust-authorisation#use-cases).'
+      operationId: post-payments-paymentPspReference-amountUpdates
+      x-groupName: Modifications
+      x-sortIndex: 6
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentAmountUpdateRequest'
+      parameters:
+      - description: The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+          of the payment.
+        name: paymentPspReference
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Idempotency-Key'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAmountUpdateResource'
+          description: OK - the request has succeeded.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAmountUpdateResource'
+          description: Created - the request has been fulfilled and has resulted in
+            one or more new resources being created.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '400':
+          content:
+            application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              examples:
+                generic-401:
+                  $ref: '#/components/examples/generic-401'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '500':
+          content:
+            application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /payments/{paymentPspReference}/cancels:
+    post:
+      summary: Cancels an authorised payment.
+      description: 'Cancels the authorisation on a payment that has not yet been [captured](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/paymentPspReference/captures),
+        and returns a unique reference for this request. You get the outcome of the
+        request asynchronously, in a [**CANCELLATION** webhook](https://docs.adyen.com/online-payments/cancel#cancellation-webhook).
+
+
+        If you want to cancel a payment but don''t have the [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference),
+        use the [`/cancels`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/cancels)
+        endpoint instead.
+
+
+        If you want to cancel a payment but are not sure whether it has been captured,
+        use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/reversals)
+        endpoint instead.
+
+
+        For more information, refer to [Cancel](https://docs.adyen.com/online-payments/cancel).'
+      operationId: post-payments-paymentPspReference-cancels
+      x-groupName: Modifications
+      x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentCancelRequest'
+      parameters:
+      - description: 'The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+          of the payment that you want to cancel. '
+        name: paymentPspReference
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Idempotency-Key'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCancelResource'
+          description: OK - the request has succeeded.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCancelResource'
+          description: Created - the request has been fulfilled and has resulted in
+            one or more new resources being created.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '400':
+          content:
+            application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              examples:
+                generic-401:
+                  $ref: '#/components/examples/generic-401'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '500':
+          content:
+            application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /payments/{paymentPspReference}/captures:
+    post:
+      summary: Captures an authorised payment.
+      description: " Captures an authorised payment and returns a unique reference\
+        \ for this request. You get the outcome of the request asynchronously, in\
+        \ a [**CAPTURE** webhook](https://docs.adyen.com/online-payments/capture#capture-notification).\n\
+        \nYou can capture either the full authorised amount or a part of the authorised\
+        \ amount. By default, any unclaimed amount after a partial capture gets cancelled.\
+        \ This does not apply if you enabled multiple partial captures on your account\
+        \ and the payment method supports multiple partial captures. \n\n[Automatic\
+        \ capture](https://docs.adyen.com/online-payments/capture#automatic-capture)\
+        \ is the default setting for most payment methods. In these cases, you don't\
+        \ need to make capture requests. However, making capture requests for payments\
+        \ that are captured automatically does not result in double charges.\n\nFor\
+        \ more information, refer to [Capture](https://docs.adyen.com/online-payments/capture)."
+      operationId: post-payments-paymentPspReference-captures
+      x-groupName: Modifications
+      x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentCaptureRequest'
+      parameters:
+      - description: The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+          of the payment that you want to capture.
+        name: paymentPspReference
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Idempotency-Key'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCaptureResource'
+          description: OK - the request has succeeded.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCaptureResource'
+          description: Created - the request has been fulfilled and has resulted in
+            one or more new resources being created.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '400':
+          content:
+            application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              examples:
+                generic-401:
+                  $ref: '#/components/examples/generic-401'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '500':
+          content:
+            application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /payments/{paymentPspReference}/refunds:
+    post:
+      summary: Refunds a captured payment.
+      description: "Refunds a payment that has been [captured](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/captures),\
+        \ and returns a unique reference for this request. You get the outcome of\
+        \ the request asynchronously, in a [**REFUND** webhook](https://docs.adyen.com/online-payments/refund#refund-webhook).\n\
+        \nYou can refund either the full captured amount or a part of the captured\
+        \ amount. You can also perform multiple partial refunds, as long as their\
+        \ sum doesn't exceed the captured amount.\n\n> Some payment methods do not\
+        \ support partial refunds. To learn if a payment method supports partial refunds,\
+        \ refer to the payment method page such as [cards](https://docs.adyen.com/payment-methods/cards#supported-cards),\
+        \ [iDEAL](https://docs.adyen.com/payment-methods/ideal), or [Klarna](https://docs.adyen.com/payment-methods/klarna).\
+        \ \n\nIf you want to refund a payment but are not sure whether it has been\
+        \ captured, use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/reversals)\
+        \ endpoint instead.\n\nFor more information, refer to [Refund](https://docs.adyen.com/online-payments/refund)."
+      operationId: post-payments-paymentPspReference-refunds
+      x-groupName: Modifications
+      x-sortIndex: 4
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentRefundRequest'
+      parameters:
+      - description: The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+          of the payment that you want to refund.
+        name: paymentPspReference
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Idempotency-Key'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRefundResource'
+          description: OK - the request has succeeded.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentRefundResource'
+          description: Created - the request has been fulfilled and has resulted in
+            one or more new resources being created.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '400':
+          content:
+            application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              examples:
+                generic-401:
+                  $ref: '#/components/examples/generic-401'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '500':
+          content:
+            application/json:
+              examples:
+                generic-500:
+                  $ref: '#/components/examples/generic-500'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /payments/{paymentPspReference}/reversals:
+    post:
+      summary: Cancels or refunds a payment.
+      description: '[Refunds](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/refunds)
+        a payment if it has already been captured, and [cancels](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/cancels)
+        a payment if it has not yet been captured. Returns a unique reference for
+        this request. You get the outcome of the request asynchronously, in a [**CANCEL_OR_REFUND**
+        webhook](https://docs.adyen.com/online-payments/reverse#cancel-or-refund-webhook).
+
+
+        The reversed amount is always the full payment amount.
+
+        > Do not use this request for payments that involve multiple partial captures.
+
+
+        For more information, refer to [Reversal](https://docs.adyen.com/online-payments/reversal).'
+      operationId: post-payments-paymentPspReference-reversals
+      x-groupName: Modifications
+      x-sortIndex: 5
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentReversalRequest'
+      parameters:
+      - description: 'The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+          of the payment that you want to reverse. '
+        name: paymentPspReference
+        in: path
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Idempotency-Key'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentReversalResource'
+          description: OK - the request has succeeded.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentReversalResource'
+          description: Created - the request has been fulfilled and has resulted in
+            one or more new resources being created.
+          headers:
+            Idempotency-Key:
+              $ref: '#/components/headers/Idempotency-Key'
+        '400':
+          content:
+            application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              examples:
+                generic-401:
+                  $ref: '#/components/examples/generic-401'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              examples:
+                generic-422:
+                  $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -2674,7 +3432,7 @@ components:
     Address:
       properties:
         city:
-          description: The name of the city.
+          description: 'The name of the city. Maximum length: 3000 characters.'
           type: string
         country:
           description: 'The two-character country code as defined in ISO-3166-1 alpha-2.
@@ -2684,7 +3442,7 @@ components:
             the shopper, provide `country` as `ZZ`.'
           type: string
         houseNumberOrName:
-          description: The number or name of the house.
+          description: 'The number or name of the house. Maximum length: 3000 characters.'
           type: string
         postalCode:
           description: A maximum of five digits for an address in the US, or a maximum
@@ -2697,7 +3455,7 @@ components:
             > Required for the US and Canada.'
           type: string
         street:
-          description: 'The name of the street.
+          description: 'The name of the street. Maximum length: 3000 characters.
 
             > The house number should not be included in this field; it should be
             separately provided via `houseNumberOrName`.'
@@ -3120,6 +3878,15 @@ components:
           description: This is the `recurringDetailReference` returned in the response
             when you created the token.
           type: string
+        shopperNotificationReference:
+          description: The `shopperNotificationReference` returned in the response
+            when you requested to notify the shopper. Used only for recurring payments
+            in India.
+          type: string
+        threeDS2SdkVersion:
+          description: Version of the 3D Secure 2 mobile SDK.
+          maxLength: 12
+          type: string
         type:
           default: scheme
           description: Default payment method details. Common for scheme payment methods,
@@ -3135,6 +3902,7 @@ components:
           - alipay_hk_wap
           - alipay_hk_web
           - alipay_wap
+          - kcp_naverpay
           - upi
           - primeiropay_boleto
           - gopay_wallet
@@ -3455,7 +4223,7 @@ components:
         shopperStatement:
           description: "The text to be shown on the shopper's bank statement. To enable\
             \ this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n\
-            \ We recommend sending a maximum of 25 characters, otherwise banks might\
+            \ We recommend sending a maximum of 22 characters, otherwise banks might\
             \ truncate the string."
           type: string
         socialSecurityNumber:
@@ -3770,11 +4538,76 @@ components:
           type: string
         installments:
           description: Describes the configuration for [installment payments](https://docs.adyen.com/payment-methods/cards/credit-card-installments).
-          $ref: '#/components/schemas/Installments2'
+          $ref: '#/components/schemas/InstallmentsNumber'
         shopperInput:
           x-addedInVersion: 37
           description: Determines how to display the details fields.
           $ref: '#/components/schemas/ShopperInput'
+    CreatePaymentAmountUpdateRequest:
+      properties:
+        amount:
+          description: The updated amount. The `currency` must match the currency
+            used in authorisation.
+          $ref: '#/components/schemas/Amount'
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        reason:
+          description: "The reason for the amount update. Possible values: \n* **delayedCharge**\
+            \ \n* **noShow**"
+          enum:
+          - delayedCharge
+          - noShow
+          type: string
+        reference:
+          description: 'Your reference for the amount update request. Maximum length:
+            80 characters.'
+          type: string
+        splits:
+          description: An array of objects specifying how the amount should be split
+            between accounts when using Adyen for Platforms. For details, refer to
+            [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).
+          items:
+            $ref: '#/components/schemas/Split'
+          type: array
+      required:
+      - merchantAccount
+      - amount
+    CreatePaymentCancelRequest:
+      properties:
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        reference:
+          description: 'Your reference for the cancel request. Maximum length: 80
+            characters.'
+          type: string
+      required:
+      - merchantAccount
+    CreatePaymentCaptureRequest:
+      properties:
+        amount:
+          description: The amount that you want to capture. The `currency` must match
+            the currency used in authorisation, the `value` must be smaller than or
+            equal to the authorised amount.
+          $ref: '#/components/schemas/Amount'
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        reference:
+          description: 'Your reference for the capture request. Maximum length: 80
+            characters.'
+          type: string
+        splits:
+          description: An array of objects specifying how the amount should be split
+            between accounts when using Adyen for Platforms. For details, refer to
+            [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).
+          items:
+            $ref: '#/components/schemas/Split'
+          type: array
+      required:
+      - merchantAccount
+      - amount
     CreatePaymentLinkRequest:
       properties:
         allowedPaymentMethods:
@@ -3864,22 +4697,22 @@ components:
 
             Limitations:
 
-            * Maximum 20 key-value pairs per request. When exceeding, the "177" error
-            occurs: "Metadata size exceeds limit"
+            * Maximum 20 key-value pairs per request. Otherwise, error "177" occurs:
+            "Metadata size exceeds limit"
 
-            * Maximum 20 characters per key. When exceeding, the "178" error occurs:
-            "Metadata key size exceeds limit"
+            * Maximum 20 characters per key. Otherwise, error "178" occurs: "Metadata
+            key size exceeds limit"
 
-            * A key cannot have the name `checkout.linkId`. Whatever value is present
-            under that key is going to be replaced by the real link id'
+            * A key cannot have the name `checkout.linkId`. Any value that you provide
+            with this key is going to be replaced by the real payment link ID.'
           type: object
         recurringProcessingModel:
-          description: "Defines a recurring payment type.\nAllowed values:\n* `Subscription`\
+          description: "Defines a recurring payment type.\nPossible values:\n* **Subscription**\
             \ \u2013 A transaction for a fixed or variable amount, which follows a\
-            \ fixed schedule.\n* `CardOnFile` \u2013 With a card-on-file (CoF) transaction,\
+            \ fixed schedule.\n* **CardOnFile** \u2013 With a card-on-file (CoF) transaction,\
             \ card details are stored to enable one-click or omnichannel journeys,\
             \ or simply to streamline the checkout process. Any subscription not following\
-            \ a fixed schedule is also considered a card-on-file transaction.\n* `UnscheduledCardOnFile`\
+            \ a fixed schedule is also considered a card-on-file transaction.\n* **UnscheduledCardOnFile**\
             \ \u2013 An unscheduled card-on-file (UCoF) transaction is a transaction\
             \ that occurs on a non-fixed schedule and/or has variable amounts. For\
             \ example, automatic top-ups when a cardholder's balance drops below a\
@@ -3938,6 +4771,57 @@ components:
       - amount
       - reference
       - merchantAccount
+    CreatePaymentRefundRequest:
+      properties:
+        amount:
+          description: The amount that you want to refund. The `currency` must match
+            the currency used in authorisation, the `value` must be smaller than or
+            equal to the authorised amount.
+          $ref: '#/components/schemas/Amount'
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        reference:
+          description: 'Your reference for the refund request. Maximum length: 80
+            characters.'
+          type: string
+        splits:
+          description: An array of objects specifying how the amount should be split
+            between accounts when using Adyen for Platforms. For details, refer to
+            [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).
+          items:
+            $ref: '#/components/schemas/Split'
+          type: array
+      required:
+      - merchantAccount
+      - amount
+    CreatePaymentReversalRequest:
+      properties:
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        reference:
+          description: 'Your reference for the reversal request. Maximum length: 80
+            characters.'
+          type: string
+      required:
+      - merchantAccount
+    CreateStandalonePaymentCancelRequest:
+      properties:
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        paymentReference:
+          description: The [`reference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__reqParam_reference)
+            of the payment that you want to cancel.
+          type: string
+        reference:
+          description: 'Your reference for the cancel request. Maximum length: 80
+            characters.'
+          type: string
+      required:
+      - merchantAccount
+      - paymentReference
     DetailsRequest:
       properties:
         details:
@@ -3945,9 +4829,8 @@ components:
             as a result of the `/payments` call.
           $ref: '#/components/schemas/PaymentCompletionDetails'
         paymentData:
-          description: The `paymentData` value from the `/payments` response. Required
-            if the `/payments` response returns this value. In v67 and later, you
-            will always get this value from the Component.
+          description: 'The `paymentData` value from the `/payments` response. Required
+            if the `/payments` response returns this value. '
           maxLength: 100000
           type: string
         threeDSAuthenticationOnly:
@@ -4252,10 +5135,10 @@ components:
             when you created the token.
           type: string
         type:
-          default: paywithgoogle
-          description: '**paywithgoogle**'
+          default: googlepay
+          description: '**googlepay**, **paywithgoogle**'
           enum:
-          - paywithgoogle
+          - googlepay
           type: string
       required:
       - googlePayToken
@@ -4339,7 +5222,7 @@ components:
           type: integer
       required:
       - value
-    Installments2:
+    InstallmentsNumber:
       properties:
         maxNumberOfInstallments:
           description: Maximum number of installments
@@ -4421,6 +5304,9 @@ components:
           type: string
         imageUrl:
           description: Link to the picture of the purchased item.
+          type: string
+        itemCategory:
+          description: Item category, used by the RatePay payment method.
           type: string
         productUrl:
           description: Link to the purchased item.
@@ -4668,11 +5554,6 @@ components:
         firstName:
           description: The first name.
           type: string
-        infix:
-          description: 'The name''s infix, if applicable.
-
-            >A maximum length of twenty (20) characters is imposed.'
-          type: string
         lastName:
           description: The last name.
           type: string
@@ -4753,18 +5634,156 @@ components:
       required:
       - type
       title: PayU
+    PayWithGoogleDetails:
+      additionalProperties: false
+      properties:
+        fundingSource:
+          description: The funding source that should be used when multiple sources
+            are available. For Brazilian combo cards, by default the funding source
+            is credit. To use debit, set this value to **debit**.
+          enum:
+          - debit
+          type: string
+        googlePayToken:
+          description: The `token` that you obtained from the [Google Pay API](https://developers.google.com/pay/api/web/reference/response-objects#PaymentData)
+            `PaymentData` response.
+          type: string
+        recurringDetailReference:
+          description: This is the `recurringDetailReference` returned in the response
+            when you created the token.
+          type: string
+        type:
+          default: paywithgoogle
+          description: '**paywithgoogle**'
+          enum:
+          - paywithgoogle
+          type: string
+      required:
+      - googlePayToken
+      title: Google Pay
+    PaymentAmountUpdateResource:
+      properties:
+        amount:
+          description: The updated amount.
+          $ref: '#/components/schemas/Amount'
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        paymentPspReference:
+          description: 'The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+            of the payment to update. '
+          type: string
+        pspReference:
+          description: Adyen's 16-character reference associated with the amount update
+            request.
+          type: string
+        reason:
+          description: "The reason for the amount update. Possible values: \n* **DelayedCharge**\
+            \ \n* **NoShow**"
+          enum:
+          - delayedCharge
+          - noShow
+          type: string
+        reference:
+          description: 'Your reference for the amount update request. Maximum length:
+            80 characters.'
+          type: string
+        splits:
+          description: An array of objects specifying how the amount should be split
+            between accounts when using Adyen for Platforms. For details, refer to
+            [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).
+          items:
+            $ref: '#/components/schemas/Split'
+          type: array
+        status:
+          description: The status of your request. This will always have the value
+            **received**.
+          enum:
+          - received
+          type: string
+      required:
+      - status
+      - merchantAccount
+      - amount
+      - reference
+      - pspReference
+      - paymentPspReference
+    PaymentCancelResource:
+      properties:
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        paymentPspReference:
+          description: 'The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+            of the payment to cancel. '
+          type: string
+        pspReference:
+          description: Adyen's 16-character reference associated with the cancel request.
+          type: string
+        reference:
+          description: Your reference for the cancel request.
+          type: string
+        status:
+          description: The status of your request. This will always have the value
+            **received**.
+          enum:
+          - received
+          type: string
+      required:
+      - status
+      - merchantAccount
+      - paymentPspReference
+      - pspReference
+    PaymentCaptureResource:
+      properties:
+        amount:
+          description: The captured amount.
+          $ref: '#/components/schemas/Amount'
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        paymentPspReference:
+          description: 'The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+            of the payment to capture. '
+          type: string
+        pspReference:
+          description: Adyen's 16-character reference associated with the capture
+            request.
+          type: string
+        reference:
+          description: Your reference for the capture request.
+          type: string
+        splits:
+          description: An array of objects specifying how the amount should be split
+            between accounts when using Adyen for Platforms. For details, refer to
+            [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).
+          items:
+            $ref: '#/components/schemas/Split'
+          type: array
+        status:
+          description: The status of your request. This will always have the value
+            **received**.
+          enum:
+          - received
+          type: string
+      required:
+      - status
+      - merchantAccount
+      - amount
+      - pspReference
+      - paymentPspReference
     PaymentCompletionDetails:
       properties:
         MD:
           description: A payment session identifier returned by the card issuer.
-          maxLength: 5000
+          maxLength: 20000
           type: string
         PaReq:
           description: (3D) Payment Authentication Request data for the card issuer.
           type: string
         PaRes:
           description: (3D) Payment Authentication Response data by the card issuer.
-          maxLength: 10000
+          maxLength: 20000
           type: string
         billingToken:
           description: PayPal-generated token for recurring payments.
@@ -4787,7 +5806,7 @@ components:
           type: string
         payload:
           description: Payload appended to the `returnURL` as a result of the redirect.
-          maxLength: 10000
+          maxLength: 20000
           type: string
         paymentID:
           description: PayPal-generated ID for the payment.
@@ -4798,12 +5817,12 @@ components:
           type: string
         redirectResult:
           description: The result of the redirect as appended to the `returnURL`.
-          maxLength: 5000
+          maxLength: 20000
           type: string
         threeDSResult:
           description: 'Base64-encoded string returned by the Component after the
             challenge flow. It contains the following parameters: `transStatus`, `authorisationToken`.'
-          maxLength: 10000
+          maxLength: 50000
           type: string
         threeds2.challengeResult:
           description: 'Base64-encoded string returned by the Component after the
@@ -5323,6 +6342,43 @@ components:
           items:
             $ref: '#/components/schemas/PaymentMethod'
           type: array
+    PaymentRefundResource:
+      properties:
+        amount:
+          description: The refund amount.
+          $ref: '#/components/schemas/Amount'
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        paymentPspReference:
+          description: 'The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+            of the payment to refund. '
+          type: string
+        pspReference:
+          description: Adyen's 16-character reference associated with the refund request.
+          type: string
+        reference:
+          description: Your reference for the refund request.
+          type: string
+        splits:
+          description: An array of objects specifying how the amount should be split
+            between accounts when using Adyen for Platforms. For details, refer to
+            [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).
+          items:
+            $ref: '#/components/schemas/Split'
+          type: array
+        status:
+          description: The status of your request. This will always have the value
+            **received**.
+          enum:
+          - received
+          type: string
+      required:
+      - status
+      - merchantAccount
+      - amount
+      - pspReference
+      - paymentPspReference
     PaymentRequest:
       properties:
         accountInfo:
@@ -5600,6 +6656,7 @@ components:
           - $ref: '#/components/schemas/OpenInvoiceDetails'
           - $ref: '#/components/schemas/PayPalDetails'
           - $ref: '#/components/schemas/PayUUpiDetails'
+          - $ref: '#/components/schemas/PayWithGoogleDetails'
           - $ref: '#/components/schemas/PaymentDetails'
           - $ref: '#/components/schemas/QiwiWalletDetails'
           - $ref: '#/components/schemas/RatepayDetails'
@@ -5757,7 +6814,7 @@ components:
         shopperStatement:
           description: "The text to be shown on the shopper's bank statement. To enable\
             \ this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n\
-            \ We recommend sending a maximum of 25 characters, otherwise banks might\
+            \ We recommend sending a maximum of 22 characters, otherwise banks might\
             \ truncate the string."
           type: string
         socialSecurityNumber:
@@ -5924,6 +6981,33 @@ components:
           x-addedInVersion: 41
           description: Result of the 3D Secure 2 authentication.
           $ref: '#/components/schemas/ThreeDS2Result'
+    PaymentReversalResource:
+      properties:
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        paymentPspReference:
+          description: 'The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference)
+            of the payment to reverse. '
+          type: string
+        pspReference:
+          description: Adyen's 16-character reference associated with the reversal
+            request.
+          type: string
+        reference:
+          description: Your reference for the reversal request.
+          type: string
+        status:
+          description: The status of your request. This will always have the value
+            **received**.
+          enum:
+          - received
+          type: string
+      required:
+      - status
+      - merchantAccount
+      - pspReference
+      - paymentPspReference
     PaymentSetupRequest:
       properties:
         additionalData:
@@ -6280,7 +7364,7 @@ components:
         shopperStatement:
           description: "The text to be shown on the shopper's bank statement. To enable\
             \ this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n\
-            \ We recommend sending a maximum of 25 characters, otherwise banks might\
+            \ We recommend sending a maximum of 22 characters, otherwise banks might\
             \ truncate the string."
           type: string
         socialSecurityNumber:
@@ -6594,6 +7678,13 @@ components:
           description: 'Information provided by the issuer to the cardholder. If this
             field is present, you need to display this information to the cardholder. '
           type: string
+        cavv:
+          description: The Cardholder Authentication Verification Value (CAVV) for
+            the 3D Secure authentication session, as a Base64-encoded 20-byte array.
+          type: string
+        cavvAlgorithm:
+          description: The CAVV algorithm used.
+          type: string
         scaExemptionRequested:
           description: "Shows the [exemption type](https://docs.adyen.com/payments-fundamentals/psd2-sca-compliance-and-implementation-guide#specifypreferenceinyourapirequest)\
             \ that Adyen requested for the payment.\n\n Possible values:\n* **lowValue**\
@@ -6717,6 +7808,9 @@ components:
 
             Example: 58747'
           type: string
+        authorisationMid:
+          description: Merchant ID known by the acquirer.
+          type: string
         authorisedAmountCurrency:
           description: The currency of the authorised amount, as a three-character
             [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
@@ -6749,6 +7843,9 @@ components:
 
 
             > Only relevant for SEPA Direct Debit transactions.'
+          type: string
+        coBrandedWith:
+          description: Includes the co-branded card information.
           type: string
         cvcResult:
           description: The result of CVC verification.
@@ -6793,6 +7890,15 @@ components:
         fraudCheck-[itemNr]-[FraudCheckname]:
           description: The fraud score due to a particular fraud check. The fraud
             check name is found in the key of the key-value pair.
+          type: string
+        fraudManualReview:
+          description: Indicates if the payment is sent to manual review.
+          type: string
+        fraudResultType:
+          description: The fraud result properties of the payment.
+          enum:
+          - GREEN
+          - FRAUD
           type: string
         fundingSource:
           description: 'Information regarding the funding type of the card. The possible
@@ -6875,6 +7981,9 @@ components:
 
             * Non-reloadable prepaid card'
           type: string
+        isCardCommercial:
+          description: Indicates if the card is used for business purposes only.
+          type: string
         issuerCountry:
           description: 'The issuing country of the card based on the BIN list that
             Adyen maintains.
@@ -6882,12 +7991,19 @@ components:
 
             Example: JP'
           type: string
+        liabilityShift:
+          description: A Boolean value indicating whether a liability shift was offered
+            for this payment.
+          type: string
         mcBankNetReferenceNumber:
           description: 'The `mcBankNetReferenceNumber`, is a minimum of six characters
             and a maximum of nine characters long.
 
 
             > Contact Support Team to enable this field.'
+          type: string
+        merchantReference:
+          description: The reference provided for the transaction.
           type: string
         networkTxReference:
           description: 'Returned in the response if you are not tokenizing with Adyen
@@ -6914,6 +8030,9 @@ components:
           description: The Payment Account Reference (PAR) value links a network token
             with the underlying primary account number (PAN). The PAR value consists
             of 29 uppercase alphanumeric characters.
+          type: string
+        paymentMethod:
+          description: The payment method used in the transaction.
           type: string
         paymentMethodVariant:
           description: 'The Adyen sub-variant of the payment method used for the payment
@@ -6964,6 +8083,10 @@ components:
           type: string
         receiptFreeText:
           description: Message to be displayed on the terminal.
+          type: string
+        recurring.contractTypes:
+          x-addedInVersion: 40
+          description: The recurring contract types applicable to the transaction.
           type: string
         recurring.firstPspReference:
           description: 'The `pspReference`, of the first recurring payment that created
@@ -7450,6 +8573,32 @@ components:
           type: integer
       required:
       - value
+    StandalonePaymentCancelResource:
+      properties:
+        merchantAccount:
+          description: The merchant account that is used to process the payment.
+          type: string
+        paymentReference:
+          description: The [`reference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__reqParam_reference)
+            of the payment to cancel.
+          type: string
+        pspReference:
+          description: Adyen's 16-character reference associated with the cancel request.
+          type: string
+        reference:
+          description: Your reference for the cancel request.
+          type: string
+        status:
+          description: The status of your request. This will always have the value
+            **received**.
+          enum:
+          - received
+          type: string
+      required:
+      - status
+      - merchantAccount
+      - pspReference
+      - paymentReference
     StoredDetails:
       properties:
         bank:
@@ -7487,6 +8636,7 @@ components:
           - oxxo
           - gcash
           - kakaopay
+          - truemoney
           type: string
       title: Stored Payment Method
     SubInputDetail:
@@ -7600,6 +8750,11 @@ components:
           description: 'The `sdkTransID` value as received from the 3D Secure 2 SDK.
 
             Only for `deviceChannel` set to **app**.'
+          type: string
+        sdkVersion:
+          x-addedInVersion: 40
+          description: "Version of the 3D Secure 2 mobile SDK. \nOnly for `deviceChannel`\
+            \ set to **app**."
           type: string
         threeDSCompInd:
           description: Completion indicator for the device fingerprinting.
@@ -7716,6 +8871,11 @@ components:
     UpiDetails:
       additionalProperties: false
       properties:
+        billingSequenceNumber:
+          description: The sequence number for the debit. For example, send **2**
+            if this is the second debit for the subscription. The sequence number
+            is included in the notification sent to the shopper.
+          type: string
         recurringDetailReference:
           description: This is the `recurringDetailReference` returned in the response
             when you created the token.
@@ -7725,8 +8885,8 @@ components:
             when you requested to notify the shopper. Used for recurring payment only.
           type: string
         type:
-          default: upi
-          description: '**upi**'
+          default: upi_collect
+          description: '**upi_collect**'
           enum:
           - upi_collect
           type: string
@@ -7735,6 +8895,7 @@ components:
           type: string
       required:
       - type
+      - billingSequenceNumber
       title: UPI
     VippsDetails:
       additionalProperties: false
@@ -9022,6 +10183,8 @@ components:
           type: kcp_creditcard
         - name: PayCo
           type: kcp_payco
+        - name: Naver Pay
+          type: kcp_naverpay
         - name: Virtual Account via KCP
           type: kcp_va
         - name: Pay later with Klarna.
@@ -9248,7 +10411,7 @@ components:
           type: onebip
         - name: One Two Three
           type: onetwothree
-        - name: Local Polish Payment Methods
+        - name: Local Polish Payment Methods (P24)
           type: onlineBanking_PL
         - details:
           - items:
@@ -9405,6 +10568,8 @@ components:
           type: tenpay
         - name: The Sting Giftcard
           type: thestinggiftcard
+        - name: TrueMoney
+          type: truemoney
         - name: Trustly
           type: trustly
         - name: Online Banking by Trustpay
@@ -10159,10 +11324,66 @@ components:
         shopperLocale: nl_NL
         sessionValidity: '2017-04-06T13:09:13Z'
         merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-paymentSession-split:
+      summary: Split a payment between a sub-merchant and a platform account
+      value:
+        amount:
+          currency: EUR
+          value: 6200
+        additionalData:
+          split.api: '1'
+          split.nrOfItems: '2'
+          split.totalAmount: '6200'
+          split.currencyCode: EUR
+          split.item1.amount: '6000'
+          split.item1.type: MarketPlace
+          split.item1.account: '151272963'
+          split.item1.reference: '6124145'
+          split.item1.description: 'Porcelain Doll: Eliza (20cm)'
+          split.item2.amount: '200'
+          split.item2.type: Commission
+          split.item2.reference: '6124146'
+        reference: Your order number
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        channel: Android
+        token: TOKEN_YOU_GET_FROM_CHECKOUT_SDK
+        returnUrl: app://
+        countryCode: NL
+        shopperLocale: nl_NL
+        sessionValidity: '2017-04-06T13:09:13Z'
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-paymentSession-web:
+      summary: Set up a payment session (Web)
+      value:
+        amount:
+          currency: EUR
+          value: 17408
+        reference: Your order number
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        channel: Web
+        html: true
+        origin: https://www.yourwebsite.com
+        returnUrl: https://www.yourshop.com/checkout/result
+        countryCode: NL
+        shopperLocale: nl_NL
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+        sdkVersion: 1.9.5
     post-paymentSession-web-200:
       summary: Example response for request 'web'
       value:
         paymentSession: eyJjaGVja291dHNob3BwZXJCYXN...
+    post-payments-applepay:
+      summary: Make an Apple Pay payment
+      value:
+        amount:
+          currency: USD
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: applepay
+          applePayToken: VNRWtuNlNEWkRCSm1xWndjMDFFbktkQU...
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
     post-payments-card-3d-secure-2-web:
       summary: Make a card payment with 3D Secure 2 native authentication
       value:
@@ -10203,6 +11424,20 @@ components:
         origin: https://your-company.com
         returnUrl: https://your-company.com/checkout/
         merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-card-3d-secure-2-web-200:
+      summary: Example response for request 'card-3d-secure-2-web'
+      value:
+        additionalData:
+          cvcResult: 1 Matches
+          authCode: '044410'
+          avsResult: 4 AVS not supported for this card type
+          avsResultRaw: '4'
+          cvcResultRaw: M
+          refusalReasonRaw: AUTHORISED
+          acquirerCode: TestPmmAcquirer
+          acquirerReference: 8PQMP9TI1O2
+        pspReference: 993617895005515H
+        resultCode: Authorised
     post-payments-card-3d-secure-direct:
       summary: Make card payment with 3D Secure redirect authentication
       value:
@@ -10223,6 +11458,247 @@ components:
           acceptHeader: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
         returnUrl: https://your-company.com/...
         merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-card-3d-secure-direct-200:
+      summary: Example response for request 'card-3d-secure-direct'
+      value:
+        additionalData:
+          cvcResult: 1 Matches
+          authCode: 089261
+          avsResult: 4 AVS not supported for this card type
+          avsResultRaw: '4'
+          cvcResultRaw: M
+          refusalReasonRaw: AUTHORISED
+          acquirerCode: TestPmmAcquirer
+          acquirerReference: 8PQMP9TJ8Q6
+        pspReference: 993617895009516B
+        resultCode: Authorised
+    post-payments-card-3d-secure-securedfields:
+      summary: Make a payment with 3D Secure 2 native authentication
+      value:
+        amount:
+          currency: USD
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: scheme
+          encryptedCardNumber: test_4212345678901237
+          encryptedExpiryMonth: test_03
+          encryptedExpiryYear: test_2030
+          encryptedSecurityCode: test_737
+          holderName: John Smith
+        browserInfo:
+          userAgent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008052912
+            Firefox/3.0
+          acceptHeader: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-card-3d-secure-securedfields-200:
+      summary: Example response for request 'card-3d-secure-securedfields'
+      value:
+        additionalData:
+          cvcResult: 1 Matches
+          authCode: 037284
+          avsResult: 4 AVS not supported for this card type
+          avsResultRaw: '4'
+          cvcResultRaw: M
+          refusalReasonRaw: AUTHORISED
+          acquirerCode: TestPmmAcquirer
+          acquirerReference: 8PQMP9TD5G3
+        pspReference: 993617894989510B
+        resultCode: Authorised
+    post-payments-card-direct:
+      summary: Make a card payment
+      value:
+        amount:
+          currency: USD
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: scheme
+          number: '4111111111111111'
+          expiryMonth: '03'
+          expiryYear: '2030'
+          holderName: John Smith
+          cvc: '737'
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-card-direct-200:
+      summary: Example response for request 'card-direct'
+      value:
+        additionalData:
+          cvcResult: 1 Matches
+          authCode: 034933
+          avsResult: 4 AVS not supported for this card type
+          avsResultRaw: '4'
+          cvcResultRaw: M
+          refusalReasonRaw: AUTHORISED
+          acquirerCode: TestPmmAcquirer
+          acquirerReference: 8PQMP9TEMAE
+        pspReference: 993617894994515D
+        resultCode: Authorised
+    post-payments-card-securedfields:
+      summary: Make a card payment (using encrypted card details)
+      value:
+        amount:
+          currency: USD
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: scheme
+          encryptedCardNumber: test_4111111111111111
+          encryptedExpiryMonth: test_03
+          encryptedExpiryYear: test_2030
+          encryptedSecurityCode: test_737
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-card-securedfields-200:
+      summary: Example response for request 'card-securedfields'
+      value:
+        additionalData:
+          cvcResult: 1 Matches
+          authCode: 089573
+          avsResult: 4 AVS not supported for this card type
+          avsResultRaw: '4'
+          cvcResultRaw: M
+          refusalReasonRaw: AUTHORISED
+          acquirerCode: TestPmmAcquirer
+          acquirerReference: 8PQMP9TIBGH
+        pspReference: 993617895006516E
+        resultCode: Authorised
+    post-payments-details-3d-secure:
+      summary: 'Submit details for the 3D Secure payment '
+      value:
+        paymentData: Hee57361f99....
+        details:
+          MD: Ab02b4c0!BQABAgCW5sxB4e/==...
+          PaRes: eNrNV0mTo7gS...
+    post-payments-details-3d-secure-2-challenge:
+      summary: Submit 3D Secure 2 callenge flow result
+      value:
+        details:
+          threeds2.challengeResult: eyJ0cmFuc1N0YXR1cyI6IlkifQ==
+        paymentData: YOUR_PAYMENT_DATA
+    post-payments-details-3d-secure-2-fingerprint:
+      summary: Submit 3D Secure 2 device fingerprinting result
+      value:
+        details:
+          threeds2.fingerprint: eyJ0aHJlZURTQ29tcEluZCI6ICJZIn0=
+        paymentData: YOUR_PAYMENT_DATA...
+    post-payments-details-redirect:
+      summary: Submit the redirect result
+      value:
+        paymentData: Ab02b4c0!BQABAgCJN1wRZuGJmq8dMncmypvknj9s7l5Tj...
+        details:
+          redirectResult: X6XtfGC3!Y...
+    post-payments-enableOneClick-SF:
+      summary: Tokenize card details for one-off payments (using encrypted card details)
+      value:
+        amount:
+          currency: USD
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: scheme
+          encryptedCardNumber: adyenjs_0_1_18$MT6ppy0FAMVMLH...
+          encryptedExpiryMonth: adyenjs_0_1_18$MT6ppy0FAMVMLH...
+          encryptedExpiryYear: adyenjs_0_1_18$MT6ppy0FAMVMLH...
+          encryptedSecurityCode: adyenjs_0_1_18$MT6ppy0FAMVMLH...
+          storeDetails: true
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-enableOneClick-raw:
+      summary: Tokenize card details for one-off payments
+      value:
+        amount:
+          currency: USD
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: scheme
+          number: '4111111111111111'
+          expiryMonth: '03'
+          expiryYear: '2030'
+          holderName: John Smith
+          cvc: '737'
+          storeDetails: true
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-enableOneClick-raw-200:
+      summary: Example response for request 'enableOneClick-raw'
+      value:
+        additionalData:
+          cvcResult: 1 Matches
+          authCode: 021498
+          avsResult: 4 AVS not supported for this card type
+          recurring.recurringDetailReference: '9916178934434753'
+          recurringProcessingModel: CardOnFile
+          avsResultRaw: '4'
+          cvcResultRaw: M
+          refusalReasonRaw: AUTHORISED
+          recurring.shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+          acquirerCode: TestPmmAcquirer
+          acquirerReference: 8PQMP9TDF8I
+        pspReference: 993617894990511G
+        resultCode: Authorised
+    post-payments-giropay:
+      summary: Make a giropay payment
+      value:
+        amount:
+          currency: EUR
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: giropay
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-giropay-200:
+      summary: Example response for request 'giropay'
+      value:
+        resultCode: RedirectShopper
+        details:
+        - key: payload
+          type: text
+        paymentData: Ab02b4c0!BQABAgCthN9/C4DNJMIhc+OqEtrOCtaSH2tFqeA5EC5R5qO7VGZzu21y8wnBMCEyfdOfLaVP96bpaif/3MZ9YM48N6HgYZ/6KIATkt/UOUjS9wIOnGIT8pxqh47FSjCOqmVQhWV7p+gB+w2Liyifl7gBCzmcewgp+NDMAHRB/RQKMzXkBT1B6Jv5DjHCVciK33seD0mxJdZ8xKzYr+BaU6OfKw/pm49D+Q7qCH6zjlTq5pdb137C/y4Eq+gglXZUYFblOFbP897GRlIWu5S2wOnKS1zp2pXVKH4dGu79a34ji1IJFLwUfRLfsojvjU2J5Q8PrwbSUT1Rgk+mklImuPH8t6dXO2nBk/Jky3w2JxrXIioovSlz2+slT28di1hsVUeDAnv9yKWagsqYvvUrS9MDoqO1xfsy62VlEEJTY/MCzqtq49nv0cUHoEKQ0xZF4r8bbXCfhV3/ZINynnRxXWrK5YOFE/ILVJWiEhq+95nqRIxu0Tc2cUEM4P0f6IskIVGqgF+AzqvQQzCgEBJiAbf/paGHeqMz0RX5VCPBq6kFt1Urhx0viuWPAo2c9epK2Wik8y3Q914UjMrtJtuuk41/hI7of7Wd8/zNshHf0gn8h+KH69bS2jZyo2ZtW9hteqBiYtHJlqDl/vO2D6Z+0WHB1ffUkI5Canw2JAUc5wwq3l5mZBDAVDRdCyZlexvkU2tZXkDHAEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMife0UnvTuC0KkmKfgI1TES6l5nFhuOPE4VSwvurNlNe9CpZh7tTf2Hv2sS2POMgmoU43DvnOK8tSFYGqbtd2GHtBQJvxOlS5pc/2kreFfccgsd24Y9agn4XmeRdeRvk9FL4v+iB3an850gsOOXiHibuVTVCeZ1A7EZZFPm5ei2sDikUNsKdv12UZGEAggA1O548RtUFRopbDRpWvheSbz7lhsnDw5r6YO4NgKycoLtNho5TVHd7iQ4hK7bOclgyUU8CdGEo3LExOieBEt4zGahgKPMBuJPhNSmI5vIuz9BxdUMIGsTB5jhtHAGltJkqxjdQJTNE1i6/a2ZajgT/9GqRWZ7AFsxok7nvBv4qO7oss0grUiZDh+h4DxwK6wQ3A2smyuHKsRpqB/wcWjab2Y/NSyMhVe7ub4hiK7tyXCxU41HcPko6twA65ntb6RZgxzTykYZNPR5ZUh/MEorfpLVJ7OWB93NLk3aAH0whcpAEi4A6tMRdixVZLpXb2CTkeY+czRI3q49FOzTDHNr+SNzn8U73E3ILb5vn5OnDLjfCpU2MHHP2AyO0dbYPJZWNaEvGbhqzC3VdyXgeHjNdBoN5cWBZh+KeZobkmn6+PYreIWtgozSV8k5lUvOEJDIwk+jbdIelOfy07LkWdkNz8yhWqmoCagt5H+FlT/uLx59zcIp9nYJ1FFWI2OZ3D7oN3i3wTlqQDn2Zzm+dwGI6drzDeeapHrWE47zyzWrnI1nHG8PbJcldsrXcNQn6OqL4P/8YPF5/z1UW+QPLWEtM4rS8o8OD1IMULDC4ibIw==
+        redirect:
+          method: GET
+          url: https://test.adyen.com/hpp/checkout.shtml?u=skipDetails&p=eJxtUstu2zAQ-BrrZoF6RI*DDoatJHKdxlGtpPElkMm1SNgiFZJSw3x9KdU1gqIAsSRmFrszuzzImpOlIJA1TIquNg7upQSOzQTmVem0IDGtuV5gLHqusx0o-XDBrmTBNTSy1kxwV5sOsuV9vvz2WO3e7vLveVks-5s5gFT2zkLvSpdwhLE-ZEpLxpsvhO4lX9W6ztLUi7w4ScM0SaMIra85P1iT3b2*7reHhKw8MOvweDRh*vjCf8WE7bV5SrZNu6Hr6ml1KvJZsHKs5RasuXby5iGEHAmqKjcZ1bqbBYuZf2vPWeD6TIXSFklQgiyEKeCT6LWioutAWkSBHBgGZZ-bP2ULjkVrXZRAmASsLTN4f8tdch5AU0Fmwe0-g7bqvo565kdyGoHVZqlRnW10Mwq8GSXaYEQv57ZhV3Pj2nsCXdd1FKhxzs-1mRGmTeYj35ujcI6SnRdZR1Pw071z8TLuSNZ43FGW20KjMnDUifHpV3T9wR1897KGOIrj2EuC0P0shp-Bbh2RZDC5Txcfb5hQ*lGhovo8hu*b9-x*kzdgCBG-Acrp2a0
+    post-payments-googlepay:
+      summary: Make a Google Pay payment
+      value:
+        amount:
+          currency: USD
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: paywithgoogle
+          googlePayToken: ==Payload as retrieved from Google Pay response==
+        returnUrl: https://your-company.com/...
+        merchantAccount: YourMerchantAccount
+    post-payments-ideal:
+      summary: Make an iDEAL payment
+      value:
+        amount:
+          currency: EUR
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: ideal
+          issuer: '1121'
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-ideal-200:
+      summary: Example response for request 'ideal'
+      value:
+        resultCode: RedirectShopper
+        details:
+        - key: payload
+          type: text
+        paymentData: Ab02b4c0!BQABAgCNzlrqgBh3IfW+KEiI5mSYZyYhC4qmvk6ChrTHxEPRFGTYu/8zQz741YsRCVG5LZ+UkffzhZICh3v1yZE7CDOd/xcQgHMW/nExCEG9aGuWwrLYAI/mUKsD3l/NcTS+KbHExyc56HiWWvS9wjcceKx+l6vb8H7JYtRQdRy2dHktwqpigZrwjnbNcNCWpozyVpJe/DT5eNowle4OoT4ii9EbEwFvCIRT9bbob7O5Jdy68nd90XmStFMshZL3MVNeuFATrSyWuoAgMSJkfy0N/SvUlv9kWJxMvmFcPDTcR1uYRE7ugC5iwLZJuBF+zDb1h5tWK2XcBkK70TvzmLFrFsDn9NTeBwN0SmiPFOdxGVcEjEMQDK2yuGzUMOsIyvKhSFJmS3FVGujztxngvVA0XTcV3mVfh4JSKc+8t5i/ddV1f15wcYQmS7WBJPQAY2junKZOWZSMi7Dx5ViPS61OLhkrTcyS6PKsY4s7mohU5qEdiHqF8WRfdNag/5FRGGexCYGf2ewouGKduFtrftnUtQ410jN/TGYI/QS2Ay6eFpGXwH4WZEf2xpUXjHJnpQlPCQ7UwJUVCJYGd7mONUJ6MGJGw9CV4NF0nvx82hKdshDYfIzSWP+HIdBA92XZiqaQijbiTKSEduuf/0uBJ2aJM5k47btuc1aLAZQlrDS4dWLmFBAJANATc3sWIaOKbr/5X8Y7AEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMifV/rgRI3Jh1fp9Tm3HFJWBK2LFjzVvFPHkJA6jPys0NuLLgzjEsTretHY+dBKZzr5WDJg8wtZz7j2BSgWAggzv9G32BQxasKiRIO0O14LPLpT3EAr07kVPOs2xTu5URyrImVSTQN+IG/uVuWhiaz6U9eqZkQq5OhSOMpsHah1ZaMRRE8S69RwZFYnak7YnjAj2SQ+epRLrq3PN4ixU7M0RZakUWHsqclQgHCxsqqE8jlfmV8YLcO5aNXgZVnq5rqWc3Pvg6dce5B4RoUKO4ZFcyW+25mnQtRGiwEF88UObsy2MgKboA7+PYoS/M1nmAPmKq/f8cUOxuYnBxBBu82Hgz5AJhPiTuH5jxLK2iN8yv6U3Dh4KqRHa1/sornSTtMjNhyySieOwK0o/lheD17m2+aV4b0Notnfgce9MTb7Jg6cbr0b7iiUMV6k+cSQcN/gVtwZ7AxxEwZPhARhu42oEFNArmCzB1y8tnAFVx9TY3DH923Bv0sXg8/a+cjdBeZ6ukctpyMivHI3colbqRR5fIQQ4DCrbWHuQY/2JZLgcfd5vPff3X/isV4EWCWHJItvGTqkKLneb2He82KQuqcrRgXY6R3RPVtYaeWuiJSiRdsUWnPe5lkGXDaL7y706hAbDkeY/8CmuBNkfZKal+iSpVEwmntzWsM1jdjaYOuSqmD96ht8y92BCYq+qA/hjsbjs+TDiAmS6pd+k6o1VlVkc4Kyz9kQbrZc5nAtgTaKj+O0H9uQOGj2jPW4t8cBVFnzwB6GVuXDS5nFJCeb4kavw/paKRht4s=
+        redirect:
+          method: GET
+          url: https://test.adyen.com/hpp/checkout.shtml?u=redirectIdeal&p=eJxtUlFvmzAQ-jXhLcgGCuTBD4zSlibtJhqmaC*VY1-BSrCpbVjpr59hWVdNk6y703enu**781FTyXPFgQgO9OyxQWuQbFqgoq48YcwAuuQE4wB7HWjWUmkzxtQgLdmDsQ8X7CNZSguNplYo6dupB5LfFfn2a71-vi0ei6rM-1s5gjbOk*jvlApeYGYDxFgtZPMpYQctr6mlZLPBMU7STTQHcZB91DyJhpTNz6nP1GG74Wle6afb9MDvt9svp*hxd2zjoxhyxOKuiGOzCq*9nk4dOHHdog0jhDwNpq52pLW2X4XZKrhx76wYPbfKWIekKEUOYi2wkxqsaVXfg3aIAT0KBsaF3363LSVTnVNRARcamHWZEf9pd6l5ANsqvgpv-lm0Y-d51asg1ssKHDeXmtm5QVczwauZojOTGvTaDeypnHznF9D3fc*Amff8nZ4FF3YiAQrwGkVrlO5x7BQtJsQ-vIuW*UaasvlGpHCNZmbgmZOQyx-ph6M-Bv7lDEmcJAlOw8h-L8dDuL*PeTpORdBmb8*Mt*1bjcr6-SV63b0Wd7uigYlz9QutjNyJ
     post-payments-klarna:
       summary: Make a Klarna payment
       value:
@@ -10288,7 +11764,83 @@ components:
         shopperReference: YOUR_UNIQUE_SHOPPER_ID_6738oneoff
         returnUrl: https://your-company.com/...
         merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-oneclick-securedfields:
+      summary: Make a one-off payment with a token and CVV (using encrypted card details)
+      value:
+        amount:
+          currency: USD
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: scheme
+          recurringDetailReference: '8416038790273850'
+          encryptedSecurityCode: adyenjs_0_1_18$MT6ppy0FAMVMLH...
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_6738oneoff
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-recurring:
+      summary: Make a card payment with a token
+      value:
+        amount:
+          currency: USD
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          recurringDetailReference: '8315791039321763'
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+        shopperInteraction: ContAuth
     post-payments-result-basic:
       summary: Verify payment results
       value:
         payload: VALUE_YOU_GET_FROM_CHECKOUT_SDK
+    post-payments-sofort:
+      summary: Make a Sofort payment
+      value:
+        amount:
+          currency: EUR
+          value: 1000
+        reference: Your order number
+        paymentMethod:
+          type: directEbanking
+        returnUrl: https://your-company.com/...
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+    post-payments-sofort-200:
+      summary: Example response for request 'sofort'
+      value:
+        resultCode: RedirectShopper
+        details:
+        - key: payload
+          type: text
+        paymentData: Ab02b4c0!BQABAgAvIvdVPQD6ljxrC66+FwR0FaxDspHFSr4AyJU3Ceh7lGVk4YaklDVlkXziS1wmSkEIHV90bRQt9tggc/UH1Z9m0uzmx4ZqPdNYCd2I7/l+w0Hstk9/Q5nPTqF/NJUqBPOULOROo2fQRQk9e1Nwlk+hkF5+FBPbX+qfXbIjX2GGc7h/rHXEZJEwWe1gz6Cca3Kq0eDp/lY9zA99MnI1qpZxw73trRe4OgSYXw36kyUiUb4ik197gvekCdd7cjwDzP7ZiHAp+qPKDJPzjjNQNAN/+RWdMva4KdOkycUA7W18L6b5PCk8kddUU5eKQtFMzNoqBPhVvBcPkrsPPPVj0Z8n6bzT6vFdJu2/SDM6Xj+mx1G358d2SkKS0Q/cILxt4pfCVFTFWF6zy4sirG5Pc7Vo/KIUyZxAFV7Ud539NaRVNCYY65KDRXK/ANIcvQSxp0tqGUYzsvAqmp4KQ1MlfZzcxA2JtR4MdAa3SSc8D8q7PdgPVsPCTgN/TbfPQxDalOgY4zJAVoVre8GlvPd7qKjU4Ct6q1qoqcf3mQqYrbTWvLTLDlpHu/btAJrbh9aVKc7JRGM5xaGWPAkclGz7Zsbb/WIXL7i38e/icf0/oWtwXtDsmBUZcgDD+I+8zUW9+3iTeJtXzPjJtlLoJiTWCePpO2r149fwG+xxLi52d69cwxDF6d4B/LTFEjDsyVmmmpP7AEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMifQmQ7pxA13nYmt54YOm1sEPteTnbdkD6S06nPPQp5kpNdnJrkdFdZ2SsnXIHDNk96S7mt248VYMOpL/y+GAQEw2PBYXRAUMEm3737bnbPmro9cICPuj6plkXLkQs3ZFchEQOyrNIoG0z5u1N48bDie8mnb9p8jpTNw4wxfQpN0sINQ3dqu1+Wt1imG49AjvP+7yEJ4Nv8DDpXwZ6A6wQZnZYuP/XTcbsIw9aJxRZpqyp7nLsDry0pPCkMXfdF87GYYo3xzmy4HdhhbEh2jXZUwbEVW6onalQu4StL0OJjr1WM7XwG/SmHEfZMvjSvUcCEPT3FcXCGA8vaDkyqD4dS+16qlfkG+t4YWf32OVFCSlLDie0BdeMoEePXCkU63qWCY8qGde4NVjoZCt68HyOdYhOZ3QL7ssBYfiCOBYWDnrPUK4sXxBaToEt0Cf+xHnCfJ0CklxMXsh3hEhKLyCbO53uB0T/eYaKEqw1SnoMECNSnkA+Qk7LVfrDZTnFO9c7op/wr1bTjSW0r7eQQhiuLGwwmGSGiueKB0FPt5VVUfmSXMW6s9KRqYFUEjDyKv9g+/ZaiRIS+4L7P7YWuQu+Lo0BvvMPxi2EbCfPTv7wRsZp71mSnJd1Igpjip9itzeF+ZteWFkmvMrVT8TQmxl5AvcAAnyz7yBXgH5sVGV9Up+Eu/XJ/KkzF6X60hcFk0eMLCFA/tr4ejMoSS7Wr54euCmlP7sy1Fv16SZtZkaO/Hp2EaCOIZKhIHOiVEV8tcq9+LZIcYvKVf47F52/nAjc/l+8+dwA83957v8WXhQ=
+        redirect:
+          method: GET
+          url: https://test.adyen.com/hpp/checkout.shtml?u=skipDetails&p=eJxtUl1vozAQ-DXwFmS*yYMfUEJS2vRy5cLpdC*VY28BJdjENlzpr6*huVxVnYRsNLPanZn1URLOVoIBZo0EqrMj4aeGVzbtpQROx5nLysJuQdKacJ1SKnqu8QGUfrxiNzLnGipJdCO4o8cO8OouWz3sy8PzNvuWFfnqv5UDSGVuHLg3uoAXmOYDVlpOev4Rupd8TTTBy6UbuXGyDBEKoijc3Gp*NBXeNvs*TNb7P6d9pZ7YWQTb2CUrkXX8-qFPL22aRE9BeFHHk*Wv7Y6MLRhz7ezNRQjZElRZ7HCtdWf5qeVtzHcWlJxrobRBEpQgA9Ea6En0WtWi60AaRIEcGgrK-H7-aJtzKlrjooCPlA0zuH-bXWseQdeCWf7mS9BG3eeoLS*ScwRGm6EmdWZQOAkMJ4nmGEUvF2ZgR-jomHsGHcexFagp55-k3LBGj9hDnrtAwQIlBzcyjuYjCH7bVy-TjiSh045wZhpNysBW5n3Mr6Lrj87gOdc1xFEcx27iB85bPvzyD-cRS4Yx8*r09Zmyun4tUV6*vQSX3SW722UVjIyJdwEe3Bg
+    post-payments-split:
+      summary: Split a payment between a sub-merchant and a platform account
+      value:
+        paymentMethod:
+          type: scheme
+          number: '4111111111111111'
+          cvc: '737'
+          expiryMonth: '03'
+          expiryYear: '2030'
+          holderName: John Smith
+        amount:
+          value: 6200
+          currency: EUR
+        reference: YOUR_ORDER_NUMBER
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+        returnUrl: https://your-company.com/...
+        splits:
+        - amount:
+            value: 6000
+          type: MarketPlace
+          account: '151272963'
+          reference: '6124145'
+          description: 'Porcelain Doll: Eliza (20cm)'
+        - amount:
+            value: 200
+          type: Commission
+          reference: '6124146'

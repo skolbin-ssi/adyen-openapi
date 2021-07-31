@@ -1,5 +1,5 @@
 {
-   "openapi" : "3.0.3",
+   "openapi" : "3.1.0",
    "servers" : [
       {
          "url" : "https://checkout-test.adyen.com/v49"
@@ -20,11 +20,157 @@
    "x-groups" : [
       "Payments",
       "Payment links",
+      "Modifications",
       "Orders",
       "Classic Checkout SDK",
       "Utility"
    ],
    "paths" : {
+      "/cancels" : {
+         "post" : {
+            "summary" : "Cancels an authorised payment.",
+            "description" : "Cancels the authorisation on a payment that has not yet been [captured](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/captures), and returns a unique reference for this request. You get the outcome of the request asynchronously, in a [**TECHNICAL_CANCEL** webhook](https://docs.adyen.com/online-payments/cancel#cancellation-webhook).\n\nIf you want to cancel a payment using the [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference), use the [`/payments/{paymentPspReference}/cancels`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/cancels) endpoint instead.\n\nIf you want to cancel a payment but are not sure whether it has been captured, use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/reversals) endpoint instead.\n\nFor more information, refer to [Cancel](https://docs.adyen.com/online-payments/cancel).",
+            "operationId" : "post-cancels",
+            "x-groupName" : "Modifications",
+            "x-sortIndex" : 3,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "schema" : {
+                        "$ref" : "#/components/schemas/CreateStandalonePaymentCancelRequest"
+                     }
+                  }
+               }
+            },
+            "parameters" : [
+               {
+                  "$ref" : "#/components/parameters/Idempotency-Key"
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/StandalonePaymentCancelResource"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "201" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/StandalonePaymentCancelResource"
+                        }
+                     }
+                  },
+                  "description" : "Created - the request has been fulfilled and has resulted in one or more new resources being created.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-400" : {
+                              "$ref" : "#/components/examples/generic-400"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-401" : {
+                              "$ref" : "#/components/examples/generic-401"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-403" : {
+                              "$ref" : "#/components/examples/generic-403"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-500" : {
+                              "$ref" : "#/components/examples/generic-500"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
       "/orders" : {
          "post" : {
             "summary" : "Creates an order for the given amount.",
@@ -32,6 +178,16 @@
             "operationId" : "post-orders",
             "x-groupName" : "Orders",
             "x-sortIndex" : 2,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
@@ -162,6 +318,16 @@
             "operationId" : "post-orders-cancel",
             "x-groupName" : "Orders",
             "x-sortIndex" : 3,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
@@ -292,6 +458,16 @@
             "operationId" : "post-originKeys",
             "x-groupName" : "Utility",
             "x-sortIndex" : 1,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
@@ -422,6 +598,16 @@
             "operationId" : "post-paymentLinks",
             "x-groupName" : "Payment links",
             "x-sortIndex" : 1,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
@@ -567,6 +753,16 @@
             "operationId" : "get-paymentLinks-linkId",
             "x-groupName" : "Payment links",
             "x-sortIndex" : 2,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "parameters" : [
                {
                   "description" : "Unique identifier of the payment link.",
@@ -690,6 +886,16 @@
             "operationId" : "patch-paymentLinks-linkId",
             "x-groupName" : "Payment links",
             "x-sortIndex" : 3,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
@@ -829,18 +1035,28 @@
             "operationId" : "post-paymentMethods",
             "x-groupName" : "Payments",
             "x-sortIndex" : 1,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
                      "examples" : {
+                        "basic" : {
+                           "$ref" : "#/components/examples/post-paymentMethods-basic"
+                        },
                         "filtered" : {
                            "$ref" : "#/components/examples/post-paymentMethods-filtered"
                         },
                         "include-oneclick" : {
                            "$ref" : "#/components/examples/post-paymentMethods-include-oneclick"
-                        },
-                        "basic" : {
-                           "$ref" : "#/components/examples/post-paymentMethods-basic"
                         }
                      },
                      "schema" : {
@@ -862,11 +1078,11 @@
                            "basic-200" : {
                               "$ref" : "#/components/examples/post-paymentMethods-basic-200"
                            },
-                           "include-oneclick-200" : {
-                              "$ref" : "#/components/examples/post-paymentMethods-include-oneclick-200"
-                           },
                            "filtered-200" : {
                               "$ref" : "#/components/examples/post-paymentMethods-filtered-200"
+                           },
+                           "include-oneclick-200" : {
+                              "$ref" : "#/components/examples/post-paymentMethods-include-oneclick-200"
                            }
                         },
                         "schema" : {
@@ -971,15 +1187,25 @@
             "operationId" : "post-paymentMethods-balance",
             "x-groupName" : "Orders",
             "x-sortIndex" : 1,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
                      "examples" : {
-                        "plastix" : {
-                           "$ref" : "#/components/examples/post-paymentMethods-balance-plastix"
-                        },
                         "basic" : {
                            "$ref" : "#/components/examples/post-paymentMethods-balance-basic"
+                        },
+                        "plastix" : {
+                           "$ref" : "#/components/examples/post-paymentMethods-balance-plastix"
                         }
                      },
                      "schema" : {
@@ -1062,6 +1288,11 @@
                "422" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1099,6 +1330,16 @@
             "operationId" : "post-paymentSession",
             "x-groupName" : "Classic Checkout SDK",
             "x-sortIndex" : 1,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
@@ -1106,11 +1347,17 @@
                         "android" : {
                            "$ref" : "#/components/examples/post-paymentSession-android"
                         },
+                        "enableOneClick" : {
+                           "$ref" : "#/components/examples/post-paymentSession-enableOneClick"
+                        },
                         "ios" : {
                            "$ref" : "#/components/examples/post-paymentSession-ios"
                         },
-                        "enableOneClick" : {
-                           "$ref" : "#/components/examples/post-paymentSession-enableOneClick"
+                        "split" : {
+                           "$ref" : "#/components/examples/post-paymentSession-split"
+                        },
+                        "web" : {
+                           "$ref" : "#/components/examples/post-paymentSession-web"
                         }
                      },
                      "schema" : {
@@ -1129,11 +1376,11 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "web-200" : {
-                              "$ref" : "#/components/examples/post-paymentSession-web-200"
-                           },
                            "enableOneClick-200" : {
                               "$ref" : "#/components/examples/post-paymentSession-enableOneClick-200"
+                           },
+                           "web-200" : {
+                              "$ref" : "#/components/examples/post-paymentSession-web-200"
                            }
                         },
                         "schema" : {
@@ -1151,6 +1398,11 @@
                "400" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-400" : {
+                              "$ref" : "#/components/examples/generic-400"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1176,6 +1428,11 @@
                "403" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-403" : {
+                              "$ref" : "#/components/examples/generic-403"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1206,6 +1463,11 @@
                "500" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-500" : {
+                              "$ref" : "#/components/examples/generic-500"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1223,12 +1485,52 @@
             "operationId" : "post-payments",
             "x-groupName" : "Payments",
             "x-sortIndex" : 2,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
                      "examples" : {
+                        "applepay" : {
+                           "$ref" : "#/components/examples/post-payments-applepay"
+                        },
+                        "card-3d-secure-2-web" : {
+                           "$ref" : "#/components/examples/post-payments-card-3d-secure-2-web"
+                        },
                         "card-3d-secure-direct" : {
                            "$ref" : "#/components/examples/post-payments-card-3d-secure-direct"
+                        },
+                        "card-3d-secure-securedfields" : {
+                           "$ref" : "#/components/examples/post-payments-card-3d-secure-securedfields"
+                        },
+                        "card-direct" : {
+                           "$ref" : "#/components/examples/post-payments-card-direct"
+                        },
+                        "card-securedfields" : {
+                           "$ref" : "#/components/examples/post-payments-card-securedfields"
+                        },
+                        "enableOneClick-SF" : {
+                           "$ref" : "#/components/examples/post-payments-enableOneClick-SF"
+                        },
+                        "enableOneClick-raw" : {
+                           "$ref" : "#/components/examples/post-payments-enableOneClick-raw"
+                        },
+                        "giropay" : {
+                           "$ref" : "#/components/examples/post-payments-giropay"
+                        },
+                        "googlepay" : {
+                           "$ref" : "#/components/examples/post-payments-googlepay"
+                        },
+                        "ideal" : {
+                           "$ref" : "#/components/examples/post-payments-ideal"
                         },
                         "klarna" : {
                            "$ref" : "#/components/examples/post-payments-klarna"
@@ -1236,8 +1538,17 @@
                         "oneclick-direct" : {
                            "$ref" : "#/components/examples/post-payments-oneclick-direct"
                         },
-                        "card-3d-secure-2-web" : {
-                           "$ref" : "#/components/examples/post-payments-card-3d-secure-2-web"
+                        "oneclick-securedfields" : {
+                           "$ref" : "#/components/examples/post-payments-oneclick-securedfields"
+                        },
+                        "recurring" : {
+                           "$ref" : "#/components/examples/post-payments-recurring"
+                        },
+                        "sofort" : {
+                           "$ref" : "#/components/examples/post-payments-sofort"
+                        },
+                        "split" : {
+                           "$ref" : "#/components/examples/post-payments-split"
                         }
                      },
                      "schema" : {
@@ -1255,6 +1566,35 @@
                "200" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "card-3d-secure-2-web-200" : {
+                              "$ref" : "#/components/examples/post-payments-card-3d-secure-2-web-200"
+                           },
+                           "card-3d-secure-direct-200" : {
+                              "$ref" : "#/components/examples/post-payments-card-3d-secure-direct-200"
+                           },
+                           "card-3d-secure-securedfields-200" : {
+                              "$ref" : "#/components/examples/post-payments-card-3d-secure-securedfields-200"
+                           },
+                           "card-direct-200" : {
+                              "$ref" : "#/components/examples/post-payments-card-direct-200"
+                           },
+                           "card-securedfields-200" : {
+                              "$ref" : "#/components/examples/post-payments-card-securedfields-200"
+                           },
+                           "enableOneClick-raw-200" : {
+                              "$ref" : "#/components/examples/post-payments-enableOneClick-raw-200"
+                           },
+                           "giropay-200" : {
+                              "$ref" : "#/components/examples/post-payments-giropay-200"
+                           },
+                           "ideal-200" : {
+                              "$ref" : "#/components/examples/post-payments-ideal-200"
+                           },
+                           "sofort-200" : {
+                              "$ref" : "#/components/examples/post-payments-sofort-200"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/PaymentResponse"
                         }
@@ -1270,6 +1610,11 @@
                "400" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-400" : {
+                              "$ref" : "#/components/examples/generic-400"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1280,6 +1625,11 @@
                "401" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-401" : {
+                              "$ref" : "#/components/examples/generic-401"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1290,6 +1640,11 @@
                "403" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-403" : {
+                              "$ref" : "#/components/examples/generic-403"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1300,6 +1655,11 @@
                "422" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1315,6 +1675,11 @@
                "500" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-500" : {
+                              "$ref" : "#/components/examples/generic-500"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1332,9 +1697,33 @@
             "operationId" : "post-payments-details",
             "x-groupName" : "Payments",
             "x-sortIndex" : 3,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "3d-secure" : {
+                           "$ref" : "#/components/examples/post-payments-details-3d-secure"
+                        },
+                        "3d-secure-2-challenge" : {
+                           "$ref" : "#/components/examples/post-payments-details-3d-secure-2-challenge"
+                        },
+                        "3d-secure-2-fingerprint" : {
+                           "$ref" : "#/components/examples/post-payments-details-3d-secure-2-fingerprint"
+                        },
+                        "redirect" : {
+                           "$ref" : "#/components/examples/post-payments-details-redirect"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/DetailsRequest"
                      }
@@ -1365,6 +1754,11 @@
                "400" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-400" : {
+                              "$ref" : "#/components/examples/generic-400"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1390,6 +1784,11 @@
                "403" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-403" : {
+                              "$ref" : "#/components/examples/generic-403"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1400,6 +1799,11 @@
                "422" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1415,6 +1819,11 @@
                "500" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-500" : {
+                              "$ref" : "#/components/examples/generic-500"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -1432,6 +1841,16 @@
             "operationId" : "post-payments-result",
             "x-groupName" : "Classic Checkout SDK",
             "x-sortIndex" : 2,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
             "requestBody" : {
                "content" : {
                   "application/json" : {
@@ -1515,6 +1934,781 @@
                "422" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-500" : {
+                              "$ref" : "#/components/examples/generic-500"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
+      "/payments/{paymentPspReference}/amountUpdates" : {
+         "post" : {
+            "summary" : "Increases or decreases the authorised amount.",
+            "description" : "Increases or decreases the authorised payment amount and returns a unique reference for this request. You get the outcome of the request asynchronously, in an [**AUTHORISATION_ADJUSTMENT** webhook](https://docs.adyen.com/development-resources/webhooks/understand-notifications#event-codes).\n\nYou can only update authorised amounts that have not yet been [captured](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/captures).\n\nThe amount you specify in the request is the updated amount, which is larger or smaller than the initial authorised amount.\n\nFor more information, refer to [Authorisation adjustment](https://docs.adyen.com/online-payments/adjust-authorisation#use-cases).",
+            "operationId" : "post-payments-paymentPspReference-amountUpdates",
+            "x-groupName" : "Modifications",
+            "x-sortIndex" : 6,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "schema" : {
+                        "$ref" : "#/components/schemas/CreatePaymentAmountUpdateRequest"
+                     }
+                  }
+               }
+            },
+            "parameters" : [
+               {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment.",
+                  "name" : "paymentPspReference",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "$ref" : "#/components/parameters/Idempotency-Key"
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentAmountUpdateResource"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "201" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentAmountUpdateResource"
+                        }
+                     }
+                  },
+                  "description" : "Created - the request has been fulfilled and has resulted in one or more new resources being created.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-400" : {
+                              "$ref" : "#/components/examples/generic-400"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-401" : {
+                              "$ref" : "#/components/examples/generic-401"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-403" : {
+                              "$ref" : "#/components/examples/generic-403"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-500" : {
+                              "$ref" : "#/components/examples/generic-500"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
+      "/payments/{paymentPspReference}/cancels" : {
+         "post" : {
+            "summary" : "Cancels an authorised payment.",
+            "description" : "Cancels the authorisation on a payment that has not yet been [captured](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/paymentPspReference/captures), and returns a unique reference for this request. You get the outcome of the request asynchronously, in a [**CANCELLATION** webhook](https://docs.adyen.com/online-payments/cancel#cancellation-webhook).\n\nIf you want to cancel a payment but don't have the [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference), use the [`/cancels`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/cancels) endpoint instead.\n\nIf you want to cancel a payment but are not sure whether it has been captured, use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/reversals) endpoint instead.\n\nFor more information, refer to [Cancel](https://docs.adyen.com/online-payments/cancel).",
+            "operationId" : "post-payments-paymentPspReference-cancels",
+            "x-groupName" : "Modifications",
+            "x-sortIndex" : 2,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "schema" : {
+                        "$ref" : "#/components/schemas/CreatePaymentCancelRequest"
+                     }
+                  }
+               }
+            },
+            "parameters" : [
+               {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment that you want to cancel. ",
+                  "name" : "paymentPspReference",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "$ref" : "#/components/parameters/Idempotency-Key"
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentCancelResource"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "201" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentCancelResource"
+                        }
+                     }
+                  },
+                  "description" : "Created - the request has been fulfilled and has resulted in one or more new resources being created.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-400" : {
+                              "$ref" : "#/components/examples/generic-400"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-401" : {
+                              "$ref" : "#/components/examples/generic-401"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-403" : {
+                              "$ref" : "#/components/examples/generic-403"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-500" : {
+                              "$ref" : "#/components/examples/generic-500"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
+      "/payments/{paymentPspReference}/captures" : {
+         "post" : {
+            "summary" : "Captures an authorised payment.",
+            "description" : " Captures an authorised payment and returns a unique reference for this request. You get the outcome of the request asynchronously, in a [**CAPTURE** webhook](https://docs.adyen.com/online-payments/capture#capture-notification).\n\nYou can capture either the full authorised amount or a part of the authorised amount. By default, any unclaimed amount after a partial capture gets cancelled. This does not apply if you enabled multiple partial captures on your account and the payment method supports multiple partial captures. \n\n[Automatic capture](https://docs.adyen.com/online-payments/capture#automatic-capture) is the default setting for most payment methods. In these cases, you don't need to make capture requests. However, making capture requests for payments that are captured automatically does not result in double charges.\n\nFor more information, refer to [Capture](https://docs.adyen.com/online-payments/capture).",
+            "operationId" : "post-payments-paymentPspReference-captures",
+            "x-groupName" : "Modifications",
+            "x-sortIndex" : 1,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "schema" : {
+                        "$ref" : "#/components/schemas/CreatePaymentCaptureRequest"
+                     }
+                  }
+               }
+            },
+            "parameters" : [
+               {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment that you want to capture.",
+                  "name" : "paymentPspReference",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "$ref" : "#/components/parameters/Idempotency-Key"
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentCaptureResource"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "201" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentCaptureResource"
+                        }
+                     }
+                  },
+                  "description" : "Created - the request has been fulfilled and has resulted in one or more new resources being created.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-400" : {
+                              "$ref" : "#/components/examples/generic-400"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-401" : {
+                              "$ref" : "#/components/examples/generic-401"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-403" : {
+                              "$ref" : "#/components/examples/generic-403"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-500" : {
+                              "$ref" : "#/components/examples/generic-500"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
+      "/payments/{paymentPspReference}/refunds" : {
+         "post" : {
+            "summary" : "Refunds a captured payment.",
+            "description" : "Refunds a payment that has been [captured](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/captures), and returns a unique reference for this request. You get the outcome of the request asynchronously, in a [**REFUND** webhook](https://docs.adyen.com/online-payments/refund#refund-webhook).\n\nYou can refund either the full captured amount or a part of the captured amount. You can also perform multiple partial refunds, as long as their sum doesn't exceed the captured amount.\n\n> Some payment methods do not support partial refunds. To learn if a payment method supports partial refunds, refer to the payment method page such as [cards](https://docs.adyen.com/payment-methods/cards#supported-cards), [iDEAL](https://docs.adyen.com/payment-methods/ideal), or [Klarna](https://docs.adyen.com/payment-methods/klarna). \n\nIf you want to refund a payment but are not sure whether it has been captured, use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/reversals) endpoint instead.\n\nFor more information, refer to [Refund](https://docs.adyen.com/online-payments/refund).",
+            "operationId" : "post-payments-paymentPspReference-refunds",
+            "x-groupName" : "Modifications",
+            "x-sortIndex" : 4,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "schema" : {
+                        "$ref" : "#/components/schemas/CreatePaymentRefundRequest"
+                     }
+                  }
+               }
+            },
+            "parameters" : [
+               {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment that you want to refund.",
+                  "name" : "paymentPspReference",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "$ref" : "#/components/parameters/Idempotency-Key"
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentRefundResource"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "201" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentRefundResource"
+                        }
+                     }
+                  },
+                  "description" : "Created - the request has been fulfilled and has resulted in one or more new resources being created.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-400" : {
+                              "$ref" : "#/components/examples/generic-400"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-401" : {
+                              "$ref" : "#/components/examples/generic-401"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-403" : {
+                              "$ref" : "#/components/examples/generic-403"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-500" : {
+                              "$ref" : "#/components/examples/generic-500"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
+      "/payments/{paymentPspReference}/reversals" : {
+         "post" : {
+            "summary" : "Cancels or refunds a payment.",
+            "description" : "[Refunds](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/refunds) a payment if it has already been captured, and [cancels](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments/{paymentPspReference}/cancels) a payment if it has not yet been captured. Returns a unique reference for this request. You get the outcome of the request asynchronously, in a [**CANCEL_OR_REFUND** webhook](https://docs.adyen.com/online-payments/reverse#cancel-or-refund-webhook).\n\nThe reversed amount is always the full payment amount.\n> Do not use this request for payments that involve multiple partial captures.\n\nFor more information, refer to [Reversal](https://docs.adyen.com/online-payments/reversal).",
+            "operationId" : "post-payments-paymentPspReference-reversals",
+            "x-groupName" : "Modifications",
+            "x-sortIndex" : 5,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "schema" : {
+                        "$ref" : "#/components/schemas/CreatePaymentReversalRequest"
+                     }
+                  }
+               }
+            },
+            "parameters" : [
+               {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment that you want to reverse. ",
+                  "name" : "paymentPspReference",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "$ref" : "#/components/parameters/Idempotency-Key"
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentReversalResource"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "201" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/PaymentReversalResource"
+                        }
+                     }
+                  },
+                  "description" : "Created - the request has been fulfilled and has resulted in one or more new resources being created.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-400" : {
+                              "$ref" : "#/components/examples/generic-400"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-401" : {
+                              "$ref" : "#/components/examples/generic-401"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-403" : {
+                              "$ref" : "#/components/examples/generic-403"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "generic-422" : {
+                              "$ref" : "#/components/examples/generic-422"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -2589,7 +3783,7 @@
          "Address" : {
             "properties" : {
                "city" : {
-                  "description" : "The name of the city.",
+                  "description" : "The name of the city. Maximum length: 3000 characters.",
                   "type" : "string"
                },
                "country" : {
@@ -2597,7 +3791,7 @@
                   "type" : "string"
                },
                "houseNumberOrName" : {
-                  "description" : "The number or name of the house.",
+                  "description" : "The number or name of the house. Maximum length: 3000 characters.",
                   "type" : "string"
                },
                "postalCode" : {
@@ -2609,7 +3803,7 @@
                   "type" : "string"
                },
                "street" : {
-                  "description" : "The name of the street.\n> The house number should not be included in this field; it should be separately provided via `houseNumberOrName`.",
+                  "description" : "The name of the street. Maximum length: 3000 characters.\n> The house number should not be included in this field; it should be separately provided via `houseNumberOrName`.",
                   "type" : "string"
                }
             },
@@ -3105,9 +4299,18 @@
                   "description" : "This is the `recurringDetailReference` returned in the response when you created the token.",
                   "type" : "string"
                },
+               "shopperNotificationReference" : {
+                  "description" : "The `shopperNotificationReference` returned in the response when you requested to notify the shopper. Used only for recurring payments in India.",
+                  "type" : "string"
+               },
                "storedPaymentMethodId" : {
                   "x-addedInVersion" : 49,
                   "description" : "This is the `recurringDetailReference` returned in the response when you created the token.",
+                  "type" : "string"
+               },
+               "threeDS2SdkVersion" : {
+                  "description" : "Version of the 3D Secure 2 mobile SDK.",
+                  "maxLength" : 12,
                   "type" : "string"
                },
                "type" : {
@@ -3124,6 +4327,7 @@
                      "alipay_hk_wap",
                      "alipay_hk_web",
                      "alipay_wap",
+                     "kcp_naverpay",
                      "upi",
                      "primeiropay_boleto",
                      "gopay_wallet",
@@ -3416,7 +4620,7 @@
                   "type" : "string"
                },
                "shopperStatement" : {
-                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 25 characters, otherwise banks might truncate the string.",
+                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.",
                   "type" : "string"
                },
                "socialSecurityNumber" : {
@@ -4196,7 +5400,7 @@
                },
                "installments" : {
                   "description" : "Describes the configuration for [installment payments](https://docs.adyen.com/payment-methods/cards/credit-card-installments).",
-                  "$ref" : "#/components/schemas/Installments2"
+                  "$ref" : "#/components/schemas/InstallmentsNumber"
                },
                "shopperInput" : {
                   "x-addedInVersion" : 37,
@@ -4204,6 +5408,83 @@
                   "$ref" : "#/components/schemas/ShopperInput"
                }
             }
+         },
+         "CreatePaymentAmountUpdateRequest" : {
+            "properties" : {
+               "amount" : {
+                  "description" : "The updated amount. The `currency` must match the currency used in authorisation.",
+                  "$ref" : "#/components/schemas/Amount"
+               },
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "reason" : {
+                  "description" : "The reason for the amount update. Possible values: \n* **delayedCharge** \n* **noShow**",
+                  "enum" : [
+                     "delayedCharge",
+                     "noShow"
+                  ],
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the amount update request. Maximum length: 80 characters.",
+                  "type" : "string"
+               },
+               "splits" : {
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "items" : {
+                     "$ref" : "#/components/schemas/Split"
+                  },
+                  "type" : "array"
+               }
+            },
+            "required" : [
+               "merchantAccount",
+               "amount"
+            ]
+         },
+         "CreatePaymentCancelRequest" : {
+            "properties" : {
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the cancel request. Maximum length: 80 characters.",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "merchantAccount"
+            ]
+         },
+         "CreatePaymentCaptureRequest" : {
+            "properties" : {
+               "amount" : {
+                  "description" : "The amount that you want to capture. The `currency` must match the currency used in authorisation, the `value` must be smaller than or equal to the authorised amount.",
+                  "$ref" : "#/components/schemas/Amount"
+               },
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the capture request. Maximum length: 80 characters.",
+                  "type" : "string"
+               },
+               "splits" : {
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "items" : {
+                     "$ref" : "#/components/schemas/Split"
+                  },
+                  "type" : "array"
+               }
+            },
+            "required" : [
+               "merchantAccount",
+               "amount"
+            ]
          },
          "CreatePaymentLinkRequest" : {
             "properties" : {
@@ -4280,11 +5561,11 @@
                   "additionalProperties" : {
                      "type" : "string"
                   },
-                  "description" : "Metadata consists of entries, each of which includes a key and a value.\nLimitations:\n* Maximum 20 key-value pairs per request. When exceeding, the \"177\" error occurs: \"Metadata size exceeds limit\"\n* Maximum 20 characters per key. When exceeding, the \"178\" error occurs: \"Metadata key size exceeds limit\"\n* A key cannot have the name `checkout.linkId`. Whatever value is present under that key is going to be replaced by the real link id",
+                  "description" : "Metadata consists of entries, each of which includes a key and a value.\nLimitations:\n* Maximum 20 key-value pairs per request. Otherwise, error \"177\" occurs: \"Metadata size exceeds limit\"\n* Maximum 20 characters per key. Otherwise, error \"178\" occurs: \"Metadata key size exceeds limit\"\n* A key cannot have the name `checkout.linkId`. Any value that you provide with this key is going to be replaced by the real payment link ID.",
                   "type" : "object"
                },
                "recurringProcessingModel" : {
-                  "description" : "Defines a recurring payment type.\nAllowed values:\n* `Subscription` – A transaction for a fixed or variable amount, which follows a fixed schedule.\n* `CardOnFile` – With a card-on-file (CoF) transaction, card details are stored to enable one-click or omnichannel journeys, or simply to streamline the checkout process. Any subscription not following a fixed schedule is also considered a card-on-file transaction.\n* `UnscheduledCardOnFile` – An unscheduled card-on-file (UCoF) transaction is a transaction that occurs on a non-fixed schedule and/or has variable amounts. For example, automatic top-ups when a cardholder's balance drops below a certain amount.\n",
+                  "description" : "Defines a recurring payment type.\nPossible values:\n* **Subscription** – A transaction for a fixed or variable amount, which follows a fixed schedule.\n* **CardOnFile** – With a card-on-file (CoF) transaction, card details are stored to enable one-click or omnichannel journeys, or simply to streamline the checkout process. Any subscription not following a fixed schedule is also considered a card-on-file transaction.\n* **UnscheduledCardOnFile** – An unscheduled card-on-file (UCoF) transaction is a transaction that occurs on a non-fixed schedule and/or has variable amounts. For example, automatic top-ups when a cardholder's balance drops below a certain amount.\n",
                   "enum" : [
                      "CardOnFile",
                      "Subscription",
@@ -4338,6 +5619,68 @@
                "merchantAccount"
             ]
          },
+         "CreatePaymentRefundRequest" : {
+            "properties" : {
+               "amount" : {
+                  "description" : "The amount that you want to refund. The `currency` must match the currency used in authorisation, the `value` must be smaller than or equal to the authorised amount.",
+                  "$ref" : "#/components/schemas/Amount"
+               },
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the refund request. Maximum length: 80 characters.",
+                  "type" : "string"
+               },
+               "splits" : {
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "items" : {
+                     "$ref" : "#/components/schemas/Split"
+                  },
+                  "type" : "array"
+               }
+            },
+            "required" : [
+               "merchantAccount",
+               "amount"
+            ]
+         },
+         "CreatePaymentReversalRequest" : {
+            "properties" : {
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the reversal request. Maximum length: 80 characters.",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "merchantAccount"
+            ]
+         },
+         "CreateStandalonePaymentCancelRequest" : {
+            "properties" : {
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "paymentReference" : {
+                  "description" : "The [`reference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__reqParam_reference) of the payment that you want to cancel.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the cancel request. Maximum length: 80 characters.",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "merchantAccount",
+               "paymentReference"
+            ]
+         },
          "DetailsRequest" : {
             "properties" : {
                "details" : {
@@ -4345,7 +5688,7 @@
                   "$ref" : "#/components/schemas/PaymentCompletionDetails"
                },
                "paymentData" : {
-                  "description" : "The `paymentData` value from the `/payments` response. Required if the `/payments` response returns this value. In v67 and later, you will always get this value from the Component.",
+                  "description" : "The `paymentData` value from the `/payments` response. Required if the `/payments` response returns this value. ",
                   "maxLength" : 100000,
                   "type" : "string"
                },
@@ -4739,10 +6082,10 @@
                   "type" : "string"
                },
                "type" : {
-                  "default" : "paywithgoogle",
-                  "description" : "**paywithgoogle**",
+                  "default" : "googlepay",
+                  "description" : "**googlepay**, **paywithgoogle**",
                   "enum" : [
-                     "paywithgoogle"
+                     "googlepay"
                   ],
                   "type" : "string"
                }
@@ -4859,7 +6202,7 @@
                "value"
             ]
          },
-         "Installments2" : {
+         "InstallmentsNumber" : {
             "properties" : {
                "maxNumberOfInstallments" : {
                   "description" : "Maximum number of installments",
@@ -4975,6 +6318,10 @@
                },
                "imageUrl" : {
                   "description" : "Link to the picture of the purchased item.",
+                  "type" : "string"
+               },
+               "itemCategory" : {
+                  "description" : "Item category, used by the RatePay payment method.",
                   "type" : "string"
                },
                "productUrl" : {
@@ -5237,10 +6584,6 @@
                   "description" : "The first name.",
                   "type" : "string"
                },
-               "infix" : {
-                  "description" : "The name's infix, if applicable.\n>A maximum length of twenty (20) characters is imposed.",
-                  "type" : "string"
-               },
                "lastName" : {
                   "description" : "The last name.",
                   "type" : "string"
@@ -5371,11 +6714,183 @@
             ],
             "title" : "PayU"
          },
+         "PayWithGoogleDetails" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "fundingSource" : {
+                  "description" : "The funding source that should be used when multiple sources are available. For Brazilian combo cards, by default the funding source is credit. To use debit, set this value to **debit**.",
+                  "enum" : [
+                     "debit"
+                  ],
+                  "type" : "string"
+               },
+               "googlePayToken" : {
+                  "description" : "The `token` that you obtained from the [Google Pay API](https://developers.google.com/pay/api/web/reference/response-objects#PaymentData) `PaymentData` response.",
+                  "type" : "string"
+               },
+               "recurringDetailReference" : {
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : 49,
+                  "x-deprecatedMessage" : "Use `storedPaymentMethodId` instead.",
+                  "description" : "This is the `recurringDetailReference` returned in the response when you created the token.",
+                  "type" : "string"
+               },
+               "storedPaymentMethodId" : {
+                  "x-addedInVersion" : 49,
+                  "description" : "This is the `recurringDetailReference` returned in the response when you created the token.",
+                  "type" : "string"
+               },
+               "type" : {
+                  "default" : "paywithgoogle",
+                  "description" : "**paywithgoogle**",
+                  "enum" : [
+                     "paywithgoogle"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "googlePayToken"
+            ],
+            "title" : "Google Pay"
+         },
+         "PaymentAmountUpdateResource" : {
+            "properties" : {
+               "amount" : {
+                  "description" : "The updated amount.",
+                  "$ref" : "#/components/schemas/Amount"
+               },
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "paymentPspReference" : {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment to update. ",
+                  "type" : "string"
+               },
+               "pspReference" : {
+                  "description" : "Adyen's 16-character reference associated with the amount update request.",
+                  "type" : "string"
+               },
+               "reason" : {
+                  "description" : "The reason for the amount update. Possible values: \n* **DelayedCharge** \n* **NoShow**",
+                  "enum" : [
+                     "delayedCharge",
+                     "noShow"
+                  ],
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the amount update request. Maximum length: 80 characters.",
+                  "type" : "string"
+               },
+               "splits" : {
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "items" : {
+                     "$ref" : "#/components/schemas/Split"
+                  },
+                  "type" : "array"
+               },
+               "status" : {
+                  "description" : "The status of your request. This will always have the value **received**.",
+                  "enum" : [
+                     "received"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "status",
+               "merchantAccount",
+               "amount",
+               "reference",
+               "pspReference",
+               "paymentPspReference"
+            ]
+         },
+         "PaymentCancelResource" : {
+            "properties" : {
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "paymentPspReference" : {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment to cancel. ",
+                  "type" : "string"
+               },
+               "pspReference" : {
+                  "description" : "Adyen's 16-character reference associated with the cancel request.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the cancel request.",
+                  "type" : "string"
+               },
+               "status" : {
+                  "description" : "The status of your request. This will always have the value **received**.",
+                  "enum" : [
+                     "received"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "status",
+               "merchantAccount",
+               "paymentPspReference",
+               "pspReference"
+            ]
+         },
+         "PaymentCaptureResource" : {
+            "properties" : {
+               "amount" : {
+                  "description" : "The captured amount.",
+                  "$ref" : "#/components/schemas/Amount"
+               },
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "paymentPspReference" : {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment to capture. ",
+                  "type" : "string"
+               },
+               "pspReference" : {
+                  "description" : "Adyen's 16-character reference associated with the capture request.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the capture request.",
+                  "type" : "string"
+               },
+               "splits" : {
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "items" : {
+                     "$ref" : "#/components/schemas/Split"
+                  },
+                  "type" : "array"
+               },
+               "status" : {
+                  "description" : "The status of your request. This will always have the value **received**.",
+                  "enum" : [
+                     "received"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "status",
+               "merchantAccount",
+               "amount",
+               "pspReference",
+               "paymentPspReference"
+            ]
+         },
          "PaymentCompletionDetails" : {
             "properties" : {
                "MD" : {
                   "description" : "A payment session identifier returned by the card issuer.",
-                  "maxLength" : 5000,
+                  "maxLength" : 20000,
                   "type" : "string"
                },
                "PaReq" : {
@@ -5384,7 +6899,7 @@
                },
                "PaRes" : {
                   "description" : "(3D) Payment Authentication Response data by the card issuer.",
-                  "maxLength" : 10000,
+                  "maxLength" : 20000,
                   "type" : "string"
                },
                "billingToken" : {
@@ -5413,7 +6928,7 @@
                },
                "payload" : {
                   "description" : "Payload appended to the `returnURL` as a result of the redirect.",
-                  "maxLength" : 10000,
+                  "maxLength" : 20000,
                   "type" : "string"
                },
                "paymentID" : {
@@ -5426,12 +6941,12 @@
                },
                "redirectResult" : {
                   "description" : "The result of the redirect as appended to the `returnURL`.",
-                  "maxLength" : 5000,
+                  "maxLength" : 20000,
                   "type" : "string"
                },
                "threeDSResult" : {
                   "description" : "Base64-encoded string returned by the Component after the challenge flow. It contains the following parameters: `transStatus`, `authorisationToken`.",
-                  "maxLength" : 10000,
+                  "maxLength" : 50000,
                   "type" : "string"
                },
                "threeds2.challengeResult" : {
@@ -6007,6 +7522,51 @@
                }
             }
          },
+         "PaymentRefundResource" : {
+            "properties" : {
+               "amount" : {
+                  "description" : "The refund amount.",
+                  "$ref" : "#/components/schemas/Amount"
+               },
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "paymentPspReference" : {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment to refund. ",
+                  "type" : "string"
+               },
+               "pspReference" : {
+                  "description" : "Adyen's 16-character reference associated with the refund request.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the refund request.",
+                  "type" : "string"
+               },
+               "splits" : {
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "items" : {
+                     "$ref" : "#/components/schemas/Split"
+                  },
+                  "type" : "array"
+               },
+               "status" : {
+                  "description" : "The status of your request. This will always have the value **received**.",
+                  "enum" : [
+                     "received"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "status",
+               "merchantAccount",
+               "amount",
+               "pspReference",
+               "paymentPspReference"
+            ]
+         },
          "PaymentRequest" : {
             "properties" : {
                "accountInfo" : {
@@ -6320,6 +7880,9 @@
                         "$ref" : "#/components/schemas/PayUUpiDetails"
                      },
                      {
+                        "$ref" : "#/components/schemas/PayWithGoogleDetails"
+                     },
+                     {
                         "$ref" : "#/components/schemas/PaymentDetails"
                      },
                      {
@@ -6435,7 +7998,7 @@
                   "type" : "string"
                },
                "shopperStatement" : {
-                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 25 characters, otherwise banks might truncate the string.",
+                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.",
                   "type" : "string"
                },
                "socialSecurityNumber" : {
@@ -6644,6 +8207,39 @@
                   "$ref" : "#/components/schemas/ThreeDS2Result"
                }
             }
+         },
+         "PaymentReversalResource" : {
+            "properties" : {
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "paymentPspReference" : {
+                  "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment to reverse. ",
+                  "type" : "string"
+               },
+               "pspReference" : {
+                  "description" : "Adyen's 16-character reference associated with the reversal request.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the reversal request.",
+                  "type" : "string"
+               },
+               "status" : {
+                  "description" : "The status of your request. This will always have the value **received**.",
+                  "enum" : [
+                     "received"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "status",
+               "merchantAccount",
+               "pspReference",
+               "paymentPspReference"
+            ]
          },
          "PaymentSetupRequest" : {
             "properties" : {
@@ -6923,7 +8519,7 @@
                   "type" : "string"
                },
                "shopperStatement" : {
-                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 25 characters, otherwise banks might truncate the string.",
+                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.",
                   "type" : "string"
                },
                "socialSecurityNumber" : {
@@ -7291,6 +8887,14 @@
                   "description" : "Information provided by the issuer to the cardholder. If this field is present, you need to display this information to the cardholder. ",
                   "type" : "string"
                },
+               "cavv" : {
+                  "description" : "The Cardholder Authentication Verification Value (CAVV) for the 3D Secure authentication session, as a Base64-encoded 20-byte array.",
+                  "type" : "string"
+               },
+               "cavvAlgorithm" : {
+                  "description" : "The CAVV algorithm used.",
+                  "type" : "string"
+               },
                "scaExemptionRequested" : {
                   "description" : "Shows the [exemption type](https://docs.adyen.com/payments-fundamentals/psd2-sca-compliance-and-implementation-guide#specifypreferenceinyourapirequest) that Adyen requested for the payment.\n\n Possible values:\n* **lowValue** \n* **secureCorporate** \n* **trustedBeneficiary** \n* **transactionRiskAnalysis** ",
                   "type" : "string"
@@ -7383,6 +8987,10 @@
                   "description" : "Authorisation code:\n* When the payment is authorised successfully, this field holds the authorisation code for the payment.\n* When the payment is not authorised, this field is empty.\n\nExample: 58747",
                   "type" : "string"
                },
+               "authorisationMid" : {
+                  "description" : "Merchant ID known by the acquirer.",
+                  "type" : "string"
+               },
                "authorisedAmountCurrency" : {
                   "description" : "The currency of the authorised amount, as a three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).",
                   "type" : "string"
@@ -7401,6 +9009,10 @@
                },
                "bic" : {
                   "description" : "BIC of a bank account.\n\nExample: TESTNL01\n\n> Only relevant for SEPA Direct Debit transactions.",
+                  "type" : "string"
+               },
+               "coBrandedWith" : {
+                  "description" : "Includes the co-branded card information.",
                   "type" : "string"
                },
                "cvcResult" : {
@@ -7437,6 +9049,18 @@
                   "description" : "The fraud score due to a particular fraud check. The fraud check name is found in the key of the key-value pair.",
                   "type" : "string"
                },
+               "fraudManualReview" : {
+                  "description" : "Indicates if the payment is sent to manual review.",
+                  "type" : "string"
+               },
+               "fraudResultType" : {
+                  "description" : "The fraud result properties of the payment.",
+                  "enum" : [
+                     "GREEN",
+                     "FRAUD"
+                  ],
+                  "type" : "string"
+               },
                "fundingSource" : {
                   "description" : "Information regarding the funding type of the card. The possible return values are:\n* CHARGE\n* CREDIT\n* DEBIT\n* PREPAID\n* PREPAID_RELOADABLE\n\n* PREPAID_NONRELOADABLE\n* DEFFERED_DEBIT\n\n> This functionality requires additional configuration on Adyen's end. To enable it, contact the Support Team.\n\nFor receiving this field in the notification, enable **Include Funding Source** in **Notifications** > **Additional settings**.",
                   "type" : "string"
@@ -7449,12 +9073,24 @@
                   "description" : "Provides the more granular indication of why a transaction was refused. When a transaction fails with either \"Refused\", \"Restricted Card\", \"Transaction Not Permitted\", \"Not supported\" or \"DeclinedNon Generic\" refusalReason from the issuer, Adyen cross references its PSP-wide data for extra insight into the refusal reason. If an inferred refusal reason is available, the `inferredRefusalReason`, field is populated and the `refusalReason`, is set to \"Not Supported\".\n\nPossible values:\n\n* 3D Secure Mandated\n* Closed Account\n* ContAuth Not Supported\n* CVC Mandated\n* Ecommerce Not Allowed\n* Crossborder Not Supported\n* Card Updated\n\n* Low Authrate Bin\n* Non-reloadable prepaid card",
                   "type" : "string"
                },
+               "isCardCommercial" : {
+                  "description" : "Indicates if the card is used for business purposes only.",
+                  "type" : "string"
+               },
                "issuerCountry" : {
                   "description" : "The issuing country of the card based on the BIN list that Adyen maintains.\n\nExample: JP",
                   "type" : "string"
                },
+               "liabilityShift" : {
+                  "description" : "A Boolean value indicating whether a liability shift was offered for this payment.",
+                  "type" : "string"
+               },
                "mcBankNetReferenceNumber" : {
                   "description" : "The `mcBankNetReferenceNumber`, is a minimum of six characters and a maximum of nine characters long.\n\n> Contact Support Team to enable this field.",
+                  "type" : "string"
+               },
+               "merchantReference" : {
+                  "description" : "The reference provided for the transaction.",
                   "type" : "string"
                },
                "networkTxReference" : {
@@ -7477,6 +9113,10 @@
                   "description" : "The Payment Account Reference (PAR) value links a network token with the underlying primary account number (PAN). The PAR value consists of 29 uppercase alphanumeric characters.",
                   "type" : "string"
                },
+               "paymentMethod" : {
+                  "description" : "The payment method used in the transaction.",
+                  "type" : "string"
+               },
                "paymentMethodVariant" : {
                   "description" : "The Adyen sub-variant of the payment method used for the payment request.\n\nFor more information, refer to [PaymentMethodVariant](https://docs.adyen.com/development-resources/paymentmethodvariant).\n\nExample: mcpro",
                   "type" : "string"
@@ -7491,6 +9131,11 @@
                },
                "receiptFreeText" : {
                   "description" : "Message to be displayed on the terminal.",
+                  "type" : "string"
+               },
+               "recurring.contractTypes" : {
+                  "x-addedInVersion" : 40,
+                  "description" : "The recurring contract types applicable to the transaction.",
                   "type" : "string"
                },
                "recurring.firstPspReference" : {
@@ -7964,6 +9609,39 @@
                "value"
             ]
          },
+         "StandalonePaymentCancelResource" : {
+            "properties" : {
+               "merchantAccount" : {
+                  "description" : "The merchant account that is used to process the payment.",
+                  "type" : "string"
+               },
+               "paymentReference" : {
+                  "description" : "The [`reference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__reqParam_reference) of the payment to cancel.",
+                  "type" : "string"
+               },
+               "pspReference" : {
+                  "description" : "Adyen's 16-character reference associated with the cancel request.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your reference for the cancel request.",
+                  "type" : "string"
+               },
+               "status" : {
+                  "description" : "The status of your request. This will always have the value **received**.",
+                  "enum" : [
+                     "received"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "status",
+               "merchantAccount",
+               "pspReference",
+               "paymentReference"
+            ]
+         },
          "StoredDetails" : {
             "properties" : {
                "bank" : {
@@ -8060,7 +9738,8 @@
                      "grabpay_PH",
                      "oxxo",
                      "gcash",
-                     "kakaopay"
+                     "kakaopay",
+                     "truemoney"
                   ],
                   "type" : "string"
                }
@@ -8179,6 +9858,11 @@
                },
                "sdkTransID" : {
                   "description" : "The `sdkTransID` value as received from the 3D Secure 2 SDK.\nOnly for `deviceChannel` set to **app**.",
+                  "type" : "string"
+               },
+               "sdkVersion" : {
+                  "x-addedInVersion" : 40,
+                  "description" : "Version of the 3D Secure 2 mobile SDK. \nOnly for `deviceChannel` set to **app**.",
                   "type" : "string"
                },
                "threeDSCompInd" : {
@@ -8322,6 +10006,10 @@
          "UpiDetails" : {
             "additionalProperties" : false,
             "properties" : {
+               "billingSequenceNumber" : {
+                  "description" : "The sequence number for the debit. For example, send **2** if this is the second debit for the subscription. The sequence number is included in the notification sent to the shopper.",
+                  "type" : "string"
+               },
                "recurringDetailReference" : {
                   "deprecated" : true,
                   "x-deprecatedInVersion" : 49,
@@ -8339,8 +10027,8 @@
                   "type" : "string"
                },
                "type" : {
-                  "default" : "upi",
-                  "description" : "**upi**",
+                  "default" : "upi_collect",
+                  "description" : "**upi_collect**",
                   "enum" : [
                      "upi_collect"
                   ],
@@ -8352,7 +10040,8 @@
                }
             },
             "required" : [
-               "type"
+               "type",
+               "billingSequenceNumber"
             ],
             "title" : "UPI"
          },
@@ -10713,6 +12402,10 @@
                      "type" : "kcp_payco"
                   },
                   {
+                     "name" : "Naver Pay",
+                     "type" : "kcp_naverpay"
+                  },
+                  {
                      "name" : "Virtual Account via KCP",
                      "type" : "kcp_va"
                   },
@@ -11164,7 +12857,7 @@
                      "type" : "onetwothree"
                   },
                   {
-                     "name" : "Local Polish Payment Methods",
+                     "name" : "Local Polish Payment Methods (P24)",
                      "type" : "onlineBanking_PL"
                   },
                   {
@@ -11476,6 +13169,10 @@
                   {
                      "name" : "The Sting Giftcard",
                      "type" : "thestinggiftcard"
+                  },
+                  {
+                     "name" : "TrueMoney",
+                     "type" : "truemoney"
                   },
                   {
                      "name" : "Trustly",
@@ -12914,10 +14611,77 @@
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
             }
          },
+         "post-paymentSession-split" : {
+            "summary" : "Split a payment between a sub-merchant and a platform account",
+            "value" : {
+               "amount" : {
+                  "currency" : "EUR",
+                  "value" : 6200
+               },
+               "additionalData" : {
+                  "split.api" : "1",
+                  "split.nrOfItems" : "2",
+                  "split.totalAmount" : "6200",
+                  "split.currencyCode" : "EUR",
+                  "split.item1.amount" : "6000",
+                  "split.item1.type" : "MarketPlace",
+                  "split.item1.account" : "151272963",
+                  "split.item1.reference" : "6124145",
+                  "split.item1.description" : "Porcelain Doll: Eliza (20cm)",
+                  "split.item2.amount" : "200",
+                  "split.item2.type" : "Commission",
+                  "split.item2.reference" : "6124146"
+               },
+               "reference" : "Your order number",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "channel" : "Android",
+               "token" : "TOKEN_YOU_GET_FROM_CHECKOUT_SDK",
+               "returnUrl" : "app://",
+               "countryCode" : "NL",
+               "shopperLocale" : "nl_NL",
+               "sessionValidity" : "2017-04-06T13:09:13Z",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-paymentSession-web" : {
+            "summary" : "Set up a payment session (Web)",
+            "value" : {
+               "amount" : {
+                  "currency" : "EUR",
+                  "value" : 17408
+               },
+               "reference" : "Your order number",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "channel" : "Web",
+               "html" : true,
+               "origin" : "https://www.yourwebsite.com",
+               "returnUrl" : "https://www.yourshop.com/checkout/result",
+               "countryCode" : "NL",
+               "shopperLocale" : "nl_NL",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
+               "sdkVersion" : "1.9.5"
+            }
+         },
          "post-paymentSession-web-200" : {
             "summary" : "Example response for request 'web'",
             "value" : {
                "paymentSession" : "eyJjaGVja291dHNob3BwZXJCYXN..."
+            }
+         },
+         "post-payments-applepay" : {
+            "summary" : "Make an Apple Pay payment",
+            "value" : {
+               "amount" : {
+                  "currency" : "USD",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "applepay",
+                  "applePayToken" : "VNRWtuNlNEWkRCSm1xWndjMDFFbktkQU..."
+               },
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
             }
          },
          "post-payments-card-3d-secure-2-web" : {
@@ -12968,6 +14732,24 @@
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
             }
          },
+         "post-payments-card-3d-secure-2-web-200" : {
+            "summary" : "Example response for request 'card-3d-secure-2-web'",
+            "value" : {
+               "additionalData" : {
+                  "cvcResult" : "1 Matches",
+                  "authCode" : "039171",
+                  "avsResult" : "4 AVS not supported for this card type",
+                  "avsResultRaw" : "C",
+                  "cvcResultRaw" : "M",
+                  "refusalReasonRaw" : "AUTHORISED",
+                  "acquirerCode" : "TestPmmAcquirer",
+                  "acquirerReference" : "8PQMP9UGIA1"
+               },
+               "pspReference" : "993617895104539H",
+               "resultCode" : "Authorised",
+               "merchantReference" : "string"
+            }
+         },
          "post-payments-card-3d-secure-direct" : {
             "summary" : "Make card payment with 3D Secure redirect authentication",
             "value" : {
@@ -12990,6 +14772,337 @@
                },
                "returnUrl" : "https://your-company.com/...",
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-card-3d-secure-direct-200" : {
+            "summary" : "Example response for request 'card-3d-secure-direct'",
+            "value" : {
+               "additionalData" : {
+                  "cvcResult" : "1 Matches",
+                  "authCode" : "056319",
+                  "avsResult" : "4 AVS not supported for this card type",
+                  "avsResultRaw" : "4",
+                  "cvcResultRaw" : "M",
+                  "refusalReasonRaw" : "AUTHORISED",
+                  "acquirerCode" : "TestPmmAcquirer",
+                  "acquirerReference" : "8PQMP9UICT3"
+               },
+               "pspReference" : "993617895111540G",
+               "resultCode" : "Authorised",
+               "merchantReference" : "string"
+            }
+         },
+         "post-payments-card-3d-secure-securedfields" : {
+            "summary" : "Make a payment with 3D Secure 2 native authentication",
+            "value" : {
+               "amount" : {
+                  "currency" : "USD",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "scheme",
+                  "encryptedCardNumber" : "test_4212345678901237",
+                  "encryptedExpiryMonth" : "test_03",
+                  "encryptedExpiryYear" : "test_2030",
+                  "encryptedSecurityCode" : "test_737",
+                  "holderName" : "John Smith"
+               },
+               "browserInfo" : {
+                  "userAgent" : "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008052912 Firefox/3.0",
+                  "acceptHeader" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+               },
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-card-3d-secure-securedfields-200" : {
+            "summary" : "Example response for request 'card-3d-secure-securedfields'",
+            "value" : {
+               "additionalData" : {
+                  "cvcResult" : "1 Matches",
+                  "authCode" : "071717",
+                  "avsResult" : "4 AVS not supported for this card type",
+                  "avsResultRaw" : "4",
+                  "cvcResultRaw" : "M",
+                  "refusalReasonRaw" : "AUTHORISED",
+                  "acquirerCode" : "TestPmmAcquirer",
+                  "acquirerReference" : "8PQMP9UCJBM"
+               },
+               "pspReference" : "993617895090535B",
+               "resultCode" : "Authorised",
+               "merchantReference" : "string"
+            }
+         },
+         "post-payments-card-direct" : {
+            "summary" : "Make a card payment",
+            "value" : {
+               "amount" : {
+                  "currency" : "USD",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "scheme",
+                  "number" : "4111111111111111",
+                  "expiryMonth" : "03",
+                  "expiryYear" : "2030",
+                  "holderName" : "John Smith",
+                  "cvc" : "737"
+               },
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-card-direct-200" : {
+            "summary" : "Example response for request 'card-direct'",
+            "value" : {
+               "additionalData" : {
+                  "cvcResult" : "1 Matches",
+                  "authCode" : "034052",
+                  "avsResult" : "4 AVS not supported for this card type",
+                  "avsResultRaw" : "4",
+                  "cvcResultRaw" : "M",
+                  "refusalReasonRaw" : "AUTHORISED",
+                  "acquirerCode" : "TestPmmAcquirer",
+                  "acquirerReference" : "8PQMP9UEDUG"
+               },
+               "pspReference" : "993617895097539G",
+               "resultCode" : "Authorised",
+               "merchantReference" : "string"
+            }
+         },
+         "post-payments-card-securedfields" : {
+            "summary" : "Make a card payment (using encrypted card details)",
+            "value" : {
+               "amount" : {
+                  "currency" : "USD",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "scheme",
+                  "encryptedCardNumber" : "test_4111111111111111",
+                  "encryptedExpiryMonth" : "test_03",
+                  "encryptedExpiryYear" : "test_2030",
+                  "encryptedSecurityCode" : "test_737"
+               },
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-card-securedfields-200" : {
+            "summary" : "Example response for request 'card-securedfields'",
+            "value" : {
+               "additionalData" : {
+                  "cvcResult" : "1 Matches",
+                  "authCode" : "033620",
+                  "avsResult" : "4 AVS not supported for this card type",
+                  "avsResultRaw" : "4",
+                  "cvcResultRaw" : "M",
+                  "refusalReasonRaw" : "AUTHORISED",
+                  "acquirerCode" : "TestPmmAcquirer",
+                  "acquirerReference" : "8PQMP9UHPC5"
+               },
+               "pspReference" : "993617895109539C",
+               "resultCode" : "Authorised",
+               "merchantReference" : "string"
+            }
+         },
+         "post-payments-details-3d-secure" : {
+            "summary" : "Submit details for the 3D Secure payment ",
+            "value" : {
+               "paymentData" : "Hee57361f99....",
+               "details" : {
+                  "MD" : "Ab02b4c0!BQABAgCW5sxB4e/==...",
+                  "PaRes" : "eNrNV0mTo7gS..."
+               }
+            }
+         },
+         "post-payments-details-3d-secure-2-challenge" : {
+            "summary" : "Submit 3D Secure 2 callenge flow result",
+            "value" : {
+               "details" : {
+                  "threeds2.challengeResult" : "eyJ0cmFuc1N0YXR1cyI6IlkifQ=="
+               },
+               "paymentData" : "YOUR_PAYMENT_DATA"
+            }
+         },
+         "post-payments-details-3d-secure-2-fingerprint" : {
+            "summary" : "Submit 3D Secure 2 device fingerprinting result",
+            "value" : {
+               "details" : {
+                  "threeds2.fingerprint" : "eyJ0aHJlZURTQ29tcEluZCI6ICJZIn0="
+               },
+               "paymentData" : "YOUR_PAYMENT_DATA..."
+            }
+         },
+         "post-payments-details-redirect" : {
+            "summary" : "Submit the redirect result",
+            "value" : {
+               "paymentData" : "Ab02b4c0!BQABAgCJN1wRZuGJmq8dMncmypvknj9s7l5Tj...",
+               "details" : {
+                  "redirectResult" : "X6XtfGC3!Y..."
+               }
+            }
+         },
+         "post-payments-enableOneClick-SF" : {
+            "summary" : "Tokenize card details for one-off payments (using encrypted card details)",
+            "value" : {
+               "amount" : {
+                  "currency" : "USD",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "scheme",
+                  "encryptedCardNumber" : "adyenjs_0_1_18$MT6ppy0FAMVMLH...",
+                  "encryptedExpiryMonth" : "adyenjs_0_1_18$MT6ppy0FAMVMLH...",
+                  "encryptedExpiryYear" : "adyenjs_0_1_18$MT6ppy0FAMVMLH...",
+                  "encryptedSecurityCode" : "adyenjs_0_1_18$MT6ppy0FAMVMLH...",
+                  "storeDetails" : true
+               },
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-enableOneClick-raw" : {
+            "summary" : "Tokenize card details for one-off payments",
+            "value" : {
+               "amount" : {
+                  "currency" : "USD",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "scheme",
+                  "number" : "4111111111111111",
+                  "expiryMonth" : "03",
+                  "expiryYear" : "2030",
+                  "holderName" : "John Smith",
+                  "cvc" : "737",
+                  "storeDetails" : true
+               },
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-enableOneClick-raw-200" : {
+            "summary" : "Example response for request 'enableOneClick-raw'",
+            "value" : {
+               "additionalData" : {
+                  "cvcResult" : "1 Matches",
+                  "authCode" : "026523",
+                  "avsResult" : "4 AVS not supported for this card type",
+                  "recurring.recurringDetailReference" : "9916178934434753",
+                  "recurringProcessingModel" : "CardOnFile",
+                  "avsResultRaw" : "4",
+                  "cvcResultRaw" : "M",
+                  "refusalReasonRaw" : "AUTHORISED",
+                  "recurring.shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+                  "acquirerCode" : "TestPmmAcquirer",
+                  "acquirerReference" : "8PQMP9UDGL3"
+               },
+               "pspReference" : "993617895094536F",
+               "resultCode" : "Authorised",
+               "merchantReference" : "string"
+            }
+         },
+         "post-payments-giropay" : {
+            "summary" : "Make a giropay payment",
+            "value" : {
+               "amount" : {
+                  "currency" : "EUR",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "giropay"
+               },
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-giropay-200" : {
+            "summary" : "Example response for request 'giropay'",
+            "value" : {
+               "resultCode" : "RedirectShopper",
+               "action" : {
+                  "paymentData" : "Ab02b4c0!BQABAgB0GGL0YONwvtT7avYeWcADNdByJj4DWcbKRhIcKNkM6pNv/qTpAj2bVRJpBnbMGC7PW0bf7GHgiFlCIBEoLbokvwkjZkjFpYjhRgdAd3/Tu3ARSXC10Z93sXC8ARJNoS9nAYiJ0sN2A+YUb5Re3H3PAf+JUww2RTw8j5ewpZS7R7SoOdWLRB6wADekDKpF1pEn/wZ1iggdVDUbC6yJu/kMI8rHSpXMXGt3mJwICndP5pj2ZTZ4oZKQuW8inIWioHEChnoBluVh8vR5v4O5m7x1qHUI+KMKmg46XCRz4HSeyZSSt0i/YEtmAc2CvJBOLnfNBWjEU9Q9wz7XUaqhdyJSLhxfiGmNqMXlOR5CP3hIWoWzaSxjBGxj7EHyEYH+APgTb6DSTwFcwdUrRKNiJbXT7TcxvYp2oWy6+8euOEyvQmBGStilH8HlZ/evPw1ETL/gH9vb0cltE9g8BXtT/zVftwgElIB8OUSHqSajwbr1ixz+84ceFB6qxWkMKaoA8exrOv4xW8HkAbD62HQWkORY3CWW6+Azn/1jM60VRAUjFxhOJrPGRjR6huaJuh8+B9+KhofihfpwTPQKA0DniZmkL52NFqPW6wHI3siWycd6bgl6NiMUm1Ay1hnMGddfFg7/mijYOAGxHloCrxGa61VdLJRDxnTfKDUzWXqv39hMwxCg7iZZe7JoYWSfeJdjfo+PAEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMifeBfB4hwExhN4+D+GEuR+ULSZhV5dUQ+HOIC/Bzwak/E1AhOZr5O+F4SyYt4NMhvm89xpP3yiFEYDyAE3kLjBonTZupkZkgmWmOmm1/C+ta8/tykMBVAusTSQ+1GeSmPvO7L4a9AtWek8OjEx4TLd4779HQpTGIWCqY19x4dh4OJM6vTqB57yS1fHvp/Y8RHwgrRUzuqCmZ+ERPBG0+3kqy0XeA0mwKf6MMy8yEwlYOAio/9qO3+XNofeQc8TuK/5vuGxd74nf29o9vugQWNShqKt/ITfmQp+uO/kSynDJnE/RVRLf2MldQfEVxQd9WKGX0bCkJP8GKPo7nWfzwBQ6+OqxdRT00N/tvi6ondb8RRH28RPktJGDfQ7GH5D6H7V4yXWhQWp6CXRF8mPaWwQV3lZje5WYRk4kgmGDKTja2ohNR1YFroQbg/TA8k67TIXqFqYyGdH5l5eGWKVPDJawHuQl0ctVwDAL5TCieqE0IcOHxEuYTsZt3oqw2PetNxZB2QtSHiB1az2jydwh5xv5KAhi3sOW9XdvS8JbgJuzRQpS50PEc+o2S79pv6q+XrTYma9DWNNg14wwhCTxZJQ9vAgZ/1wQwosMf957SKq7qaL5y0Auhan+HX3IbQ1qcyIUP/fiR1qAthLqvOu8xPikV/E7Twr+e7OBGeAFNZouJEuEr4DXLLOey6QuOBeTNaIk/sGur51RMDZ0FptsKGY3HzkatxcPmGBFxmcdPYjoxA4kiMcUBywdXnxRB6BKrKR+Bz5Lxkcf5fCEl+DCBldnqe30wvuOLnjQs23hKC",
+                  "paymentMethodType" : "giropay",
+                  "url" : "https://test.adyen.com/hpp/checkout.shtml?u=skipDetails&p=eJxtUttuozAQ-ZrwFmQu4fLAQ5aSLdt0t2KhTftSuWYK3iY2tQ0t*fod2DSqqpWssXXOaOacGT8pKupU1pA0XMmOjhbrlQLBxhnMqsI6gGItFWbNmOyFSUrQ5vqEnclcGGgUNVwK24wdJOllll79qsrH79nPrMjT-2YOoDTeiR*f6QKeYeoPiTaKi*YTYXolLqihSRw7gRNG8YpEcUiCzTnnN28SSm82Ls8DXzZ35raA-J6*FX9Yebfb5UX37XhP04cgruTxiiy8CwstHwDNHWZvDiHEUqCrYpu0xnQLb71wN3j2ktF9K7VBJCIRQYi1wF5kb3Qruw4UIhrUwBlofN78K5sLJg-oooCaK2AGmcH5KHfKuQbTynrhbb4MGtV9HvXCDdQ8AtSG1KQOG60mgatJIoZR9mqJDTsqRhvvGbRt29Kgpznf0j2vuRkTl7jOkvhLEpVOgI6cCAOJH6yTl2lHirJpR0mGhSZlYOkXLuZf0fVP9uDapzWEQRiGTuT59jEfdl75I6ijYczcdv3*yOq2fa9IXh2f-dfta3a5zRoY61r*BdOr2bA",
+                  "method" : "GET",
+                  "type" : "redirect"
+               },
+               "details" : [
+                  {
+                     "key" : "payload",
+                     "type" : "text"
+                  }
+               ],
+               "paymentData" : "Ab02b4c0!BQABAgB0GGL0YONwvtT7avYeWcADNdByJj4DWcbKRhIcKNkM6pNv/qTpAj2bVRJpBnbMGC7PW0bf7GHgiFlCIBEoLbokvwkjZkjFpYjhRgdAd3/Tu3ARSXC10Z93sXC8ARJNoS9nAYiJ0sN2A+YUb5Re3H3PAf+JUww2RTw8j5ewpZS7R7SoOdWLRB6wADekDKpF1pEn/wZ1iggdVDUbC6yJu/kMI8rHSpXMXGt3mJwICndP5pj2ZTZ4oZKQuW8inIWioHEChnoBluVh8vR5v4O5m7x1qHUI+KMKmg46XCRz4HSeyZSSt0i/YEtmAc2CvJBOLnfNBWjEU9Q9wz7XUaqhdyJSLhxfiGmNqMXlOR5CP3hIWoWzaSxjBGxj7EHyEYH+APgTb6DSTwFcwdUrRKNiJbXT7TcxvYp2oWy6+8euOEyvQmBGStilH8HlZ/evPw1ETL/gH9vb0cltE9g8BXtT/zVftwgElIB8OUSHqSajwbr1ixz+84ceFB6qxWkMKaoA8exrOv4xW8HkAbD62HQWkORY3CWW6+Azn/1jM60VRAUjFxhOJrPGRjR6huaJuh8+B9+KhofihfpwTPQKA0DniZmkL52NFqPW6wHI3siWycd6bgl6NiMUm1Ay1hnMGddfFg7/mijYOAGxHloCrxGa61VdLJRDxnTfKDUzWXqv39hMwxCg7iZZe7JoYWSfeJdjfo+PAEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMifeBfB4hwExhN4+D+GEuR+ULSZhV5dUQ+HOIC/Bzwak/E1AhOZr5O+F4SyYt4NMhvm89xpP3yiFEYDyAE3kLjBonTZupkZkgmWmOmm1/C+ta8/tykMBVAusTSQ+1GeSmPvO7L4a9AtWek8OjEx4TLd4779HQpTGIWCqY19x4dh4OJM6vTqB57yS1fHvp/Y8RHwgrRUzuqCmZ+ERPBG0+3kqy0XeA0mwKf6MMy8yEwlYOAio/9qO3+XNofeQc8TuK/5vuGxd74nf29o9vugQWNShqKt/ITfmQp+uO/kSynDJnE/RVRLf2MldQfEVxQd9WKGX0bCkJP8GKPo7nWfzwBQ6+OqxdRT00N/tvi6ondb8RRH28RPktJGDfQ7GH5D6H7V4yXWhQWp6CXRF8mPaWwQV3lZje5WYRk4kgmGDKTja2ohNR1YFroQbg/TA8k67TIXqFqYyGdH5l5eGWKVPDJawHuQl0ctVwDAL5TCieqE0IcOHxEuYTsZt3oqw2PetNxZB2QtSHiB1az2jydwh5xv5KAhi3sOW9XdvS8JbgJuzRQpS50PEc+o2S79pv6q+XrTYma9DWNNg14wwhCTxZJQ9vAgZ/1wQwosMf957SKq7qaL5y0Auhan+HX3IbQ1qcyIUP/fiR1qAthLqvOu8xPikV/E7Twr+e7OBGeAFNZouJEuEr4DXLLOey6QuOBeTNaIk/sGur51RMDZ0FptsKGY3HzkatxcPmGBFxmcdPYjoxA4kiMcUBywdXnxRB6BKrKR+Bz5Lxkcf5fCEl+DCBldnqe30wvuOLnjQs23hKC",
+               "redirect" : {
+                  "method" : "GET",
+                  "url" : "https://test.adyen.com/hpp/checkout.shtml?u=skipDetails&p=eJxtUttuozAQ-ZrwFmQu4fLAQ5aSLdt0t2KhTftSuWYK3iY2tQ0t*fod2DSqqpWssXXOaOacGT8pKupU1pA0XMmOjhbrlQLBxhnMqsI6gGItFWbNmOyFSUrQ5vqEnclcGGgUNVwK24wdJOllll79qsrH79nPrMjT-2YOoDTeiR*f6QKeYeoPiTaKi*YTYXolLqihSRw7gRNG8YpEcUiCzTnnN28SSm82Ls8DXzZ35raA-J6*FX9Yebfb5UX37XhP04cgruTxiiy8CwstHwDNHWZvDiHEUqCrYpu0xnQLb71wN3j2ktF9K7VBJCIRQYi1wF5kb3Qruw4UIhrUwBlofN78K5sLJg-oooCaK2AGmcH5KHfKuQbTynrhbb4MGtV9HvXCDdQ8AtSG1KQOG60mgatJIoZR9mqJDTsqRhvvGbRt29Kgpznf0j2vuRkTl7jOkvhLEpVOgI6cCAOJH6yTl2lHirJpR0mGhSZlYOkXLuZf0fVP9uDapzWEQRiGTuT59jEfdl75I6ijYczcdv3*yOq2fa9IXh2f-dfta3a5zRoY61r*BdOr2bA"
+               }
+            }
+         },
+         "post-payments-googlepay" : {
+            "summary" : "Make a Google Pay payment",
+            "value" : {
+               "amount" : {
+                  "currency" : "USD",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "paywithgoogle",
+                  "googlePayToken" : "==Payload as retrieved from Google Pay response=="
+               },
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YourMerchantAccount"
+            }
+         },
+         "post-payments-ideal" : {
+            "summary" : "Make an iDEAL payment",
+            "value" : {
+               "amount" : {
+                  "currency" : "EUR",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "ideal",
+                  "issuer" : "1121"
+               },
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-ideal-200" : {
+            "summary" : "Example response for request 'ideal'",
+            "value" : {
+               "resultCode" : "RedirectShopper",
+               "action" : {
+                  "paymentData" : "Ab02b4c0!BQABAgBK6QhIJjlNqvAPkOnf1HzcblwXCFm8j17/geaZbQWzWPhxHlvOzQw0TOdwxonkCYOHQDGEupixy+jiPAkPwjk9aubdkxkPMvtXNZC/4FaQSoRNRxXP/zLjD1ut7pQrYXtMhORqUpfy6BEYo3tz6JwUDeEvfPngMsJxKlKETkxU+VFvwPW6VsH70LVBaEnxqdhlKg02jqq3ROhksyTbwCN6VzipUfn0RJWizDxuLINEXgI2zr0WAmE+QXkcVx30FLq7ebgq6vO5JegU+eyow0M6teWIWdeeCpfPEH0uEY0Ijpv7M0DQiQlv4cPTPEH/xPgn3ha+i63acomRTtG+J+bZgKZqJIWONrZFCX8zUrtnO2zCQpYJE7aTewjACA7h7yU1ANNzp858v4zwktyUBfx/AWSRckgieZp/8N9FWmjVM902bPBrGUXKRXyjH4H2b9OFZivNmxl97iDIe/gXkfy54qy7m6MmztDgurQ44k9+e3wH+V2cnktBQnPPyGIn1w7Wi5GxZ8gP3fl7nDVMZkXaVH3X/Evl+8U+5vg+vORZqfINT3c3Gi2V53bNM1WenMrYXhmHfszODBTAqh1zyoZtmc+8CK/UaSmtOE/FOaxNmpG+i9ZUVQjxFWhQOpvhhsQuevtDJrilT/2beCcYXnqFoYmaKNP+yUrEM0PFzFpRGxDpLiBPDU8aTIHXkZu1MH4DAEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMifSNlJboJoK1IzC49XNvAhpuEw3D/8HFQPenVjLW55FXRkA7hLhNAe6cK7luiuct7aryHgPUf+/sisCwXfndfPrFo6EVv6mDyBVbv1FQOpCAFIHawR9LoOar+mg3YuU2trdMX8awt2fWD5jSW0iIv4MEnQfFY9JRW5uP1a0jIvY/Bqcp6ejjs+Ic1ody7M/cqPrRgwVxPd9Mrm2OaMyZYrmtiIKWLzUiJWZ58zw8UuQ0c1PpY8+NLEd0dtIw7TR2K5YfmNSg4ZQcKyA11yUghsbpIG5+HZ8DoY2LNO36FJwRacScsx0Ipv54J3uzcK9Gp4gTUtzpzTVuUa+RGcCLVYrs5zIudmBMqzzKnDHPnmkCnLkjK0qkZzz/bPK7zwiaHtZdyGK/Kdrzekz4NgDArJ/VKl8ZnhRANjrKSiTgHo2JqNNF18pYisdVyj94KzWsneJvGtSKKEaIMokjZHiw6XlNGoF+TFExpEb+IauUa4fJBljpVRLRQlHlWAcqrwYBr4/E28oPobq+9AFCGC9zN8jKrqb7gBEDgfHAMWqj77JcIa62GrKg38ns+nkUhaP1wHz1xI7sFwVWp9HqBFhoaeSfImL9ofkYdcHUIyiu6o6/O6RqycWToDy3lFtXqok9NCdqjrtNmm2bhnMJ1UhDsG/1chxGC2SBAJERBX8O81hR3BdOwEWHUiPOn+PuyEnUImkOaVVIuKrHfjkAl70TVm1MPRHMy//ubL6dHWrET4BqxAEmdoSORpfIo9N4Q7Kktr0YS5g44hyjLhX+j6c8POPnc+mqVdeHxKA==",
+                  "paymentMethodType" : "ideal",
+                  "url" : "https://test.adyen.com/hpp/checkout.shtml?u=redirectIdeal&p=eJxtUsFuozAQ-Rq4BdmQADn4kFC6YUu7URaiai*VY0*Dt4lNbUNLv34Nm22raiVrxnrPmnlvxgdNJc8UByI40JPPOq1BsmGC8nrnC2M60AUnGIfYP4NmDZV2xZjqpCUVGHt7wd7JQlo4amqFkoEdWiDZJs9uftTVw7f8Lt8V2X9f9qCNy2S*fKd38AijGiDGaiGPnwjbaXlFLSXLJY5xki4XaBknKP2o-VMcySLbo7mpSrTfrl-u48XmpajMoazv1qI5eeE6izZl-Du7CbeyKrzoym-pcAZn7zy5wwghX4OpdyVprG29aOWF1*6cFKOnRhnrkBSlyEGsAfakOmsa1bagHWJA94KBcdft37KFZOrsfOyACw3MOqbH-8pd3tyCbRT3ousvo3bqPg-bC2M9DcFpc9SozjVajAIXo0QXBtXpmWvYUjkELk9gEAS*ATNOek9Pggs7kBCFeIbmM5RWOHaOcDqG*Jd-8TJuSVM2bonkrtCoDHzzJOT0S9ruEPRhcFlEEidJgtNoHrwV-X1UfY952g952KxeHxhvmtcaFfXb4-y5fM43ZX6EgXP1B7Iy3CU",
+                  "method" : "GET",
+                  "type" : "redirect"
+               },
+               "details" : [
+                  {
+                     "key" : "payload",
+                     "type" : "text"
+                  }
+               ],
+               "paymentData" : "Ab02b4c0!BQABAgBK6QhIJjlNqvAPkOnf1HzcblwXCFm8j17/geaZbQWzWPhxHlvOzQw0TOdwxonkCYOHQDGEupixy+jiPAkPwjk9aubdkxkPMvtXNZC/4FaQSoRNRxXP/zLjD1ut7pQrYXtMhORqUpfy6BEYo3tz6JwUDeEvfPngMsJxKlKETkxU+VFvwPW6VsH70LVBaEnxqdhlKg02jqq3ROhksyTbwCN6VzipUfn0RJWizDxuLINEXgI2zr0WAmE+QXkcVx30FLq7ebgq6vO5JegU+eyow0M6teWIWdeeCpfPEH0uEY0Ijpv7M0DQiQlv4cPTPEH/xPgn3ha+i63acomRTtG+J+bZgKZqJIWONrZFCX8zUrtnO2zCQpYJE7aTewjACA7h7yU1ANNzp858v4zwktyUBfx/AWSRckgieZp/8N9FWmjVM902bPBrGUXKRXyjH4H2b9OFZivNmxl97iDIe/gXkfy54qy7m6MmztDgurQ44k9+e3wH+V2cnktBQnPPyGIn1w7Wi5GxZ8gP3fl7nDVMZkXaVH3X/Evl+8U+5vg+vORZqfINT3c3Gi2V53bNM1WenMrYXhmHfszODBTAqh1zyoZtmc+8CK/UaSmtOE/FOaxNmpG+i9ZUVQjxFWhQOpvhhsQuevtDJrilT/2beCcYXnqFoYmaKNP+yUrEM0PFzFpRGxDpLiBPDU8aTIHXkZu1MH4DAEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMifSNlJboJoK1IzC49XNvAhpuEw3D/8HFQPenVjLW55FXRkA7hLhNAe6cK7luiuct7aryHgPUf+/sisCwXfndfPrFo6EVv6mDyBVbv1FQOpCAFIHawR9LoOar+mg3YuU2trdMX8awt2fWD5jSW0iIv4MEnQfFY9JRW5uP1a0jIvY/Bqcp6ejjs+Ic1ody7M/cqPrRgwVxPd9Mrm2OaMyZYrmtiIKWLzUiJWZ58zw8UuQ0c1PpY8+NLEd0dtIw7TR2K5YfmNSg4ZQcKyA11yUghsbpIG5+HZ8DoY2LNO36FJwRacScsx0Ipv54J3uzcK9Gp4gTUtzpzTVuUa+RGcCLVYrs5zIudmBMqzzKnDHPnmkCnLkjK0qkZzz/bPK7zwiaHtZdyGK/Kdrzekz4NgDArJ/VKl8ZnhRANjrKSiTgHo2JqNNF18pYisdVyj94KzWsneJvGtSKKEaIMokjZHiw6XlNGoF+TFExpEb+IauUa4fJBljpVRLRQlHlWAcqrwYBr4/E28oPobq+9AFCGC9zN8jKrqb7gBEDgfHAMWqj77JcIa62GrKg38ns+nkUhaP1wHz1xI7sFwVWp9HqBFhoaeSfImL9ofkYdcHUIyiu6o6/O6RqycWToDy3lFtXqok9NCdqjrtNmm2bhnMJ1UhDsG/1chxGC2SBAJERBX8O81hR3BdOwEWHUiPOn+PuyEnUImkOaVVIuKrHfjkAl70TVm1MPRHMy//ubL6dHWrET4BqxAEmdoSORpfIo9N4Q7Kktr0YS5g44hyjLhX+j6c8POPnc+mqVdeHxKA==",
+               "redirect" : {
+                  "method" : "GET",
+                  "url" : "https://test.adyen.com/hpp/checkout.shtml?u=redirectIdeal&p=eJxtUsFuozAQ-Rq4BdmQADn4kFC6YUu7URaiai*VY0*Dt4lNbUNLv34Nm22raiVrxnrPmnlvxgdNJc8UByI40JPPOq1BsmGC8nrnC2M60AUnGIfYP4NmDZV2xZjqpCUVGHt7wd7JQlo4amqFkoEdWiDZJs9uftTVw7f8Lt8V2X9f9qCNy2S*fKd38AijGiDGaiGPnwjbaXlFLSXLJY5xki4XaBknKP2o-VMcySLbo7mpSrTfrl-u48XmpajMoazv1qI5eeE6izZl-Du7CbeyKrzoym-pcAZn7zy5wwghX4OpdyVprG29aOWF1*6cFKOnRhnrkBSlyEGsAfakOmsa1bagHWJA94KBcdft37KFZOrsfOyACw3MOqbH-8pd3tyCbRT3ousvo3bqPg-bC2M9DcFpc9SozjVajAIXo0QXBtXpmWvYUjkELk9gEAS*ATNOek9Pggs7kBCFeIbmM5RWOHaOcDqG*Jd-8TJuSVM2bonkrtCoDHzzJOT0S9ruEPRhcFlEEidJgtNoHrwV-X1UfY952g952KxeHxhvmtcaFfXb4-y5fM43ZX6EgXP1B7Iy3CU"
+               }
             }
          },
          "post-payments-klarna" : {
@@ -13073,10 +15186,123 @@
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
             }
          },
+         "post-payments-oneclick-securedfields" : {
+            "summary" : "Make a one-off payment with a token and CVV (using encrypted card details)",
+            "value" : {
+               "amount" : {
+                  "currency" : "USD",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "scheme",
+                  "recurringDetailReference" : "8416038790273850",
+                  "encryptedSecurityCode" : "adyenjs_0_1_18$MT6ppy0FAMVMLH..."
+               },
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_6738oneoff",
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-recurring" : {
+            "summary" : "Make a card payment with a token",
+            "value" : {
+               "amount" : {
+                  "currency" : "USD",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "storedPaymentMethodId" : "8316038796685850"
+               },
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3subscription",
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
+               "shopperInteraction" : "ContAuth",
+               "recurringProcessingModel" : "Subscription"
+            }
+         },
          "post-payments-result-basic" : {
             "summary" : "Verify payment results",
             "value" : {
                "payload" : "VALUE_YOU_GET_FROM_CHECKOUT_SDK"
+            }
+         },
+         "post-payments-sofort" : {
+            "summary" : "Make a Sofort payment",
+            "value" : {
+               "amount" : {
+                  "currency" : "EUR",
+                  "value" : 1000
+               },
+               "reference" : "Your order number",
+               "paymentMethod" : {
+                  "type" : "directEbanking"
+               },
+               "returnUrl" : "https://your-company.com/...",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
+            }
+         },
+         "post-payments-sofort-200" : {
+            "summary" : "Example response for request 'sofort'",
+            "value" : {
+               "resultCode" : "RedirectShopper",
+               "action" : {
+                  "paymentData" : "Ab02b4c0!BQABAgANyRgy/Cb83UcMZgH26iRoesCdEWFukqzzkhE+5ftULQ3vt3u/wz4HJSwjDdOGV/m0MPpgtK4gUjH7pI/2BjN6TsWyuVR4Q7lLkpzDXfcWPp2MzPnuL44TlLJcnDbeC0PjoFC61mX/z8/4+3FtgMRI6N5T8lmSq37FS0b5UjSLxGgHzRWVwXbxVDTfJFM15TWF/shBi5NQrEcprfSZTLUQ7XWk2p9HRTmS50Ga/GSq0xDwsPo02f14r7iNKDPBD4U7pMpgPxNVDsiVwiwPwUyTaPz4nnq/+UVdknsU1/fKiYXNYVD4hfDPlaknja0i6Au+HDh0CCLrgoNd/PUI2EGz8fiSjbLWDRAI5+9gf895urW6b8ckjzYTqVVKgc74e8T0yBJaTF9Kd1IYCTt0jZU/ijVwDK848AZurobAlPYiF7sQOXgFAXeQHmmXDSNXJwMH9OdleCzkUcvB/4i1ZIfFxblTmncX3FDBc0yc6FPVgmtfBWQLOpAZl8tNREG6RwRNnW5kLkjMSDXSfwmGdW7LNVF1SBv+uemTRK9+jmhg+qRyUR/XQht+eGosYQYlyut06izAuI4dhG+Ro9bn09WjQxVnaEvD6Uq65IU4LWv2HcjWjpKlBOv5ejNo4H8DnwybnRA5SdN/EY/iZod86yG3tTAbY4Ayvo2Q+lG7Vb7LcRAOlt9cfqtyXgaKymPax8NiAEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMifd3J3r8hnE9gF0UJyMarOonSJWlwT+31JLeSYSOT5AmjUV9w7SwcjfsIF+LqjNHnC8lj1AnQVcXe4B8DoZ/SwIANLW/6BbMf9C3CgIrE3VpCZl7p8ljpp+8GSXHPULuf5mSk6wiwQficutG0Uspisuj5dCU9nbmBfHgnhNPEYone4d8efMIOvh8gKCaSG3vqlfLtKETuFDLWPoNMfv1ILw1uCSmNZd5xLMISjFtoz2bdQ+ds91tQGGUUvqsnhwqGyUpXP1T+sJWbESbgZCbANF1qaZTSJ7Iex5Myh9gRSvkW5376N6D7iYJQ3VlgHMWxgjmgf02EgOcqFanMcpr2kq4p4tpXMuK6EEXd3fvuGIMDwA1cD5CflbiKSwQ/PjGIvng5l1Ywi5py00oL0gbV716eog6xIYy+M3c5frNe56WCSxAakbsut66a9uVskqQXIDw/pTfE07/LRA3vOvXBTl8O3WCc3s3JGLJXgtvoaTRnuriIIOJ5m1d+5ATMIxU9tDgXOh4fzMRd7gxkPhBnIQJ9ERjTsoVgKJcicjA3dq7c60DbshZ0EWzSYwdENl3vhYnwkl60wo/6kgRvWGillBLb1nMtldst2J/z6WMbmPHqtvSOiJr5uMA0yisPOWVaod4HnThVyPeluTNOoLAnlqCHr+W/h0VhqPVWHi4dfCG/Tx2Y4Vi1OU0cP9TMjpfMj7zAsdTEoRRKQsIXy47YNhM3pCTNTuOrxoyf1i4WHO6v8+Q7DjVAOQUlpUnWY1hvbBz36Pn2T6yzDosWA+1J3rVLo8oj1kbjwzmwgYM7kQ0=",
+                  "paymentMethodType" : "directEbanking",
+                  "url" : "https://test.adyen.com/hpp/checkout.shtml?u=skipDetails&p=eJxtUu9vmzAQ-WvgW5ANhB8f*JClZKFL1o3CVPVL5ZhrQAk2tQ0L*et3pFlaTZOss-Xe6e69O*8UE9VSVpBUjQJu0h0Th0bsbd4rBYKPFy4tc7sFxWsmzIJz2QuTFKDN9ordyEwY2CtmGikcM3aQLNfp8ttDWbx8Tb*nebb8b*YASuOd*PGNzuEVpv6QaKMmPR*E6ZW4Y4YlcUwDGkbxnJI4pPTLLeex2SfdhrfRY2ruu7XlruCMQZ2eMkbd7aoR8Owfi98H0g-kgMziwf9peXd2x8YW0GJ7cUgJIbYCXeabpDams7wF5uI5Ss6OtdQGkYhEBCFeAz-I3uhadh0oRDSooeGg8fnjvWwmuGzRSw7vs0ZmoH-LXXO2YGpZWd7qn3Gjus8Dt9xAXQaB2pCa1GGj*SRwPknEMMpezbBhx8To4H0BHcexNehp2r-YsakaMyYucemM*DMSFTRARzTC4MbP9tXLtCnF*LSpJMVCkzKwNf6Sy9-o*p0zuM51GWEQhiGNPN85Z8OTV9wHVTSMqVsvTi*8qutTSbLy-Oq-bd7S9Sbdw1hV8g8Atd1V",
+                  "method" : "GET",
+                  "type" : "redirect"
+               },
+               "details" : [
+                  {
+                     "key" : "payload",
+                     "type" : "text"
+                  }
+               ],
+               "paymentData" : "Ab02b4c0!BQABAgANyRgy/Cb83UcMZgH26iRoesCdEWFukqzzkhE+5ftULQ3vt3u/wz4HJSwjDdOGV/m0MPpgtK4gUjH7pI/2BjN6TsWyuVR4Q7lLkpzDXfcWPp2MzPnuL44TlLJcnDbeC0PjoFC61mX/z8/4+3FtgMRI6N5T8lmSq37FS0b5UjSLxGgHzRWVwXbxVDTfJFM15TWF/shBi5NQrEcprfSZTLUQ7XWk2p9HRTmS50Ga/GSq0xDwsPo02f14r7iNKDPBD4U7pMpgPxNVDsiVwiwPwUyTaPz4nnq/+UVdknsU1/fKiYXNYVD4hfDPlaknja0i6Au+HDh0CCLrgoNd/PUI2EGz8fiSjbLWDRAI5+9gf895urW6b8ckjzYTqVVKgc74e8T0yBJaTF9Kd1IYCTt0jZU/ijVwDK848AZurobAlPYiF7sQOXgFAXeQHmmXDSNXJwMH9OdleCzkUcvB/4i1ZIfFxblTmncX3FDBc0yc6FPVgmtfBWQLOpAZl8tNREG6RwRNnW5kLkjMSDXSfwmGdW7LNVF1SBv+uemTRK9+jmhg+qRyUR/XQht+eGosYQYlyut06izAuI4dhG+Ro9bn09WjQxVnaEvD6Uq65IU4LWv2HcjWjpKlBOv5ejNo4H8DnwybnRA5SdN/EY/iZod86yG3tTAbY4Ayvo2Q+lG7Vb7LcRAOlt9cfqtyXgaKymPax8NiAEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMifd3J3r8hnE9gF0UJyMarOonSJWlwT+31JLeSYSOT5AmjUV9w7SwcjfsIF+LqjNHnC8lj1AnQVcXe4B8DoZ/SwIANLW/6BbMf9C3CgIrE3VpCZl7p8ljpp+8GSXHPULuf5mSk6wiwQficutG0Uspisuj5dCU9nbmBfHgnhNPEYone4d8efMIOvh8gKCaSG3vqlfLtKETuFDLWPoNMfv1ILw1uCSmNZd5xLMISjFtoz2bdQ+ds91tQGGUUvqsnhwqGyUpXP1T+sJWbESbgZCbANF1qaZTSJ7Iex5Myh9gRSvkW5376N6D7iYJQ3VlgHMWxgjmgf02EgOcqFanMcpr2kq4p4tpXMuK6EEXd3fvuGIMDwA1cD5CflbiKSwQ/PjGIvng5l1Ywi5py00oL0gbV716eog6xIYy+M3c5frNe56WCSxAakbsut66a9uVskqQXIDw/pTfE07/LRA3vOvXBTl8O3WCc3s3JGLJXgtvoaTRnuriIIOJ5m1d+5ATMIxU9tDgXOh4fzMRd7gxkPhBnIQJ9ERjTsoVgKJcicjA3dq7c60DbshZ0EWzSYwdENl3vhYnwkl60wo/6kgRvWGillBLb1nMtldst2J/z6WMbmPHqtvSOiJr5uMA0yisPOWVaod4HnThVyPeluTNOoLAnlqCHr+W/h0VhqPVWHi4dfCG/Tx2Y4Vi1OU0cP9TMjpfMj7zAsdTEoRRKQsIXy47YNhM3pCTNTuOrxoyf1i4WHO6v8+Q7DjVAOQUlpUnWY1hvbBz36Pn2T6yzDosWA+1J3rVLo8oj1kbjwzmwgYM7kQ0=",
+               "redirect" : {
+                  "method" : "GET",
+                  "url" : "https://test.adyen.com/hpp/checkout.shtml?u=skipDetails&p=eJxtUu9vmzAQ-WvgW5ANhB8f*JClZKFL1o3CVPVL5ZhrQAk2tQ0L*et3pFlaTZOss-Xe6e69O*8UE9VSVpBUjQJu0h0Th0bsbd4rBYKPFy4tc7sFxWsmzIJz2QuTFKDN9ordyEwY2CtmGikcM3aQLNfp8ttDWbx8Tb*nebb8b*YASuOd*PGNzuEVpv6QaKMmPR*E6ZW4Y4YlcUwDGkbxnJI4pPTLLeex2SfdhrfRY2ruu7XlruCMQZ2eMkbd7aoR8Owfi98H0g-kgMziwf9peXd2x8YW0GJ7cUgJIbYCXeabpDams7wF5uI5Ss6OtdQGkYhEBCFeAz-I3uhadh0oRDSooeGg8fnjvWwmuGzRSw7vs0ZmoH-LXXO2YGpZWd7qn3Gjus8Dt9xAXQaB2pCa1GGj*SRwPknEMMpezbBhx8To4H0BHcexNehp2r-YsakaMyYucemM*DMSFTRARzTC4MbP9tXLtCnF*LSpJMVCkzKwNf6Sy9-o*p0zuM51GWEQhiGNPN85Z8OTV9wHVTSMqVsvTi*8qutTSbLy-Oq-bd7S9Sbdw1hV8g8Atd1V"
+               }
+            }
+         },
+         "post-payments-split" : {
+            "summary" : "Split a payment between a sub-merchant and a platform account",
+            "value" : {
+               "paymentMethod" : {
+                  "type" : "scheme",
+                  "number" : "4111111111111111",
+                  "cvc" : "737",
+                  "expiryMonth" : "03",
+                  "expiryYear" : "2030",
+                  "holderName" : "John Smith"
+               },
+               "amount" : {
+                  "value" : 6200,
+                  "currency" : "EUR"
+               },
+               "reference" : "YOUR_ORDER_NUMBER",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
+               "returnUrl" : "https://your-company.com/...",
+               "splits" : [
+                  {
+                     "amount" : {
+                        "value" : 6000
+                     },
+                     "type" : "MarketPlace",
+                     "account" : "151272963",
+                     "reference" : "6124145",
+                     "description" : "Porcelain Doll: Eliza (20cm)"
+                  },
+                  {
+                     "amount" : {
+                        "value" : 200
+                     },
+                     "type" : "Commission",
+                     "reference" : "6124146"
+                  }
+               ]
             }
          }
       }

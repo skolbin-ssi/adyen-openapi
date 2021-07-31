@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 servers:
 - url: https://cal-test.adyen.com/cal/services/Account/v6
 info:
@@ -62,13 +62,16 @@ x-groups:
 paths:
   /checkAccountHolder:
     post:
-      summary: Perform verification for an account holder.
+      summary: Trigger verification.
       description: Triggers the KYC verification for an account holder even if the
         checks are not yet required for the volume that they currently process.
       x-addedInVersion: 5
       operationId: post-checkAccountHolder
       x-groupName: Verification
-      x-sortIndex: 5
+      x-sortIndex: 3
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -136,6 +139,9 @@ paths:
       operationId: post-closeAccount
       x-groupName: Accounts
       x-sortIndex: 3
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -205,6 +211,9 @@ paths:
       operationId: post-closeAccountHolder
       x-groupName: Account holders
       x-sortIndex: 7
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -263,6 +272,65 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
+  /closeStores:
+    post:
+      summary: Close stores.
+      description: Close one or more stores of the account holder.
+      x-addedInVersion: 5
+      operationId: post-closeStores
+      x-groupName: Account holders
+      x-sortIndex: 9
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CloseStoresRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          description: OK - the request has succeeded.
+        '400':
+          content:
+            application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
   /createAccount:
     post:
       summary: Create a new account.
@@ -271,6 +339,9 @@ paths:
       operationId: post-createAccount
       x-groupName: Accounts
       x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -340,12 +411,17 @@ paths:
       operationId: post-createAccountHolder
       x-groupName: Account holders
       x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
             examples:
               business:
                 $ref: '#/components/examples/post-createAccountHolder-business'
+              individual:
+                $ref: '#/components/examples/post-createAccountHolder-individual'
             schema:
               $ref: '#/components/schemas/CreateAccountHolderRequest'
       responses:
@@ -358,6 +434,9 @@ paths:
         '400':
           content:
             application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -390,11 +469,14 @@ paths:
           description: Internal Server Error - the server could not process the request.
   /deleteBankAccounts:
     post:
-      summary: Delete bank accounts of an account holder.
+      summary: Delete bank accounts.
       description: 'Deletes one or more bank accounts of an account holder. '
       operationId: post-deleteBankAccounts
       x-groupName: Verification
-      x-sortIndex: 3
+      x-sortIndex: 4
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -455,12 +537,15 @@ paths:
           description: Internal Server Error - the server could not process the request.
   /deletePayoutMethods:
     post:
-      summary: Delete payout methods of an account holder.
+      summary: Delete payout methods.
       description: Deletes one or more payout methods of an account holder.
       x-addedInVersion: 5
       operationId: post-deletePayoutMethods
       x-groupName: Verification
-      x-sortIndex: 3
+      x-sortIndex: 5
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -521,11 +606,14 @@ paths:
           description: Internal Server Error - the server could not process the request.
   /deleteShareholders:
     post:
-      summary: Delete shareholders of an existing account holder.
+      summary: Delete shareholders.
       description: Deletes one or more shareholders from an account holder.
       operationId: post-deleteShareholders
       x-groupName: Verification
-      x-sortIndex: 4
+      x-sortIndex: 6
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -584,13 +672,81 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
+  /deleteSignatories:
+    post:
+      summary: Delete signatories.
+      description: Deletes one or more signatories from an account holder.
+      operationId: post-deleteSignatories
+      x-groupName: Verification
+      x-sortIndex: 7
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteSignatoriesRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          description: OK - the request has succeeded.
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+          description: Accepted - the request has been accepted for processing, but
+            the processing has not been completed.
+        '400':
+          content:
+            application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              examples:
+                generic-403:
+                  $ref: '#/components/examples/generic-403'
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
   /getAccountHolder:
     post:
-      summary: Retrieve the details of an account holder.
+      summary: Get an account holder.
       description: Retrieves the details of an account holder.
       operationId: post-getAccountHolder
       x-groupName: Account holders
       x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -653,12 +809,15 @@ paths:
           description: Internal Server Error - the server could not process the request.
   /getTaxForm:
     post:
-      summary: Request a tax form for an account holder.
+      summary: Get a tax form.
       description: Generates a tax form for account holders operating in the US. For
         more information, refer to [Providing tax forms](https://docs.adyen.com/platforms/tax-forms).
       operationId: post-getTaxForm
       x-groupName: Account holders
       x-sortIndex: 8
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -712,7 +871,7 @@ paths:
           description: Internal Server Error - the server could not process the request.
   /getUploadedDocuments:
     post:
-      summary: Retrieve the uploaded documents of an existing account holder.
+      summary: Get documents.
       description: 'Retrieves documents that were previously uploaded for an account
         holder. Adyen uses the documents in the [KYC verification checks](https://docs.adyen.com/platforms/verification-checks).
 
@@ -720,6 +879,9 @@ paths:
       operationId: post-getUploadedDocuments
       x-groupName: Verification
       x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -779,6 +941,9 @@ paths:
       operationId: post-suspendAccountHolder
       x-groupName: Account holders
       x-sortIndex: 5
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -851,6 +1016,9 @@ paths:
       operationId: post-unSuspendAccountHolder
       x-groupName: Account holders
       x-sortIndex: 6
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -916,6 +1084,9 @@ paths:
       operationId: post-updateAccount
       x-groupName: Accounts
       x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -994,14 +1165,21 @@ paths:
       operationId: post-updateAccountHolder
       x-groupName: Account holders
       x-sortIndex: 3
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
             examples:
-              general:
-                $ref: '#/components/examples/post-updateAccountHolder-general'
+              addShareholders:
+                $ref: '#/components/examples/post-updateAccountHolder-addShareholders'
+              bankAccountDetails:
+                $ref: '#/components/examples/post-updateAccountHolder-bankAccountDetails'
               businessDetails:
                 $ref: '#/components/examples/post-updateAccountHolder-businessDetails'
+              general:
+                $ref: '#/components/examples/post-updateAccountHolder-general'
             schema:
               $ref: '#/components/schemas/UpdateAccountHolderRequest'
       responses:
@@ -1021,6 +1199,9 @@ paths:
         '400':
           content:
             application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -1053,12 +1234,15 @@ paths:
           description: Internal Server Error - the server could not process the request.
   /updateAccountHolderState:
     post:
-      summary: Update the payout or processing state of an account holder.
+      summary: Update payout or processing state.
       description: Disables or enables the processing or payout state of an account
         holder.
       operationId: post-updateAccountHolderState
       x-groupName: Account holders
       x-sortIndex: 4
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -1119,12 +1303,15 @@ paths:
           description: Internal Server Error - the server could not process the request.
   /uploadDocument:
     post:
-      summary: Upload a document for an account holder.
+      summary: Upload a document.
       description: Uploads a document for an account holder. Adyen uses the documents
         in the [KYC verification checks](https://docs.adyen.com/platforms/verification-checks).
       operationId: post-uploadDocument
       x-groupName: Verification
       x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -1307,6 +1494,14 @@ components:
 
             '
           $ref: '#/components/schemas/IndividualDetails'
+        legalArrangements:
+          x-addedInVersion: 6
+          description: Array that contains information about legal arrangements, used
+            when the account holder is acting on behalf of different parties or is
+            part of a contractual business agreement.
+          items:
+            $ref: '#/components/schemas/LegalArrangementDetail'
+          type: array
         merchantCategoryCode:
           description: 'The Merchant Category Code of the account holder.
 
@@ -1674,6 +1869,13 @@ components:
         legalBusinessName:
           description: The legal name of the company.
           type: string
+        listedUltimateParentCompany:
+          x-addedInVersion: 6
+          description: Information about the parent public company. Required if the
+            account holder is 100% owned by a publicly listed company.
+          items:
+            $ref: '#/components/schemas/UltimateParentCompany'
+          type: array
         registrationNumber:
           x-addedInVersion: 4
           description: The registration number of the company.
@@ -1775,6 +1977,19 @@ components:
           type: string
       required:
       - status
+    CloseStoresRequest:
+      properties:
+        accountHolderCode:
+          description: The code of the account holder.
+          type: string
+        stores:
+          description: List of stores to be closed.
+          items:
+            type: string
+          type: array
+      required:
+      - accountHolderCode
+      - stores
     CreateAccountHolderRequest:
       properties:
         accountHolderCode:
@@ -1955,6 +2170,7 @@ components:
           - EVERY_6_HOURS_FROM_MIDNIGHT
           - HOLD
           - MONTHLY
+          - MONTHLY_ON_15TH_AT_MIDNIGHT
           - WEEKLY
           - WEEKLY_ON_TUE_FRI_MIDNIGHT
           - YEARLY
@@ -2090,6 +2306,19 @@ components:
       required:
       - accountHolderCode
       - shareholderCodes
+    DeleteSignatoriesRequest:
+      properties:
+        accountHolderCode:
+          description: The code of the account holder from which to delete the signatories.
+          type: string
+        signatoryCodes:
+          description: Array of codes of the signatories to be deleted.
+          items:
+            type: string
+          type: array
+      required:
+      - accountHolderCode
+      - signatoryCodes
     DocumentDetail:
       properties:
         accountHolderCode:
@@ -2098,15 +2327,14 @@ components:
           type: string
         bankAccountUUID:
           x-addedInVersion: 2
-          description: 'The unique ID of the Bank Account to which the document applies.
+          description: 'The Adyen-generated [`bankAccountUUID`](https://docs.adyen.com/api-explorer/#/Account/latest/post/createAccountHolder__resParam_accountHolderDetails-bankAccountDetails-bankAccountUUID)
+            to which the document must be linked. Refer to [Bank account check](https://docs.adyen.com/platforms/verification-checks/bank-account-check#uploading-a-bank-statement)
+            for details on when a document should be submitted.
 
             >Required if the `documentType` is **BANK_STATEMENT**, where a document
             is being submitted in order to verify a bank account.
 
-
-            >Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification)
-            section for details on when a document should be submitted in order to
-            verify a bank account.'
+            '
           type: string
         description:
           description: Description of the document.
@@ -2124,6 +2352,9 @@ components:
 
             * **COMPANY_REGISTRATION_SCREENING** (Supported from v5 and later): A
             file containing a company registration document.
+
+            * **CONSTITUTIONAL_DOCUMENT**: A file containing information about the
+            account holder''s legal arrangement.
 
             * **PASSPORT**: A file containing the identity page(s) of a passport.
 
@@ -2162,17 +2393,29 @@ components:
         filename:
           description: Filename of the document.
           type: string
+        legalArrangementCode:
+          x-addedInVersion: 6
+          description: The Adyen-generated [`legalArrangementCode`](https://docs.adyen.com/api-explorer/#/Account/latest/post/createAccountHolder__resParam_accountHolderDetails-legalArrangements-legalArrangementCode)
+            to which the document must be linked.
+          type: string
+        legalArrangementEntityCode:
+          x-addedInVersion: 6
+          description: The Adyen-generated [`legalArrangementEntityCode`](https://docs.adyen.com/api-explorer/#/Account/v6/post/createAccountHolder__resParam_accountHolderDetails-legalArrangements-legalArrangementEntities-legalArrangementEntityCode)  to
+            which the document must be linked.
+          type: string
         shareholderCode:
           x-addedInVersion: 2
-          description: "The code of the shareholder, to which the document applies.\
-            \ Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification)\
-            \ for details on when a document should be submitted in order to verify\
-            \ a shareholder.>Required if the account holder referred to by the `accountHolderCode`\
-            \ has a `legalEntity` of type **Business** and the `documentType` is either\
-            \ **PASSPORT**, **ID_CARD_FRONT**, **ID_CARD_BACK**, **DRIVING_LICENCE_FRONT**,\
-            \ or **DRIVING_LICENCE_BACK**. \n>Refer to the [Onboarding and verification](https://docs.adyen.com/platforms/onboarding-and-verification)\
-            \ section for details on when a document should be submitted in order\
-            \ to verify a shareholder."
+          description: 'The Adyen-generated [`shareholderCode`](https://docs.adyen.com/api-explorer/#/Account/latest/post/createAccountHolder__resParam_accountHolderDetails-businessDetails-shareholders-shareholderCode)
+            to which the document must be linked. Refer to [Verification checks](https://docs.adyen.com/platforms/verification-checks)
+            for details on when a document should be submitted.
+
+            >Required if the account holder has a `legalEntity` of type **Business**
+            and the `documentType` is either **PASSPORT**, **ID_CARD_FRONT**, **ID_CARD_BACK**,
+            **DRIVING_LICENCE_FRONT**, or **DRIVING_LICENCE_BACK**. '
+          type: string
+        signatoryCode:
+          description: The Adyen-generated [`signatoryCode`](https://docs.adyen.com/api-explorer/#/Account/v6/post/createAccountHolder__resParam_accountHolderDetails-businessDetails-signatories-signatoryCode)
+            to which the document must be linked.
           type: string
       required:
       - accountHolderCode
@@ -2262,6 +2505,7 @@ components:
           - legalArrangementEntityCode
           - legalArrangementLegalForm
           - legalArrangementMember
+          - legalArrangementMembers
           - legalArrangementName
           - legalArrangementReference
           - legalArrangementRegistrationNumber
@@ -2298,9 +2542,12 @@ components:
           - schedule
           - shareholder
           - shareholderCode
+          - shareholderCodeAndSignatoryCode
+          - shareholderCodeOrSignatoryCode
           - shareholderType
           - shopperInteraction
           - signatory
+          - signatoryCode
           - socialSecurityNumber
           - sourceAccountCode
           - splitAccount
@@ -2321,6 +2568,17 @@ components:
           - tier
           - tierNumber
           - transferCode
+          - ultimateParentCompany
+          - ultimateParentCompanyAddressDetails
+          - ultimateParentCompanyAddressDetailsCountry
+          - ultimateParentCompanyBusinessDetails
+          - ultimateParentCompanyBusinessDetailsLegalBusinessName
+          - ultimateParentCompanyBusinessDetailsRegistrationNumber
+          - ultimateParentCompanyCode
+          - ultimateParentCompanyStockExchange
+          - ultimateParentCompanyStockNumber
+          - ultimateParentCompanyStockNumberOrStockTicker
+          - ultimateParentCompanyStockTicker
           - unknown
           - value
           - verificationType
@@ -2563,8 +2821,9 @@ components:
         status:
           description: 'The status of the check.
 
-            >Permitted Values: `DATA_PROVIDED`, `PASSED`, `PENDING`, `AWAITING_DATA`,
-            `RETRY_LIMIT_REACHED`, `INVALID_DATA`, `FAILED`.'
+
+            Possible values: **AWAITING_DATA** , **DATA_PROVIDED**, **FAILED**, **INVALID_DATA**,
+            **PASSED**, **PENDING**, **RETRY_LIMIT_REACHED**.'
           enum:
           - AWAITING_DATA
           - DATA_PROVIDED
@@ -2580,25 +2839,22 @@ components:
           description: A summary of the execution of the check.
           $ref: '#/components/schemas/KYCCheckSummary'
         type:
-          description: 'The type of check.
-
-            >Permitted Values: `COMPANY_VERIFICATION`, `IDENTITY_VERIFICATION`, `PASSPORT_VERIFICATION`,
-            `BANK_ACCOUNT_VERIFICATION`, `NONPROFIT_VERIFICATION`, `CARD_VERIFICATION`.'
+          description: "The type of check.\n\nPossible values:\n\n * **BANK_ACCOUNT_VERIFICATION**:\
+            \ Used in v5 and earlier. Replaced by **PAYOUT_METHOD_VERIFICATION** in\
+            \ v6 and later.\n\n * **COMPANY_VERIFICATION**\n\n  * **CARD_VERIFICATION**\n\
+            \n* **IDENTITY_VERIFICATION**\n\n* **LEGAL_ARRANGEMENT_VERIFICATION**\n\
+            \n* **NONPROFIT_VERIFICATION**\n\n * **PASSPORT_VERIFICATION**\n\n* **PAYOUT_METHOD_VERIFICATION**:\
+            \ Used in v6 and later.\n\n* **PCI_VERIFICATION**"
           enum:
           - BANK_ACCOUNT_VERIFICATION
           - CARD_VERIFICATION
           - COMPANY_VERIFICATION
-          - CRIMINAL_BACKGROUND_EXTENSIVE_VERIFICATION
-          - CRIMINAL_BACKGROUND_MEDIUM_VERIFICATION
           - IDENTITY_VERIFICATION
           - LEGAL_ARRANGEMENT_VERIFICATION
           - NONPROFIT_VERIFICATION
           - PASSPORT_VERIFICATION
           - PAYOUT_METHOD_VERIFICATION
-          - PCI_SELF_ASSESSMENT_PRESENCE_VERIFICATION
           - PCI_VERIFICATION
-          - POLITICALLY_EXPOSED_IDENTIFICATION_VERIFICATION
-          - POLITICALLY_EXPOSED_VERIFICATION
           type: string
       required:
       - type
@@ -2607,12 +2863,38 @@ components:
       properties:
         kycCheckCode:
           x-addedInVersion: 5
-          description: The code of the check.
+          description: The code of the check. For possible values, refer to [Verification
+            codes](https://docs.adyen.com/platforms/verification-codes).
           format: int32
           type: integer
         kycCheckDescription:
           x-addedInVersion: 5
           description: A description of the check.
+          type: string
+    KYCLegalArrangementCheckResult:
+      properties:
+        checks:
+          description: A list of the checks and their statuses.
+          items:
+            $ref: '#/components/schemas/KYCCheckStatusData'
+          type: array
+        legalArrangementCode:
+          description: The unique ID of the legal arrangement to which the check applies.
+          type: string
+    KYCLegalArrangementEntityCheckResult:
+      properties:
+        checks:
+          description: A list of the checks and their statuses.
+          items:
+            $ref: '#/components/schemas/KYCCheckStatusData'
+          type: array
+        legalArrangementCode:
+          description: The unique ID of the legal arrangement to which the entity
+            belongs.
+          type: string
+        legalArrangementEntityCode:
+          description: The unique ID of the legal arrangement entity to which the
+            check applies.
           type: string
     KYCPayoutMethodCheckResult:
       properties:
@@ -2631,25 +2913,233 @@ components:
           items:
             $ref: '#/components/schemas/KYCCheckStatusData'
           type: array
+        legalArrangementCode:
+          x-addedInVersion: 6
+          description: The unique ID of the legal arrangement to which the shareholder
+            belongs, if applicable.
+          type: string
+        legalArrangementEntityCode:
+          x-addedInVersion: 6
+          description: The unique ID of the legal arrangement entity to which the
+            shareholder belongs, if applicable.
+          type: string
         shareholderCode:
           description: The code of the shareholder to which the check applies.
+          type: string
+    KYCSignatoryCheckResult:
+      properties:
+        checks:
+          description: A list of the checks and their statuses.
+          items:
+            $ref: '#/components/schemas/KYCCheckStatusData'
+          type: array
+        signatoryCode:
+          description: The code of the signatory to which the check applies.
+          type: string
+    KYCUltimateParentCompanyCheckResult:
+      properties:
+        checks:
+          description: A list of the checks and their statuses.
+          items:
+            $ref: '#/components/schemas/KYCCheckStatusData'
+          type: array
+        ultimateParentCompanyCode:
+          x-addedInVersion: 6
+          description: The code of the Ultimate Parent Company to which the check
+            applies.
           type: string
     KYCVerificationResult2:
       properties:
         accountHolder:
-          description: The result(s) of the checks on the account holder.
+          description: The results of the checks on the account holder.
           $ref: '#/components/schemas/KYCCheckResult2'
+        legalArrangements:
+          x-addedInVersion: 6
+          description: The results of the checks on the legal arrangements.
+          items:
+            $ref: '#/components/schemas/KYCLegalArrangementCheckResult'
+          type: array
+        legalArrangementsEntities:
+          x-addedInVersion: 6
+          description: The results of the checks on the legal arrangement entities.
+          items:
+            $ref: '#/components/schemas/KYCLegalArrangementEntityCheckResult'
+          type: array
         payoutMethods:
           x-addedInVersion: 6
-          description: The result(s) of the checks on the payout method(s).
+          description: The results of the checks on the payout methods.
           items:
             $ref: '#/components/schemas/KYCPayoutMethodCheckResult'
           type: array
         shareholders:
-          description: The result(s) of the checks on the shareholder(s).
+          description: The results of the checks on the shareholders.
           items:
             $ref: '#/components/schemas/KYCShareholderCheckResult'
           type: array
+        signatories:
+          description: The results of the checks on the signatories.
+          items:
+            $ref: '#/components/schemas/KYCSignatoryCheckResult'
+          type: array
+        ultimateParentCompany:
+          x-addedInVersion: 6
+          description: The result of the check on the Ultimate Parent Company.
+          items:
+            $ref: '#/components/schemas/KYCUltimateParentCompanyCheckResult'
+          type: array
+    LegalArrangementDetail:
+      properties:
+        address:
+          description: The address of the legal arrangement member.
+          $ref: '#/components/schemas/ViasAddress'
+        legalArrangementCode:
+          description: Adyen-generated unique alphanumeric identifier (UUID) for the
+            entry, returned in the response when you create a legal arrangement. Required
+            when updating an existing legal arrangement entry in an `/updateAccountHolder`
+            request.
+          type: string
+        legalArrangementEntities:
+          description: Array that contains information about the entities or members
+            that are part of the legal arrangement.
+          items:
+            $ref: '#/components/schemas/LegalArrangementEntityDetail'
+          type: array
+        legalArrangementReference:
+          description: Your reference for the legal arrangement. Must be between 3
+            to 128 characters.
+          type: string
+        legalForm:
+          description: "The structure of the legal arrangement as defined according\
+            \ to legislations in the country.\n\n Possible values: **CashManagementTrust**,\
+            \ **CorporateUnitTrust**, **DeceasedEstate**, **DiscretionaryInvestmentTrust**,\
+            \ **DiscretionaryServicesManagementTrust**, **DiscretionaryTradingTrust**,\
+            \ **FirstHomeSaverAccountsTrust**, **FixedTrust**, **FixedUnitTrust**,\
+            \ **HybridTrust**, **ListedPublicUnitTrust**, **OtherTrust**, **PooledSuperannuationTrust**,\
+            \ **PublicTradingTrust**, **UnlistedPublicUnitTrust**, **LimitedPartnership**,\
+            \ **FamilyPartnership**, **OtherPartnership**."
+          enum:
+          - CashManagementTrust
+          - CorporateUnitTrust
+          - DeceasedEstate
+          - DiscretionaryInvestmentTrust
+          - DiscretionaryServicesManagementTrust
+          - DiscretionaryTradingTrust
+          - FirstHomeSaverAccountsTrust
+          - FixedTrust
+          - FixedUnitTrust
+          - HybridTrust
+          - ListedPublicUnitTrust
+          - OtherTrust
+          - PooledSuperannuationTrust
+          - PublicTradingTrust
+          - UnlistedPublicUnitTrust
+          - LimitedPartnership
+          - FamilyPartnership
+          - OtherPartnership
+          type: string
+        name:
+          description: The legal name of the legal arrangement.
+          type: string
+        registrationNumber:
+          description: The registration number of the legal arrangement.
+          type: string
+        taxNumber:
+          description: The tax identification number of the legal arrangement.
+          type: string
+        type:
+          description: 'The type of legal arrangement.
+
+
+            Possible values:
+
+
+            - **Trust** - A legal agreement where the account holder is a trustee
+            that manages assets for beneficiaries.
+
+            - **Partnership** - A legal arrangement where the account holder is a
+            partner that has an agreement with one or more partners to manage, operate
+            and share profits of their jointly-owned business.'
+          enum:
+          - Partnership
+          - Trust
+          type: string
+    LegalArrangementEntityDetail:
+      properties:
+        address:
+          description: The address of the entity.
+          $ref: '#/components/schemas/ViasAddress'
+        businessDetails:
+          description: Required when creating an entity with `legalEntityType` **Business**,
+            **NonProfit**, **PublicCompany**, or **Partnership**.
+          $ref: '#/components/schemas/BusinessDetails'
+        email:
+          description: The e-mail address of the entity.
+          type: string
+        fullPhoneNumber:
+          description: 'The phone number of the contact provided as a single string.  It
+            will be handled as a landline phone.
+
+            **Examples:** "0031 6 11 22 33 44", "+316/1122-3344", "(0031) 611223344"'
+          type: string
+        individualDetails:
+          description: Required when creating an entity with `legalEntityType` **Individual**.
+          $ref: '#/components/schemas/IndividualDetails'
+        legalArrangementEntityCode:
+          description: Adyen-generated unique alphanumeric identifier (UUID) for the
+            entry, returned in the response when you create a legal arrangement entity.
+          type: string
+        legalArrangementEntityReference:
+          description: Your reference for the legal arrangement entity.
+          type: string
+        legalArrangementMembers:
+          description: 'The roles of the entity in the legal arrangement. The values
+            depend on the `legalArragementType`.
+
+
+            Possible values:
+
+
+            - For `legalArragementType` **Trust**, you can use **Trustee**, **Settlor**,
+            **Protector**, **Beneficiary**, or **Shareholder**.
+
+
+            - For `legalArragementType` **Partnership**, you can use **Partner** or
+            **Shareholder**. '
+          items:
+            enum:
+            - Associate
+            - Beneficiary
+            - Chairman
+            - Partner
+            - Protector
+            - Secretary
+            - Settlor
+            - Shareholder
+            - Treasurer
+            - Trustee
+            type: string
+          type: array
+        legalEntityType:
+          description: 'The legal entity type.
+
+
+            Possible values: **Business**, **Individual**, **NonProfit**, **PublicCompany**,
+            or **Partnership**. '
+          enum:
+          - Business
+          - Individual
+          - NonProfit
+          - Partnership
+          - PublicCompany
+          type: string
+        phoneNumber:
+          description: The phone number of the entity.
+          $ref: '#/components/schemas/ViasPhoneNumber'
+        webAddress:
+          description: The URL of the website of the contact.
+          type: string
+      required:
+      - legalEntityType
     PayoutMethod:
       properties:
         merchantAccount:
@@ -2691,6 +3181,7 @@ components:
           - EVERY_6_HOURS_FROM_MIDNIGHT
           - HOLD
           - MONTHLY
+          - MONTHLY_ON_15TH_AT_MIDNIGHT
           - WEEKLY
           - WEEKLY_ON_TUE_FRI_MIDNIGHT
           - YEARLY
@@ -3020,6 +3511,44 @@ components:
           type: string
       required:
       - accountHolderStatus
+    UltimateParentCompany:
+      properties:
+        address:
+          x-addedInVersion: 6
+          description: Address of the ultimate parent company.
+          $ref: '#/components/schemas/ViasAddress'
+        businessDetails:
+          x-addedInVersion: 6
+          description: Details about the ultimate parent company's business.
+          $ref: '#/components/schemas/UltimateParentCompanyBusinessDetails'
+        ultimateParentCompanyCode:
+          x-addedInVersion: 6
+          description: Adyen-generated unique alphanumeric identifier (UUID) for the
+            entry, returned in the response when you create an ultimate parent company.
+            Required when updating an existing entry in an `/updateAccountHolder`
+            request.
+          type: string
+    UltimateParentCompanyBusinessDetails:
+      properties:
+        legalBusinessName:
+          description: The legal name of the company.
+          type: string
+        registrationNumber:
+          x-addedInVersion: 4
+          description: The registration number of the company.
+          type: string
+        stockExchange:
+          x-addedInVersion: 6
+          description: Market Identifier Code (MIC).
+          type: string
+        stockNumber:
+          x-addedInVersion: 6
+          description: International Securities Identification Number (ISIN).
+          type: string
+        stockTicker:
+          x-addedInVersion: 6
+          description: Stock Ticker symbol.
+          type: string
     UnSuspendAccountHolderRequest:
       properties:
         accountHolderCode:
@@ -3349,6 +3878,7 @@ components:
           - EVERY_6_HOURS_FROM_MIDNIGHT
           - HOLD
           - MONTHLY
+          - MONTHLY_ON_15TH_AT_MIDNIGHT
           - WEEKLY
           - WEEKLY_ON_TUE_FRI_MIDNIGHT
           - YEARLY
@@ -3552,6 +4082,21 @@ components:
           email: test@email.com
           webAddress: https://www.your-website.com
         legalEntity: Business
+    post-createAccountHolder-individual:
+      summary: Create an individual account holder
+      value:
+        accountHolderCode: GENERATE_CODE
+        accountHolderDetails:
+          email: tim@green.com
+          individualDetails:
+            name:
+              firstName: Tim
+              gender: MALE
+              lastName: Green
+          address:
+            country: US
+          webAddress: https://www.your-website.com
+        legalEntity: Individual
     post-deleteBankAccounts-basic:
       summary: Delete bank accounts
       value:
@@ -3604,6 +4149,57 @@ components:
         payoutSchedule:
           schedule: WEEKLY
           action: CLOSE
+    post-updateAccountHolder-addShareholders:
+      summary: Add shareholders
+      value:
+        accountHolderCode: YOUR_UNIQUE_ACCOUNT_HOLDER_CODE
+        accountHolderDetails:
+          businessDetails:
+            shareholders:
+            - name:
+                firstName: Alice
+                gender: FEMALE
+                lastName: Fields
+              address:
+                city: San Francisco
+                country: US
+                houseNumberOrName: '274'
+                postalCode: '94107'
+                stateOrProvince: CA
+                street: Brannan
+              email: testshareholder2@email.com
+              personalData:
+                dateOfBirth: '1970-01-01'
+                documentData:
+                - number: '1234567890'
+                  type: ID
+            taxId: '123456789'
+          email: test@email.com
+          fullPhoneNumber: '+14154890281'
+          webAddress: http://www.accountholderwebsite.com
+    post-updateAccountHolder-bankAccountDetails:
+      summary: Update bank account details
+      value:
+        accountHolderCode: CODE_OF_ACCOUNT_HOLDER
+        accountHolderDetails:
+          email: tim@green.com
+          individualDetails:
+            name:
+              firstName: Tim
+              gender: MALE
+              lastName: Green
+          bankAccountDetails:
+          - accountNumber: '1678116852'
+            branchCode: '053101273'
+            countryCode: US
+            currencyCode: USD
+            ownerName: Tim Green
+            ownerHouseNumberOrName: '100'
+            ownerStreet: Main Street
+            ownerPostalCode: 02894
+            ownerCity: Springfield
+            ownerState: AZ
+            ownerCountryCode: US
     post-updateAccountHolder-businessDetails:
       summary: Update business details
       value:

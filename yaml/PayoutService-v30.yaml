@@ -188,6 +188,11 @@ paths:
       requestBody:
         content:
           application/json:
+            examples:
+              payout-b2c:
+                $ref: '#/components/examples/post-payout-payout-b2c'
+              payout-p2p:
+                $ref: '#/components/examples/post-payout-payout-p2p'
             schema:
               $ref: '#/components/schemas/PayoutRequest'
       responses:
@@ -200,6 +205,9 @@ paths:
         '400':
           content:
             application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -303,10 +311,16 @@ paths:
         content:
           application/json:
             examples:
-              storeDetailAndSubmitThirdParty-Neteller:
-                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Neteller'
               storeDetailAndSubmitThirdParty:
                 $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty'
+              storeDetailAndSubmitThirdParty-Neteller:
+                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Neteller'
+              storeDetailAndSubmitThirdParty-PayPal:
+                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-PayPal'
+              storeDetailAndSubmitThirdParty-Paysafecard:
+                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Paysafecard'
+              storeDetailAndSubmitThirdParty-Skrill:
+                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Skrill'
             schema:
               $ref: '#/components/schemas/StoreDetailAndSubmitRequest'
       responses:
@@ -319,6 +333,9 @@ paths:
         '400':
           content:
             application/json:
+              examples:
+                generic-400:
+                  $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -1851,7 +1868,7 @@ components:
     Address:
       properties:
         city:
-          description: The name of the city.
+          description: 'The name of the city. Maximum length: 3000 characters.'
           type: string
         country:
           description: 'The two-character country code as defined in ISO-3166-1 alpha-2.
@@ -1861,7 +1878,7 @@ components:
             the shopper, provide `country` as `ZZ`.'
           type: string
         houseNumberOrName:
-          description: The number or name of the house.
+          description: 'The number or name of the house. Maximum length: 3000 characters.'
           type: string
         postalCode:
           description: A maximum of five digits for an address in the US, or a maximum
@@ -1874,7 +1891,7 @@ components:
             > Required for the US and Canada.'
           type: string
         street:
-          description: 'The name of the street.
+          description: 'The name of the street. Maximum length: 3000 characters.
 
             > The house number should not be included in this field; it should be
             separately provided via `houseNumberOrName`.'
@@ -2248,11 +2265,6 @@ components:
         firstName:
           description: The first name.
           type: string
-        infix:
-          description: 'The name''s infix, if applicable.
-
-            >A maximum length of twenty (20) characters is imposed.'
-          type: string
         lastName:
           description: The last name.
           type: string
@@ -2558,7 +2570,7 @@ components:
         shopperStatement:
           description: "The text to be shown on the shopper's bank statement. To enable\
             \ this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n\
-            \ We recommend sending a maximum of 25 characters, otherwise banks might\
+            \ We recommend sending a maximum of 22 characters, otherwise banks might\
             \ truncate the string."
           type: string
         socialSecurityNumber:
@@ -2739,6 +2751,13 @@ components:
           description: 'Information provided by the issuer to the cardholder. If this
             field is present, you need to display this information to the cardholder. '
           type: string
+        cavv:
+          description: The Cardholder Authentication Verification Value (CAVV) for
+            the 3D Secure authentication session, as a Base64-encoded 20-byte array.
+          type: string
+        cavvAlgorithm:
+          description: The CAVV algorithm used.
+          type: string
         scaExemptionRequested:
           description: "Shows the [exemption type](https://docs.adyen.com/payments-fundamentals/psd2-sca-compliance-and-implementation-guide#specifypreferenceinyourapirequest)\
             \ that Adyen requested for the payment.\n\n Possible values:\n* **lowValue**\
@@ -2862,6 +2881,9 @@ components:
 
             Example: 58747'
           type: string
+        authorisationMid:
+          description: Merchant ID known by the acquirer.
+          type: string
         authorisedAmountCurrency:
           description: The currency of the authorised amount, as a three-character
             [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
@@ -2894,6 +2916,9 @@ components:
 
 
             > Only relevant for SEPA Direct Debit transactions.'
+          type: string
+        coBrandedWith:
+          description: Includes the co-branded card information.
           type: string
         cvcResult:
           description: The result of CVC verification.
@@ -2938,6 +2963,15 @@ components:
         fraudCheck-[itemNr]-[FraudCheckname]:
           description: The fraud score due to a particular fraud check. The fraud
             check name is found in the key of the key-value pair.
+          type: string
+        fraudManualReview:
+          description: Indicates if the payment is sent to manual review.
+          type: string
+        fraudResultType:
+          description: The fraud result properties of the payment.
+          enum:
+          - GREEN
+          - FRAUD
           type: string
         fundingSource:
           description: 'Information regarding the funding type of the card. The possible
@@ -3020,6 +3054,9 @@ components:
 
             * Non-reloadable prepaid card'
           type: string
+        isCardCommercial:
+          description: Indicates if the card is used for business purposes only.
+          type: string
         issuerCountry:
           description: 'The issuing country of the card based on the BIN list that
             Adyen maintains.
@@ -3027,12 +3064,19 @@ components:
 
             Example: JP'
           type: string
+        liabilityShift:
+          description: A Boolean value indicating whether a liability shift was offered
+            for this payment.
+          type: string
         mcBankNetReferenceNumber:
           description: 'The `mcBankNetReferenceNumber`, is a minimum of six characters
             and a maximum of nine characters long.
 
 
             > Contact Support Team to enable this field.'
+          type: string
+        merchantReference:
+          description: The reference provided for the transaction.
           type: string
         networkTxReference:
           description: 'Returned in the response if you are not tokenizing with Adyen
@@ -3059,6 +3103,9 @@ components:
           description: The Payment Account Reference (PAR) value links a network token
             with the underlying primary account number (PAN). The PAR value consists
             of 29 uppercase alphanumeric characters.
+          type: string
+        paymentMethod:
+          description: The payment method used in the transaction.
           type: string
         paymentMethodVariant:
           description: 'The Adyen sub-variant of the payment method used for the payment
@@ -3863,6 +3910,67 @@ components:
       value:
         pspReference: 991617894325360J
         response: '[payout-decline-received]'
+    post-payout-payout-b2c:
+      summary: Instant card payout (B2C)
+      description: Pay out to your sellers, customers, freelancers, etc
+      value:
+        amount:
+          value: 2500
+          currency: USD
+        card:
+          number: '4111111111111111'
+          expiryMonth: '03'
+          expiryYear: '2030'
+          holderName: John Smith
+        billingAddress:
+          houseNumberOrName: '121'
+          street: Populierenlaan
+          city: Beverly Hills
+          postalCode: '90210'
+          stateOrProvince: CA
+          country: US
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+        reference: P9999999999999999
+        shopperName:
+          firstName: John
+          lastName: Smith
+        dateOfBirth: '1990-01-01'
+        nationality: NL
+    post-payout-payout-p2p:
+      summary: Instant card payout (P2P)
+      description: Facilitate the transfer of money between two individuals
+      value:
+        amount:
+          value: 2500
+          currency: USD
+        card:
+          number: '4111111111111111'
+          expiryMonth: '03'
+          expiryYear: '2030'
+          holderName: John Smith
+        fundSource:
+          additionalData:
+            fundingSource: DEBIT
+          billingAddress:
+            country: US
+            postalCode: '90210'
+            city: Beverly Hills
+          card:
+            expiryMonth: '03'
+            expiryYear: '2030'
+            holderName: Payer Name
+            number: '4400000000000008'
+          shopperName:
+            firstName: Payer
+            lastName: Name
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+        reference: P9999999999999999
+        shopperName:
+          firstName: John
+          lastName: Smith
+        shopperStatement: Payer Name
+        dateOfBirth: '1990-01-01'
+        nationality: NL
     post-storeDetail-storeDetail:
       summary: Store payout details
       description: Store payment details under the PAYOUT recurring contract
@@ -3938,6 +4046,82 @@ components:
         additionalData:
           tokenDataType: Neteller
           account: myNetellerAccount
+        shopperName:
+          firstName: Test
+          gender: FEMALE
+          lastName: Test2
+        dateOfBirth: '1982-07-17'
+        entityType: NaturalPerson
+        nationality: NL
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+        recurring:
+          contract: PAYOUT
+        reference: Test Payout
+        shopperEmail: test@company.com
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+    post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-PayPal:
+      summary: Submit a payout to PayPal
+      description: Submit a payout to PayPal and stores its details for subsequent
+        payouts
+      value:
+        amount:
+          currency: EUR
+          value: 1750
+        selectedBrand: paypal
+        additionalData:
+          tokenDataType: PayPal
+          emailId: EmailUsedForPayPalAccount@example.com
+          paypal.payerId: AK5HCWWRUV2KL
+        shopperName:
+          firstName: Test
+          gender: FEMALE
+          lastName: Test2
+        dateOfBirth: '1982-07-17'
+        entityType: NaturalPerson
+        nationality: NL
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+        recurring:
+          contract: PAYOUT
+        reference: Test Payout
+        shopperEmail: test@company.com
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+    post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Paysafecard:
+      summary: Submit a payout to Paysafecard
+      description: Submit a payout to Paysafecard and stores its details for subsequent
+        payouts
+      value:
+        amount:
+          currency: EUR
+          value: 1000
+        selectedBrand: paysafecard
+        additionalData:
+          emailId: EmailUsedForPaysafecardAccount@example.com
+        shopperName:
+          firstName: Test
+          gender: MALE
+          lastName: Test2
+        dateOfBirth: '1982-07-17'
+        entityType: NaturalPerson
+        nationality: NL
+        merchantAccount: YOUR_MERCHANT_ACCOUNT
+        recurring:
+          contract: PAYOUT
+        reference: Test Payout
+        shopperEmail: test@company.com
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        shopperIP: 61.294.12.12
+    post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Skrill:
+      summary: Submit a payout to Skrill
+      description: Submit a payout to Skrill and stores its details for subsequent
+        payouts
+      value:
+        amount:
+          currency: EUR
+          value: 100
+        selectedBrand: moneybookers
+        additionalData:
+          tokenDataType: MoneyBookers
+          email: name@adyen.com
         shopperName:
           firstName: Test
           gender: FEMALE
