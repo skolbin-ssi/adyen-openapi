@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 servers:
 - url: https://pal-test.adyen.com/pal/servlet/BinLookup/v50
 info:
@@ -17,6 +17,8 @@ x-groups:
 paths:
   /get3dsAvailability:
     post:
+      tags:
+      - General
       summary: Checks 3D Secure availability.
       description: 'Verifies whether 3D Secure is available for the specified BIN
         or card brand. For 3D Secure 2, this endpoint also returns device fingerprinting
@@ -24,10 +26,13 @@ paths:
 
 
         For more information, refer to [3D Secure 2](https://docs.adyen.com/online-payments/3d-secure/native-3ds2).'
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: post-get3dsAvailability
       x-groupName: General
       x-sortIndex: 0
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -41,7 +46,7 @@ paths:
           content:
             application/json:
               examples:
-                get3dsAvailability-200:
+                get3dsAvailability:
                   $ref: '#/components/examples/post-get3dsAvailability-get3dsAvailability-200'
               schema:
                 $ref: '#/components/schemas/ThreeDSAvailabilityResponse'
@@ -50,7 +55,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
@@ -81,6 +86,8 @@ paths:
           description: Internal Server Error - the server could not process the request.
   /getCostEstimate:
     post:
+      tags:
+      - General
       summary: Gets a cost estimate.
       description: 'Use the Adyen Cost Estimation API to pre-calculate interchange
         and scheme fee costs. Knowing these costs prior actual payment authorisation
@@ -100,6 +107,9 @@ paths:
       operationId: post-getCostEstimate
       x-groupName: General
       x-sortIndex: 0
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
       requestBody:
         content:
           application/json:
@@ -121,13 +131,13 @@ paths:
           content:
             application/json:
               examples:
-                getCostEstimate-200:
+                getCostEstimate:
                   $ref: '#/components/examples/post-getCostEstimate-getCostEstimate-200'
-                getCostEstimateEncryptedCard-200:
+                getCostEstimateEncryptedCard:
                   $ref: '#/components/examples/post-getCostEstimate-getCostEstimateEncryptedCard-200'
-                getCostEstimateMinimal-200:
+                getCostEstimateMinimal:
                   $ref: '#/components/examples/post-getCostEstimate-getCostEstimateMinimal-200'
-                getCostEstimateMinimal3DS-200:
+                getCostEstimateMinimal3DS:
                   $ref: '#/components/examples/post-getCostEstimate-getCostEstimateMinimal3DS-200'
               schema:
                 $ref: '#/components/schemas/CostEstimateResponse'
@@ -136,7 +146,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/ServiceError'
@@ -367,10 +377,10 @@ components:
           - POS
           type: string
         shopperReference:
-          description: 'Your reference to uniquely identify this shopper (for example,
-            user ID or account ID). Minimum length: 3 characters.
-
-            > This field is required for recurring payments.'
+          description: "Required for recurring payments. \nYour reference to uniquely\
+            \ identify this shopper, for example user ID or account ID. Minimum length:\
+            \ 3 characters.\n> Your reference must not include personally identifiable\
+            \ information (PII), for example name or email address."
           type: string
       required:
       - amount
@@ -405,6 +415,11 @@ components:
           type: string
         directoryServerId:
           description: Directory Server (DS) identifier.
+          type: string
+        fromSDKVersion:
+          description: The version of the mobile 3D Secure 2 SDK. For the possible
+            values, refer to the versions in [Adyen 3DS2 Android](https://github.com/Adyen/adyen-3ds2-android/releases)
+            and [Adyen 3DS2 iOS](https://github.com/Adyen/adyen-3ds2-ios/releases).
           type: string
         publicKey:
           description: Public key. The 3D Secure 2 SDK encrypts the device information
@@ -453,18 +468,18 @@ components:
           description: A descriptive name for this detail.
           type: string
         recurringExpiry:
-          x-addedInVersion: 40
+          x-addedInVersion: '40'
           description: Date after which no further authorisations shall be performed.
             Only for 3D Secure 2.
           format: date-time
           type: string
         recurringFrequency:
-          x-addedInVersion: 40
+          x-addedInVersion: '40'
           description: Minimum number of days between authorisations. Only for 3D
             Secure 2.
           type: string
         tokenService:
-          x-addedInVersion: 25
+          x-addedInVersion: '25'
           description: The name of the token service.
           enum:
           - VISATOKENSERVICE
@@ -473,7 +488,7 @@ components:
     ServiceError:
       properties:
         additionalData:
-          x-addedInVersion: 46
+          x-addedInVersion: '46'
           additionalProperties:
             type: string
           description: 'Contains additional information about the payment. Some data
@@ -549,7 +564,7 @@ components:
     ThreeDSAvailabilityResponse:
       properties:
         binDetails:
-          x-addedInVersion: 50
+          x-addedInVersion: '50'
           description: Bin Group Details
           $ref: '#/components/schemas/BinDetail'
         dsPublicKeys:

@@ -40,17 +40,20 @@ x-groups:
 paths:
   /accountHolders:
     post:
+      tags:
+      - Account holders
       summary: Create an account holder.
       description: 'Creates an account holder. This resource represents your user''s
         entity within the balance platform.
 
 
         For more information, refer to [Create accounts](https://docs.adyen.com/issuing/create-accounts).'
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: post-accountHolders
       x-groupName: Account holders
       x-sortIndex: 1
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -65,7 +68,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/post-accountHolders-success-200'
               schema:
                 $ref: '#/components/schemas/AccountHolder'
@@ -74,7 +77,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -83,7 +86,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -92,7 +95,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -101,7 +104,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -110,20 +113,23 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /accountHolders/{id}:
     get:
+      tags:
+      - Account holders
       summary: Retrieve an account holder.
       description: Returns a specific account holder.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-accountHolders-id
       x-groupName: Account holders
       x-sortIndex: 3
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the account holder.
@@ -137,7 +143,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-accountHolders-id-success-200'
               schema:
                 $ref: '#/components/schemas/AccountHolder'
@@ -146,7 +152,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -155,7 +161,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -164,7 +170,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -173,7 +179,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -182,12 +188,14 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
     patch:
+      tags:
+      - Account holders
       summary: Update an account holder.
       description: 'Updates a specific account holder. When updating an account holder
         resource, note that:
@@ -198,11 +206,12 @@ paths:
 
         * When updating any parameter in the `contactDetails` object, you must send
         all other existing `contactDetails` parameters.'
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: patch-accountHolders-id
       x-groupName: Account holders
       x-sortIndex: 2
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -224,7 +233,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/patch-accountHolders-id-success-200'
               schema:
                 $ref: '#/components/schemas/AccountHolder'
@@ -233,7 +242,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -242,7 +251,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -251,7 +260,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -260,7 +269,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -269,23 +278,26 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /accountHolders/{id}/balanceAccounts:
     get:
+      tags:
+      - Account holders
       summary: Retrieve all balance accounts of a specific account holder.
       description: "Returns a paginated list of balance accounts associated with a\
         \ specific account holder. To fetch multiple pages, use the query parameters.\
         \ \n\nFor example, to limit the page to 5 balance accounts and to skip the\
         \ first 10: `/accountHolders/{id}/balanceAccounts?limit=5&offset=10`."
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-accountHolders-id-balanceAccounts
       x-groupName: Account holders
       x-sortIndex: 4
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the account holder.
@@ -314,7 +326,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-accountHolders-id-balanceAccounts-success-200'
               schema:
                 $ref: '#/components/schemas/PaginatedBalanceAccountsResponse'
@@ -323,7 +335,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -332,7 +344,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -341,7 +353,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -350,7 +362,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -359,22 +371,25 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /balanceAccounts:
     post:
+      tags:
+      - Balance accounts
       summary: Create a balance account.
       description: "Creates a balance account. The balance account resource holds\
         \ the funds of the associated account holder. \n\nFor more information, refer\
         \ to [Create accounts](https://docs.adyen.com/issuing/create-accounts)."
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: post-balanceAccounts
       x-groupName: Balance accounts
       x-sortIndex: 1
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -389,7 +404,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/post-balanceAccounts-success-200'
               schema:
                 $ref: '#/components/schemas/BalanceAccount'
@@ -398,7 +413,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -407,7 +422,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -416,7 +431,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -425,7 +440,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -434,20 +449,23 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /balanceAccounts/{id}:
     get:
+      tags:
+      - Balance accounts
       summary: Retrieve a balance account.
       description: Returns a specific balance account.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-balanceAccounts-id
       x-groupName: Balance accounts
       x-sortIndex: 3
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the balance account.
@@ -461,7 +479,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-balanceAccounts-id-success-200'
               schema:
                 $ref: '#/components/schemas/BalanceAccount'
@@ -470,7 +488,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -479,7 +497,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -488,7 +506,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -497,7 +515,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -506,23 +524,102 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
+                  $ref: '#/components/examples/generic-500'
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Internal Server Error - the server could not process the request.
+    patch:
+      tags:
+      - Balance accounts
+      summary: Update a balance account.
+      description: Updates a balance account.
+      x-addedInVersion: '1'
+      operationId: patch-balanceAccounts-id
+      x-groupName: Balance accounts
+      x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BalanceAccountUpdateRequest'
+      parameters:
+      - description: Unique identifier of the balance account.
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceAccount'
+          description: OK - the request has succeeded.
+        '400':
+          content:
+            application/json:
+              examples:
+                generic:
+                  $ref: '#/components/examples/generic-400'
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              examples:
+                generic:
+                  $ref: '#/components/examples/generic-401'
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              examples:
+                generic:
+                  $ref: '#/components/examples/generic-403'
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              examples:
+                generic:
+                  $ref: '#/components/examples/generic-422'
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              examples:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /balanceAccounts/{id}/paymentInstruments:
     get:
+      tags:
+      - Balance accounts
       summary: Retrieve all payment instruments for a specific balance account.
       description: "Returns a paginated list of the payment instruments associated\
         \ with a specific balance account. To fetch multiple pages, use the query\
         \ parameters. \n\nFor example, to limit the page to 3 payment instruments\
         \ and to skip the first 6: `/balanceAccounts/{id}/paymentInstruments?limit=3&offset=6`"
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-balanceAccounts-id-paymentInstruments
       x-groupName: Balance accounts
       x-sortIndex: 4
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the balance account.
@@ -551,7 +648,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-balanceAccounts-id-paymentInstruments-success-200'
               schema:
                 $ref: '#/components/schemas/PaginatedPaymentInstrumentsResponse'
@@ -560,7 +657,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -569,7 +666,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -578,7 +675,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -587,7 +684,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -596,20 +693,23 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /balancePlatforms/{id}:
     get:
+      tags:
+      - General
       summary: Retrieve a balance platform.
       description: Returns a specific balance platform.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-balancePlatforms-id
       x-groupName: General
       x-sortIndex: 0
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the balance platform.
@@ -623,7 +723,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-balancePlatforms-id-success-200'
               schema:
                 $ref: '#/components/schemas/BalancePlatform'
@@ -632,7 +732,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -641,7 +741,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -650,7 +750,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -659,7 +759,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -668,23 +768,26 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /balancePlatforms/{id}/accountHolders:
     get:
+      tags:
+      - General
       summary: Retrieve all account holders under a specific balance platform.
       description: "Returns a paginated list of all the account holders that belong\
         \ to the balance platform. To fetch multiple pages, use the query parameters.\
         \ \n\nFor example, to limit the page to 5 account holders and to skip the\
         \ first 20: `/balancePlatforms/{id}/accountHolders?limit=5&offset=20`."
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-balancePlatforms-id-accountHolders
       x-groupName: General
       x-sortIndex: 0
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the balance platform.
@@ -713,7 +816,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-balancePlatforms-id-accountHolders-success-200'
               schema:
                 $ref: '#/components/schemas/PaginatedAccountHoldersResponse'
@@ -722,7 +825,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -731,7 +834,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -740,7 +843,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -749,7 +852,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -758,13 +861,15 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /documents:
     post:
+      tags:
+      - Documents
       summary: Upload a document for verification checks.
       description: "Uploads a document for verification checks. Adyen uses the information\
         \ from the [legal entity](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/legalEntities)\
@@ -775,11 +880,12 @@ paths:
         \ only upload documents when your Adyen contact informs you to provide additional\
         \ information for the legal entity. For more information, refer to [Onboard\
         \ and verify account holders](https://docs.adyen.com/issuing/kyc-verification)."
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: post-documents
       x-groupName: Documents
       x-sortIndex: 4
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -797,8 +903,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -806,8 +912,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -815,8 +921,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -824,8 +930,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -833,20 +939,23 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
   /documents/{id}:
     delete:
+      tags:
+      - Documents
       summary: Delete a document.
       description: Deletes a document.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: delete-documents-id
       x-groupName: Documents
       x-sortIndex: 7
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the document to be deleted.
@@ -866,8 +975,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -875,8 +984,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -884,8 +993,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -893,8 +1002,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -902,19 +1011,22 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
     get:
+      tags:
+      - Documents
       summary: Retrieve a document.
       description: Returns a specific document.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-documents-id
       x-groupName: Documents
       x-sortIndex: 5
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the document.
@@ -934,8 +1046,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -943,8 +1055,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -952,8 +1064,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -961,8 +1073,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -970,19 +1082,22 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
     patch:
+      tags:
+      - Documents
       summary: Update a document.
       description: Updates a specific document.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: patch-documents-id
       x-groupName: Documents
       x-sortIndex: 6
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -1007,8 +1122,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -1016,8 +1131,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -1025,8 +1140,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -1034,8 +1149,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -1043,13 +1158,15 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
   /legalEntities:
     post:
+      tags:
+      - Legal entities
       summary: Create a legal entity.
       description: "Creates a legal entity. This resource contains information about\
         \ an individual or organization that will be onboarded on your balance platform.\
@@ -1058,11 +1175,12 @@ paths:
         \ you of the status and results of the KYC checks. \n\nWhen the legal entity\
         \ passes the verification checks, you can issue a card to them. For more information,\
         \ refer to [Onboard and verify account holders](https://docs.adyen.com/issuing/kyc-verification)."
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: post-legalEntities
       x-groupName: Legal entities
       x-sortIndex: 1
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -1080,8 +1198,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -1089,8 +1207,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -1098,8 +1216,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -1107,8 +1225,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -1116,20 +1234,23 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
   /legalEntities/{id}:
     get:
+      tags:
+      - Legal entities
       summary: Retrieve a legal entity.
       description: Returns a specific legal entity.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-legalEntities-id
       x-groupName: Legal entities
       x-sortIndex: 2
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the legal entity.
@@ -1149,8 +1270,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -1158,8 +1279,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -1167,8 +1288,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -1176,8 +1297,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -1185,22 +1306,25 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
     patch:
+      tags:
+      - Legal entities
       summary: Update a legal entity.
       description: "Updates a legal entity. When updating a legal entity resource,\
         \ note that:\n\n * To update the `entityAssociations` array, you need to replace\
         \ the entire array. For example, if the array has 3 entries and you want to\
         \ remove 1 entry, you need to PATCH the resource with the remaining 2 entries."
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: patch-legalEntities-id
       x-groupName: Legal entities
       x-sortIndex: 3
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -1225,8 +1349,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -1234,8 +1358,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -1243,8 +1367,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -1252,8 +1376,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -1261,22 +1385,25 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
   /paymentInstrumentGroups:
     post:
+      tags:
+      - Payment instrument groups
       summary: Create a payment instrument group.
       description: Creates a payment instrument group, which you use to associate
         and group payment instrument resources together. You can apply a transaction
         rule to a payment instrument group.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: post-paymentInstrumentGroups
       x-groupName: Payment instrument groups
       x-sortIndex: 1
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -1291,7 +1418,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/post-paymentInstrumentGroups-success-200'
               schema:
                 $ref: '#/components/schemas/PaymentInstrumentGroup'
@@ -1300,7 +1427,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1309,7 +1436,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1318,7 +1445,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1327,7 +1454,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1336,20 +1463,23 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /paymentInstrumentGroups/{id}:
     get:
+      tags:
+      - Payment instrument groups
       summary: Retrieve a payment instrument group.
       description: Returns a specific payment instrument group.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-paymentInstrumentGroups-id
       x-groupName: Payment instrument groups
       x-sortIndex: 2
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the payment instrument group.
@@ -1363,7 +1493,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-paymentInstrumentGroups-id-success-200'
               schema:
                 $ref: '#/components/schemas/PaymentInstrumentGroup'
@@ -1372,7 +1502,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1381,7 +1511,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1390,7 +1520,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1399,7 +1529,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1408,21 +1538,24 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /paymentInstrumentGroups/{id}/transactionRules:
     get:
+      tags:
+      - Payment instrument groups
       summary: Retrieve all transaction rules for a specific payment instruments group.
       description: Returns a list of all the transaction rules associated with a specific
         payment instrument group.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-paymentInstrumentGroups-id-transactionRules
       x-groupName: Payment instrument groups
       x-sortIndex: 3
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the payment instrument group.
@@ -1436,7 +1569,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-paymentInstrumentGroups-id-transactionRules-success-200'
               schema:
                 $ref: '#/components/schemas/TransactionRulesResponse'
@@ -1445,7 +1578,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1454,7 +1587,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1463,7 +1596,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1472,7 +1605,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1481,22 +1614,25 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /paymentInstruments:
     post:
+      tags:
+      - Payment instruments
       summary: Create a payment instrument.
       description: "Creates a payment instrument, which results in issuing either\
         \ a physical or a virtual card to your user.\n\n For more information, refer\
         \ to [Create cards](https://docs.adyen.com/issuing/create-cards)."
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: post-paymentInstruments
       x-groupName: Payment instruments
       x-sortIndex: 11
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -1513,7 +1649,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/post-paymentInstruments-success-200'
               schema:
                 $ref: '#/components/schemas/PaymentInstrument'
@@ -1522,7 +1658,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1531,7 +1667,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1540,7 +1676,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1549,7 +1685,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1558,20 +1694,23 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /paymentInstruments/{id}:
     get:
+      tags:
+      - Payment instruments
       summary: Retrieve a payment instrument.
       description: Returns a specific payment instrument.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-paymentInstruments-id
       x-groupName: Payment instruments
       x-sortIndex: 13
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the payment instrument.
@@ -1585,7 +1724,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-paymentInstruments-id-success-200'
               schema:
                 $ref: '#/components/schemas/PaymentInstrument'
@@ -1594,7 +1733,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1603,7 +1742,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1612,7 +1751,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1621,7 +1760,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1630,22 +1769,25 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
     patch:
+      tags:
+      - Payment instruments
       summary: Update a payment instrument.
       description: Updates a specific payment instrument. Once a payment instrument
         is already active, you can only update the status. However, for cards created
         with a **Requested** or **Inactive** status, you can still update the balance
         account associated with the card.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: patch-paymentInstruments-id
       x-groupName: Payment instruments
       x-sortIndex: 12
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -1669,7 +1811,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/patch-paymentInstruments-id-success-200'
               schema:
                 $ref: '#/components/schemas/PaymentInstrument'
@@ -1678,7 +1820,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1687,7 +1829,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1696,7 +1838,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1705,9 +1847,9 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
-                invalidData-422:
+                invalidData:
                   $ref: '#/components/examples/patch-paymentInstruments-id-invalidData-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1716,21 +1858,24 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /paymentInstruments/{id}/transactionRules:
     get:
+      tags:
+      - Payment instruments
       summary: Retrieve all transaction rules for a specific payment instrument.
       description: Returns a list of transaction rules associated to a specific payment
         instrument.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-paymentInstruments-id-transactionRules
       x-groupName: Payment instruments
       x-sortIndex: 14
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the payment instrument.
@@ -1744,7 +1889,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-paymentInstruments-id-transactionRules-success-200'
               schema:
                 $ref: '#/components/schemas/TransactionRulesResponse'
@@ -1753,7 +1898,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1762,7 +1907,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1771,7 +1916,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1780,7 +1925,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1789,13 +1934,15 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /transactionRules:
     post:
+      tags:
+      - Transaction rules
       summary: Create a transaction rule.
       description: 'Creates a transaction rule. Transaction rules define conditions
         to automatically approve or deny transactions. You can apply transaction rules
@@ -1805,11 +1952,12 @@ paths:
 
         For more information on how you can set conditions, refer to [Transaction
         rules](https://docs.adyen.com/issuing/transaction-rules).'
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: post-transactionRules
       x-groupName: Transaction rules
       x-sortIndex: 1
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -1824,7 +1972,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/post-transactionRules-success-200'
               schema:
                 $ref: '#/components/schemas/TransactionRule'
@@ -1833,7 +1981,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1842,7 +1990,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1851,7 +1999,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1860,7 +2008,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1869,20 +2017,23 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /transactionRules/{transactionRuleId}:
     delete:
+      tags:
+      - Transaction rules
       summary: Delete a transaction rule.
       description: Deletes a transaction rule.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: delete-transactionRules-transactionRuleId
       x-groupName: Transaction rules
       x-sortIndex: 5
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the transaction rule.
@@ -1896,7 +2047,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/delete-transactionRules-transactionRuleId-success-200'
               schema:
                 $ref: '#/components/schemas/TransactionRule'
@@ -1905,7 +2056,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1914,7 +2065,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1923,7 +2074,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1932,7 +2083,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1941,19 +2092,22 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
     get:
+      tags:
+      - Transaction rules
       summary: Retrieve a transaction rule.
       description: Returns a specific transaction rule.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-transactionRules-transactionRuleId
       x-groupName: Transaction rules
       x-sortIndex: 2
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the transaction rule.
@@ -1967,7 +2121,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/get-transactionRules-transactionRuleId-success-200'
               schema:
                 $ref: '#/components/schemas/TransactionRuleResponse'
@@ -1976,7 +2130,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1985,7 +2139,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -1994,7 +2148,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -2003,7 +2157,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -2012,12 +2166,14 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
     patch:
+      tags:
+      - Transaction rules
       summary: Update a transaction rule.
       description: "Updates a transaction rule.  When updating a transaction rule\
         \ resource, note that: \n\n* When updating only the `status`, you can send\
@@ -2025,11 +2181,12 @@ paths:
         \ are left unchanged.\n\n* When updating any other parameter, you need to\
         \ send all existing resource parameters. If you omit a parameter in the request,\
         \ the parameter is removed from the resource."
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: patch-transactionRules-transactionRuleId
       x-groupName: Transaction rules
       x-sortIndex: 3
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -2051,7 +2208,7 @@ paths:
           content:
             application/json:
               examples:
-                success-200:
+                success:
                   $ref: '#/components/examples/patch-transactionRules-transactionRuleId-success-200'
               schema:
                 $ref: '#/components/schemas/TransactionRule'
@@ -2060,7 +2217,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
+                generic:
                   $ref: '#/components/examples/generic-400'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -2069,7 +2226,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
+                generic:
                   $ref: '#/components/examples/generic-401'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -2078,7 +2235,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
+                generic:
                   $ref: '#/components/examples/generic-403'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -2087,7 +2244,7 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
+                generic:
                   $ref: '#/components/examples/generic-422'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
@@ -2096,13 +2253,15 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
+                generic:
                   $ref: '#/components/examples/generic-500'
               schema:
                 $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
   /transferInstruments:
     post:
+      tags:
+      - Transfer instruments
       summary: Create a transfer instrument.
       description: 'Creates a transfer instrument. A transfer instrument is a bank
         account or other payment details that a legal entity owns. Adyen performs
@@ -2114,11 +2273,12 @@ paths:
         When the transfer instrument passes the verification checks, you can start
         sending funds from the balance platform to the transfer instrument (such as
         payouts).'
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: post-transferInstruments
       x-groupName: Transfer instruments
       x-sortIndex: 8
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -2136,8 +2296,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -2145,8 +2305,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -2154,8 +2314,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -2163,8 +2323,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -2172,20 +2332,23 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
   /transferInstruments/{id}:
     delete:
+      tags:
+      - Transfer instruments
       summary: Delete a transfer instrument
       description: Deletes a transfer instrument.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: delete-transferInstruments-id
       x-groupName: Transfer instruments
       x-sortIndex: 11
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the transfer instrument to be deleted.
@@ -2205,8 +2368,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -2214,8 +2377,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -2223,8 +2386,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -2232,8 +2395,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -2241,19 +2404,22 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
     get:
+      tags:
+      - Transfer instruments
       summary: Retrieve a transfer instrument.
       description: Returns a specific transfer instrument.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: get-transferInstruments-id
       x-groupName: Transfer instruments
       x-sortIndex: 9
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
       - description: Unique identifier of the transfer instrument.
@@ -2273,8 +2439,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -2282,8 +2448,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -2291,8 +2457,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -2300,8 +2466,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -2309,19 +2475,22 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
     patch:
+      tags:
+      - Transfer instruments
       summary: Update a transfer instrument.
       description: Updates a transfer instrument.
-      x-addedInVersion: 1
+      x-addedInVersion: '1'
       operationId: patch-transferInstruments-id
       x-groupName: Transfer instruments
       x-sortIndex: 10
       security:
+      - BasicAuth: []
       - ApiKeyAuth: []
       requestBody:
         content:
@@ -2346,8 +2515,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-400:
-                  $ref: '#/components/examples/generic-400'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
@@ -2355,8 +2524,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-401:
-                  $ref: '#/components/examples/generic-401'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
@@ -2364,8 +2533,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-403:
-                  $ref: '#/components/examples/generic-403'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
@@ -2373,8 +2542,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-422:
-                  $ref: '#/components/examples/generic-422'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -2382,8 +2551,8 @@ paths:
           content:
             application/json:
               examples:
-                generic-500:
-                  $ref: '#/components/examples/generic-500'
+                generic:
+                  $ref: '#/components/examples/generic'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
@@ -2396,6 +2565,13 @@ components:
             where the account holder belongs. Required in the request if your API
             credentials has access to multiple balance platforms.
           type: string
+        capabilities:
+          additionalProperties:
+            $ref: '#/components/schemas/AccountHolderCapability'
+          description: Contains key-value pairs that specify the actions that an account
+            holder can do in your platform. The key is a capability, such as **issueCard**,
+            and the value is an object containing the settings for the capability.
+          type: object
         contactDetails:
           description: Contact details of the account holder.
           $ref: '#/components/schemas/ContactDetails'
@@ -2413,6 +2589,11 @@ components:
 
 
             To create a legal entity, refer to [Onboard and verify account holders](https://docs.adyen.com/issuing/kyc-verification).'
+          type: string
+        primaryBalanceAccount:
+          description: The ID of the account holder's primary balance account. By
+            default, this is set to the account holder's first balance account. This
+            can be updated in a PATCH request.
           type: string
         reference:
           description: Your reference to the account holder, maximum 150 characters.
@@ -2445,8 +2626,94 @@ components:
             \ containing the sweep configuration.\n\n"
           type: object
       required:
-      - contactDetails
       - id
+    AccountHolderCapability:
+      properties:
+        allowed:
+          description: Indicates whether the capability is allowed. Adyen sets this
+            to **true** if the verification is successful, and the account holder
+            is permitted to use the capability.
+          readOnly: true
+          type: boolean
+        allowedLevel:
+          description: 'The capability level that is allowed for the account holder.Possible
+            values: **notApplicable**, **low**, **medium**, **high**'
+          enum:
+          - high
+          - low
+          - medium
+          - notApplicable
+          readOnly: true
+          type: string
+        allowedSettings:
+          description: A JSON object containing the settings that are allowed for
+            the account holder.
+          readOnly: true
+          $ref: '#/components/schemas/JSONObject'
+        enabled:
+          description: Indicates whether the capability is enabled. You can set this
+            field to **false** if you want to temporarily stop an account holder from
+            using a capability.
+          type: boolean
+        problems:
+          description: Contains verification errors and the actions that you can take
+            to resolve them.
+          items:
+            $ref: '#/components/schemas/CapabilityProblem'
+          readOnly: true
+          type: array
+        requested:
+          description: Indicates whether the capability is requested. To know whether
+            the account holder is permitted to use the capability, refer to the `allowed`
+            field.
+          type: boolean
+        requestedLevel:
+          description: 'The requested level of the capability. Some capabilities,
+            such as those used in [card issuing](https://docs.adyen.com/issuing/add-capabilities#capability-levels)
+            have different levels. Levels increase the capability, but also require
+            additional checks and increased monitoring.
+
+
+            Possible values: **notApplicable**, **low**, **medium**, **high**'
+          enum:
+          - high
+          - low
+          - medium
+          - notApplicable
+          type: string
+        requestedSettings:
+          description: A JSON object containing the settings that were requested for
+            the account holder.
+          readOnly: true
+          $ref: '#/components/schemas/JSONObject'
+        verificationStatus:
+          description: 'The status of the verification checks for the capability.
+
+
+            Possible values:
+
+
+            - **pending** - Adyen is running the verification.
+
+
+            - **invalid** - The verification failed. Check if the `errors` array contains
+            more information.
+
+
+            - **valid** - The verification has been successfully completed.
+
+
+            - **rejected** - Adyen has verified the information, but has found reasons
+            to not allow the capability.
+
+            '
+          enum:
+          - invalid
+          - pending
+          - rejected
+          - valid
+          readOnly: true
+          type: string
     AccountHolderInfo:
       properties:
         balancePlatform:
@@ -2486,8 +2753,7 @@ components:
             \ and in uppercase. For example, **EUR**. The value must be an object\
             \ containing the sweep configuration.\n\n"
           type: object
-      required:
-      - contactDetails
+      required: []
     Address:
       properties:
         city:
@@ -2569,14 +2835,14 @@ components:
           type: string
         contentType:
           deprecated: true
-          x-deprecatedInVersion: 1
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Field is being deprecated.
           description: "The file format.\n\n Possible values: **application/pdf**,\
             \ **image/jpg**, **image/jpeg**, or **image/png**. "
           type: string
         filename:
           deprecated: true
-          x-deprecatedInVersion: 1
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Field is being deprecated.
           description: The name of the file including the file extension.
           type: string
@@ -2592,12 +2858,29 @@ components:
     Authentication:
       properties:
         password:
-          description: The password to be used for 3D Secure password-based authentication.
+          description: "The password used for 3D Secure password-based authentication.\
+            \ The value must be between 1 to 30 characters and must only contain the\
+            \ following supported characters.\n\n- Characters between **a-z**, **A-Z**,\
+            \ and **0-9**\n\n- Special characters: **\xE4\xF6\xFC\xDF\xC4\xD6\xDC\
+            +-*/\xE7%()=?!~#'\",;:$&\xE0\xF9\xF2\xE2\xF4\xFB\xE1\xFA\xF3**"
           type: string
         phone:
-          description: 'The phone number to be used for payment authentication.
+          description: 'The phone number where the one-time password (OTP) is sent.
 
-            >Make sure to verify that the account holder owns the phone number.'
+
+            This object must have:
+
+
+            - A `type` set to **mobile**.
+
+
+            - A `number` with a valid country code.
+
+
+            - A `number` with more than 4 digits, excluding the country code.
+
+
+            >Make sure to verify that the card user owns the phone number.'
           $ref: '#/components/schemas/Phone'
     Balance:
       properties:
@@ -2726,6 +3009,44 @@ components:
           type: object
       required:
       - accountHolderId
+    BalanceAccountUpdateRequest:
+      properties:
+        accountHolderId:
+          description: Unique identifier of the [account holder](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/get/accountHolders/{id})
+            associated with the balance account.
+          type: string
+        description:
+          description: A human-readable description of the balance account, maximum
+            300 characters. You can use this parameter to help distinguish between
+            multiple balance accounts under an account holder.
+          maxLength: 300
+          type: string
+        status:
+          description: 'The status of the balance account. Payment instruments linked
+            to the balance account can only be used if the balance account status
+            is **Active**.
+
+
+            Possible values: **Active**, **Inactive**, **Closed**, **Suspended**.'
+          enum:
+          - Active
+          - Closed
+          - Inactive
+          - Suspended
+          type: string
+        sweepConfigurations:
+          additionalProperties:
+            $ref: '#/components/schemas/SweepConfiguration'
+          description: "Contains key-value pairs that specify [balance sweep configuration\
+            \ per currency code](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__reqParam_sweepConfigurations).\n\
+            \nYou can update the balance account to add, update, or delete configurations.\n\
+            \n* To add a configuration, send the currency code as a key and the configuration\
+            \ as the object.\n\n * To update a configuration, send the whole configuration\
+            \ with your updates.\n\n* To delete a configuration, set the value to\
+            \ **null**. For example, `\"EUR\": null`."
+          type: object
+      required:
+      - accountHolderId
     BalancePlatform:
       properties:
         description:
@@ -2797,11 +3118,98 @@ components:
         dateOfBirth:
           description: The individual's date of birth, in YYYY-MM-DD format.
           type: string
+    BulkAddress:
+      properties:
+        city:
+          description: The name of the city.
+          type: string
+        company:
+          description: The name of the company.
+          type: string
+        country:
+          description: The two-character country code in ISO-3166-1 alpha-2 format.
+            For example, **US**.
+          type: string
+        email:
+          description: The email address.
+          type: string
+        houseNumberOrName:
+          description: The house number or name.
+          type: string
+        mobile:
+          description: The full telephone number.
+          type: string
+        postalCode:
+          description: 'The postal code.
+
+
+            Maximum length:
+
+
+            * 5 digits for addresses in the US.
+
+
+            * 10 characters for all other countries.'
+          type: string
+        stateOrProvince:
+          description: 'State or province codes as defined in ISO 3166-2.
+
+
+            Maximum length: 2 characters for addresses in the US.'
+          type: string
+        street:
+          description: The streetname of the house.
+          type: string
+      required:
+      - country
+    CapabilityProblem:
+      properties:
+        entity:
+          description: Contains the type of the entity and the corresponding ID.
+          $ref: '#/components/schemas/CapabilityProblemEntity'
+        verificationErrors:
+          description: Contains information about the verification error.
+          items:
+            $ref: '#/components/schemas/VerificationError'
+          type: array
+    CapabilityProblemEntity:
+      properties:
+        id:
+          description: The ID of the entity.
+          type: string
+        owner:
+          description: Contains details about the owner of the entity that has an
+            error.
+          $ref: '#/components/schemas/CapabilityProblemEntity-recursive'
+        type:
+          description: 'The type of the entity. Possible values: **LegalEntity**,
+            **BankAccount**, **Document**'
+          enum:
+          - BankAccount
+          - Document
+          - LegalEntity
+          type: string
+    CapabilityProblemEntity-recursive:
+      properties:
+        id:
+          description: The ID of the entity.
+          type: string
+        type:
+          description: 'The type of the entity. Possible values: **LegalEntity**,
+            **BankAccount**, **Document**'
+          enum:
+          - BankAccount
+          - Document
+          - LegalEntity
+          type: string
     Card:
       properties:
         authentication:
-          description: Authentication details for 3D Secure and SMS one-time password
-            (OTP) for wallet activation.
+          description: Contains the card user's password and mobile phone number.
+            This is required when you issue cards that can be used to make online
+            payments within the EEA and the UK, or can be added to digital wallets.
+            Refer to [3D Secure and digital wallets](https://docs.adyen.com/issuing/3d-secure-and-wallets)
+            for more information.
           $ref: '#/components/schemas/Authentication'
         bin:
           description: The BIN of the card number.
@@ -2821,8 +3229,8 @@ components:
           description: The name of the card holder. Maximum length 26 characters.
           type: string
         configuration:
-          description: Specific settings for this card, including the configuration
-            profile.
+          description: Settings required when creating a physical card. Reach out
+            to your Adyen contact to get the values that you can send in this object.
           $ref: '#/components/schemas/CardConfiguration'
         cvc:
           description: 'The CVC2 value of the card.
@@ -2863,33 +3271,79 @@ components:
       - number
     CardConfiguration:
       properties:
-        activationUrl:
-          description: The activation URL of the card configuration profile.
+        activation:
+          description: Overrides the activation label design ID defined in the `configurationProfileId`.
+            The activation label is attached to the card containing activation instructions.
           type: string
+        activationUrl:
+          description: "Your app's URL, if you want to activate cards through your\
+            \ app. For example, **my-app://ref1236a7d**. A QR code is created based\
+            \ on this URL, and is included in the carrier.\n\n Maximum length: 255\
+            \ characters."
+          type: string
+        bulkAddress:
+          description: Overrides the shipment bulk address defined in the `configurationProfileId`.
+          $ref: '#/components/schemas/BulkAddress'
         cardImageId:
-          description: The Entity Reference of the card image.
+          description: The ID of the card image. This is the image that will be printed
+            on the full front of the card.
+          type: string
+        carrier:
+          description: Overrides the carrier design ID defined in the `configurationProfileId`.
+            The carrier is the letter or packaging to which the card is attached.
           type: string
         carrierImageId:
-          description: The Entity Reference of the carrier image.
+          description: The ID of the carrier image. This is the image that will printed
+            on the letter to which the card is attached.
           type: string
         configurationProfileId:
-          description: The ID of the card configuration profile.
+          description: 'The ID of the card configuration profile, which contains settings
+            for the card. Examples of these settings include the envelope and PIN
+            mailer designs, and the logistics company handling the shipment. All the
+            settings in the profile are applied to the card, unless you provide other
+            fields to override the settings.
+
+
+            For example, send the `shipmentMethod` to override the logistics company
+            defined in the card configuration profile.'
           type: string
         currency:
-          description: The ISO-4217 currency code for the card. For example **EUR**.
+          description: The three-letter currency code for the card, in the [ISO-4217](https://en.wikipedia.org/wiki/ISO_4217)
+            format. For example **EUR**.
+          type: string
+        envelope:
+          description: 'Overrides the envelope design ID defined in the `configurationProfileId`. '
+          type: string
+        insert:
+          description: Overrides the insert design ID defined in the `configurationProfileId`.
+            An insert is any additional material, such as marketing materials, that
+            are shipped together with the card.
           type: string
         language:
-          description: The ISO-639-1 application language for the card. For example,
-            **en**.
+          description: The language for the card, in the [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+            format. For example, **en**.
           type: string
         logoImageId:
-          description: The Entity Reference of the logo image.
+          description: The ID of the logo image. This is the image that will be printed
+            on the partial front of the card, such as a logo on the upper right corner.
           type: string
+        pinMailer:
+          description: Overrides the PIN mailer design ID defined in the `configurationProfileId`.
+            The PIN mailer is the letter on which the PIN is printed.
+          type: string
+        shipmentMethod:
+          description: Overrides the logistics company defined in the `configurationProfileId`.
+          type: string
+      required:
+      - configurationProfileId
     CardInfo:
       properties:
         authentication:
-          description: Authentication details for 3D Secure and SMS one-time password
-            (OTP) for wallet activation.
+          description: Contains the card user's password and mobile phone number.
+            This is required when you issue cards that can be used to make online
+            payments within the EEA and the UK, or can be added to digital wallets.
+            Refer to [3D Secure and digital wallets](https://docs.adyen.com/issuing/3d-secure-and-wallets)
+            for more information.
           $ref: '#/components/schemas/Authentication'
         brand:
           description: 'The brand for the payment instrument.
@@ -2906,8 +3360,8 @@ components:
           description: The name of the card holder. Maximum length 26 characters.
           type: string
         configuration:
-          description: Specific settings for this card, including the configuration
-            profile.
+          description: Settings required when creating a physical card. Reach out
+            to your Adyen contact to get the values that you can send in this object.
           $ref: '#/components/schemas/CardConfiguration'
         deliveryContact:
           description: The delivery contact (name and address) for physical card delivery.
@@ -2974,10 +3428,9 @@ components:
       properties:
         attachment:
           deprecated: true
-          x-deprecatedInVersion: 1
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Use the `attachments` array instead.
-          description: This object will be deprecated soon. Use the `attachments`
-            array instead.
+          description: Object that contains the document.
           $ref: '#/components/schemas/Attachment'
         attachments:
           description: Array that contains the document. The array supports multiple
@@ -2990,7 +3443,7 @@ components:
           type: string
         expiryDate:
           deprecated: true
-          x-deprecatedInVersion: 1
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Field is deprecated.
           description: The expiry date of the document, in YYYY-MM-DD format.
           type: string
@@ -2999,7 +3452,7 @@ components:
           type: string
         issuerCountry:
           deprecated: true
-          x-deprecatedInVersion: 1
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Field is deprecated.
           description: The country where the document was issued, in the two-character
             [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
@@ -3007,7 +3460,7 @@ components:
           type: string
         issuerState:
           deprecated: true
-          x-deprecatedInVersion: 1
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Field is being deprecated.
           description: The state or province where the document was issued (AU only).
           type: string
@@ -3018,13 +3471,15 @@ components:
           description: Contains information about the resource that owns the document.
           $ref: '#/components/schemas/Entity'
         type:
-          description: "The type of document. The possible values depend on the legal\
-            \ entity `type`.\n\n* For `type` **organization**, the values can be **proofOfAddress**,\
-            \ **registrationDocument**, **taxDocument**. \n\n* For `type` **individual**,\
-            \ the values can be **driversLicense**, **identityCard**, **nationalIdNumber**,\
-            \ **passport**, **proofOfNationalIdNumber**, **proofOfResidency**, **ssn**.\n\
-            \nWhen uploading a document owned by a [transfer instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/v1/post/documents__reqParam_owner),\
-            \ use **bankStatement**."
+          description: "The type of document, used when providing an ID number or\
+            \ uploading a document. The possible values depend on the legal entity\
+            \ `type`.\n\n* When providing ID numbers for individuals, the values can\
+            \ be **driversLicense**, **identityCard**, **nationalIdNumber**, or **passport**.\n\
+            \nWhen uploading documents:\n* For `type` **organization**, the values\
+            \ can be **proofOfAddress**, **registrationDocument**, **taxDocument**.\
+            \ \n\n* For `type` **individual**, the values can be **identityCard**,\
+            \ **driversLicense**, **proofOfNationalIdNumber**, or **proofOfResidency**.\n\
+            \n* Use **bankStatement** to upload documents for a [transfer instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/v1/post/documents__reqParam_owner)."
           enum:
           - bankStatement
           - driversLicense
@@ -3035,7 +3490,6 @@ components:
           - proofOfNationalIdNumber
           - proofOfResidency
           - registrationDocument
-          - ssn
           - taxDocument
           type: string
     Entity:
@@ -3082,13 +3536,13 @@ components:
       properties:
         expiryDate:
           deprecated: true
-          x-deprecatedInVersion: 1
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Field is deprecated.
           description: The expiry date of the document, in YYYY-MM-DD format.
           type: string
         issuerCountry:
           deprecated: true
-          x-deprecatedInVersion: 1
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Field is deprecated.
           description: The country where the document was issued, in the two-character
             [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
@@ -3106,13 +3560,15 @@ components:
           description: The number in the document.
           type: string
         type:
-          description: "The type of document. The possible values depend on the legal\
-            \ entity `type`.\n\n* For `type` **organization**, the values can be **proofOfAddress**,\
-            \ **registrationDocument**, **taxDocument**. \n\n* For `type` **individual**,\
-            \ the values can be **driversLicense**, **identityCard**, **nationalIdNumber**,\
-            \ **passport**, **proofOfNationalIdNumber**, **proofOfResidency**, **ssn**.\n\
-            \nWhen uploading a document owned by a [transfer instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/v1/post/documents__reqParam_owner),\
-            \ use **bankStatement**."
+          description: "The type of document, used when providing an ID number or\
+            \ uploading a document. The possible values depend on the legal entity\
+            \ `type`.\n\n* When providing ID numbers for individuals, the values can\
+            \ be **driversLicense**, **identityCard**, **nationalIdNumber**, or **passport**.\n\
+            \nWhen uploading documents:\n* For `type` **organization**, the values\
+            \ can be **proofOfAddress**, **registrationDocument**, **taxDocument**.\
+            \ \n\n* For `type` **individual**, the values can be **identityCard**,\
+            \ **driversLicense**, **proofOfNationalIdNumber**, or **proofOfResidency**.\n\
+            \n* Use **bankStatement** to upload documents for a [transfer instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/v1/post/documents__reqParam_owner)."
           enum:
           - bankStatement
           - driversLicense
@@ -3123,7 +3579,6 @@ components:
           - proofOfNationalIdNumber
           - proofOfResidency
           - registrationDocument
-          - ssn
           - taxDocument
           type: string
     Individual:
@@ -3168,6 +3623,20 @@ components:
       - name
       - value
       - message
+    JSONObject:
+      properties:
+        paths:
+          items:
+            $ref: '#/components/schemas/JSONPath'
+          type: array
+        rootPath:
+          $ref: '#/components/schemas/JSONPath'
+    JSONPath:
+      properties:
+        content:
+          items:
+            type: string
+          type: array
     LegalEntity:
       properties:
         documents:
@@ -3313,7 +3782,7 @@ components:
         type:
           description: 'The type of organization. Possible values: **associationIncorporated**,
             **governmentalOrganization**, **listedPublicCompany**,**nonProfit**, **partnershipIncorporated**,
-            **privateCompany**, **unlistedPublicCompany**, **soleProprietorship**.'
+            **privateCompany**.'
           enum:
           - associationIncorporated
           - governmentalOrganization
@@ -3321,8 +3790,6 @@ components:
           - nonProfit
           - partnershipIncorporated
           - privateCompany
-          - unlistedPublicCompany
-          - soleProprietorship
           type: string
         webData:
           deprecated: true
@@ -3409,6 +3876,22 @@ components:
           maxLength: 150
           type: string
         status:
+          x-enum:
+          - description: The payment instrument has been requested. This state is
+              applicable when creating physical cards.
+            value: Requested
+          - description: The payment instrument is active and can be used to make
+              payments.
+            value: Active
+          - description: The payment instrument is inactive and cannot be used to
+              make payments.
+            value: Inactive
+          - description: The payment instrument is temporarily suspended and cannot
+              be used to make payments.
+            value: Suspended
+          - description: The payment instrument is permanently closed. This action
+              cannot be undone.
+            value: Closed
           description: "The status of the payment instrument. If a status is not specified\
             \ when creating a payment instrument, the status is set to **Active**\
             \ by default. However, there can be exceptions based on the `card.formFactor`\
@@ -3530,6 +4013,22 @@ components:
           maxLength: 150
           type: string
         status:
+          x-enum:
+          - description: The payment instrument has been requested. This state is
+              applicable when creating physical cards.
+            value: Requested
+          - description: The payment instrument is active and can be used to make
+              payments.
+            value: Active
+          - description: The payment instrument is inactive and cannot be used to
+              make payments.
+            value: Inactive
+          - description: The payment instrument is temporarily suspended and cannot
+              be used to make payments.
+            value: Suspended
+          - description: The payment instrument is permanently closed. This action
+              cannot be undone.
+            value: Closed
           description: "The status of the payment instrument. If a status is not specified\
             \ when creating a payment instrument, the status is set to **Active**\
             \ by default. However, there can be exceptions based on the `card.formFactor`\
@@ -3586,6 +4085,22 @@ components:
           description: Object that contains information about the card payment instrument.
           $ref: '#/components/schemas/CardInfo'
         status:
+          x-enum:
+          - description: The payment instrument has been requested. This state is
+              applicable when creating physical cards.
+            value: Requested
+          - description: The payment instrument is active and can be used to make
+              payments.
+            value: Active
+          - description: The payment instrument is inactive and cannot be used to
+              make payments.
+            value: Inactive
+          - description: The payment instrument is temporarily suspended and cannot
+              be used to make payments.
+            value: Suspended
+          - description: The payment instrument is permanently closed. This action
+              cannot be undone.
+            value: Closed
           description: "The new status of the payment instrument.\n\nPossible values:\
             \ \n\n * **Active**:  The payment instrument is active and can be used\
             \ to make payments. \n\n * **Requested**: The payment instrument has been\
@@ -3688,6 +4203,14 @@ components:
           type: string
         shopperReference:
           description: The unique identifier used when the payment details were stored.
+          type: string
+    RemediatingAction:
+      properties:
+        code:
+          description: The remediating action code.
+          type: string
+        message:
+          description: A description of how you can resolve the verification error.
           type: string
     RestServiceError:
       properties:
@@ -3927,7 +4450,9 @@ components:
             - ecommerce
             - moto
             - pos
+            - purchaseWithCashback
             - recurring
+            - token
             - unknown
             type: string
           type: array
@@ -3950,6 +4475,19 @@ components:
           - inactive
           type: string
         type:
+          x-enum:
+          - description: The rule provides categories (such as country and MCC) where
+              payments must be allowed.
+            value: allowList
+          - description: The rule provides categories (such as country and MCC) where
+              payments must be blocked.
+            value: blockList
+          - description: The rule sets limits for the maximum amount or maximum number
+              of transactions for a given time interval.
+            value: velocity
+          - description: The rule sets limits for the maximum amount or maximum number
+              of transactions for the lifetime of the payment instrument.
+            value: maxUsage
           description: "The type of conditions provided in the rule.\n\nPossible values:\n\
             \  * **allowList** - The rule provides categories (such as country and\
             \ MCC) where payments must be allowed. \n * **blockList** - The rule provides\
@@ -4051,7 +4589,9 @@ components:
             - ecommerce
             - moto
             - pos
+            - purchaseWithCashback
             - recurring
+            - token
             - unknown
             type: string
           type: array
@@ -4074,6 +4614,19 @@ components:
           - inactive
           type: string
         type:
+          x-enum:
+          - description: The rule provides categories (such as country and MCC) where
+              payments must be allowed.
+            value: allowList
+          - description: The rule provides categories (such as country and MCC) where
+              payments must be blocked.
+            value: blockList
+          - description: The rule sets limits for the maximum amount or maximum number
+              of transactions for a given time interval.
+            value: velocity
+          - description: The rule sets limits for the maximum amount or maximum number
+              of transactions for the lifetime of the payment instrument.
+            value: maxUsage
           description: "The type of conditions provided in the rule.\n\nPossible values:\n\
             \  * **allowList** - The rule provides categories (such as country and\
             \ MCC) where payments must be allowed. \n * **blockList** - The rule provides\
@@ -4177,6 +4730,51 @@ components:
         webAddress:
           description: Website URL.
           type: string
+    VerificationError:
+      properties:
+        code:
+          description: The verification error code.
+          type: string
+        message:
+          description: A description of the error.
+          type: string
+        remediatingActions:
+          description: Contains the actions that you can take to resolve the verification
+            error.
+          items:
+            $ref: '#/components/schemas/RemediatingAction'
+          type: array
+        subErrors:
+          description: Contains more granular information about the verification error.
+          items:
+            $ref: '#/components/schemas/VerificationError-recursive'
+          type: array
+        type:
+          description: 'The type of error. Possible values: **invalidInput**, **dataMissing**'
+          enum:
+          - dataMissing
+          - invalidInput
+          type: string
+    VerificationError-recursive:
+      properties:
+        code:
+          description: The verification error code.
+          type: string
+        message:
+          description: A description of the error.
+          type: string
+        remediatingActions:
+          description: Contains the actions that you can take to resolve the verification
+            error.
+          items:
+            $ref: '#/components/schemas/RemediatingAction'
+          type: array
+        type:
+          description: 'The type of error. Possible values: **invalidInput**, **dataMissing**'
+          enum:
+          - dataMissing
+          - invalidInput
+          type: string
   securitySchemes:
     ApiKeyAuth:
       in: header
@@ -4227,11 +4825,10 @@ components:
     generic-404:
       summary: Response code 404 - Not found
       value:
-        type: https://docs.adyen.com/errors/security/unauthorized
-        title: Unauthorized
-        status: 401
-        detail: Not the right permission to access this service.
-        errorCode: '00_401'
+        type: https://docs.adyen.com/errors/general/not-found
+        title: Not found
+        status: 404
+        errorCode: '00_404'
     generic-422:
       summary: Response code - 422 Unprocessable Entity.
       value:

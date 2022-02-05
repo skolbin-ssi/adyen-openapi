@@ -25,6 +25,9 @@
    "paths" : {
       "/closeAccount" : {
          "post" : {
+            "tags" : [
+               "Accounts"
+            ],
             "summary" : "Close an account.",
             "description" : "Closes an account. If an account is closed, you cannot process transactions, pay out its funds, or reopen it. If payments are made to a closed account, the payments will be directed to your liable account.",
             "operationId" : "post-closeAccount",
@@ -79,7 +82,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -104,7 +107,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -140,6 +143,9 @@
       },
       "/closeAccountHolder" : {
          "post" : {
+            "tags" : [
+               "Account holders"
+            ],
             "summary" : "Close an account holder.",
             "description" : "Changes the [status of an account holder](https://docs.adyen.com/platforms/account-holders-and-accounts#account-holder-statuses) to **Closed**. This state is final. If an account holder is closed, you can't process transactions, pay out funds, or reopen it. If payments are made to an account of an account holder with a **Closed** status,the payments will be directed to your liable account.",
             "operationId" : "post-closeAccountHolder",
@@ -194,7 +200,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -219,7 +225,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -255,6 +261,9 @@
       },
       "/createAccount" : {
          "post" : {
+            "tags" : [
+               "Accounts"
+            ],
             "summary" : "Create a new account.",
             "description" : "Creates an account under an account holder. An account holder can have [multiple accounts](https://docs.adyen.com/platforms/account-holders-and-accounts#create-additional-accounts).",
             "operationId" : "post-createAccount",
@@ -309,7 +318,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -334,7 +343,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -370,6 +379,9 @@
       },
       "/createAccountHolder" : {
          "post" : {
+            "tags" : [
+               "Account holders"
+            ],
             "summary" : "Create a new account holder.",
             "description" : "Creates an account holder, which [represents the sub-merchant's entity](https://docs.adyen.com/platforms/account-structure#your-platform) in your platform. The details that you need to provide in the request depend on the sub-merchant's legal entity type. For more information, refer to [Account holder and accounts](https://docs.adyen.com/platforms/account-holders-and-accounts#legal-entity-types).",
             "operationId" : "post-createAccountHolder",
@@ -417,7 +429,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -442,7 +454,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -478,6 +490,9 @@
       },
       "/deleteBankAccounts" : {
          "post" : {
+            "tags" : [
+               "Verification"
+            ],
             "summary" : "Delete bank accounts.",
             "description" : "Deletes one or more bank accounts of an account holder. ",
             "operationId" : "post-deleteBankAccounts",
@@ -532,7 +547,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -557,7 +572,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -593,6 +608,9 @@
       },
       "/deleteShareholders" : {
          "post" : {
+            "tags" : [
+               "Verification"
+            ],
             "summary" : "Delete shareholders.",
             "description" : "Deletes one or more shareholders from an account holder.",
             "operationId" : "post-deleteShareholders",
@@ -647,7 +665,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -672,7 +690,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -708,6 +726,9 @@
       },
       "/deleteSignatories" : {
          "post" : {
+            "tags" : [
+               "Verification"
+            ],
             "summary" : "Delete signatories.",
             "description" : "Deletes one or more signatories from an account holder.",
             "operationId" : "post-deleteSignatories",
@@ -757,7 +778,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -782,7 +803,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -818,6 +839,9 @@
       },
       "/getAccountHolder" : {
          "post" : {
+            "tags" : [
+               "Account holders"
+            ],
             "summary" : "Get an account holder.",
             "description" : "Retrieves the details of an account holder.",
             "operationId" : "post-getAccountHolder",
@@ -875,7 +899,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -900,7 +924,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -936,6 +960,9 @@
       },
       "/getTaxForm" : {
          "post" : {
+            "tags" : [
+               "Account holders"
+            ],
             "summary" : "Get a tax form.",
             "description" : "Generates a tax form for account holders operating in the US. For more information, refer to [Providing tax forms](https://docs.adyen.com/platforms/tax-forms).",
             "operationId" : "post-getTaxForm",
@@ -980,7 +1007,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -1005,7 +1032,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -1041,6 +1068,9 @@
       },
       "/getUploadedDocuments" : {
          "post" : {
+            "tags" : [
+               "Verification"
+            ],
             "summary" : "Get documents.",
             "description" : "Retrieves documents that were previously uploaded for an account holder. Adyen uses the documents in the [KYC verification checks](https://docs.adyen.com/platforms/verification-checks).\n",
             "operationId" : "post-getUploadedDocuments",
@@ -1085,7 +1115,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -1110,7 +1140,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -1146,6 +1176,9 @@
       },
       "/suspendAccountHolder" : {
          "post" : {
+            "tags" : [
+               "Account holders"
+            ],
             "summary" : "Suspend an account holder.",
             "description" : "Changes the [status of an account holder](https://docs.adyen.com/platforms/account-holders-and-accounts#account-holder-statuses) to **Suspended**.",
             "operationId" : "post-suspendAccountHolder",
@@ -1200,7 +1233,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -1225,7 +1258,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -1261,6 +1294,9 @@
       },
       "/unSuspendAccountHolder" : {
          "post" : {
+            "tags" : [
+               "Account holders"
+            ],
             "summary" : "Unsuspend an account holder.",
             "description" : "Changes the [status of an account holder](https://docs.adyen.com/platforms/account-holders-and-accounts#account-holder-statuses) from **Suspended** to **Inactive**. Account holders can have a **Suspended** status if you suspend them through the [`/suspendAccountHolder`](https://docs.adyen.com/api-explorer/#/Account/v5/post/suspendAccountHolder) endpoint or if a KYC deadline expires.\n\nYou can only unsuspend account holders if they _do not_ have verification checks with a **FAILED** [`status`](https://docs.adyen.com/api-explorer/#/Account/latest/post/getAccountHolder__resParam_verification-accountHolder-checks-status).",
             "operationId" : "post-unSuspendAccountHolder",
@@ -1315,7 +1351,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -1340,7 +1376,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -1376,6 +1412,9 @@
       },
       "/updateAccount" : {
          "post" : {
+            "tags" : [
+               "Accounts"
+            ],
             "summary" : "Update an account.",
             "description" : "Updates the description or payout schedule of an account.",
             "operationId" : "post-updateAccount",
@@ -1430,7 +1469,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -1455,7 +1494,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -1491,6 +1530,9 @@
       },
       "/updateAccountHolder" : {
          "post" : {
+            "tags" : [
+               "Account holders"
+            ],
             "summary" : "Update an account holder.",
             "description" : "Updates the `accountHolderDetails` and `processingTier` of an account holder, and adds bank accounts and shareholders.\n\nWhen updating `accountHolderDetails`, parameters that are not included in the request are left unchanged except for the objects below.\n\n* `metadata`: Updating the metadata replaces the entire object. This means that to update an existing key-value pair, you must provide the changes along with other existing key-value pairs.\n\nWhen updating any field in the following objects, you must submit all the fields required for validation.\n\n * `address`\n\n* `fullPhoneNumber`\n\n* `bankAccountDetails.BankAccountDetail`\n\n* `businessDetails.shareholders.ShareholderContact`\n\n For example, to update the `address.postalCode`, you must also submit the `address.country`, `.city`, `.street`, `.postalCode`, and possibly `.stateOrProvince` so that the address can be validated.\n\nTo add a bank account or shareholder, provide the bank account or shareholder details without a `bankAccountUUID` or a `shareholderCode`.\n\n",
             "operationId" : "post-updateAccountHolder",
@@ -1554,7 +1596,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -1579,7 +1621,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -1615,6 +1657,9 @@
       },
       "/updateAccountHolderState" : {
          "post" : {
+            "tags" : [
+               "Account holders"
+            ],
             "summary" : "Update payout or processing state.",
             "description" : "Disables or enables the processing or payout state of an account holder.",
             "operationId" : "post-updateAccountHolderState",
@@ -1669,7 +1714,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -1694,7 +1739,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -1730,6 +1775,9 @@
       },
       "/uploadDocument" : {
          "post" : {
+            "tags" : [
+               "Verification"
+            ],
             "summary" : "Upload a document.",
             "description" : "Uploads a document for an account holder. Adyen uses the documents in the [KYC verification checks](https://docs.adyen.com/platforms/verification-checks).",
             "operationId" : "post-uploadDocument",
@@ -1784,7 +1832,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-400" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-400"
                            }
                         },
@@ -1809,7 +1857,7 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "generic-403" : {
+                           "generic" : {
                               "$ref" : "#/components/examples/generic-403"
                            }
                         },
@@ -1861,7 +1909,7 @@
                   "type" : "string"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "A description of the account.",
                   "type" : "string"
                },
@@ -1870,7 +1918,7 @@
                   "$ref" : "#/components/schemas/PayoutScheduleResponse"
                },
                "status" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The status of the account. Possible values: `Active`, `Inactive`, `Suspended`, `Closed`.",
                   "type" : "string"
                }
@@ -1942,6 +1990,10 @@
                   "description" : "A set of key and value pairs for general use by the account holder or merchant.\nThe keys do not have specific names and may be used for storing miscellaneous data as desired.\n> The values being stored have a maximum length of eighty (80) characters and will be truncated if necessary.\n> Note that during an update of metadata, the omission of existing key-value pairs will result in the deletion of those key-value pairs.",
                   "type" : "object"
                },
+               "principalBusinessAddress" : {
+                  "description" : "The principal business address of the account holder.",
+                  "$ref" : "#/components/schemas/ViasAddress"
+               },
                "webAddress" : {
                   "description" : "The URL of the website of the account holder.",
                   "type" : "string"
@@ -2008,7 +2060,7 @@
                   "$ref" : "#/components/schemas/Amount"
                },
                "tierNumber" : {
-                  "x-addedInVersion" : 3,
+                  "x-addedInVersion" : "3",
                   "description" : "The payout tier that the account holder occupies.",
                   "format" : "int32",
                   "type" : "integer"
@@ -2034,7 +2086,7 @@
                   "$ref" : "#/components/schemas/Amount"
                },
                "tierNumber" : {
-                  "x-addedInVersion" : 3,
+                  "x-addedInVersion" : "3",
                   "description" : "The processing tier that the account holder occupies.",
                   "format" : "int32",
                   "type" : "integer"
@@ -2174,8 +2226,15 @@
                   "description" : "The legal name of the company.",
                   "type" : "string"
                },
+               "listedUltimateParentCompany" : {
+                  "description" : "Information about the parent public company. Required if the account holder is 100% owned by a publicly listed company.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/UltimateParentCompany"
+                  },
+                  "type" : "array"
+               },
                "registrationNumber" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The registration number of the company.",
                   "type" : "string"
                },
@@ -2255,7 +2314,7 @@
                   "type" : "string"
                },
                "status" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The new status of the account.\n>Permitted values: `Active`, `Inactive`, `Suspended`, `Closed`.",
                   "enum" : [
                      "Active",
@@ -2289,7 +2348,7 @@
                   "type" : "boolean"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "A description of the prospective account holder, maximum 256 characters. You can use alphanumeric characters (A-Z, a-z, 0-9), white spaces, and underscores `_`.",
                   "type" : "string"
                },
@@ -2298,19 +2357,17 @@
                   "enum" : [
                      "Business",
                      "Individual",
-                     "NonProfit",
-                     "Partnership",
-                     "PublicCompany"
+                     "NonProfit"
                   ],
                   "type" : "string"
                },
                "primaryCurrency" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes), with which the prospective account holder primarily deals.",
                   "type" : "string"
                },
                "processingTier" : {
-                  "x-addedInVersion" : 3,
+                  "x-addedInVersion" : "3",
                   "description" : "The starting [processing tier](https://docs.adyen.com/platforms/onboarding-and-verification/precheck-kyc-information) for the prospective account holder.",
                   "format" : "int32",
                   "type" : "integer"
@@ -2337,17 +2394,17 @@
                   "$ref" : "#/components/schemas/AccountHolderDetails"
                },
                "accountHolderStatus" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The status of the new account holder.",
                   "$ref" : "#/components/schemas/AccountHolderStatus"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The description of the new account holder.",
                   "type" : "string"
                },
                "invalidFields" : {
-                  "x-addedInVersion" : 5,
+                  "x-addedInVersion" : "5",
                   "description" : "A list of fields that caused the `/createAccountHolder` request to fail.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -2355,14 +2412,12 @@
                   "type" : "array"
                },
                "legalEntity" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The type of legal entity of the new account holder.",
                   "enum" : [
                      "Business",
                      "Individual",
-                     "NonProfit",
-                     "Partnership",
-                     "PublicCompany"
+                     "NonProfit"
                   ],
                   "type" : "string"
                },
@@ -2379,7 +2434,7 @@
                   "type" : "boolean"
                },
                "verification" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The details of KYC Verification of the account holder.",
                   "$ref" : "#/components/schemas/KYCVerificationResult2"
                }
@@ -2399,7 +2454,7 @@
                   "type" : "string"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "A description of the account, maximum 256 characters. You can use alphanumeric characters (A-Z, a-z, 0-9), white spaces, and underscores `_`.",
                   "type" : "string"
                },
@@ -2408,6 +2463,9 @@
                   "enum" : [
                      "BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT",
                      "BIWEEKLY_ON_1ST_AND_15TH_AT_NOON",
+                     "BI_DAILY_AU",
+                     "BI_DAILY_EU",
+                     "BI_DAILY_US",
                      "DAILY",
                      "DAILY_6PM",
                      "DAILY_AU",
@@ -2420,6 +2478,9 @@
                      "MONTHLY",
                      "MONTHLY_ON_15TH_AT_MIDNIGHT",
                      "WEEKLY",
+                     "WEEKLY_MON_TO_FRI_AU",
+                     "WEEKLY_MON_TO_FRI_EU",
+                     "WEEKLY_MON_TO_FRI_US",
                      "WEEKLY_ON_TUE_FRI_MIDNIGHT",
                      "YEARLY"
                   ],
@@ -2445,7 +2506,7 @@
                   "type" : "string"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The description of the account.",
                   "type" : "string"
                },
@@ -2462,7 +2523,7 @@
                   "type" : "string"
                },
                "status" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The status of the account.\n>Permitted values: `Active`.",
                   "enum" : [
                      "Active",
@@ -2543,12 +2604,12 @@
          "DocumentDetail" : {
             "properties" : {
                "accountHolderCode" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The code of account holder, to which the document applies.",
                   "type" : "string"
                },
                "bankAccountUUID" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The Adyen-generated [`bankAccountUUID`](https://docs.adyen.com/api-explorer/#/Account/latest/post/createAccountHolder__resParam_accountHolderDetails-bankAccountDetails-bankAccountUUID) to which the document must be linked. Refer to [Bank account check](https://docs.adyen.com/platforms/verification-checks/bank-account-check#uploading-a-bank-statement) for details on when a document should be submitted.\n>Required if the `documentType` is **BANK_STATEMENT**, where a document is being submitted in order to verify a bank account.\n",
                   "type" : "string"
                },
@@ -2561,8 +2622,6 @@
                   "enum" : [
                      "BANK_STATEMENT",
                      "BSN",
-                     "COMPANY_REGISTRATION_SCREENING",
-                     "CONSTITUTIONAL_DOCUMENT",
                      "DRIVING_LICENCE",
                      "DRIVING_LICENCE_BACK",
                      "DRIVING_LICENCE_FRONT",
@@ -2570,8 +2629,7 @@
                      "ID_CARD_BACK",
                      "ID_CARD_FRONT",
                      "PASSPORT",
-                     "SSN",
-                     "SUPPORTING_DOCUMENTS"
+                     "SSN"
                   ],
                   "type" : "string"
                },
@@ -2580,7 +2638,7 @@
                   "type" : "string"
                },
                "shareholderCode" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The Adyen-generated [`shareholderCode`](https://docs.adyen.com/api-explorer/#/Account/latest/post/createAccountHolder__resParam_accountHolderDetails-businessDetails-shareholders-shareholderCode) to which the document must be linked. Refer to [Verification checks](https://docs.adyen.com/platforms/verification-checks) for details on when a document should be submitted.\n>Required if the account holder has a `legalEntity` of type **Business** and the `documentType` is either **PASSPORT**, **ID_CARD_FRONT**, **ID_CARD_BACK**, **DRIVING_LICENCE_FRONT**, or **DRIVING_LICENCE_BACK**. ",
                   "type" : "string"
                },
@@ -2711,6 +2769,8 @@
                      "passport",
                      "passportNumber",
                      "payoutMethodCode",
+                     "payoutSchedule",
+                     "pciSelfAssessment",
                      "personalData",
                      "phoneCountryCode",
                      "phoneNumber",
@@ -2731,6 +2791,7 @@
                      "socialSecurityNumber",
                      "sourceAccountCode",
                      "splitAccount",
+                     "splitConfigurationUUID",
                      "splitCurrency",
                      "splitValue",
                      "splits",
@@ -2802,7 +2863,7 @@
                   "type" : "string"
                },
                "showDetails" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "True if the request should return the account holder details",
                   "type" : "boolean"
                }
@@ -2819,7 +2880,7 @@
                   "$ref" : "#/components/schemas/AccountHolderDetails"
                },
                "accountHolderStatus" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The status of the account holder.",
                   "$ref" : "#/components/schemas/AccountHolderStatus"
                },
@@ -2831,7 +2892,7 @@
                   "type" : "array"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The description of the account holder.",
                   "type" : "string"
                },
@@ -2840,14 +2901,12 @@
                   "enum" : [
                      "Business",
                      "Individual",
-                     "NonProfit",
-                     "Partnership",
-                     "PublicCompany"
+                     "NonProfit"
                   ],
                   "type" : "string"
                },
                "primaryCurrency" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes), with which the prospective account holder primarily deals.",
                   "type" : "string"
                },
@@ -2864,7 +2923,7 @@
                   "type" : "boolean"
                },
                "verification" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The details of KYC Verification of the account holder.",
                   "$ref" : "#/components/schemas/KYCVerificationResult2"
                }
@@ -2884,7 +2943,7 @@
                   "type" : "string"
                },
                "accountHolderStatus" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The status of the Account Holder.",
                   "$ref" : "#/components/schemas/AccountHolderStatus"
                },
@@ -2960,7 +3019,7 @@
                   "type" : "string"
                },
                "bankAccountUUID" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The code of the Bank Account for which to retrieve the documents.",
                   "type" : "string"
                },
@@ -3170,6 +3229,9 @@
                   "enum" : [
                      "BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT",
                      "BIWEEKLY_ON_1ST_AND_15TH_AT_NOON",
+                     "BI_DAILY_AU",
+                     "BI_DAILY_EU",
+                     "BI_DAILY_US",
                      "DAILY",
                      "DAILY_6PM",
                      "DAILY_AU",
@@ -3182,6 +3244,9 @@
                      "MONTHLY",
                      "MONTHLY_ON_15TH_AT_MIDNIGHT",
                      "WEEKLY",
+                     "WEEKLY_MON_TO_FRI_AU",
+                     "WEEKLY_MON_TO_FRI_EU",
+                     "WEEKLY_MON_TO_FRI_US",
                      "WEEKLY_ON_TUE_FRI_MIDNIGHT",
                      "YEARLY"
                   ],
@@ -3333,11 +3398,11 @@
                   "$ref" : "#/components/schemas/ViasPhoneNumber"
                },
                "signatoryCode" : {
-                  "description" : "The unique identifier (UUID) of the Signatory.\n>**If, during an Account Holder create or update request, this field is left blank (but other fields provided), a new Signatory will be created with a procedurally-generated UUID.**\n\n>**If, during an Account Holder create request, a UUID is provided, the creation of the Signatory will fail while the creation of the Account Holder will continue.**\n\n>**If, during an Account Holder update request, a UUID that is not correlated with an existing Signatory is provided, the update of the Signatory will fail.**\n\n>**If, during an Account Holder update request, a UUID that is correlated with an existing Signatory is provided, the existing Signatory will be updated.**\n",
+                  "description" : "The unique identifier (UUID) of the signatory.\n>**If, during an Account Holder create or update request, this field is left blank (but other fields provided), a new Signatory will be created with a procedurally-generated UUID.**\n\n>**If, during an Account Holder create request, a UUID is provided, the creation of the Signatory will fail while the creation of the Account Holder will continue.**\n\n>**If, during an Account Holder update request, a UUID that is not correlated with an existing Signatory is provided, the update of the Signatory will fail.**\n\n>**If, during an Account Holder update request, a UUID that is correlated with an existing Signatory is provided, the existing Signatory will be updated.**\n",
                   "type" : "string"
                },
                "signatoryReference" : {
-                  "description" : "Your reference for the Signatory.",
+                  "description" : "Your reference for the signatory.",
                   "type" : "string"
                },
                "webAddress" : {
@@ -3379,6 +3444,46 @@
             "required" : [
                "accountHolderStatus"
             ]
+         },
+         "UltimateParentCompany" : {
+            "properties" : {
+               "address" : {
+                  "description" : "Address of the ultimate parent company.",
+                  "$ref" : "#/components/schemas/ViasAddress"
+               },
+               "businessDetails" : {
+                  "description" : "Details about the ultimate parent company's business.",
+                  "$ref" : "#/components/schemas/UltimateParentCompanyBusinessDetails"
+               },
+               "ultimateParentCompanyCode" : {
+                  "description" : "Adyen-generated unique alphanumeric identifier (UUID) for the entry, returned in the response when you create an ultimate parent company. Required when updating an existing entry in an `/updateAccountHolder` request.",
+                  "type" : "string"
+               }
+            }
+         },
+         "UltimateParentCompanyBusinessDetails" : {
+            "properties" : {
+               "legalBusinessName" : {
+                  "description" : "The legal name of the company.",
+                  "type" : "string"
+               },
+               "registrationNumber" : {
+                  "description" : "The registration number of the company.",
+                  "type" : "string"
+               },
+               "stockExchange" : {
+                  "description" : "Market Identifier Code (MIC).",
+                  "type" : "string"
+               },
+               "stockNumber" : {
+                  "description" : "International Securities Identification Number (ISIN).",
+                  "type" : "string"
+               },
+               "stockTicker" : {
+                  "description" : "Stock Ticker symbol.",
+                  "type" : "string"
+               }
+            }
          },
          "UnSuspendAccountHolderRequest" : {
             "properties" : {
@@ -3425,17 +3530,17 @@
                   "$ref" : "#/components/schemas/AccountHolderDetails"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "A description of the account holder, maximum 256 characters. You can use alphanumeric characters (A-Z, a-z, 0-9), white spaces, and underscores `_`.",
                   "type" : "string"
                },
                "primaryCurrency" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The primary three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes), to which the account holder should be updated.",
                   "type" : "string"
                },
                "processingTier" : {
-                  "x-addedInVersion" : 3,
+                  "x-addedInVersion" : "3",
                   "description" : "The processing tier to which the Account Holder should be updated.\n>The processing tier can not be lowered through this request.\n\n>Required if accountHolderDetails are not provided.",
                   "format" : "int32",
                   "type" : "integer"
@@ -3456,17 +3561,17 @@
                   "$ref" : "#/components/schemas/AccountHolderDetails"
                },
                "accountHolderStatus" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The new status of the account holder.",
                   "$ref" : "#/components/schemas/AccountHolderStatus"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The description of the account holder.",
                   "type" : "string"
                },
                "invalidFields" : {
-                  "x-addedInVersion" : 5,
+                  "x-addedInVersion" : "5",
                   "description" : "in case the account holder has not been updated, contains account holder fields, that did not pass the validation.",
                   "items" : {
                      "$ref" : "#/components/schemas/ErrorFieldType"
@@ -3474,14 +3579,12 @@
                   "type" : "array"
                },
                "legalEntity" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The legal entity of the account holder.",
                   "enum" : [
                      "Business",
                      "Individual",
-                     "NonProfit",
-                     "Partnership",
-                     "PublicCompany"
+                     "NonProfit"
                   ],
                   "type" : "string"
                },
@@ -3505,7 +3608,7 @@
                   "type" : "array"
                },
                "verification" : {
-                  "x-addedInVersion" : 2,
+                  "x-addedInVersion" : "2",
                   "description" : "The details of KYC Verification of the account holder.",
                   "$ref" : "#/components/schemas/KYCVerificationResult2"
                }
@@ -3556,7 +3659,7 @@
                   "type" : "string"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "A description of the account, maximum 256 characters.You can use alphanumeric characters (A-Z, a-z, 0-9), white spaces, and underscores `_`.",
                   "type" : "string"
                },
@@ -3576,7 +3679,7 @@
                   "type" : "string"
                },
                "description" : {
-                  "x-addedInVersion" : 4,
+                  "x-addedInVersion" : "4",
                   "description" : "The description of the account.",
                   "type" : "string"
                },
@@ -3617,10 +3720,13 @@
                   "type" : "string"
                },
                "schedule" : {
-                  "description" : "The payout schedule to which the account is to be updated.\nPermitted values: `DEFAULT`, `HOLD`, `DAILY`, `WEEKLY`, `MONTHLY`.\n`HOLD` will prevent scheduled payouts from happening but will still allow manual payouts to occur.",
+                  "description" : "The payout schedule to which the account is to be updated.\nPermitted values: `DAILY`, `DAILY_US`, `DAILY_EU`, `DAILY_AU`, `DAILY_SG`, `WEEKLY`, `WEEKLY_ON_TUE_FRI_MIDNIGHT`, `BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT`, `MONTHLY`, `HOLD`.\n`HOLD` will prevent scheduled payouts from happening but will still allow manual payouts to occur.",
                   "enum" : [
                      "BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT",
                      "BIWEEKLY_ON_1ST_AND_15TH_AT_NOON",
+                     "BI_DAILY_AU",
+                     "BI_DAILY_EU",
+                     "BI_DAILY_US",
                      "DAILY",
                      "DAILY_6PM",
                      "DAILY_AU",
@@ -3633,6 +3739,9 @@
                      "MONTHLY",
                      "MONTHLY_ON_15TH_AT_MIDNIGHT",
                      "WEEKLY",
+                     "WEEKLY_MON_TO_FRI_AU",
+                     "WEEKLY_MON_TO_FRI_EU",
+                     "WEEKLY_MON_TO_FRI_US",
                      "WEEKLY_ON_TUE_FRI_MIDNIGHT",
                      "YEARLY"
                   ],
@@ -3678,11 +3787,11 @@
          "ViasAddress" : {
             "properties" : {
                "city" : {
-                  "description" : "The name of the city.\n>Required if either `houseNumberOrName`, `street`, `postalCode`, or `stateOrProvince` are provided.",
+                  "description" : "The name of the city. Required if the `houseNumberOrName`, `street`, `postalCode`, or `stateOrProvince` are provided.",
                   "type" : "string"
                },
                "country" : {
-                  "description" : "The two-character country code of the address. The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. 'NL').\n> If you don't know the country or are not collecting the country from the shopper, provide `country` as `ZZ`.",
+                  "description" : "The two-character country code of the address in ISO-3166-1 alpha-2 format. For example, **NL**.",
                   "type" : "string"
                },
                "houseNumberOrName" : {
@@ -3690,15 +3799,15 @@
                   "type" : "string"
                },
                "postalCode" : {
-                  "description" : "The postal code.\n>A maximum of five (5) digits for an address in the USA, or a maximum of ten (10) characters for an address in all other countries.\n>Required if either `houseNumberOrName`, `street`, `city`, or `stateOrProvince` are provided.",
+                  "description" : "The postal code. Required if the `houseNumberOrName`, `street`, `city`, or `stateOrProvince` are provided.\n\nMaximum length:\n\n* 5 digits for addresses in the US.\n\n* 10 characters for all other countries.",
                   "type" : "string"
                },
                "stateOrProvince" : {
-                  "description" : "The abbreviation of the state or province.\n>Two (2) characters for an address in the USA or Canada, or a maximum of three (3) characters for an address in all other countries.\n>Required for an address in the USA or Canada if either `houseNumberOrName`, `street`, `city`, or `postalCode` are provided.",
+                  "description" : "The abbreviation of the state or province. Required if the `houseNumberOrName`, `street`, `city`, or `postalCode` are provided. \n\nMaximum length:\n\n* 2 characters for addresses in the US or Canada.\n\n* 3 characters for all other countries.\n",
                   "type" : "string"
                },
                "street" : {
-                  "description" : "The name of the street.\n>The house number should not be included in this field; it should be separately provided via `houseNumberOrName`.\n>Required if either `houseNumberOrName`, `city`, `postalCode`, or `stateOrProvince` are provided.",
+                  "description" : "The name of the street. Required if the `houseNumberOrName`, `city`, `postalCode`, or `stateOrProvince` are provided.",
                   "type" : "string"
                }
             },
@@ -3743,7 +3852,7 @@
                   "type" : "string"
                },
                "documentData" : {
-                  "x-addedInVersion" : 3,
+                  "x-addedInVersion" : "3",
                   "description" : "Array that contains information about the person's identification document. You can submit only one entry per document type.",
                   "items" : {
                      "$ref" : "#/components/schemas/PersonalDocumentData"
@@ -3752,6 +3861,8 @@
                },
                "idNumber" : {
                   "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use `individualDetails.personalData.documentData.number` instead.",
                   "description" : "An ID number of the person.",
                   "type" : "string"
                },
