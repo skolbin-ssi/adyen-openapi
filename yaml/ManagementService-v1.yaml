@@ -31,6 +31,7 @@ info:
     https://management-test.adyen.com/v1/companies/{companyId}/webhooks
 
     ```'
+  x-timestamp: '2022-08-09T15:26:01Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
@@ -40,8 +41,10 @@ x-groups:
 - Account - company level
 - Account - merchant level
 - Account - store level
+- Payout settings - merchant level
 - Users - company level
 - Users - merchant level
+- My API credential
 - API credentials - company level
 - API credentials - merchant level
 - API key - company level
@@ -52,17 +55,16 @@ x-groups:
 - Allowed origins - merchant level
 - Webhooks - company level
 - Webhooks - merchant level
+- Payment methods - merchant level
 - Terminals - terminal level
+- Terminal actions - company level
+- Terminal actions - terminal level
 - Terminal orders - company level
 - Terminal orders - merchant level
 - Terminal settings - company level
 - Terminal settings - merchant level
 - Terminal settings - store level
 - Terminal settings - terminal level
-- Terminal actions - company level
-- Terminal actions - terminal level
-- Payment methods - merchant level
-- My API credential
 tags:
 - name: API key - merchant level
 - name: Account - merchant level
@@ -72,6 +74,7 @@ tags:
 - name: Users - company level
 - name: Terminal actions - terminal level
 - name: Terminal settings - terminal level
+- name: Payout settings - merchant level
 - name: Webhooks - merchant level
 - name: Client key - merchant level
 - name: Terminal orders - company level
@@ -126,6 +129,9 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-companies-success-200'
               schema:
                 $ref: '#/components/schemas/ListCompanyResponse'
           description: OK - the request has succeeded.
@@ -185,6 +191,9 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-companies-companyId-success-200'
               schema:
                 $ref: '#/components/schemas/Company'
           description: OK - the request has succeeded.
@@ -423,6 +432,9 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-companies-companyId-apiCredentials-success-200'
               schema:
                 $ref: '#/components/schemas/ListCompanyApiCredentialsResponse'
           description: OK - the request has succeeded.
@@ -481,6 +493,9 @@ paths:
       requestBody:
         content:
           application/json:
+            examples:
+              post-company-credential:
+                $ref: '#/components/examples/post-companies-companyId-apiCredentials-post-company-credential'
             schema:
               $ref: '#/components/schemas/CreateCompanyApiCredentialRequest'
       parameters:
@@ -494,6 +509,9 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                post-company-credential:
+                  $ref: '#/components/examples/post-companies-companyId-apiCredentials-post-company-credential-200'
               schema:
                 $ref: '#/components/schemas/CreateCompanyApiCredentialResponse'
           description: OK - the request has succeeded.
@@ -1183,6 +1201,9 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-companies-companyId-merchants-success-200'
               schema:
                 $ref: '#/components/schemas/ListMerchantResponse'
           description: OK - the request has succeeded.
@@ -1433,6 +1454,75 @@ paths:
                   $ref: '#/components/examples/get-companies-companyId-terminalActions-success-200'
               schema:
                 $ref: '#/components/schemas/ListExternalTerminalActionsResponse'
+          description: OK - the request has succeeded.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /companies/{companyId}/terminalActions/{actionId}:
+    get:
+      tags:
+      - Terminal actions - company level
+      summary: Get terminal action
+      description: "Returns the details of the [terminal action](https://docs.adyen.com/point-of-sale/automating-terminal-management/terminal-actions-api)\
+        \ identified in the path.\nTo make this request, your API credential must\
+        \ have one of the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n\
+        * Management API\u2014Terminal actions read\n* Management API\u2014Terminal\
+        \ actions read and write"
+      operationId: get-companies-companyId-terminalActions-actionId
+      x-groupName: Terminal actions - company level
+      x-sortIndex: 4
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      parameters:
+      - description: The unique identifier of the company account.
+        name: companyId
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier of the terminal action.
+        name: actionId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-companies-companyId-terminalActions-actionId-success-200'
+              schema:
+                $ref: '#/components/schemas/ExternalTerminalAction'
           description: OK - the request has succeeded.
         '400':
           content:
@@ -3366,7 +3456,7 @@ paths:
         * Management API\u2014Account read"
       operationId: get-merchants
       x-groupName: Account - merchant level
-      x-sortIndex: 0
+      x-sortIndex: 4
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -3390,8 +3480,77 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-merchants-success-200'
               schema:
                 $ref: '#/components/schemas/ListMerchantResponse'
+          description: OK - the request has succeeded.
+        '204':
+          description: No Content - the request has been successfully processed, but
+            there is no additional content.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Internal Server Error - the server could not process the request.
+    post:
+      tags:
+      - Account - merchant level
+      summary: Create a merchant account
+      description: "Creates a merchant account for the company account specified in\
+        \ the request.\n\nUse this endpoint if your integration requires it, such\
+        \ as Adyen for Platforms Manage. Your Adyen contact will set up your access.\n\
+        \nTo make this request, your API credential must have the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n\
+        * Management API\u2014Accounts read and write"
+      operationId: post-merchants
+      x-groupName: Account - merchant level
+      x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              post-merchants:
+                $ref: '#/components/examples/post-merchants-post-merchants'
+            schema:
+              $ref: '#/components/schemas/CreateMerchantRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                post-merchants:
+                  $ref: '#/components/examples/post-merchants-post-merchants-200'
+              schema:
+                $ref: '#/components/schemas/CreateMerchantResponse'
           description: OK - the request has succeeded.
         '204':
           description: No Content - the request has been successfully processed, but
@@ -3437,7 +3596,76 @@ paths:
         * Management API\u2014Account read"
       operationId: get-merchants-merchantId
       x-groupName: Account - merchant level
-      x-sortIndex: 0
+      x-sortIndex: 3
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      parameters:
+      - description: The unique identifier of the merchant account.
+        name: merchantId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-merchants-merchantId-success-200'
+              schema:
+                $ref: '#/components/schemas/Merchant'
+          description: OK - the request has succeeded.
+        '204':
+          description: No Content - the request has been successfully processed, but
+            there is no additional content.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /merchants/{merchantId}/activate:
+    post:
+      tags:
+      - Account - merchant level
+      summary: Request to activate a merchant account
+      description: "Sends a request to activate the merchant account identified in\
+        \ the path.\n\nYou get the result of the activation asychronously through\
+        \ a webhook. Once the merchant account is activated, you can start using it\
+        \ to accept payments and payouts.\n\nUse this endpoint if your integration\
+        \ requires it, such as Adyen for Platforms Manage. Your Adyen contact will\
+        \ set up your access.\n\nTo make this request, your API credential must have\
+        \ the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n\
+        * Management API\u2014Accounts read and write"
+      operationId: post-merchants-merchantId-activate
+      x-groupName: Account - merchant level
+      x-sortIndex: 2
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -3453,7 +3681,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Merchant'
+                $ref: '#/components/schemas/RequestActivationResponse'
           description: OK - the request has succeeded.
         '204':
           description: No Content - the request has been successfully processed, but
@@ -3530,6 +3758,9 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-merchants-merchantId-apiCredentials-success-200'
               schema:
                 $ref: '#/components/schemas/ListMerchantApiCredentialsResponse'
           description: OK - the request has succeeded.
@@ -3590,6 +3821,9 @@ paths:
       requestBody:
         content:
           application/json:
+            examples:
+              post-merchant-credential:
+                $ref: '#/components/examples/post-merchants-merchantId-apiCredentials-post-merchant-credential'
             schema:
               $ref: '#/components/schemas/CreateMerchantApiCredentialRequest'
       parameters:
@@ -3603,6 +3837,9 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                post-merchant-credential:
+                  $ref: '#/components/examples/post-merchants-merchantId-apiCredentials-post-merchant-credential-200'
               schema:
                 $ref: '#/components/schemas/CreateApiCredentialResponse'
           description: OK - the request has succeeded.
@@ -4311,6 +4548,21 @@ paths:
         required: false
         schema:
           type: string
+      - description: The number of items to have on a page, maximum 100. The default
+          is 10 items on a page.
+        name: pageSize
+        in: query
+        required: false
+        schema:
+          format: int32
+          type: integer
+      - description: The number of the page to fetch.
+        name: pageNumber
+        in: query
+        required: false
+        schema:
+          format: int32
+          type: integer
       responses:
         '200':
           content:
@@ -4374,7 +4626,7 @@ paths:
               add-payment-method-partner-model:
                 $ref: '#/components/examples/post-merchants-merchantId-paymentMethodSettings-add-payment-method-partner-model'
             schema:
-              $ref: '#/components/schemas/PaymentMethodInfo'
+              $ref: '#/components/schemas/PaymentMethodSetupInfo'
       parameters:
       - description: The unique identifier of the merchant account.
         name: merchantId
@@ -4533,6 +4785,353 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentMethod'
+          description: OK - the request has succeeded.
+        '204':
+          description: No Content - the request has been successfully processed, but
+            there is no additional content.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /merchants/{merchantId}/payoutSettings:
+    get:
+      tags:
+      - Payout settings - merchant level
+      summary: Get a list of payout settings
+      description: "Returns the list of payout settings for the merchant account identified\
+        \ in the path.\n\nUse this endpoint if your integration requires it, such\
+        \ as Adyen for Platforms Manage. Your Adyen contact will set up your access.\n\
+        \nTo make this request, your API credential must have the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n\
+        * Management API\u2014Payout account settings read"
+      operationId: get-merchants-merchantId-payoutSettings
+      x-groupName: Payout settings - merchant level
+      x-sortIndex: 3
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      parameters:
+      - description: The unique identifier of the merchant account.
+        name: merchantId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutSettingsResponse'
+          description: OK - the request has succeeded.
+        '204':
+          description: No Content - the request has been successfully processed, but
+            there is no additional content.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Internal Server Error - the server could not process the request.
+    post:
+      tags:
+      - Payout settings - merchant level
+      summary: Add a payout setting
+      description: "Sends a request to add a payout setting for the merchant account\
+        \ specified in the path. A payout setting links the merchant account to the\
+        \ [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments)\
+        \ that contains the details of the payout bank account. Adyen verifies the\
+        \ bank account before allowing and enabling the payout setting.\n\nIf you're\
+        \ accepting payments in multiple currencies, you may add multiple payout settings\
+        \ for the merchant account.\n\nUse this endpoint if your integration requires\
+        \ it, such as Adyen for Platforms Manage. Your Adyen contact will set up your\
+        \ access.\n\nTo make this request, your API credential must have the following\
+        \ [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n\
+        \n* Management API\u2014Payout account settings read and write"
+      operationId: post-merchants-merchantId-payoutSettings
+      x-groupName: Payout settings - merchant level
+      x-sortIndex: 1
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutSettingsRequest'
+      parameters:
+      - description: The unique identifier of the merchant account.
+        name: merchantId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutSettings'
+          description: OK - the request has succeeded.
+        '204':
+          description: No Content - the request has been successfully processed, but
+            there is no additional content.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /merchants/{merchantId}/payoutSettings/{payoutSettingsId}:
+    delete:
+      tags:
+      - Payout settings - merchant level
+      summary: Delete a payout setting
+      description: "Deletes the payout setting identified in the path.\n\nUse this\
+        \ endpoint if your integration requires it, such as Adyen for Platforms Manage.\
+        \ Your Adyen contact will set up your access.\n\nTo make this request, your\
+        \ API credential must have the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n\
+        \n* Management API\u2014Payout account settings read and write"
+      operationId: delete-merchants-merchantId-payoutSettings-payoutSettingsId
+      x-groupName: Payout settings - merchant level
+      x-sortIndex: 5
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      parameters:
+      - description: The unique identifier of the merchant account.
+        name: merchantId
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier of the payout setting.
+        name: payoutSettingsId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Void'
+          description: OK - the request has succeeded.
+        '204':
+          description: No Content - the request has been successfully processed, but
+            there is no additional content.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Internal Server Error - the server could not process the request.
+    get:
+      tags:
+      - Payout settings - merchant level
+      summary: Get a payout setting
+      description: "Returns the payout setting identified in the path.\n\nUse this\
+        \ endpoint if your integration requires it, such as Adyen for Platforms Manage.\
+        \ Your Adyen contact will set up your access.\n\nTo make this request, your\
+        \ API credential must have the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n\
+        * Management API\u2014Payout account settings read"
+      operationId: get-merchants-merchantId-payoutSettings-payoutSettingsId
+      x-groupName: Payout settings - merchant level
+      x-sortIndex: 4
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      parameters:
+      - description: The unique identifier of the merchant account.
+        name: merchantId
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier of the payout setting.
+        name: payoutSettingsId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutSettings'
+          description: OK - the request has succeeded.
+        '204':
+          description: No Content - the request has been successfully processed, but
+            there is no additional content.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestServiceError'
+          description: Internal Server Error - the server could not process the request.
+    patch:
+      tags:
+      - Payout settings - merchant level
+      summary: Update a payout setting
+      description: "Updates the payout setting identified in the path. You can enable\
+        \ or disable the payout setting.\n\nUse this endpoint if your integration\
+        \ requires it, such as Adyen for Platforms Manage. Your Adyen contact will\
+        \ set up your access.\n\nTo make this request, your API credential must have\
+        \ the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n\
+        \n* Management API\u2014Payout account settings read and write"
+      operationId: patch-merchants-merchantId-payoutSettings-payoutSettingsId
+      x-groupName: Payout settings - merchant level
+      x-sortIndex: 2
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePayoutSettingsRequest'
+      parameters:
+      - description: The unique identifier of the merchant account.
+        name: merchantId
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier of the payout setting.
+        name: payoutSettingsId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoutSettings'
           description: OK - the request has succeeded.
         '204':
           description: No Content - the request has been successfully processed, but
@@ -8129,7 +8728,7 @@ components:
             you get will contain the number of hours remaining until the payment will
             be captured.'
           type: object
-    Address2:
+    Address:
       properties:
         city:
           description: The name of the city.
@@ -8156,7 +8755,7 @@ components:
         streetAddress2:
           description: Additional address details, if any.
           type: string
-    Address3:
+    Address-2:
       properties:
         city:
           description: The name of the city.
@@ -8214,7 +8813,7 @@ components:
         value:
           description: The price of the item.
           $ref: '#/components/schemas/BigDecimal'
-    Amount2:
+    Amount-2:
       properties:
         currency:
           description: The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
@@ -8334,6 +8933,10 @@ components:
           description: Public key used for [client-side authentication](https://docs.adyen.com/development-resources/client-side-authentication).
             The client key is required for Drop-in and Components integrations.
           type: string
+        description:
+          description: Description of the API credential.
+          maxLength: 50
+          type: string
         id:
           description: Unique identifier of the API credential.
           type: string
@@ -8410,7 +9013,7 @@ components:
       properties:
         address:
           description: The address details of the billing entity.
-          $ref: '#/components/schemas/Address2'
+          $ref: '#/components/schemas/Address'
         email:
           description: The email address of the billing entity.
           type: string
@@ -8431,6 +9034,13 @@ components:
             transaction. Allows one or two comma-separated header lines, and blank
             lines. For example, `header,header,filler`
           type: string
+    CartesBancairesInfo:
+      properties:
+        siret:
+          description: 'Cartes Bancaires SIRET. Format: 14 digits.'
+          type: string
+      required:
+      - siret
     Company:
       properties:
         _links:
@@ -8446,11 +9056,17 @@ components:
           items:
             $ref: '#/components/schemas/DataCenter'
           type: array
+        description:
+          description: Your description for the company account, maximum 300 characters
+          type: string
         id:
           description: The unique identifier of the company account.
           type: string
         name:
           description: The legal or trading name of the company.
+          type: string
+        reference:
+          description: Your reference to the account
           type: string
         status:
           description: 'The status of the company account.
@@ -8502,6 +9118,10 @@ components:
         clientKey:
           description: Public key used for [client-side authentication](https://docs.adyen.com/development-resources/client-side-authentication).
             The client key is required for Drop-in and Components integrations.
+          type: string
+        description:
+          description: Description of the API credential.
+          maxLength: 50
           type: string
         id:
           description: Unique identifier of the API credential.
@@ -8564,7 +9184,7 @@ components:
           type: string
         name:
           description: The user's full name.
-          $ref: '#/components/schemas/Name2'
+          $ref: '#/components/schemas/Name'
         roles:
           description: The list of [roles](https://docs.adyen.com/account/user-roles)
             for this user.
@@ -8586,6 +9206,51 @@ components:
       - timeZoneCode
       - username
       - roles
+    Configuration:
+      properties:
+        brand:
+          description: 'Payment method, like **eftpos_australia** or **mc**. See the
+            [possible values](https://docs.adyen.com/development-resources/paymentmethodvariant#management-api). '
+          type: string
+        currencies:
+          description: Currency, and surcharge percentage or amount.
+          items:
+            $ref: '#/components/schemas/Currency'
+          type: array
+        sources:
+          description: 'Funding source. Possible values:
+
+            * **Credit**
+
+            * **Debit**'
+          enum:
+          - Debit
+          - Credit
+          items:
+            type: string
+          type: string
+      required:
+      - brand
+      - currencies
+    Connectivity:
+      properties:
+        simcardStatus:
+          description: 'Indicates the status of the SIM card in the payment terminal.
+            Can be updated and received only at terminal level, and only for models
+            that support cellular connectivity.
+
+
+            Possible values:
+
+            * **ACTIVATED**: the SIM card is activated. Cellular connectivity may
+            still need to be enabled on the terminal itself, in the **Network** settings.
+
+            * **INVENTORY**: the SIM card is not activated. The terminal can''t use
+            cellular connectivity.'
+          enum:
+          - ACTIVATED
+          - INVENTORY
+          type: string
     Contact:
       properties:
         email:
@@ -8651,6 +9316,10 @@ components:
           description: Public key used for [client-side authentication](https://docs.adyen.com/development-resources/client-side-authentication).
             The client key is required for Drop-in and Components integrations.
           type: string
+        description:
+          description: Description of the API credential.
+          maxLength: 50
+          type: string
         id:
           description: Unique identifier of the API credential.
           type: string
@@ -8690,6 +9359,9 @@ components:
           items:
             type: string
           type: array
+        description:
+          description: Description of the API credential.
+          type: string
         roles:
           description: List of [roles](https://docs.adyen.com/development-resources/api-credentials#roles-1)
             of the API credential.
@@ -8734,6 +9406,10 @@ components:
         clientKey:
           description: Public key used for [client-side authentication](https://docs.adyen.com/development-resources/client-side-authentication).
             The client key is required for Drop-in and Components integrations.
+          type: string
+        description:
+          description: Description of the API credential.
+          maxLength: 50
           type: string
         id:
           description: Unique identifier of the API credential.
@@ -8782,7 +9458,7 @@ components:
           description: "The user's full name.\n\nAllowed length: 1\u201480 characters."
           maxLength: 80
           minLength: 1
-          $ref: '#/components/schemas/Name2'
+          $ref: '#/components/schemas/Name'
         roles:
           description: The list of [roles](https://docs.adyen.com/account/user-roles)
             for this user.
@@ -8831,7 +9507,7 @@ components:
           type: string
         name:
           description: The user's full name.
-          $ref: '#/components/schemas/Name2'
+          $ref: '#/components/schemas/Name'
         roles:
           description: The list of [roles](https://docs.adyen.com/account/user-roles)
             for this user.
@@ -8957,15 +9633,7 @@ components:
 
             * **TLSv1.2**
 
-            * **SSL**
-
-            * **SSLv3**
-
-            * **TLS**
-
-            * **TLSv1**
-
-            * **TLSv1.1**
+            * **HTTP** - Only allowed on Test environment.
 
 
             If not specified, the webhook will use `sslVersion`: **TLSv1.2**.'
@@ -8979,7 +9647,7 @@ components:
           - TLSV1_1
           - TLSV1_2
           - TLSV1_INSECURE_CIPHERS
-          example: SSL
+          example: TLSv1.2
           type: string
         type:
           description: 'The type of webhook that is being created. Possible values
@@ -9033,12 +9701,75 @@ components:
           items:
             type: string
           type: array
+        description:
+          description: Description of the API credential.
+          type: string
         roles:
           description: List of [roles](https://docs.adyen.com/development-resources/api-credentials#roles-1)
             for the API credential.
           items:
             type: string
           type: array
+    CreateMerchantRequest:
+      properties:
+        businessLineId:
+          description: The unique identifier of the [business line](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businessLines).
+            Required for an Adyen for Platforms Manage integration.
+          type: string
+        companyId:
+          description: The unique identifier of the company account.
+          type: string
+        description:
+          description: Your description for the merchant account, maximum 300 characters.
+          maxLength: 300
+          type: string
+        legalEntityId:
+          description: The unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities).
+            Required for an Adyen for Platforms Manage integration.
+          type: string
+        pricingPlan:
+          description: Sets the pricing plan for the merchant account. Required for
+            an Adyen for Platforms Manage integration. Your Adyen contact will provide
+            the values that you can use.
+          type: string
+        reference:
+          description: Your reference for the merchant account. To make this reference
+            the unique identifier of the merchant account, your Adyen contact can
+            set up a template on your company account. The template can have 6 to
+            255 characters with upper- and lower-case letters, underscores, and numbers.
+            When your company account has a template, then the `reference` is required
+            and must be unique within the company account.
+          type: string
+      required:
+      - companyId
+    CreateMerchantResponse:
+      properties:
+        businessLineId:
+          description: The unique identifier of the [business line](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businessLines).
+          type: string
+        companyId:
+          description: The unique identifier of the company account.
+          type: string
+        description:
+          description: Your description for the merchant account, maximum 300 characters.
+          maxLength: 300
+          type: string
+        id:
+          description: The unique identifier of the merchant account. If Adyen set
+            up a template for the `reference`, then the `id` will have the same value
+            as the `reference` that you sent in the request. Otherwise, the value
+            is generated by Adyen.
+          type: string
+        legalEntityId:
+          description: The unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities).
+          type: string
+        pricingPlan:
+          description: Partner pricing plan for the merchant, applicable for merchants
+            under AfP managed company accounts.
+          type: string
+        reference:
+          description: Your reference for the merchant account.
+          type: string
     CreateMerchantUserRequest:
       properties:
         accountGroups:
@@ -9054,7 +9785,7 @@ components:
           description: "The user's full name.\n\nAllowed length: 1\u201480 characters."
           maxLength: 80
           minLength: 1
-          $ref: '#/components/schemas/Name2'
+          $ref: '#/components/schemas/Name'
         roles:
           description: The list of [roles](https://docs.adyen.com/account/user-roles)
             for this user.
@@ -9145,15 +9876,7 @@ components:
 
             * **TLSv1.2**
 
-            * **SSL**
-
-            * **SSLv3**
-
-            * **TLS**
-
-            * **TLSv1**
-
-            * **TLSv1.1**
+            * **HTTP** - Only allowed on Test environment.
 
 
             If not specified, the webhook will use `sslVersion`: **TLSv1.2**.'
@@ -9167,7 +9890,7 @@ components:
           - TLSV1_1
           - TLSV1_2
           - TLSV1_INSECURE_CIPHERS
-          example: SSL
+          example: TLSv1.2
           type: string
         type:
           description: 'The type of webhook that is being created. Possible values
@@ -9233,7 +9956,7 @@ components:
           type: string
         name:
           description: The user's full name.
-          $ref: '#/components/schemas/Name2'
+          $ref: '#/components/schemas/Name'
         roles:
           description: The list of [roles](https://docs.adyen.com/account/user-roles)
             for this user.
@@ -9255,12 +9978,29 @@ components:
       - timeZoneCode
       - username
       - roles
+    Currency:
+      properties:
+        amount:
+          description: Surcharge amount per transaction, in minor units.
+          format: int32
+          type: integer
+        currencyCode:
+          description: Three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
+            For example, **AUD**.
+          type: string
+        percentage:
+          description: Surcharge percentage per transaction. The maximum number of
+            decimal places is two. For example, **1%** or **2.27%**.
+          format: double
+          type: number
+      required:
+      - currencyCode
     CustomNotification:
       properties:
         amount:
           description: The amount of the payment that the notification is about. Set
             the value in [minor units](https://docs.adyen.com/development-resources/currency-codes).
-          $ref: '#/components/schemas/Amount2'
+          $ref: '#/components/schemas/Amount-2'
         eventCode:
           description: 'The event that caused the notification to be sent.Currently
             supported values:
@@ -9713,6 +10453,9 @@ components:
         _links:
           description: Pagination references.
           $ref: '#/components/schemas/PaginationLinks'
+        accountReference:
+          description: Reference to the account.
+          type: string
         data:
           description: The list of webhooks configured for this account.
           items:
@@ -9775,6 +10518,10 @@ components:
         companyName:
           description: Name of the company linked to the API credential.
           type: string
+        description:
+          description: Description of the API credential.
+          maxLength: 50
+          type: string
         id:
           description: Unique identifier of the API credential.
           type: string
@@ -9813,9 +10560,26 @@ components:
 
             * Number of days from **1** to **29**'
           type: string
+        companyId:
+          description: The unique identifier of the company account this merchant
+            belongs to
+          type: string
+        dataCenters:
+          description: 'List of available data centers.
+
+
+            Adyen has several data centers around the world.In the URL that you use
+            for making API requests, we recommend you use the live URL prefix from
+            the data center closest to your shoppers.'
+          items:
+            $ref: '#/components/schemas/DataCenter'
+          type: array
         defaultShopperInteraction:
           description: The default [`shopperInteraction`](https://docs.adyen.com/api-explorer/#/CheckoutService/v68/post/payments__reqParam_shopperInteraction)
             value used when processing payments through this merchant account.
+          type: string
+        description:
+          description: Your description for the merchant account, maximum 300 characters
           type: string
         id:
           description: The unique identifier of the merchant account.
@@ -9836,6 +10600,9 @@ components:
             merchant account is registered. Format: [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
             For example, a legal entity based in the United States has USD as the
             primary settlement currency.'
+          type: string
+        reference:
+          description: Reference of the merchant account.
           type: string
         shopWebAddress:
           description: The URL for the ecommerce website used with this merchant account.
@@ -9878,7 +10645,16 @@ components:
           $ref: '#/components/schemas/LinksElement'
       required:
       - self
-    Name2:
+    MinorUnitsMonetaryValue:
+      properties:
+        amount:
+          description: ' Amount of this monetary value, in minor units'
+          format: int32
+          type: integer
+        currencyCode:
+          description: ' Currency of this monetary value, Format: [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).'
+          type: string
+    Name:
       properties:
         firstName:
           description: The first name.
@@ -9889,7 +10665,7 @@ components:
       required:
       - firstName
       - lastName
-    Name3:
+    Name2:
       properties:
         firstName:
           description: The first name.
@@ -9909,6 +10685,19 @@ components:
             using Terminal API.'
           items:
             type: string
+          type: array
+    OfflineProcessing:
+      properties:
+        chipFloorLimit:
+          description: The (inclusive) limit for accepting chip cards offline, in
+            the processing currency, in minor units
+          format: int32
+          type: integer
+        offlineSwipeLimits:
+          description: The maximum amount up to which swiped credit cards can be accepted
+            offline, in the specified currency
+          items:
+            $ref: '#/components/schemas/MinorUnitsMonetaryValue'
           type: array
     Opi:
       properties:
@@ -9990,6 +10779,9 @@ components:
         businessLineId:
           description: The unique identifier of the business line.
           type: string
+        cartesBancaires:
+          description: Cartes Bancaires details.
+          $ref: '#/components/schemas/CartesBancairesInfo'
         countries:
           description: The list of countries where a payment method is available.
             By default, all countries supported by the payment method.
@@ -10030,49 +10822,31 @@ components:
           $ref: '#/components/schemas/SwishInfo'
         type:
           description: Payment method [variant](https://docs.adyen.com/development-resources/paymentmethodvariant#management-api).
-          enum:
-          - alipay
-          - amex
-          - amex_applepay
-          - applepay
-          - bcmc
-          - cartebancaire
-          - cartebancaire_applepay
-          - cup
-          - diners
-          - directEbanking
-          - discover
-          - discover_applepay
-          - eftpos_australia
-          - electron_applepay
-          - elo_applepay
-          - elodebit_applepay
-          - girocard
-          - girocard_applepay
-          - giropay
-          - interac_applepay
-          - interac_card
-          - jcb
-          - jcb_applepay
-          - klarna
-          - klarna_account
-          - klarna_paynow
-          - mada_applepay
-          - maestro
-          - maestro_applepay
-          - mc
-          - mc_applepay
-          - paypal
-          - sodexo_applepay
-          - swish
-          - visa
-          - visa_applepay
-          - wechatpay_pos
           type: string
       required:
-      - type
       - id
-    PaymentMethodInfo:
+    PaymentMethodResponse:
+      properties:
+        _links:
+          description: Pagination references.
+          $ref: '#/components/schemas/PaginationLinks'
+        data:
+          description: Payment methods details.
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+          type: array
+        itemsTotal:
+          description: Total number of items.
+          format: int32
+          type: integer
+        pagesTotal:
+          description: Total number of pages.
+          format: int32
+          type: integer
+      required:
+      - itemsTotal
+      - pagesTotal
+    PaymentMethodSetupInfo:
       properties:
         applePay:
           description: Apple Pay details.
@@ -10083,6 +10857,9 @@ components:
         businessLineId:
           description: The unique identifier of the business line.
           type: string
+        cartesBancaires:
+          description: Cartes Bancaires details.
+          $ref: '#/components/schemas/CartesBancairesInfo'
         countries:
           description: The list of countries where a payment method is available.
             By default, all countries supported by the payment method.
@@ -10104,6 +10881,19 @@ components:
         paypal:
           description: PayPal details.
           $ref: '#/components/schemas/PayPalInfo'
+        shopperInteraction:
+          description: 'The sales channel. Required if the merchant account does not
+            have a sales channel. When you provide this field, it overrides the default
+            sales channel set on the merchant account.
+
+
+            Possible values: **eCommerce**, **pos**, **contAuth**, and **moto**. '
+          enum:
+          - eCommerce
+          - pos
+          - moto
+          - contAuth
+          type: string
         sofort:
           description: Sofort details.
           $ref: '#/components/schemas/SofortInfo'
@@ -10119,50 +10909,165 @@ components:
           enum:
           - alipay
           - amex
-          - amex_applepay
           - applepay
           - bcmc
+          - blik
           - cartebancaire
-          - cartebancaire_applepay
           - cup
           - diners
           - directEbanking
+          - directdebit_GB
           - discover
-          - discover_applepay
+          - ebanking_FI
           - eftpos_australia
-          - electron_applepay
-          - elo_applepay
-          - elodebit_applepay
           - girocard
-          - girocard_applepay
           - giropay
-          - interac_applepay
+          - ideal
           - interac_card
           - jcb
-          - jcb_applepay
           - klarna
           - klarna_account
           - klarna_paynow
-          - mada_applepay
           - maestro
-          - maestro_applepay
+          - mbway
           - mc
-          - mc_applepay
+          - mobilepay
+          - multibanco
           - paypal
-          - sodexo_applepay
+          - payshop
           - swish
+          - trustly
           - visa
-          - visa_applepay
+          - wechatpay
           - wechatpay_pos
           type: string
       required:
       - type
-    PaymentMethodResponse:
+    PayoutSettings:
+      properties:
+        allowed:
+          description: 'Indicates if payouts to the bank account are allowed. This
+            value is set automatically based on the status of the verification process.
+            The value is:
+
+
+            * **true** if `verificationStatus` is **valid**.
+
+            * **false** for all other values.'
+          type: boolean
+        enabled:
+          description: 'Indicates if payouts to this bank account are enabled. Default:
+            **true**.
+
+
+            To receive payouts into this bank account, both `enabled` and `allowed`
+            must be **true**.'
+          type: boolean
+        enabledFromDate:
+          description: 'The date when Adyen starts paying out to this bank account.
+
+
+            Format: [ISO 8601](https://www.w3.org/TR/NOTE-datetime), for example,
+            **2019-11-23T12:25:28Z** or **2020-05-27T20:25:28+08:00**.
+
+
+            If not specified, the `enabled` field indicates if payouts are enabled
+            for this bank account.
+
+
+            If a date is specified and:
+
+
+            * `enabled`: **true**, payouts are enabled starting the specified date.
+
+            * `enabled`: **false**, payouts are disabled until the specified date.
+            On the specified date, `enabled` changes to **true** and this field is
+            reset to **null**.'
+          type: string
+        id:
+          description: The unique identifier of the payout setting.
+          type: string
+        priority:
+          description: "Determines how long it takes for the funds to reach the bank\
+            \ account. Adyen pays out based on the [payout frequency](https://docs.adyen.com/account/getting-paid#payout-frequency).\
+            \ Depending on the currencies and banks involved in transferring the money,\
+            \ it may take up to three days for the payout funds to arrive in the bank\
+            \ account.\n\n Possible values:\n* **first**: same day.\n* **urgent**:\
+            \ the next day.\n* **normal**: between 1 and 3 days."
+          enum:
+          - first
+          - normal
+          - urgent
+          type: string
+        transferInstrumentId:
+          description: The unique identifier of the [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments)
+            that contains the details of the bank account.
+          type: string
+        verificationStatus:
+          description: 'The status of the verification process for the bank account.
+
+
+            Possible values:
+
+            * **valid**: the verification was successful.
+
+            * **pending**: the verification is in progress.
+
+            * **invalid**: the information provided is not complete.
+
+            * **rejected**:  there are reasons to refuse working with this entity.'
+          enum:
+          - invalid
+          - pending
+          - rejected
+          - valid
+          type: string
+      required:
+      - transferInstrumentId
+      - id
+    PayoutSettingsRequest:
+      properties:
+        enabled:
+          description: 'Indicates if payouts to this bank account are enabled. Default:
+            **true**.
+
+
+            To receive payouts into this bank account, both `enabled` and `allowed`
+            must be **true**.'
+          type: boolean
+        enabledFromDate:
+          description: 'The date when Adyen starts paying out to this bank account.
+
+
+            Format: [ISO 8601](https://www.w3.org/TR/NOTE-datetime), for example,
+            **2019-11-23T12:25:28Z** or **2020-05-27T20:25:28+08:00**.
+
+
+            If not specified, the `enabled` field indicates if payouts are enabled
+            for this bank account.
+
+
+            If a date is specified and:
+
+
+            * `enabled`: **true**, payouts are enabled starting the specified date.
+
+            * `enabled`: **false**, payouts are disabled until the specified date.
+            On the specified date, `enabled` changes to **true** and this field is
+            reset to **null**.'
+          type: string
+        transferInstrumentId:
+          description: The unique identifier of the [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments)
+            that contains the details of the bank account.
+          type: string
+      required:
+      - transferInstrumentId
+    PayoutSettingsResponse:
       properties:
         data:
-          description: Payment methods details.
+          description: The list of payout accounts.
           items:
-            $ref: '#/components/schemas/PaymentMethod'
+            $ref: '#/components/schemas/PayoutSettings'
           type: array
     Profile:
       properties:
@@ -10221,6 +11126,11 @@ components:
           description: For `eap` **peap**. The EAP-PEAP password from your MS-CHAP
             account. Must match the configuration of your RADIUS server.
           type: string
+        hiddenSsid:
+          description: Indicates if the network doesn't broadcast its SSID. Mandatory
+            for Android terminals, because these terminals rely on this setting to
+            be able to connect to any network.
+          type: boolean
         name:
           description: Your name for the Wi-Fi profile.
           type: string
@@ -10246,6 +11156,12 @@ components:
           description: The receipt logo converted to a Base64-encoded string. The
             image must be a .bmp file of < 256 KB, dimensions 240 (H) x 384 (W) px.
           maxLength: 350000
+          type: string
+        qrCodeData:
+          description: "Data to print on the receipt as a QR code. This can include\
+            \ static text and the following variables:\n\n- `${merchantreference}`:\
+            \ the merchant reference of the transaction.\n- `${pspreference}`: the\
+            \ PSP reference of the transaction.\n\n For example, **http://www.example.com/order/${pspreference}/${merchantreference}**."
           type: string
     ReceiptPrinting:
       properties:
@@ -10297,6 +11213,29 @@ components:
         shopperVoid:
           description: Print a shopper receipt when a previous transaction is voided.
           type: boolean
+    ReleaseUpdateDetails:
+      additionalProperties: false
+      properties:
+        type:
+          default: ReleaseUpdate
+          description: 'Type of terminal action: Update Release.'
+          enum:
+          - ReleaseUpdate
+          type: string
+        updateAtFirstMaintenanceCall:
+          description: Boolean flag that tells if the terminal should update at the
+            first next maintenance call. If false, terminal will update on its configured
+            reboot time.
+          type: boolean
+    RequestActivationResponse:
+      properties:
+        companyId:
+          description: The unique identifier of the company account.
+          type: string
+        merchantId:
+          description: The unique identifier of the merchant account you requested
+            to activate.
+          type: string
     RestServiceError:
       properties:
         detail:
@@ -10305,10 +11244,6 @@ components:
           type: string
         errorCode:
           description: A code that identifies the problem type.
-          type: string
-        errorType:
-          description: A URI that identifies the problem type, pointing to human-readable
-            documentation on this problem type.
           type: string
         instance:
           description: A unique URI that identifies the specific occurrence of the
@@ -10333,8 +11268,12 @@ components:
         title:
           description: A short, human-readable summary of the problem type.
           type: string
+        type:
+          description: A URI that identifies the problem type, pointing to human-readable
+            documentation on this problem type.
+          type: string
       required:
-      - errorType
+      - type
       - errorCode
       - title
       - detail
@@ -10346,6 +11285,7 @@ components:
           oneOf:
           - $ref: '#/components/schemas/InstallAndroidAppDetails'
           - $ref: '#/components/schemas/InstallAndroidCertificateDetails'
+          - $ref: '#/components/schemas/ReleaseUpdateDetails'
           - $ref: '#/components/schemas/UninstallAndroidAppDetails'
           - $ref: '#/components/schemas/UninstallAndroidCertificateDetails'
         scheduledAt:
@@ -10376,8 +11316,14 @@ components:
           oneOf:
           - $ref: '#/components/schemas/InstallAndroidAppDetails'
           - $ref: '#/components/schemas/InstallAndroidCertificateDetails'
+          - $ref: '#/components/schemas/ReleaseUpdateDetails'
           - $ref: '#/components/schemas/UninstallAndroidAppDetails'
           - $ref: '#/components/schemas/UninstallAndroidCertificateDetails'
+        items:
+          x-addedInVersion: '1'
+          items:
+            $ref: '#/components/schemas/TerminalActionScheduleDetail'
+          type: array
         scheduledAt:
           description: "The date and time when the action should happen. \nFormat:\
             \ [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339), but without the\
@@ -10393,6 +11339,9 @@ components:
             this store.
           type: string
         terminalIds:
+          deprecated: true
+          x-deprecatedInVersion: '1'
+          x-deprecatedMessage: Use `items.terminalId` instead
           description: 'A list of unique IDs of the terminals to apply the action
             to. You can extract the IDs from the [GET `/terminals`](https://docs.adyen.com/api-explorer/#/ManagementService/latest/get/terminals)
             response. Maximum length: 100 IDs.'
@@ -10433,7 +11382,7 @@ components:
       properties:
         address:
           description: The address details of the shipping location.
-          $ref: '#/components/schemas/Address2'
+          $ref: '#/components/schemas/Address'
         contact:
           description: The contact details for the shipping location.
           $ref: '#/components/schemas/Contact'
@@ -10484,7 +11433,7 @@ components:
           $ref: '#/components/schemas/Links'
         address:
           description: The address of the store.
-          $ref: '#/components/schemas/Address3'
+          $ref: '#/components/schemas/Address-2'
         businessLineIds:
           description: "The unique identifiers of the [business lines](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businesslines__resParam_id)\
             \ that the store is associated with.\n If not specified, the business\
@@ -10540,7 +11489,7 @@ components:
       properties:
         address:
           description: The address of the store.
-          $ref: '#/components/schemas/Address3'
+          $ref: '#/components/schemas/Address-2'
         businessLineIds:
           description: 'The unique identifiers of the [business lines](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businesslines__resParam_id)
             that the store is associated with.
@@ -10582,7 +11531,7 @@ components:
       properties:
         address:
           description: The address of the store.
-          $ref: '#/components/schemas/Address3'
+          $ref: '#/components/schemas/Address-2'
         businessLineIds:
           description: 'The unique identifiers of the [business lines](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businesslines__resParam_id)
             that the store is associated with.
@@ -10635,22 +11584,108 @@ components:
           description: The UUID of the [split configuration](https://docs.adyen.com/platforms/split-configuration-for-stores)
             from the Customer Area.
           type: string
+    Surcharge:
+      properties:
+        askConfirmation:
+          description: Show the surcharge details on the terminal, so the shopper
+            can confirm.
+          type: boolean
+        configurations:
+          description: Surcharge fees or percentages for specific payment methods,
+            funding sources (credit or debit), and currencies.
+          items:
+            $ref: '#/components/schemas/Configuration'
+          type: array
     SwishInfo:
       properties:
         swishNumber:
-          description: Swish number. For example, **123 111 11 11**.
+          description: 'Swish number. Format: 10 digits without spaces. For example,
+            **1231111111**.'
+          maxLength: 10
+          minLength: 10
           type: string
       required:
       - swishNumber
     Terminal:
       properties:
+        assigned:
+          description: The [assignment status](https://docs.adyen.com/point-of-sale/automating-terminal-management/assign-terminals-api)
+            of the terminal. If true, the terminal is assigned. If false, the terminal
+            is in inventory and can't be boarded.
+          type: boolean
+        bluetoothIp:
+          description: The Bluetooth IP address of the terminal.
+          type: string
+        bluetoothMac:
+          description: The Bluetooth MAC address of the terminal.
+          type: string
+        city:
+          description: The city where the terminal is located.
+          type: string
+        companyAccount:
+          description: The company account of the terminal.
+          type: string
+        countryCode:
+          description: The country code where the terminal is located.
+          type: string
+        deviceModel:
+          description: The terminal model of the device.
+          type: string
+        ethernetIp:
+          description: The ethernet IP address of the terminal.
+          type: string
+        ethernetMac:
+          description: The ethernet MAC address of the terminal.
+          type: string
+        firmwareVersion:
+          description: The firmware Version of the terminal.
+          type: string
+        iccid:
+          description: The ICCID number of the cellular communications card.
+          type: string
         id:
           description: The unique identifier of the terminal.
+          type: string
+        lastActivityDateTime:
+          description: The last Activity Date and Time of the terminal.
+          format: date-time
+          type: string
+        lastTransactionDateTime:
+          description: The last Transaction Date and Time of the terminal.
+          format: date-time
+          type: string
+        linkNegotiation:
+          description: The ethernet link speed of the terminal that was negotiated.
+          type: string
+        serialNumber:
+          description: The serial number of the terminal.
+          type: string
+        simStatus:
+          description: 'On a terminal that supports 3G or 4G connectivity, indicates
+            the status of the SIM card in the terminal: ACTIVE or INVENTORY.'
           type: string
         status:
           description: Indicates when the terminal was last online, whether the terminal
             is being reassigned, or whether the terminal is turned off. If the terminal
             was last online more that a week ago, it is also shown as turned off.
+          type: string
+        storeStatus:
+          description: The Status of store where the terminal is located.
+          type: string
+        wifiIp:
+          description: The WiFi IP address of the terminal.
+          type: string
+        wifiMac:
+          description: The WiFi MAC address of the terminal.
+          type: string
+        wifiSsid:
+          description: The WIFI SSID of the terminal.
+          type: string
+    TerminalActionScheduleDetail:
+      properties:
+        id:
+          type: string
+        terminalId:
           type: string
     TerminalModelsResponse:
       properties:
@@ -10748,6 +11783,9 @@ components:
         cardholderReceipt:
           description: Settings to define the header of the shopper receipt.
           $ref: '#/components/schemas/CardholderReceipt'
+        connectivity:
+          description: Settings for terminal connectivity features.
+          $ref: '#/components/schemas/Connectivity'
         gratuities:
           description: Settings for tipping with or without predefined options to
             choose from. The maximum number of predefined options is four, or three
@@ -10761,6 +11799,10 @@ components:
         nexo:
           description: Settings for a Terminal API integration.
           $ref: '#/components/schemas/Nexo'
+        offlineProcessing:
+          description: Settings for [offline payment](https://docs.adyen.com/point-of-sale/offline-payments)
+            features.
+          $ref: '#/components/schemas/OfflineProcessing'
         opi:
           description: Settings for an Oracle Payment Interface (OPI) integration.
           $ref: '#/components/schemas/Opi'
@@ -10774,6 +11816,10 @@ components:
         signature:
           description: Settings to skip signature, sign on display, or sign on receipt.
           $ref: '#/components/schemas/Signature'
+        surcharge:
+          description: Settings for payment [surcharge](https://docs.adyen.com/point-of-sale/surcharge)
+            features.
+          $ref: '#/components/schemas/Surcharge'
         timeouts:
           description: Settings for device [time-outs](https://docs.adyen.com/point-of-sale/pos-timeouts#device-time-out).
           $ref: '#/components/schemas/Timeouts'
@@ -10965,6 +12011,9 @@ components:
           items:
             type: string
           type: array
+        description:
+          description: Description of the API credential.
+          type: string
         roles:
           description: List of [roles](https://docs.adyen.com/development-resources/api-credentials#roles-1)
             of the API credential.
@@ -10995,7 +12044,7 @@ components:
           description: The user's full name.
           maxLength: 80
           minLength: 1
-          $ref: '#/components/schemas/Name3'
+          $ref: '#/components/schemas/Name2'
         roles:
           description: The list of [roles](https://docs.adyen.com/account/user-roles)
             for this user.
@@ -11110,15 +12159,7 @@ components:
 
             * **TLSv1.2**
 
-            * **SSL**
-
-            * **SSLv3**
-
-            * **TLS**
-
-            * **TLSv1**
-
-            * **TLSv1.1**
+            * **HTTP** - Only allowed on Test environment.
 
 
             If not specified, the webhook will use `sslVersion`: **TLSv1.2**.'
@@ -11132,7 +12173,7 @@ components:
           - TLSV1_1
           - TLSV1_2
           - TLSV1_INSECURE_CIPHERS
-          example: SSL
+          example: TLSv1.2
           type: string
         url:
           description: Public URL where webhooks will be sent, for example **https://www.domain.com/webhook-endpoint**.
@@ -11155,6 +12196,9 @@ components:
           items:
             type: string
           type: array
+        description:
+          description: Description of the API credential.
+          type: string
         roles:
           description: List of [roles](https://docs.adyen.com/development-resources/api-credentials#roles-1)
             for the API credential.
@@ -11180,7 +12224,7 @@ components:
           description: The user's full name.
           maxLength: 80
           minLength: 1
-          $ref: '#/components/schemas/Name3'
+          $ref: '#/components/schemas/Name2'
         roles:
           description: The list of [roles](https://docs.adyen.com/account/user-roles)
             for this user.
@@ -11261,15 +12305,7 @@ components:
 
             * **TLSv1.2**
 
-            * **SSL**
-
-            * **SSLv3**
-
-            * **TLS**
-
-            * **TLSv1**
-
-            * **TLSv1.1**
+            * **HTTP** - Only allowed on Test environment.
 
 
             If not specified, the webhook will use `sslVersion`: **TLSv1.2**.'
@@ -11283,7 +12319,7 @@ components:
           - TLSV1_1
           - TLSV1_2
           - TLSV1_INSECURE_CIPHERS
-          example: SSL
+          example: TLSv1.2
           type: string
         url:
           description: Public URL where webhooks will be sent, for example **https://www.domain.com/webhook-endpoint**.
@@ -11315,16 +12351,28 @@ components:
           description: Indicates whether the payment method is enabled (**true**)
             or disabled (**false**).
           type: boolean
+    UpdatePayoutSettingsRequest:
+      properties:
+        enabled:
+          description: 'Indicates if payouts to this bank account are enabled. Default:
+            **true**.
+
+
+            To receive payouts into this bank account, both `enabled` and `allowed`
+            must be **true**.'
+          type: boolean
     UpdateStoreRequest:
       properties:
         address:
           description: The address of the store. It is not possible to update the
             country of the store.
           $ref: '#/components/schemas/UpdatableAddress'
-        businessLineId:
+        businessLineIds:
           description: The unique identifiers of the [business lines](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businesslines__resParam_id)
             that the store is associated with.
-          type: string
+          items:
+            type: string
+          type: array
         description:
           description: The description of the store.
           type: string
@@ -11383,7 +12431,7 @@ components:
           type: string
         name:
           description: The user's full name.
-          $ref: '#/components/schemas/Name2'
+          $ref: '#/components/schemas/Name'
         roles:
           description: The list of [roles](https://docs.adyen.com/account/user-roles)
             for this user.
@@ -11423,6 +12471,9 @@ components:
           description: 'Indicates if untrusted SSL certificates are accepted. Default
             value: **false**.'
           type: boolean
+        accountReference:
+          description: Reference to the account the webook is set on.
+          type: string
         active:
           description: Indicates if the webhook configuration is active. The field
             must be **true** for you to receive webhooks about events related an account.
@@ -11520,15 +12571,7 @@ components:
 
             * **TLSv1.2**
 
-            * **SSL**
-
-            * **SSLv3**
-
-            * **TLS**
-
-            * **TLSv1**
-
-            * **TLSv1.1**
+            * **HTTP** - Only allowed on Test environment.
 
 
             If not specified, the webhook will use `sslVersion`: **TLSv1.2**.'
@@ -11542,7 +12585,7 @@ components:
           - TLSV1_1
           - TLSV1_2
           - TLSV1_INSECURE_CIPHERS
-          example: SSL
+          example: TLSv1.2
           type: string
         type:
           description: 'The type of webhook. Possible values are:
@@ -11664,6 +12707,239 @@ components:
           status: ready
           notBefore: 20018-04-20T00:00:00+02:00
           notAfter: '2048-04-12T00:00:00+02:00'
+    get-companies-companyId-apiCredentials-success-200:
+      summary: List of API credentials
+      description: Example response when your API credential has access to 25 API
+        credentials at the company level
+      value:
+        _links:
+          first:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials?pageNumber=1&pageSize=10
+          last:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials?pageNumber=3&pageSize=10
+          next:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials?pageNumber=2&pageSize=10
+          self:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials?pageNumber=1&pageSize=10
+        itemsTotal: 25
+        pagesTotal: 3
+        data:
+        - id: YOUR_API_CREDENTIAL_1
+          username: YOUR_USERNAME_1
+          clientKey: YOUR_CLIENT_KEY_1
+          allowedIpAddresses: []
+          roles:
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - Checkout webservice role
+          active: true
+          allowedOrigins:
+          - id: YOUR_ALLOWED_ORIGIN_1
+            domain: http://localhost
+            _links:
+              self:
+                href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_1/allowedOrigins/YOUR_ALLOWED_ORIGIN_1
+          - id: YOUR_ALLOWED_ORIGIN_2
+            domain: http://localhost:3000
+            _links:
+              self:
+                href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_1/allowedOrigins/YOUR_ALLOWED_ORIGIN_2
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_1
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_1/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_1/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_1/generateClientKey
+          associatedMerchantAccounts: []
+        - id: YOUR_API_CREDENTIAL_2
+          username: YOUR_USERNAME_2
+          clientKey: YOUR_CLIENT_KEY_2
+          allowedIpAddresses: []
+          roles:
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - Checkout webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_2
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_2/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_2/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_2/generateClientKey
+          associatedMerchantAccounts: []
+        - id: YOUR_API_CREDENTIAL_3
+          username: YOUR_USERNAME_3
+          clientKey: YOUR_CLIENT_KEY_3
+          allowedIpAddresses: []
+          roles:
+          - API Supply MPI data with Payments
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - API PCI Payments role
+          - Checkout webservice role
+          - API 3DS 2.0 to retrieve the ThreeDS2Result for authentication only
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3/generateClientKey
+          associatedMerchantAccounts: []
+        - id: YOUR_API_CREDENTIAL_4
+          username: YOUR_USERNAME_4
+          clientKey: YOUR_CLIENT_KEY_4
+          allowedIpAddresses: []
+          roles:
+          - Checkout encrypted cardholder data
+          - Checkout webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_4
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_4/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_4/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_4/generateClientKey
+          associatedMerchantAccounts:
+          - YOUR_MERCHANT_ACCOUNT_1
+        - id: YOUR_API_CREDENTIAL_5
+          username: YOUR_USERNAME_5
+          clientKey: YOUR_CLIENT_KEY_5
+          allowedIpAddresses: []
+          roles:
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - API Authorise Referred Payments
+          - API PCI Payments role
+          - Checkout webservice role
+          - Merchant PAL Webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_5
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_5/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_5/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_5/generateClientKey
+          associatedMerchantAccounts: []
+        - id: YOUR_API_CREDENTIAL_6
+          username: YOUR_USERNAME_6
+          allowedIpAddresses: []
+          roles:
+          - Merchant Report Download role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_6
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_6/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_6/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_6/generateClientKey
+          associatedMerchantAccounts: []
+        - id: YOUR_API_CREDENTIAL_7
+          username: YOUR_USERNAME_7
+          allowedIpAddresses: []
+          roles:
+          - Merchant Report Download role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_7
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_7/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_7/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_7/generateClientKey
+          associatedMerchantAccounts:
+          - YOUR_MERCHANT_ACCOUNT_2
+          - YOUR_MERCHANT_ACCOUNT_3
+        - id: YOUR_API_CREDENTIAL_8
+          username: YOUR_USERNAME_8
+          allowedIpAddresses: []
+          roles:
+          - Merchant Report Download role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_8
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_8/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_8/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_8/generateClientKey
+          associatedMerchantAccounts: []
+        - id: YOUR_API_CREDENTIAL_9
+          username: YOUR_USERNAME_9
+          allowedIpAddresses: []
+          roles:
+          - Merchant Report Download role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_9
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_9/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_9/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_9/generateClientKey
+          associatedMerchantAccounts:
+          - YOUR_MERCHANT_ACCOUNT_4
+          - YOUR_MERCHANT_ACCOUNT_5
+        - id: YOUR_API_CREDENTIAL_10
+          username: YOUR_USERNAME_10
+          allowedIpAddresses: []
+          roles:
+          - Merchant Report Download role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_10
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_10/allowedOrigins
+            company:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_10/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_10/generateClientKey
+          associatedMerchantAccounts: []
     get-companies-companyId-billingEntities-success-200:
       summary: Response code - 200 OK
       description: Example response with billing entities for a company
@@ -11687,6 +12963,188 @@ components:
             postalCode: '28046'
             city: Madrid
             country: ES
+    get-companies-companyId-merchants-success-200:
+      summary: List of merchant accounts
+      description: Example response when your API credential has access to 22 merchant
+        accounts
+      value:
+        _links:
+          first:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/merchants?pageNumber=1&pageSize=10
+          last:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/merchants?pageNumber=3&pageSize=10
+          next:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/merchants?pageNumber=2&pageSize=10
+          self:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/merchants?pageNumber=1&pageSize=10
+        itemsTotal: 22
+        pagesTotal: 3
+        data:
+        - id: YOUR_MERCHANT_ACCOUNT_1
+          name: YOUR_MERCHANT_NAME_1
+          captureDelay: immediate
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_1
+          merchantCity: Amsterdam
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_1
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_1/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_1/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_1/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_2
+          name: YOUR_MERCHANT_NAME_2
+          captureDelay: immediate
+          defaultShopperInteraction: POS
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_2
+          merchantCity: ''
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_2
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_2/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_2/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_2/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_3
+          status: Active
+          merchantCity: Amsterdam
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_3
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_3/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_3/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_3/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_4
+          name: YOUR_MERCHANT_NAME_4
+          captureDelay: immediate
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_4
+          merchantCity: Sao Paulo
+          primarySettlementCurrency: BRL
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_4
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_4/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_4/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_4/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_5
+          name: YOUR_MERCHANT_NAME_5
+          captureDelay: '3'
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_5
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_5
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_5/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_5/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_5/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_6
+          name: YOUR_MERCHANT_NAME_6
+          captureDelay: immediate
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_6
+          merchantCity: Zagreb
+          primarySettlementCurrency: BRL
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_6
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_6/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_6/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_6/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_7
+          name: YOUR_MERCHANT_NAME_7
+          captureDelay: manual
+          defaultShopperInteraction: Moto
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_7
+          merchantCity: Amsterdam
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_7
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_7/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_7/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_7/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_8
+          name: YOUR_MERCHANT_NAME_8
+          captureDelay: immediate
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_8
+          merchantCity: Amsterdam
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_8
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_8/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_8/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_8/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_9
+          name: YOUR_MERCHANT_NAME_9
+          captureDelay: '3'
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_9
+          merchantCity: ''
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_9
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_9/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_9/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_9/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_10
+          name: YOUR_MERCHANT_NAME_10
+          captureDelay: manual
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_10
+          merchantCity: Paris
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_10
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_10/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_10/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_10/webhooks
     get-companies-companyId-shippingLocations-success-200:
       summary: Response code - 200 OK
       description: Example response with shipping locations for a company
@@ -11717,6 +13175,37 @@ components:
             postalCode: '28046'
             city: Madrid
             country: ES
+    get-companies-companyId-success-200:
+      summary: Details of the company account
+      description: Example response with the details of the company account.
+      value:
+        id: YOUR_COMPANY_ACCOUNT
+        name: YOUR_SHOP_NAME
+        status: Active
+        dataCenters:
+        - name: default
+          livePrefix: ''
+        _links:
+          self:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+          apiCredentials:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials
+          users:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/users
+          webhooks:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/webhooks
+    get-companies-companyId-terminalActions-actionId-success-200:
+      summary: Response code - 200 OK
+      description: Example response with the details of the specified terminal action
+      value:
+        data:
+        - actionType: InstallAndroidCertificate
+          config: '{"certificates":"5dff6b..."}'
+          confirmedAt: '2022-06-27T17:44:54+02:00'
+          result: Ok
+          scheduledAt: '2022-06-27T15:44:07+02:00'
+          status: successful
+          terminalId: S1F2-000150183300034
     get-companies-companyId-terminalActions-success-200:
       summary: Response code - 200 OK
       description: Example response when getting a list of scheduled terminal actions
@@ -12000,6 +13489,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: true
+            hiddenSsid: false
             name: Guest Wi-Fi
             psk: 4R8R2R3V456X
             ssid: G470P37660D4G
@@ -12011,6 +13501,299 @@ components:
           fromActiveToSleep: 30
         hardware:
           displayMaximumBackLight: 75
+    get-companies-success-200:
+      summary: List of company accounts
+      description: Example response when your API credential has access to one company
+        account.
+      value:
+        _links:
+          first:
+            href: https://management-test.adyen.com/v1/companies?pageNumber=1&pageSize=10
+          last:
+            href: https://management-test.adyen.com/v1/companies?pageNumber=1&pageSize=10
+          self:
+            href: https://management-test.adyen.com/v1/companies?pageNumber=1&pageSize=10
+        itemsTotal: 1
+        pagesTotal: 1
+        data:
+        - id: YOUR_COMPANY_ACCOUNT
+          name: YOUR_COMPANY_NAME
+          status: Active
+          dataCenters:
+          - name: default
+            livePrefix: ''
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/webhooks
+    get-merchants-merchantId-apiCredentials-success-200:
+      summary: List of API credentials at the merchant level
+      description: Example response when your API credential has access to 11 API
+        credentials at the merchant level
+      value:
+        _links:
+          first:
+            href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials?pageNumber=1&pageSize=10
+          last:
+            href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials?pageNumber=2&pageSize=10
+          next:
+            href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials?pageNumber=2&pageSize=10
+          self:
+            href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials?pageNumber=1&pageSize=10
+        itemsTotal: 11
+        pagesTotal: 2
+        data:
+        - id: YOUR_API_CREDENTIAL_1
+          username: YOUR_USERNAME_1
+          allowedIpAddresses: []
+          roles:
+          - Merchant Report Download role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_CREDENTIAL_1
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_CREDENTIAL_1/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_CREDENTIAL_1/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_CREDENTIAL_1/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        - id: YOUR_API_CREDENTIAL_2
+          username: YOUR_USERNAME_2
+          allowedIpAddresses: []
+          roles:
+          - Merchant Rss feed role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_2
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_2/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_2/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_2/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        - id: YOUR_API_CREDENTIAL_3
+          username: YOUR_USERNAME_3
+          clientKey: YOUR_CLIENT_KEY_3
+          allowedIpAddresses: []
+          roles:
+          - Merchant iDeal-API Webservice role
+          - Management API - Accounts read
+          - Management API - API credentials read and write
+          - "Management API \u2014 Payment methods read"
+          - Merchant PAL Donation role
+          - Merchant PAL Charity role
+          - Checkout encrypted cardholder data
+          - Checkout webservice role
+          - Store payout detail and submit payout - withdrawal
+          - Management API - Accounts read and write
+          - Management API - Webhooks read
+          - Merchant Payout role
+          - API tokenise payment details
+          - General API Payments role
+          - API Supply MPI data with Payments
+          - API Authorise Referred Payments
+          - API PCI Payments role
+          - CSC Tokenization Webservice role
+          - Management API - Stores read
+          - API Payment RefundWithData
+          - API Clientside Encryption Payments role
+          - API to retrieve authentication data
+          - Management API - Stores read and write
+          - Management API - Webhooks read and write
+          - Mastercard inControl service
+          - Merchant Recurring role
+          - Management API - Payout Account Settings Read
+          - API surcharge cost estimation and regulatory information
+          - Store payout detail
+          - Merchant PAL Webservice role
+          active: true
+          allowedOrigins:
+          - id: YOUR_ALLOWED_ORIGIN_1
+            domain: YOUR_DOMAIN_1
+            _links:
+              self:
+                href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3/allowedOrigins/YOUR_ALLOWED_ORIGIN_1
+          - id: YOUR_ALLOWED_ORIGIN_2
+            domain: YOUR_DOMAIN_2
+            _links:
+              self:
+                href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3/allowedOrigins/YOUR_ALLOWED_ORIGIN_2
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_3/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        - id: YOUR_API_CREDENTIAL_4
+          username: YOUR_USERNAME_4
+          clientKey: YOUR_CLIENT_KEY_4
+          allowedIpAddresses: []
+          roles:
+          - API Clientside Encryption Payments role
+          - API tokenise payment details
+          - General API Payments role
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - API PCI Payments role
+          - CSC Tokenization Webservice role
+          - Checkout webservice role
+          - ThreeDSecure WebService Role
+          - Merchant PAL Webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_4
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_4/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_4/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_4/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        - id: YOUR_API_CREDENTIAL_5
+          username: YOUR_USERNAME_5
+          clientKey: YOUR_CLIENT_KEY_5
+          allowedIpAddresses: []
+          roles:
+          - Merchant iDeal-API Webservice role
+          - General API Payments role
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - Checkout webservice role
+          - Merchant PAL Webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_5
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_5/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_5/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_5/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        - id: YOUR_API_CREDENTIAL_6
+          username: YOUR_USERNAME_6
+          allowedIpAddresses: []
+          roles:
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - API PCI Payments role
+          - Checkout webservice role
+          - Merchant PAL Webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_6
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_6/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_6/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_6/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        - id: YOUR_API_CREDENTIAL_7
+          username: YOUR_USERNAME_7
+          allowedIpAddresses: []
+          roles:
+          - Checkout encrypted cardholder data
+          - Checkout webservice role
+          - Merchant PAL Webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_7
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_7/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_7/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_7/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        - id: YOUR_API_CREDENTIAL_8
+          username: YOUR_USERNAME_8
+          clientKey: YOUR_CLIENT_KEY_8
+          allowedIpAddresses: []
+          roles:
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - Checkout webservice role
+          - Merchant PAL Webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_8
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_8/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_8/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_8/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        - id: YOUR_API_CREDENTIAL_9
+          username: YOUR_USERNAME_9
+          clientKey: YOUR_CLIENT_KEY_9
+          allowedIpAddresses: []
+          roles:
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - API PCI Payments role
+          - Checkout webservice role
+          - Merchant PAL Webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_9
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_9/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_9/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_9/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        - id: YOUR_API_CREDENTIAL_10
+          username: YOUR_USERNAME_10
+          clientKey: YOUR_CLIENT_KEY_10
+          allowedIpAddresses: []
+          roles:
+          - Checkout encrypted cardholder data
+          - Merchant Recurring role
+          - Checkout webservice role
+          - Merchant PAL Webservice role
+          active: true
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_10
+            allowedOrigins:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_10/allowedOrigins
+            generateApiKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_10/generateApiKey
+            generateClientKey:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL_10/generateClientKey
+            merchant:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
     get-merchants-merchantId-billingEntities-success-200:
       summary: Response code - 200 OK
       description: Example response with billing entities for a merchant account
@@ -12169,6 +13952,27 @@ components:
           _links:
             self:
               href: https://management-test.adyen.com/v1/stores/ST322LJ223223K5F4SQNR9XL6
+    get-merchants-merchantId-success-200:
+      summary: Details of the merchant account
+      description: Example response with details of the merchant account
+      value:
+        id: YOUR_MERCHANT_ACCOUNT
+        name: YOUR_MERCHANT_NAME
+        captureDelay: manual
+        defaultShopperInteraction: Ecommerce
+        status: Active
+        shopWebAddress: YOUR_SHOP_URL
+        merchantCity: Amsterdam
+        primarySettlementCurrency: EUR
+        _links:
+          self:
+            href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+          apiCredentials:
+            href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/apiCredentials
+          users:
+            href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/users
+          webhooks:
+            href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/webhooks
     get-merchants-merchantId-terminalLogos-success-200:
       summary: Response code - 200 OK
       description: Example response when getting the logo of a payment terminal
@@ -12446,6 +14250,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: true
+            hiddenSsid: false
             name: Guest Wi-Fi
             psk: 4R8R2R3V456X
             ssid: G470P37660D4G
@@ -12457,6 +14262,188 @@ components:
           fromActiveToSleep: 30
         hardware:
           displayMaximumBackLight: 75
+    get-merchants-success-200:
+      summary: List of merchant accounts
+      description: Example response when your API credential has access to 23 merchant
+        accounts
+      value:
+        _links:
+          first:
+            href: https://management-test.adyen.com/v1/merchants?pageNumber=1&pageSize=10
+          last:
+            href: https://management-test.adyen.com/v1/merchants?pageNumber=3&pageSize=10
+          next:
+            href: https://management-test.adyen.com/v1/merchants?pageNumber=2&pageSize=10
+          self:
+            href: https://management-test.adyen.com/v1/merchants?pageNumber=1&pageSize=10
+        itemsTotal: 23
+        pagesTotal: 3
+        data:
+        - id: YOUR_MERCHANT_ACCOUNT_1
+          name: YOUR_MERCHANT_NAME_1
+          captureDelay: immediate
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_1
+          merchantCity: Amsterdam
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_1
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_1/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_1/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_1/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_2
+          name: YOUR_MERCHANT_NAME_2
+          captureDelay: immediate
+          defaultShopperInteraction: POS
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_2
+          merchantCity: ''
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_2
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_2/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_2/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_2/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_3
+          status: YOUR_MERCHANT_NAME_3
+          merchantCity: Amsterdam
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_3
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_3/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_3/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_3/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_4
+          name: YOUR_MERCHANT_NAME_4
+          captureDelay: immediate
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_4
+          merchantCity: Sao Paulo
+          primarySettlementCurrency: BRL
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_4
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_4/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_4/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_4/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_5
+          name: YOUR_MERCHANT_NAME_5
+          captureDelay: '3'
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_5
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_5
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_5/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_5/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_5/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_6
+          name: YOUR_MERCHANT_NAME_6
+          captureDelay: immediate
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_6
+          merchantCity: Zagreb
+          primarySettlementCurrency: BRL
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_NAME_6
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_NAME_6/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_NAME_6/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_NAME_6/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_7
+          name: YOUR_MERCHANT_NAME_7
+          captureDelay: manual
+          defaultShopperInteraction: Moto
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_7
+          merchantCity: Amsterdam
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_7
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_7/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_7/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_7/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_8
+          name: YOUR_MERCHANT_NAME_8
+          captureDelay: immediate
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_8
+          merchantCity: Amsterdam
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_8
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_8/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_8/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_8/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_9
+          name: YOUR_MERCHANT_NAME_9
+          captureDelay: '3'
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_9
+          merchantCity: ''
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_9
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_9/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_9/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_9/webhooks
+        - id: YOUR_MERCHANT_ACCOUNT_10
+          name: YOUR_MERCHANT_NAME_10
+          captureDelay: manual
+          defaultShopperInteraction: Ecommerce
+          status: Active
+          shopWebAddress: YOUR_SHOP_URL_10
+          merchantCity: Paris
+          primarySettlementCurrency: EUR
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_10
+            apiCredentials:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_10/apiCredentials
+            users:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_10/users
+            webhooks:
+              href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT_10/webhooks
     get-stores-storeId-success-200:
       summary: Response code - 200 OK
       description: Example response when getting the details of a store
@@ -12523,6 +14510,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: true
+            hiddenSsid: false
             name: Guest Wi-Fi
             psk: 4R8R2R3V456X
             ssid: G470P37660D4G
@@ -12628,6 +14616,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: true
+            hiddenSsid: false
             name: Guest Wi-Fi
             psk: 4R8R2R3V456X
             ssid: G470P37660D4G
@@ -12639,6 +14628,8 @@ components:
           fromActiveToSleep: 30
         hardware:
           displayMaximumBackLight: 75
+        connectivity:
+          simcardStatus: INVENTORY
     patch-companies-companyId-terminalLogos-remove-logo:
       summary: Remove logo to restore the logo from a higher level
       description: Example request to remove the payment terminal logo configured
@@ -12740,6 +14731,7 @@ components:
               data: PD3tUS1CRDdJTiGDR...EFoLS0tLQg=
               name: eap-peap-client.pem
             eapPwd: EAP_PEAP_PASSWORD
+            hiddenSsid: false
             name: Profile-eap-peap-1
             ssid: your-network
             wsec: ccmp
@@ -12748,6 +14740,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: false
+            hiddenSsid: false
             name: Profile-guest-wifi
             psk: WIFI_PASSWORD
             ssid: your-network
@@ -12806,6 +14799,7 @@ components:
               data: PD3tUS1CRDdJTiGDR...EFoLS0tLQg=
               name: eap-peap-client.pem
             eapPwd: EAP_PEAP_PASSWORD
+            hiddenSsid: false
             name: Profile-eap-peap-1
             ssid: your-network
             wsec: ccmp
@@ -12814,6 +14808,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: false
+            hiddenSsid: false
             name: Profile-guest-wifi
             psk: WIFI_PASSWORD
             ssid: your-network
@@ -12849,6 +14844,7 @@ components:
               name: rsa-private.key
             eapClientPwd: ''
             eapIdentity: admin
+            hiddenSsid: false
             name: Profile-eap-tls-1
             ssid: your-network
             wsec: ccmp
@@ -12908,6 +14904,7 @@ components:
               name: rsa-private.key
             eapClientPwd: ''
             eapIdentity: admin
+            hiddenSsid: false
             name: Profile-eap-tls-1
             ssid: your-network
             wsec: ccmp
@@ -13273,6 +15270,7 @@ components:
               data: PD3tUS1CRDdJTiGDR...EFoLS0tLQg=
               name: eap-peap-client.pem
             eapPwd: EAP_PEAP_PASSWORD
+            hiddenSsid: false
             name: Profile-eap-peap-1
             ssid: your-network
             wsec: ccmp
@@ -13281,6 +15279,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: false
+            hiddenSsid: false
             name: Profile-guest-wifi
             psk: WIFI_PASSWORD
             ssid: your-network
@@ -13339,6 +15338,7 @@ components:
               data: PD3tUS1CRDdJTiGDR...EFoLS0tLQg=
               name: eap-peap-client.pem
             eapPwd: EAP_PEAP_PASSWORD
+            hiddenSsid: false
             name: Profile-eap-peap-1
             ssid: your-network
             wsec: ccmp
@@ -13347,6 +15347,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: false
+            hiddenSsid: false
             name: Profile-guest-wifi
             psk: WIFI_PASSWORD
             ssid: your-network
@@ -13382,6 +15383,7 @@ components:
               name: rsa-private.key
             eapClientPwd: ''
             eapIdentity: admin
+            hiddenSsid: false
             name: Profile-eap-tls-1
             ssid: your-network
             wsec: ccmp
@@ -13441,6 +15443,7 @@ components:
               name: rsa-private.key
             eapClientPwd: ''
             eapIdentity: admin
+            hiddenSsid: false
             name: Profile-eap-tls-1
             ssid: your-network
             wsec: ccmp
@@ -13526,6 +15529,7 @@ components:
               data: PD3tUS1CRDdJTiGDR...EFoLS0tLQg=
               name: eap-peap-client.pem
             eapPwd: EAP_PEAP_PASSWORD
+            hiddenSsid: false
             name: Profile-eap-peap-1
             ssid: your-network
             wsec: ccmp
@@ -13534,6 +15538,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: false
+            hiddenSsid: false
             name: Profile-guest-wifi
             psk: WIFI_PASSWORD
             ssid: your-network
@@ -13592,6 +15597,7 @@ components:
               data: PD3tUS1CRDdJTiGDR...EFoLS0tLQg=
               name: eap-peap-client.pem
             eapPwd: EAP_PEAP_PASSWORD
+            hiddenSsid: false
             name: Profile-eap-peap-1
             ssid: your-network
             wsec: ccmp
@@ -13600,6 +15606,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: false
+            hiddenSsid: false
             name: Profile-guest-wifi
             psk: WIFI_PASSWORD
             ssid: your-network
@@ -13635,6 +15642,7 @@ components:
               name: rsa-private.key
             eapClientPwd: ''
             eapIdentity: admin
+            hiddenSsid: false
             name: Profile-eap-tls-1
             ssid: your-network
             wsec: ccmp
@@ -13694,6 +15702,7 @@ components:
               name: rsa-private.key
             eapClientPwd: ''
             eapIdentity: admin
+            hiddenSsid: false
             name: Profile-eap-tls-1
             ssid: your-network
             wsec: ccmp
@@ -13748,6 +15757,7 @@ components:
               data: PD3tUS1CRDdJTiGDR...EFoLS0tLQg=
               name: eap-peap-client.pem
             eapPwd: EAP_PEAP_PASSWORD
+            hiddenSsid: false
             name: Profile-eap-peap-1
             ssid: your-network
             wsec: ccmp
@@ -13756,6 +15766,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: false
+            hiddenSsid: false
             name: Profile-guest-wifi
             psk: WIFI_PASSWORD
             ssid: your-network
@@ -13814,6 +15825,7 @@ components:
               data: PD3tUS1CRDdJTiGDR...EFoLS0tLQg=
               name: eap-peap-client.pem
             eapPwd: EAP_PEAP_PASSWORD
+            hiddenSsid: false
             name: Profile-eap-peap-1
             ssid: your-network
             wsec: ccmp
@@ -13822,6 +15834,7 @@ components:
             bssType: infra
             channel: 0
             defaultProfile: false
+            hiddenSsid: false
             name: Profile-guest-wifi
             psk: WIFI_PASSWORD
             ssid: your-network
@@ -13834,6 +15847,8 @@ components:
           fromActiveToSleep: 30
         hardware:
           displayMaximumBackLight: 75
+        connectivity:
+          simcardStatus: INVENTORY
     patch-terminals-terminalId-terminalSettings-add-eap-tls-wifi-profile:
       summary: Add EAP-TLS Wi-Fi profile
       description: Example request to add an EAP-TLS Wi-Fi profile for a terminal
@@ -13857,6 +15872,7 @@ components:
               name: rsa-private.key
             eapClientPwd: ''
             eapIdentity: admin
+            hiddenSsid: false
             name: Profile-eap-tls-1
             ssid: your-network
             wsec: ccmp
@@ -13916,6 +15932,7 @@ components:
               name: rsa-private.key
             eapClientPwd: ''
             eapIdentity: admin
+            hiddenSsid: false
             name: Profile-eap-tls-1
             ssid: your-network
             wsec: ccmp
@@ -13927,6 +15944,54 @@ components:
           fromActiveToSleep: 30
         hardware:
           displayMaximumBackLight: 75
+        connectivity:
+          simcardStatus: INVENTORY
+    post-companies-companyId-apiCredentials-post-company-credential:
+      summary: Add an API credential
+      description: Example request for adding an API credential.
+      value:
+        roles:
+        - Checkout webservice role
+        allowedOrigins:
+        - https://www.mystore.com
+        associatedMerchantAccounts:
+        - YOUR_MERCHANT_ACCOUNT_AU
+        - YOUR_MERCHANT_ACCOUNT_EU
+        - YOUR_MERCHANT_ACCOUNT_US
+    post-companies-companyId-apiCredentials-post-company-credential-200:
+      summary: OK 200 - Add an API credential
+      description: Example response for adding an API credential.
+      value:
+        id: YOUR_API_CREDENTIAL
+        username: YOUR_USERNAME
+        clientKey: YOUR_CLIENT_KEY
+        allowedIpAddresses: []
+        roles:
+        - Checkout webservice role
+        active: true
+        allowedOrigins:
+        - id: YOUR_ALLOWED_ORIGIN
+          domain: https://www.mystore.com
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL/allowedOrigins/YOUR_ALLOWED_ORIGIN
+        _links:
+          self:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL
+          allowedOrigins:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL/allowedOrigins
+          company:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT
+          generateApiKey:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL/generateApiKey
+          generateClientKey:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL/generateClientKey
+        apiKey: YOUR_API_KEY
+        password: YOUR_PASSWORD
+        associatedMerchantAccounts:
+        - YOUR_MERCHANT_ACCOUNT_AU
+        - YOUR_MERCHANT_ACCOUNT_EU
+        - YOUR_MERCHANT_ACCOUNT_US
     post-companies-companyId-shippingLocations-create-shipping-location:
       summary: Create a shipping location
       description: Example request to create a shipping location
@@ -14087,6 +16152,44 @@ components:
             href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/users/S2-5C334C6770
         associatedMerchantAccounts:
         - YOUR_MERCHANT_ACCOUNT
+    post-merchants-merchantId-apiCredentials-post-merchant-credential:
+      summary: Add an API credential
+      description: Example request for adding an API credential.
+      value:
+        roles:
+        - Checkout webservice role
+        allowedOrigins:
+        - https://www.mystore.com
+    post-merchants-merchantId-apiCredentials-post-merchant-credential-200:
+      summary: OK 200 - Add an API credential
+      description: Example response for adding an API credential.
+      value:
+        id: YOUR_API_CREDENTIAL
+        username: YOUR_USERNAME
+        clientKey: YOUR_CLIENT_KEY
+        allowedIpAddresses: []
+        roles:
+        - Checkout webservice role
+        active: true
+        allowedOrigins:
+        - id: YOUR_ALLOWED_ORIGIN
+          domain: https://www.mystore.com
+          _links:
+            self:
+              href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL/allowedOrigins/YOUR_ALLOWED_ORIGIN
+        _links:
+          self:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL
+          allowedOrigins:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL/allowedOrigins
+          generateApiKey:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL/generateApiKey
+          generateClientKey:
+            href: https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/apiCredentials/YOUR_API_CREDENTIAL/generateClientKey
+          merchant:
+            href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT
+        apiKey: YOUR_API_KEY
+        password: YOUR_PASSWORD
     post-merchants-merchantId-paymentMethodSettings-add-payment-method:
       summary: Request a payment method
       description: Example request to add a payment method
@@ -14332,6 +16435,25 @@ components:
             href: https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/users/S2-3B3C3C3B22
         associatedMerchantAccounts:
         - YOUR_MERCHANT_ACCOUNT
+    post-merchants-post-merchants:
+      summary: Create a merchant account for an Adyen for Platforms Manage integration
+      description: Example request for creating a merchant account
+      value:
+        companyId: YOUR_COMPANY_ACCOUNT
+        legalEntityId: YOUR_LEGAL_ENTITY_ID
+        businessLineId: YOUR_BUSINESS_LINE_ID
+        description: YOUR_DESCRIPTION
+        reference: YOUR_OWN_REFERENCE
+    post-merchants-post-merchants-200:
+      summary: Merchant account created
+      description: Example response for creating a merchant account
+      value:
+        companyId: YOUR_COMPANY_ACCOUNT
+        legalEntityId: YOUR_LEGAL_ENTITY_ID
+        businessLineId: YOUR_BUSINESS_LINE_ID
+        description: YOUR_DESCRIPTION
+        reference: YOUR_OWN_REFERENCE
+        id: YOUR_OWN_REFERENCE
     post-stores-post-stores:
       summary: Create a store
       description: Example request to create a store

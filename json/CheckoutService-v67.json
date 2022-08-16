@@ -9,7 +9,8 @@
       "version" : "67",
       "x-publicVersion" : true,
       "title" : "Adyen Checkout API",
-      "description" : "Adyen Checkout API provides a simple and flexible way to initiate and authorise online payments. You can use the same integration for payments made with cards (including 3D Secure), mobile wallets, and local payment methods (for example, iDEAL and Sofort).\n\nThis API reference provides information on available endpoints and how to interact with them. To learn more about the API, visit [Checkout documentation](https://docs.adyen.com/online-payments).\n\n## Authentication\nEach request to the Checkout API must be signed with an API key. For this, obtain an API Key from your Customer Area, as described in [How to get the API key](https://docs.adyen.com/development-resources/api-credentials#generate-api-key). Then set this key to the `X-API-Key` header value, for example:\n\n```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: Your_Checkout_API_key\" \\\n...\n```\nNote that when going live, you need to generate a new API Key to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\n## Versioning\nCheckout API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://checkout-test.adyen.com/v67/payments\n```",
+      "description" : "Adyen Checkout API provides a simple and flexible way to initiate and authorise online payments. You can use the same integration for payments made with cards (including 3D Secure), mobile wallets, and local payment methods (for example, iDEAL and Sofort).\n\nThis API reference provides information on available endpoints and how to interact with them. To learn more about the API, visit [Checkout documentation](https://docs.adyen.com/online-payments).\n\n## Authentication\nEach request to the Checkout API must be signed with an API key. For this, obtain an API Key from your Customer Area, as described in [How to get the API key](https://docs.adyen.com/development-resources/api-credentials#generate-api-key). Then set this key to the `X-API-Key` header value, for example:\n\n```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: Your_Checkout_API_key\" \\\n...\n```\nNote that when going live, you need to generate a new API Key to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\n## Versioning\nCheckout API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://checkout-test.adyen.com/v67/payments\n```\n\n## Release notes\nHave a look at the [release notes](https://docs.adyen.com/online-payments/release-notes?integration_type=api&version=67) to find out what changed in this version!",
+      "x-timestamp" : "2022-08-08T16:23:58Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
@@ -46,6 +47,69 @@
       }
    ],
    "paths" : {
+      "/applePay/sessions" : {
+         "post" : {
+            "tags" : [
+               "Utility"
+            ],
+            "summary" : "Get an Apple Pay session",
+            "description" : "You need to use this endpoint if you have an API-only integration with Apple Pay which uses Adyen's Apple Pay certificate.\n\nThe endpoint returns the Apple Pay session data which you need to complete the [Apple Pay session validation](https://docs.adyen.com/payment-methods/apple-pay/api-only?tab=adyen-certificate-validation_1#complete-apple-pay-session-validation).",
+            "operationId" : "post-applePay-sessions",
+            "x-groupName" : "Utility",
+            "x-sortIndex" : 2,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "examples" : {
+                        "basic" : {
+                           "$ref" : "#/components/examples/post-applePay-sessions-basic"
+                        }
+                     },
+                     "schema" : {
+                        "$ref" : "#/components/schemas/CreateApplePaySessionRequest"
+                     }
+                  }
+               }
+            },
+            "parameters" : [
+               {
+                  "$ref" : "#/components/parameters/Idempotency-Key"
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "basic" : {
+                              "$ref" : "#/components/examples/post-applePay-sessions-basic-200"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ApplePaySessionResponse"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               }
+            }
+         }
+      },
       "/cancels" : {
          "post" : {
             "tags" : [
@@ -194,6 +258,75 @@
             }
          }
       },
+      "/cardDetails" : {
+         "post" : {
+            "tags" : [
+               "Payments"
+            ],
+            "summary" : "Get the list of brands on the card",
+            "description" : "Send a request with at least the first 6 digits of the card number to get a response with an array of brands on the card. If you include [your supported brands](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/cardDetails__reqParam_supportedBrands) in the request, the response also tells you if you support each [brand that was identified](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/cardDetails__resParam_details).\n\nIf you have an API-only integration and collect card data, use this endpoint to find out if the shopper's card is co-branded. For co-branded cards, you must let the shopper choose the brand to pay with  if you support both brands.\n\n",
+            "operationId" : "post-cardDetails",
+            "x-groupName" : "Payments",
+            "x-sortIndex" : 6,
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "examples" : {
+                        "basic" : {
+                           "$ref" : "#/components/examples/post-cardDetails-basic"
+                        },
+                        "supported-brands" : {
+                           "$ref" : "#/components/examples/post-cardDetails-supported-brands"
+                        }
+                     },
+                     "schema" : {
+                        "$ref" : "#/components/schemas/CardDetailsRequest"
+                     }
+                  }
+               }
+            },
+            "parameters" : [
+               {
+                  "$ref" : "#/components/parameters/Idempotency-Key"
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "basic" : {
+                              "$ref" : "#/components/examples/post-cardDetails-basic-200"
+                           },
+                           "supported-brands" : {
+                              "$ref" : "#/components/examples/post-cardDetails-supported-brands-200"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/CardDetailsResponse"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded.",
+                  "headers" : {
+                     "Idempotency-Key" : {
+                        "$ref" : "#/components/headers/Idempotency-Key"
+                     }
+                  }
+               }
+            }
+         }
+      },
       "/donations" : {
          "post" : {
             "tags" : [
@@ -201,7 +334,6 @@
             ],
             "summary" : "Start a transaction for donations",
             "description" : "Takes in the donation token generated by the `/payments` request and uses it to make the donation for the donation account specified in the request.\n\nFor more information, see [Donations](https://docs.adyen.com/online-payments/donations).",
-            "x-addedInVersion" : "67",
             "operationId" : "post-donations",
             "x-groupName" : "Payments",
             "x-sortIndex" : 5,
@@ -821,7 +953,7 @@
                            }
                         },
                         "schema" : {
-                           "$ref" : "#/components/schemas/PaymentLinkResource"
+                           "$ref" : "#/components/schemas/PaymentLinkResponse"
                         }
                      }
                   },
@@ -836,7 +968,7 @@
                   "content" : {
                      "application/json" : {
                         "schema" : {
-                           "$ref" : "#/components/schemas/PaymentLinkResource"
+                           "$ref" : "#/components/schemas/PaymentLinkResponse"
                         }
                      }
                   },
@@ -959,9 +1091,6 @@
                   "schema" : {
                      "type" : "string"
                   }
-               },
-               {
-                  "$ref" : "#/components/parameters/Idempotency-Key"
                }
             ],
             "responses" : {
@@ -974,16 +1103,11 @@
                            }
                         },
                         "schema" : {
-                           "$ref" : "#/components/schemas/PaymentLinkResource"
+                           "$ref" : "#/components/schemas/PaymentLinkResponse"
                         }
                      }
                   },
-                  "description" : "OK - the request has succeeded.",
-                  "headers" : {
-                     "Idempotency-Key" : {
-                        "$ref" : "#/components/headers/Idempotency-Key"
-                     }
-                  }
+                  "description" : "OK - the request has succeeded."
                },
                "400" : {
                   "content" : {
@@ -1043,12 +1167,7 @@
                         }
                      }
                   },
-                  "description" : "Unprocessable Entity - a request validation error.",
-                  "headers" : {
-                     "Idempotency-Key" : {
-                        "$ref" : "#/components/headers/Idempotency-Key"
-                     }
-                  }
+                  "description" : "Unprocessable Entity - a request validation error."
                },
                "500" : {
                   "content" : {
@@ -1109,9 +1228,6 @@
                   "schema" : {
                      "type" : "string"
                   }
-               },
-               {
-                  "$ref" : "#/components/parameters/Idempotency-Key"
                }
             ],
             "responses" : {
@@ -1124,16 +1240,11 @@
                            }
                         },
                         "schema" : {
-                           "$ref" : "#/components/schemas/PaymentLinkResource"
+                           "$ref" : "#/components/schemas/PaymentLinkResponse"
                         }
                      }
                   },
-                  "description" : "OK - the request has succeeded.",
-                  "headers" : {
-                     "Idempotency-Key" : {
-                        "$ref" : "#/components/headers/Idempotency-Key"
-                     }
-                  }
+                  "description" : "OK - the request has succeeded."
                },
                "400" : {
                   "content" : {
@@ -1193,12 +1304,7 @@
                         }
                      }
                   },
-                  "description" : "Unprocessable Entity - a request validation error.",
-                  "headers" : {
-                     "Idempotency-Key" : {
-                        "$ref" : "#/components/headers/Idempotency-Key"
-                     }
-                  }
+                  "description" : "Unprocessable Entity - a request validation error."
                },
                "500" : {
                   "content" : {
@@ -3151,6 +3257,17 @@
                   "description" : "Indicates if you are able to process 3D Secure 2 transactions natively on your payment page. Send this parameter when you are using `/payments` endpoint with any of our [native 3D Secure 2 solutions](https://docs.adyen.com/online-payments/3d-secure/native-3ds2).\n\n > This parameter only indicates readiness to support native 3D Secure 2 authentication. To specify if you _want_ to perform 3D Secure, use [Dynamic 3D Secure](/risk-management/dynamic-3d-secure) or send the `executeThreeD` parameter.\n\nPossible values:\n* **true** - Ready to support native 3D Secure 2 authentication. Setting this to true does not mean always applying 3D Secure 2. Adyen still selects the version of 3D Secure based on configuration to optimize authorisation rates and improve the shopper's experience.\n* **false** – Not ready to support native 3D Secure 2 authentication. Adyen will not offer 3D Secure 2 to your shopper regardless of your configuration.\n",
                   "type" : "string"
                },
+               "challengeWindowSize" : {
+                  "description" : "Dimensions of the 3DS2 challenge window to be displayed to the cardholder.\n\nPossible values:\n\n* **01** - size of 250x400 \n* **02** - size of 390x400\n* **03** - size of 500x600\n* **04** - size of 600x400\n* **05** - Fullscreen",
+                  "enum" : [
+                     "01",
+                     "02",
+                     "03",
+                     "04",
+                     "05"
+                  ],
+                  "type" : "string"
+               },
                "executeThreeD" : {
                   "description" : "Indicates if you want to perform 3D Secure authentication on a transaction.\n\n > Alternatively, you can use [Dynamic 3D Secure](/risk-management/dynamic-3d-secure) to configure rules for applying 3D Secure.\n\nPossible values:\n* **true** – Perform 3D Secure authentication.\n* **false** – Don't perform 3D Secure authentication. Note that this setting results in refusals if the issuer mandates 3D Secure because of the PSD2 directive  or other, national regulations. \n",
                   "type" : "string"
@@ -3610,6 +3727,14 @@
                },
                "openinvoicedata.numberOfLines" : {
                   "description" : "The number of invoice lines included in `openinvoicedata`.\n\nThere needs to be at least one line, so `numberOfLines` needs to be at least 1.",
+                  "type" : "string"
+               },
+               "openinvoicedata.recipientFirstName" : {
+                  "description" : "First name of the recipient. If the delivery address and the billing address are different, specify the `recipientFirstName` and `recipientLastName` to share the delivery address with Klarna. Otherwise, only the billing address is shared with Klarna.",
+                  "type" : "string"
+               },
+               "openinvoicedata.recipientLastName" : {
+                  "description" : "Last name of the recipient. If the delivery address and the billing address are different, specify the `recipientFirstName` and `recipientLastName` to share the delivery address with Klarna. Otherwise, only the billing address is shared with Klarna.",
                   "type" : "string"
                },
                "openinvoicedataLine[itemNr].currencyCode" : {
@@ -4167,6 +4292,17 @@
             ],
             "title" : "Apple Pay"
          },
+         "ApplePaySessionResponse" : {
+            "properties" : {
+               "data" : {
+                  "description" : "Base64 encoded data you need to [complete the Apple Pay merchant vlaidation](https://docs.adyen.com/payment-methods/apple-pay/api-only?tab=adyen-certificate-validation_1#complete-apple-pay-session-validation).",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "data"
+            ]
+         },
          "ApplicationInfo" : {
             "properties" : {
                "adyenLibrary" : {
@@ -4472,6 +4608,18 @@
                "holderName"
             ]
          },
+         "CardBrandDetails" : {
+            "properties" : {
+               "supported" : {
+                  "description" : "Indicates if you support the card brand.",
+                  "type" : "boolean"
+               },
+               "type" : {
+                  "description" : "The name of the card brand.",
+                  "type" : "string"
+               }
+            }
+         },
          "CardDetails" : {
             "additionalProperties" : false,
             "properties" : {
@@ -4526,6 +4674,10 @@
                   "description" : "The name of the card holder.",
                   "type" : "string"
                },
+               "networkPaymentReference" : {
+                  "description" : "The network token reference. This is the [`networkTxReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_additionalData-ResponseAdditionalDataCommon-networkTxReference) from the response to the first payment.",
+                  "type" : "string"
+               },
                "number" : {
                   "description" : "The card number. Only collect raw card data if you are [fully PCI compliant](https://docs.adyen.com/development-resources/pci-dss-compliance-guide).",
                   "type" : "string"
@@ -4561,6 +4713,9 @@
                      "alliancedata",
                      "card",
                      "qiwiwallet",
+                     "lianlianpay_ebanking_enterprise",
+                     "lianlianpay_ebanking_credit",
+                     "lianlianpay_ebanking_debit",
                      "entercash"
                   ],
                   "type" : "string"
@@ -4572,6 +4727,44 @@
                "encryptedExpiryYear"
             ],
             "title" : "Card"
+         },
+         "CardDetailsRequest" : {
+            "properties" : {
+               "cardNumber" : {
+                  "description" : "A minimum of the first 8 digits of the card number and a maximum of the full card number. 11 digits gives the best result. \n\nYou must be [fully PCI compliant](https://docs.adyen.com/development-resources/pci-dss-compliance-guide) to collect raw card data.",
+                  "type" : "string"
+               },
+               "countryCode" : {
+                  "description" : "The shopper country.\n\nFormat: [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)\nExample: NL or DE",
+                  "type" : "string"
+               },
+               "merchantAccount" : {
+                  "description" : "The merchant account identifier, with which you want to process the transaction.",
+                  "type" : "string"
+               },
+               "supportedBrands" : {
+                  "description" : "The card brands you support. This is the [`brands`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods__resParam_paymentMethods-brands) array from your [`/paymentMethods`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods) response. \n\nIf not included, our API uses the ones configured for your merchant account and, if provided, the country code.",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               }
+            },
+            "required" : [
+               "cardNumber",
+               "merchantAccount"
+            ]
+         },
+         "CardDetailsResponse" : {
+            "properties" : {
+               "brands" : {
+                  "description" : "The list of brands identified for the card.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/CardBrandDetails"
+                  },
+                  "type" : "array"
+               }
+            }
          },
          "CellulantDetails" : {
             "additionalProperties" : false,
@@ -4844,7 +5037,7 @@
                   "type" : "string"
                },
                "shopperStatement" : {
-                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.",
+                  "description" : "The text to be shown on the shopper's bank statement.\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.\n Allowed characters: **a-z**, **A-Z**, **0-9**, spaces, and special characters **. , ' _ - ? + * /**.",
                   "type" : "string"
                },
                "socialSecurityNumber" : {
@@ -4921,9 +5114,6 @@
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataCommon"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/ResponseAdditionalDataDeliveryAddress"
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataInstallments"
@@ -5084,8 +5274,8 @@
             },
             "required" : [
                "merchantAccount",
-               "amount",
-               "reference"
+               "reference",
+               "amount"
             ]
          },
          "CheckoutCreateOrderResponse" : {
@@ -5106,9 +5296,6 @@
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataCommon"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/ResponseAdditionalDataDeliveryAddress"
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataInstallments"
@@ -5611,6 +5798,27 @@
                }
             }
          },
+         "CreateApplePaySessionRequest" : {
+            "properties" : {
+               "displayName" : {
+                  "description" : "This is the name that your shoppers will see in the Apple Pay interface.\n\nThe value returned as `configuration.merchantName` field from the [`/paymentMethods`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods) response.",
+                  "type" : "string"
+               },
+               "domainName" : {
+                  "description" : "The domain name you provided when you added Apple Pay in your Customer Area.\n\nThis must match the `window.location.hostname` of the web shop.",
+                  "type" : "string"
+               },
+               "merchantIdentifier" : {
+                  "description" : "Your merchant identifier registered with Apple Pay.\n\nUse the value of the `configuration.merchantId` field from the [`/paymentMethods`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods) response.",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "domainName",
+               "merchantIdentifier",
+               "displayName"
+            ]
+         },
          "CreatePaymentAmountUpdateRequest" : {
             "properties" : {
                "amount" : {
@@ -5667,6 +5875,13 @@
                   "description" : "The amount that you want to capture. The `currency` must match the currency used in authorisation, the `value` must be smaller than or equal to the authorised amount.",
                   "$ref" : "#/components/schemas/Amount"
                },
+               "lineItems" : {
+                  "description" : "Price and product information of the captured items, required for [partial captures](https://docs.adyen.com/online-payments/capture#partial-capture).\n> This field is required for partial captures with 3x 4x Oney, Affirm, Afterpay, Clearpay, Klarna, Ratepay, Zip and Atome.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/LineItem"
+                  },
+                  "type" : "array"
+               },
                "merchantAccount" : {
                   "description" : "The merchant account that is used to process the payment.",
                   "type" : "string"
@@ -5721,7 +5936,7 @@
                   "type" : "string"
                },
                "deliverAt" : {
-                  "description" : "The date and time the purchased goods should be delivered.",
+                  "description" : "The date and time when the purchased goods should be delivered.\n\n[ISO 8601](https://www.w3.org/TR/NOTE-datetime) format: YYYY-MM-DDThh:mm:ss+TZD, for example, **2020-12-18T10:15:30+01:00**.",
                   "format" : "date-time",
                   "type" : "string"
                },
@@ -5734,7 +5949,7 @@
                   "type" : "string"
                },
                "expiresAt" : {
-                  "description" : "The date that the payment link expires, in ISO 8601 format. For example `2019-11-23T12:25:28Z`, or `2020-05-27T20:25:28+08:00`. Maximum expiry date should be 70 days from when the payment link is created. If not provided, the default expiry is set to 24 hours after the payment link is created.",
+                  "description" : "The date when the payment link expires.\n\n[ISO 8601](https://www.w3.org/TR/NOTE-datetime) format: YYYY-MM-DDThh:mm:ss+TZD, for example, **2020-12-18T10:15:30+01:00**.\n\nThe maximum expiry date is 70 days after the payment link is created.\n\nIf not provided, the payment link expires 24 hours after it was created.",
                   "type" : "string"
                },
                "installmentOptions" : {
@@ -5836,12 +6051,12 @@
                },
                "storePaymentMethod" : {
                   "x-addedInVersion" : "50",
-                  "description" : "When this is set to **true** and the `shopperReference` is provided, the payment details will be stored. From api version 68 use `storePaymentMethodMode` instead.",
+                  "description" : "When this is set to **true** and the `shopperReference` is provided, the payment details will be stored.",
                   "type" : "boolean"
                },
                "themeId" : {
                   "x-addedInVersion" : "67",
-                  "description" : "Use to set a theme to shopper other than default",
+                  "description" : "A [theme](https://docs.adyen.com/unified-commerce/pay-by-link/api#themes) to customize the appearance of the payment page. If not specified, the payment page is rendered according to the theme set as default in your Customer Area.",
                   "type" : "string"
                }
             },
@@ -5856,6 +6071,13 @@
                "amount" : {
                   "description" : "The amount that you want to refund. The `currency` must match the currency used in authorisation, the `value` must be smaller than or equal to the authorised amount.",
                   "$ref" : "#/components/schemas/Amount"
+               },
+               "lineItems" : {
+                  "description" : "Price and product information of the refunded items, required for [partial refunds](https://docs.adyen.com/online-payments/refund#refund-a-payment).\n> This field is required for partial refunds with 3x 4x Oney, Affirm, Afterpay, Clearpay, Klarna, Ratepay, Zip and Atome.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/LineItem"
+                  },
+                  "type" : "array"
                },
                "merchantAccount" : {
                   "description" : "The merchant account that is used to process the payment.",
@@ -6004,37 +6226,30 @@
          "DonationResponse" : {
             "properties" : {
                "amount" : {
-                  "x-addedInVersion" : "67",
                   "description" : "Authorised amount in the transaction.",
                   "$ref" : "#/components/schemas/Amount"
                },
                "donationAccount" : {
-                  "x-addedInVersion" : "67",
                   "description" : "The Adyen account name of your charity. We will provide you with this account name once your chosen charity has been [onboarded](https://docs.adyen.com/online-payments/donations#onboarding).",
                   "type" : "string"
                },
                "id" : {
-                  "x-addedInVersion" : "67",
                   "description" : "Your unique resource identifier.",
                   "type" : "string"
                },
                "merchantAccount" : {
-                  "x-addedInVersion" : "67",
                   "description" : "The merchant account identifier, with which you want to process the transaction.",
                   "type" : "string"
                },
                "payment" : {
-                  "x-addedInVersion" : "67",
                   "description" : "Action to be taken for completing the payment.",
                   "$ref" : "#/components/schemas/PaymentResponse"
                },
                "reference" : {
-                  "x-addedInVersion" : "67",
                   "description" : "The reference to uniquely identify a payment. This reference is used in all communication with you about the payment status. We recommend using a unique value per payment; however, it is not a requirement. If you need to provide multiple references for a transaction, separate them with hyphens (\"-\"). Maximum length: 80 characters.",
                   "type" : "string"
                },
                "status" : {
-                  "x-addedInVersion" : "67",
                   "description" : "The status of the donation transaction.\n\nPossible values:\n* **completed**\n* **pending**\n* **refused**",
                   "enum" : [
                      "completed",
@@ -6270,7 +6485,8 @@
                   "description" : "**genericissuer**",
                   "enum" : [
                      "eps",
-                     "onlineBanking_SK"
+                     "onlineBanking_SK",
+                     "onlineBanking_CZ"
                   ],
                   "type" : "string"
                }
@@ -6560,29 +6776,6 @@
                "type"
             ],
             "title" : "Klarna"
-         },
-         "LianLianPayDetails" : {
-            "additionalProperties" : false,
-            "properties" : {
-               "telephoneNumber" : {
-                  "description" : "",
-                  "type" : "string"
-               },
-               "type" : {
-                  "description" : "**lianlianpay**",
-                  "enum" : [
-                     "lianlianpay_ebanking_enterprise",
-                     "lianlianpay_ebanking_credit",
-                     "lianlianpay_ebanking_debit"
-                  ],
-                  "type" : "string"
-               }
-            },
-            "required" : [
-               "type",
-               "telephoneNumber"
-            ],
-            "title" : "Lianlian Pay"
          },
          "LineItem" : {
             "properties" : {
@@ -6904,7 +7097,8 @@
                   "description" : "**openinvoice**",
                   "enum" : [
                      "openinvoice",
-                     "afterpay_directdebit"
+                     "afterpay_directdebit",
+                     "atome_pos"
                   ],
                   "type" : "string"
                }
@@ -7126,6 +7320,13 @@
                   "description" : "The captured amount.",
                   "$ref" : "#/components/schemas/Amount"
                },
+               "lineItems" : {
+                  "description" : "Price and product information of the captured items, required for [partial captures](https://docs.adyen.com/online-payments/capture#partial-capture).\n> This field is required for partial captures with 3x 4x Oney, Affirm, Afterpay, Clearpay, Klarna, Ratepay, Zip and Atome.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/LineItem"
+                  },
+                  "type" : "array"
+               },
                "merchantAccount" : {
                   "description" : "The merchant account that is used to process the payment.",
                   "type" : "string"
@@ -7250,8 +7451,10 @@
                      "multibanco",
                      "bankTransfer_IBAN",
                      "paybright",
+                     "paynow",
                      "affirm",
                      "affirm_pos",
+                     "trustlyvector",
                      "oney",
                      "facilypay",
                      "facilypay_3x",
@@ -7266,9 +7469,14 @@
                      "wechatpaySDK",
                      "wechatpayQR",
                      "wechatpayWeb",
+                     "molpay_boost",
+                     "wallet_IN",
                      "payu_IN_cashcard",
                      "payu_IN_nb",
+                     "upi_qr",
+                     "paytm",
                      "molpay_ebanking_VN",
+                     "onlineBanking_PL",
                      "openbanking_UK",
                      "ebanking_FI",
                      "molpay_ebanking_MY",
@@ -7276,6 +7484,9 @@
                      "swish",
                      "twint",
                      "pix",
+                     "walley",
+                     "walley_b2b",
+                     "alma",
                      "molpay_fpx",
                      "konbini",
                      "directEbanking",
@@ -7300,7 +7511,6 @@
                      "onlinebanking_IN",
                      "fawry",
                      "atome",
-                     "atome_pos",
                      "moneybookers",
                      "naps",
                      "nordea",
@@ -7318,12 +7528,16 @@
                      "molpay_bankislam",
                      "molpay_publicbank",
                      "fpx_agrobank",
-                     "wallet_IN",
+                     "touchngo",
+                     "maybank2u_mae",
+                     "duitnow",
+                     "promptpay",
                      "twint_pos",
                      "alipay_hk",
                      "alipay_hk_web",
                      "alipay_hk_wap",
-                     "alipay_wap"
+                     "alipay_wap",
+                     "balanceplatform"
                   ],
                   "type" : "string"
                }
@@ -7348,9 +7562,6 @@
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataCommon"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/ResponseAdditionalDataDeliveryAddress"
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataInstallments"
@@ -7390,10 +7601,6 @@
                "order" : {
                   "description" : "Contains updated information regarding the order in case order information was provided in the request.",
                   "$ref" : "#/components/schemas/CheckoutOrderResponse"
-               },
-               "paymentMethod" : {
-                  "description" : "The payment method used in the transaction.",
-                  "type" : "string"
                },
                "pspReference" : {
                   "description" : "Adyen's 16-character string reference associated with the transaction/request. This value is globally unique; quote it when communicating with us about this request.",
@@ -7586,7 +7793,7 @@
                   "type" : "string"
                },
                "donationOriginalPspReference" : {
-                  "description" : "PSP reference of the transaction from which the donation token is generated.",
+                  "description" : "PSP reference of the transaction from which the donation token is generated. Required when `donationToken` is provided.",
                   "type" : "string"
                },
                "donationToken" : {
@@ -7671,7 +7878,7 @@
                   "$ref" : "#/components/schemas/ThreeDSecureData"
                },
                "order" : {
-                  "description" : "Contains the order information which is required for partial payments.",
+                  "description" : "The order information required for partial payments.",
                   "$ref" : "#/components/schemas/CheckoutOrder"
                },
                "orderReference" : {
@@ -7743,9 +7950,6 @@
                      },
                      {
                         "$ref" : "#/components/schemas/KlarnaDetails"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/LianLianPayDetails"
                      },
                      {
                         "$ref" : "#/components/schemas/MasterpassDetails"
@@ -7887,7 +8091,7 @@
                   "type" : "string"
                },
                "shopperStatement" : {
-                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.",
+                  "description" : "The text to be shown on the shopper's bank statement.\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.\n Allowed characters: **a-z**, **A-Z**, **0-9**, spaces, and special characters **. , ' _ - ? + * /**.",
                   "type" : "string"
                },
                "socialSecurityNumber" : {
@@ -7946,7 +8150,7 @@
                "donationAccount"
             ]
          },
-         "PaymentLinkResource" : {
+         "PaymentLinkResponse" : {
             "properties" : {
                "allowedPaymentMethods" : {
                   "description" : "List of payment methods to be presented to the shopper. To refer to payment methods, use their `paymentMethod.type` from [Payment methods overview](https://docs.adyen.com/payment-methods).\n\nExample: `\"allowedPaymentMethods\":[\"ideal\",\"giropay\"]`",
@@ -7979,7 +8183,7 @@
                   "type" : "string"
                },
                "deliverAt" : {
-                  "description" : "The date and time the purchased goods should be delivered. In ISO 8601 format. For example `2019-11-23T12:25:28Z`, or `2020-05-27T20:25:28+08:00`.",
+                  "description" : "The date and time when the purchased goods should be delivered.\n\n[ISO 8601](https://www.w3.org/TR/NOTE-datetime) format: YYYY-MM-DDThh:mm:ss+TZD, for example, **2020-12-18T10:15:30+01:00**.",
                   "format" : "date-time",
                   "type" : "string"
                },
@@ -7992,7 +8196,7 @@
                   "type" : "string"
                },
                "expiresAt" : {
-                  "description" : "The date that the payment link expires, in ISO 8601 format. For example `2019-11-23T12:25:28Z`, or `2020-05-27T20:25:28+08:00`. Maximum expiry date should be 70 days from when the payment link is created. If not provided, the default expiry is set to 24 hours after the payment link is created.",
+                  "description" : "The date when the payment link expires.\n\n[ISO 8601](https://www.w3.org/TR/NOTE-datetime) format: YYYY-MM-DDThh:mm:ss+TZD, for example, **2020-12-18T10:15:30+01:00**.\n\nThe maximum expiry date is 70 days after the payment link is created.\n\nIf not provided, the payment link expires 24 hours after it was created.",
                   "type" : "string"
                },
                "id" : {
@@ -8000,6 +8204,13 @@
                   "description" : "A unique identifier of the payment link.",
                   "readOnly" : true,
                   "type" : "string"
+               },
+               "installmentOptions" : {
+                  "additionalProperties" : {
+                     "$ref" : "#/components/schemas/InstallmentOption"
+                  },
+                  "description" : "A set of key-value pairs that specifies the installment options available per payment method. The key must be a payment method name in lowercase. For example, **card** to specify installment options for all cards, or **visa** or **mc**. The value must be an object containing the installment options.",
+                  "type" : "object"
                },
                "lineItems" : {
                   "description" : "Price and product information about the purchased items, to be included on the invoice sent to the shopper.\nThis parameter is required for open invoice (_buy now, pay later_) payment methods such Afterpay, Clearpay, Klarna, RatePay, and Zip.",
@@ -8016,8 +8227,15 @@
                   "description" : "This reference allows linking multiple transactions to each other for reporting purposes (for example, order auth-rate). The reference should be unique per billing cycle.",
                   "type" : "string"
                },
+               "metadata" : {
+                  "additionalProperties" : {
+                     "type" : "string"
+                  },
+                  "description" : "Metadata consists of entries, each of which includes a key and a value.\nLimitations:\n* Maximum 20 key-value pairs per request. Otherwise, error \"177\" occurs: \"Metadata size exceeds limit\"\n* Maximum 20 characters per key. Otherwise, error \"178\" occurs: \"Metadata key size exceeds limit\"\n* A key cannot have the name `checkout.linkId`. Any value that you provide with this key is going to be replaced by the real payment link ID.",
+                  "type" : "object"
+               },
                "recurringProcessingModel" : {
-                  "description" : "Defines a recurring payment type.\nAllowed values:\n* `Subscription` – A transaction for a fixed or variable amount, which follows a fixed schedule.\n* `CardOnFile` – With a card-on-file (CoF) transaction, card details are stored to enable one-click or omnichannel journeys, or simply to streamline the checkout process. Any subscription not following a fixed schedule is also considered a card-on-file transaction.\n* `UnscheduledCardOnFile` – An unscheduled card-on-file (UCoF) transaction is a transaction that occurs on a non-fixed schedule and/or has variable amounts. For example, automatic top-ups when a cardholder's balance drops below a certain amount.\n",
+                  "description" : "Defines a recurring payment type.\nPossible values:\n* **Subscription** – A transaction for a fixed or variable amount, which follows a fixed schedule.\n* **CardOnFile** – With a card-on-file (CoF) transaction, card details are stored to enable one-click or omnichannel journeys, or simply to streamline the checkout process. Any subscription not following a fixed schedule is also considered a card-on-file transaction.\n* **UnscheduledCardOnFile** – An unscheduled card-on-file (UCoF) transaction is a transaction that occurs on a non-fixed schedule and/or has variable amounts. For example, automatic top-ups when a cardholder's balance drops below a certain amount.\n",
                   "enum" : [
                      "CardOnFile",
                      "Subscription",
@@ -8028,6 +8246,21 @@
                "reference" : {
                   "description" : "A reference that is used to uniquely identify the payment in future communications about the payment status.",
                   "type" : "string"
+               },
+               "requiredShopperFields" : {
+                  "x-addedInVersion" : "67",
+                  "description" : "List of fields that the shopper has to provide on the payment page before completing the payment. For more information, refer to [Provide shopper information](https://docs.adyen.com/unified-commerce/pay-by-link/payment-links/api#shopper-information).\n\nPossible values:\n* **billingAddress** – The address where to send the invoice.\n* **deliveryAddress** – The address where the purchased goods should be delivered.\n* **shopperEmail** – The shopper's email address.\n* **shopperName** – The shopper's full name.\n* **telephoneNumber** – The shopper's phone number.\n",
+                  "items" : {
+                     "enum" : [
+                        "billingAddress",
+                        "deliveryAddress",
+                        "shopperEmail",
+                        "shopperName",
+                        "telephoneNumber"
+                     ],
+                     "type" : "string"
+                  },
+                  "type" : "array"
                },
                "returnUrl" : {
                   "description" : "Website URL used for redirection after payment is completed.\nIf provided, a **Continue** button will be shown on the payment page. If shoppers select the button, they are redirected to the specified URL.",
@@ -8055,7 +8288,7 @@
                   "$ref" : "#/components/schemas/Name"
                },
                "shopperReference" : {
-                  "description" : "A unique identifier for the shopper (for example, user ID or account ID).",
+                  "description" : "Your reference to uniquely identify this shopper, for example user ID or account ID. Minimum length: 3 characters.\n> Your reference must not include personally identifiable information (PII), for example name or email address.",
                   "type" : "string"
                },
                "splits" : {
@@ -8066,11 +8299,34 @@
                   "type" : "array"
                },
                "status" : {
-                  "description" : "Status of the payment link. Possible values:\n* **active**\n* **expired**\n* **paymentPending** (v68 and later)\n* **completed** (v66 and later)\n* **paid** (v65 and earlier)",
+                  "x-enum" : [
+                     {
+                        "description" : "The link can be used to make payments.",
+                        "value" : "active"
+                     },
+                     {
+                        "description" : "The shopper is in the process of making the payment. Applies to payment methods with an asynchronous flow.\n\nAdded in v68.",
+                        "value" : "paymentPending"
+                     },
+                     {
+                        "description" : "The shopper completed the payment.\n\nRemoved in v66 and replaced with **completed**.",
+                        "value" : "paid"
+                     },
+                     {
+                        "description" : "The expiry date for the payment link has passed. Shoppers can no longer use the link to make payments.",
+                        "value" : "expired"
+                     },
+                     {
+                        "description" : "The shopper completed the payment.\n\nAdded in v66 and replaces **paid**.",
+                        "value" : "completed"
+                     }
+                  ],
+                  "description" : "Status of the payment link. Possible values:\n* **active**: The link can be used to make payments.\n* **expired**: The expiry date for the payment link has passed. Shoppers can no longer use the link to make payments.\n* **completed**: The shopper completed the payment.",
                   "enum" : [
                      "active",
                      "completed",
                      "expired",
+                     "paid",
                      "paymentPending"
                   ],
                   "type" : "string"
@@ -8086,7 +8342,7 @@
                },
                "themeId" : {
                   "x-addedInVersion" : "67",
-                  "description" : "A [theme](https://docs.adyen.com/unified-commerce/pay-by-link/api#themes) to customize the appearance of the payment page.If not specified, the payment page is rendered according to the theme set as default in your Customer Area.",
+                  "description" : "A [theme](https://docs.adyen.com/unified-commerce/pay-by-link/api#themes) to customize the appearance of the payment page. If not specified, the payment page is rendered according to the theme set as default in your Customer Area.",
                   "type" : "string"
                },
                "url" : {
@@ -8274,7 +8530,7 @@
                },
                "order" : {
                   "x-addedInVersion" : "64",
-                  "description" : "Contains the order information which is required for partial payments.",
+                  "description" : "The order information required for partial payments.",
                   "$ref" : "#/components/schemas/CheckoutOrder"
                },
                "shopperLocale" : {
@@ -8328,6 +8584,13 @@
                "amount" : {
                   "description" : "The refund amount.",
                   "$ref" : "#/components/schemas/Amount"
+               },
+               "lineItems" : {
+                  "description" : "Price and product information of the refunded items, required for [partial refunds](https://docs.adyen.com/online-payments/refund#refund-a-payment).\n> This field is required for partial refunds with 3x 4x Oney, Affirm, Afterpay, Clearpay, Klarna, Ratepay, Zip and Atome.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/LineItem"
+                  },
+                  "type" : "array"
                },
                "merchantAccount" : {
                   "description" : "The merchant account that is used to process the payment.",
@@ -8580,7 +8843,7 @@
                   "$ref" : "#/components/schemas/ThreeDSecureData"
                },
                "order" : {
-                  "description" : "Contains the order information which is required for partial payments.",
+                  "description" : "The order information required for partial payments.",
                   "$ref" : "#/components/schemas/CheckoutOrder"
                },
                "orderReference" : {
@@ -8652,9 +8915,6 @@
                      },
                      {
                         "$ref" : "#/components/schemas/KlarnaDetails"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/LianLianPayDetails"
                      },
                      {
                         "$ref" : "#/components/schemas/MasterpassDetails"
@@ -8796,7 +9056,7 @@
                   "type" : "string"
                },
                "shopperStatement" : {
-                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.",
+                  "description" : "The text to be shown on the shopper's bank statement.\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.\n Allowed characters: **a-z**, **A-Z**, **0-9**, spaces, and special characters **. , ' _ - ? + * /**.",
                   "type" : "string"
                },
                "socialSecurityNumber" : {
@@ -8905,9 +9165,6 @@
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataCommon"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/ResponseAdditionalDataDeliveryAddress"
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataInstallments"
@@ -9307,7 +9564,7 @@
                   "type" : "string"
                },
                "shopperStatement" : {
-                  "description" : "The text to be shown on the shopper's bank statement. To enable this field, contact our [Support Team](https://support.adyen.com/hc/en-us/requests/new).\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.",
+                  "description" : "The text to be shown on the shopper's bank statement.\n We recommend sending a maximum of 22 characters, otherwise banks might truncate the string.\n Allowed characters: **a-z**, **A-Z**, **0-9**, spaces, and special characters **. , ' _ - ? + * /**.",
                   "type" : "string"
                },
                "socialSecurityNumber" : {
@@ -9412,9 +9669,6 @@
                         "$ref" : "#/components/schemas/ResponseAdditionalDataCommon"
                      },
                      {
-                        "$ref" : "#/components/schemas/ResponseAdditionalDataDeliveryAddress"
-                     },
-                     {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataInstallments"
                      },
                      {
@@ -9479,7 +9733,7 @@
                },
                "serviceError" : {
                   "description" : "The type of the error.",
-                  "$ref" : "#/components/schemas/ServiceError2"
+                  "$ref" : "#/components/schemas/ServiceError-2"
                },
                "shopperLocale" : {
                   "description" : "The shopperLocale value provided in the payment request.",
@@ -9716,7 +9970,7 @@
          "ResponseAdditionalDataCard" : {
             "properties" : {
                "cardBin" : {
-                  "description" : "The Bank Identification Number of a credit card, which is the first six digits of a card number.\n\nExample: 521234",
+                  "description" : "The first six digits of the card number.\n\nThis is the [Bank Identification Number (BIN)](https://docs.adyen.com/get-started-with-adyen/payment-glossary#bank-identification-number-bin) for card numbers with a six-digit BIN.\n\nExample: 521234",
                   "type" : "string"
                },
                "cardHolderName" : {
@@ -9741,6 +9995,10 @@
                },
                "cardSummary" : {
                   "description" : "The last four digits of a card number.\n\n> Returned only in case of a card payment.",
+                  "type" : "string"
+               },
+               "issuerBin" : {
+                  "description" : "The first eight digits of the card number. Only returned if the card number is 16 digits or more.\n\nThis is the [Bank Identification Number (BIN)](https://docs.adyen.com/get-started-with-adyen/payment-glossary#bank-identification-number-bin) for card numbers with an eight-digit BIN.\n\nExample: 52123423",
                   "type" : "string"
                }
             }
@@ -10006,34 +10264,6 @@
                }
             }
          },
-         "ResponseAdditionalDataDeliveryAddress" : {
-            "properties" : {
-               "deliveryAddress.city" : {
-                  "description" : "The delivery address city passed in the payment request.",
-                  "type" : "string"
-               },
-               "deliveryAddress.country" : {
-                  "description" : "The delivery address country passed in the payment request.\n\nExample: NL",
-                  "type" : "string"
-               },
-               "deliveryAddress.houseNumberOrName" : {
-                  "description" : "The delivery address house number or name passed in the payment request.",
-                  "type" : "string"
-               },
-               "deliveryAddress.postalCode" : {
-                  "description" : "The delivery address postal code passed in the payment request.\n\nExample: 1011 DJ",
-                  "type" : "string"
-               },
-               "deliveryAddress.stateOrProvince" : {
-                  "description" : "The delivery address state or province passed in the payment request.\n\nExample: NH",
-                  "type" : "string"
-               },
-               "deliveryAddress.street" : {
-                  "description" : "The delivery address street passed in the payment request.",
-                  "type" : "string"
-               }
-            }
-         },
          "ResponseAdditionalDataInstallments" : {
             "properties" : {
                "installmentPaymentData.installmentType" : {
@@ -10285,7 +10515,7 @@
                }
             }
          },
-         "ServiceError2" : {
+         "ServiceError-2" : {
             "properties" : {
                "errorCode" : {
                   "type" : "string"
@@ -10294,6 +10524,9 @@
                   "type" : "string"
                },
                "message" : {
+                  "type" : "string"
+               },
+               "pspReference" : {
                   "type" : "string"
                }
             }
@@ -10364,13 +10597,14 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**.",
+                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**, **Remainder**.",
                   "enum" : [
                      "BalanceAccount",
                      "Commission",
                      "Default",
                      "MarketPlace",
                      "PaymentFee",
+                     "Remainder",
                      "VAT",
                      "Verification"
                   ],
@@ -10460,7 +10694,7 @@
                   "type" : "string"
                },
                "expiryYear" : {
-                  "description" : "The year the card expires.",
+                  "description" : "The year the card expires, for example **2022**.",
                   "type" : "string"
                },
                "holderName" : {
@@ -10938,6 +11172,28 @@
          "UpdatePaymentLinkRequest" : {
             "properties" : {
                "status" : {
+                  "x-enum" : [
+                     {
+                        "description" : "The link can be used to make payments.",
+                        "value" : "active"
+                     },
+                     {
+                        "description" : "The shopper is in the process of making the payment. Applies to payment methods with an asynchronous flow.\n\nAdded in v68.",
+                        "value" : "paymentPending"
+                     },
+                     {
+                        "description" : "The shopper completed the payment.\n\nRemoved in v66 and replaced with **completed**.",
+                        "value" : "paid"
+                     },
+                     {
+                        "description" : "The expiry date for the payment link has passed. Shoppers can no longer use the link to make payments.",
+                        "value" : "expired"
+                     },
+                     {
+                        "description" : "The shopper completed the payment.\n\nAdded in v66 and replaces **paid**.",
+                        "value" : "completed"
+                     }
+                  ],
                   "description" : "Status of the payment link. Possible values:\n* **expired**",
                   "enum" : [
                      "expired"
@@ -11255,6 +11511,73 @@
                "url" : "https://test.adyen.link/PL61C53A8B97E6915A"
             }
          },
+         "post-applePay-sessions-basic" : {
+            "summary" : "Get payment session for Apple Pay",
+            "value" : {
+               "displayName" : "YOUR_MERCHANT_NAME",
+               "domainName" : "YOUR_DOMAIN_NAME",
+               "merchantIdentifier" : "YOUR_MERCHANT_ID"
+            }
+         },
+         "post-applePay-sessions-basic-200" : {
+            "summary" : "Payment session data for Apple Pay",
+            "value" : {
+               "data" : "eyJ2Z..."
+            }
+         },
+         "post-cardDetails-basic" : {
+            "summary" : "Get a list of brands on a card",
+            "description" : "Example request for getting a list of brands on a card using the first 6 digits of the card number.",
+            "value" : {
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
+               "cardNumber" : "411111"
+            }
+         },
+         "post-cardDetails-basic-200" : {
+            "summary" : "List of brands on the card",
+            "description" : "Example response when the card is co-branded.",
+            "value" : {
+               "brands" : [
+                  {
+                     "type" : "visa",
+                     "supported" : "true"
+                  },
+                  {
+                     "type" : "cartebancaire",
+                     "supported" : "true"
+                  }
+               ]
+            }
+         },
+         "post-cardDetails-supported-brands" : {
+            "summary" : "Get a list of brands on a card specifying your supported card brands",
+            "description" : "Example request for getting a list of brands on a card using the first 6 digits of the card number and including the card brands you support.",
+            "value" : {
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
+               "cardNumber" : "411111",
+               "supportedBrands" : [
+                  "visa",
+                  "mc",
+                  "amex"
+               ]
+            }
+         },
+         "post-cardDetails-supported-brands-200" : {
+            "summary" : "List of brands on the card when you specify your supported card brands",
+            "description" : "Example response when the card is co-branded, and you only support Visa.",
+            "value" : {
+               "brands" : [
+                  {
+                     "type" : "visa",
+                     "supported" : "true"
+                  },
+                  {
+                     "type" : "cartebancaire",
+                     "supported" : "false"
+                  }
+               ]
+            }
+         },
          "post-donations-donations" : {
             "summary" : "Start a donation transaction",
             "value" : {
@@ -11264,15 +11587,14 @@
                },
                "reference" : "YOUR_DONATION_REFERENCE",
                "paymentMethod" : {
-                  "type" : "scheme",
-                  "cvc" : "123"
+                  "type" : "scheme"
                },
                "donationToken" : "YOUR_DONATION_TOKEN",
                "donationOriginalPspReference" : "991559660454807J",
                "donationAccount" : "CHARITY_ACCOUNT",
                "returnUrl" : "https://your-company.com/...",
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
-               "shopperInteraction" : "Ecommerce"
+               "shopperInteraction" : "ContAuth"
             }
          },
          "post-donations-donations-200" : {
@@ -11313,7 +11635,7 @@
                "returnUrl" : "https://your-company.com/...",
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
                "donationAccount" : "CHARITY_ACCOUNT",
-               "shopperInteraction" : "Ecommerce",
+               "shopperInteraction" : "ContAuth",
                "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "recurringProcessingModel" : "CardOnFile"
             }
@@ -13919,7 +14241,7 @@
                      "type" : "paybright"
                   },
                   {
-                     "name" : "PayMaya Wallet",
+                     "name" : "Maya Wallet",
                      "type" : "paymaya_wallet"
                   },
                   {
@@ -14328,7 +14650,7 @@
                      "type" : "yandex_promsvyazbank"
                   },
                   {
-                     "name" : "Sberbank Online",
+                     "name" : "SberPay",
                      "type" : "yandex_sberbank"
                   },
                   {
