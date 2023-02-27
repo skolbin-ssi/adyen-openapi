@@ -9,8 +9,8 @@
       "version" : "52",
       "x-publicVersion" : true,
       "title" : "Adyen Payment API",
-      "description" : "A set of API endpoints that allow you to initiate, settle, and modify payments on the Adyen payments platform. You can use the API to accept card payments (including One-Click and 3D Secure), bank transfers, ewallets, and many other payment methods.\n\nTo learn more about the API, visit [Classic integration](https://docs.adyen.com/classic-integration).\n\n## Authentication\nTo connect to the Payments API, you must use your basic authentication credentials. For this, create your web service user, as described in [How to get the WS user password](https://docs.adyen.com/development-resources/api-credentials). Then use its credentials to authenticate your request, for example:\n\n```\ncurl\n-U \"ws@Company.YourCompany\":\"YourWsPassword\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\nNote that when going live, you need to generate new web service user credentials to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\n## Versioning\nPayments API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://pal-test.adyen.com/pal/servlet/Payment/v52/authorise\n```",
-      "x-timestamp" : "2022-08-22T16:23:39Z",
+      "description" : "A set of API endpoints that allow you to initiate, settle, and modify payments on the Adyen payments platform. You can use the API to accept card payments (including One-Click and 3D Secure), bank transfers, ewallets, and many other payment methods.\n\nTo learn more about the API, visit [Classic integration](https://docs.adyen.com/classic-integration).\n\n## Authentication\nYou need an [API credential](https://docs.adyen.com/development-resources/api-credentials) to authenticate to the API.\n\nIf using an API key, add an `X-API-Key` header with the API key as the value, for example:\n\n ```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n\nAlternatively, you can use the username and password to connect to the API using basic authentication, for example:\n\n```\ncurl\n-U \"ws@Company.YOUR_COMPANY_ACCOUNT\":\"YOUR_BASIC_AUTHENTICATION_PASSWORD\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\n\n## Versioning\nPayments API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://pal-test.adyen.com/pal/servlet/Payment/v52/authorise\n```\n\n## Going live\n\nTo authenticate to the live endpoints, you need an [API credential](https://docs.adyen.com/development-resources/api-credentials) from your live Customer Area.\n\nThe live endpoint URLs contain a prefix which is unique to your company account:\n```\n\nhttps://{PREFIX}-pal-live.adyenpayments.com/pal/servlet/Payment/v52/authorise\n```\n\nGet your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.",
+      "x-timestamp" : "2023-02-20T18:23:09Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
@@ -42,6 +42,7 @@
             "operationId" : "post-adjustAuthorisation",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 6,
+            "x-methodName" : "adjustAuthorisation",
             "security" : [
                {
                   "BasicAuth" : [
@@ -160,6 +161,7 @@
             "operationId" : "post-authorise",
             "x-groupName" : "General",
             "x-sortIndex" : 1,
+            "x-methodName" : "authorise",
             "security" : [
                {
                   "BasicAuth" : [
@@ -291,6 +293,7 @@
             "operationId" : "post-authorise3d",
             "x-groupName" : "General",
             "x-sortIndex" : 2,
+            "x-methodName" : "authorise3d",
             "security" : [
                {
                   "BasicAuth" : [
@@ -405,6 +408,7 @@
             "operationId" : "post-authorise3ds2",
             "x-groupName" : "General",
             "x-sortIndex" : 3,
+            "x-methodName" : "authorise3ds2",
             "security" : [
                {
                   "BasicAuth" : [
@@ -518,6 +522,7 @@
             "operationId" : "post-cancel",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 2,
+            "x-methodName" : "cancel",
             "security" : [
                {
                   "BasicAuth" : [
@@ -627,10 +632,11 @@
                "Modifications"
             ],
             "summary" : "Cancel or refund a payment",
-            "description" : "Cancels a payment if it has not been captured yet, or refunds it if it has already been captured. This is useful when it is not certain if the payment has been captured or not (for example, when using auto-capture).\n\nDo not use this endpoint for payments that involve:\n * [Multiple partial captures](https://docs.adyen.com/online-payments/capture).\n * [Split data](https://docs.adyen.com/platforms/processing-payments#providing-split-information) either at time of payment or capture for Adyen for Platforms.\n\n Instead, check if the payment has been captured and make a corresponding [`/refund`](https://docs.adyen.com/api-explorer/#/Payment/refund) or [`/cancel`](https://docs.adyen.com/api-explorer/#/Payment/cancel) call.\n\nFor more information, refer to [Cancel or refund](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/cancel-or-refund).\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/{paymentPspReference}/reversals) endpoint under Checkout API instead.",
+            "description" : "Cancels a payment if it has not been captured yet, or refunds it if it has already been captured. This is useful when it is not certain if the payment has been captured or not (for example, when using auto-capture).\n\nDo not use this endpoint for payments that involve:\n * [Multiple partial captures](https://docs.adyen.com/online-payments/capture).\n * [Split data](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) either at time of payment or capture for Adyen for Platforms.\n\n Instead, check if the payment has been captured and make a corresponding [`/refund`](https://docs.adyen.com/api-explorer/#/Payment/refund) or [`/cancel`](https://docs.adyen.com/api-explorer/#/Payment/cancel) call.\n\nFor more information, refer to [Cancel or refund](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/cancel-or-refund).\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/{paymentPspReference}/reversals) endpoint under Checkout API instead.",
             "operationId" : "post-cancelOrRefund",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 4,
+            "x-methodName" : "cancelOrRefund",
             "security" : [
                {
                   "BasicAuth" : [
@@ -749,6 +755,7 @@
             "operationId" : "post-capture",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 1,
+            "x-methodName" : "capture",
             "security" : [
                {
                   "BasicAuth" : [
@@ -868,6 +875,7 @@
             "operationId" : "post-donate",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 6,
+            "x-methodName" : "donate",
             "security" : [
                {
                   "BasicAuth" : [
@@ -982,6 +990,7 @@
             "operationId" : "post-getAuthenticationResult",
             "x-groupName" : "General",
             "x-sortIndex" : 4,
+            "x-methodName" : "getAuthenticationResult",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1095,6 +1104,7 @@
             "operationId" : "post-refund",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 3,
+            "x-methodName" : "refund",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1214,6 +1224,7 @@
             "operationId" : "post-retrieve3ds2Result",
             "x-groupName" : "General",
             "x-sortIndex" : 4,
+            "x-methodName" : "retrieve3ds2Result",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1328,6 +1339,7 @@
             "operationId" : "post-technicalCancel",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 5,
+            "x-methodName" : "technicalCancel",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1447,6 +1459,7 @@
             "operationId" : "post-voidPendingRefund",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 7,
+            "x-methodName" : "voidPendingRefund",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1690,7 +1703,8 @@
                   "description" : "Shopper's work phone number (including the country code).",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalData3DSecure" : {
             "properties" : {
@@ -1725,7 +1739,8 @@
                   "description" : "Indicates your preference for the 3D Secure version. \n> If you use this parameter, you override the checks from Adyen's Authentication Engine. We recommend to use this field only if you have an extensive knowledge of 3D Secure.\n\nPossible values:\n* **1.0.2**: Apply 3D Secure version 1.0.2. \n* **2.1.0**: Apply 3D Secure version 2.1.0. \n* **2.2.0**: Apply 3D Secure version 2.2.0. If the issuer does not support version 2.2.0, we will fall back to 2.1.0.\n\nThe following rules apply:\n* If you prefer 2.1.0 or 2.2.0 but we receive a negative `transStatus` in the `ARes`, we will apply the fallback policy configured in your account. For example, if the configuration is to fall back to 3D Secure 1, we will apply version 1.0.2.\n* If you prefer 2.1.0 or 2.2.0 but the BIN is not enrolled, you will receive an error.\n\n",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataAirline" : {
             "properties" : {
@@ -1844,7 +1859,8 @@
             },
             "required" : [
                "airline.passenger_name"
-            ]
+            ],
+            "type" : "object"
          },
          "AdditionalDataCarRental" : {
             "properties" : {
@@ -1940,12 +1956,17 @@
                   "description" : "Indicates what market-specific dataset will be submitted or is being submitted. Value should be \"A\" for Car rental. This should be included in the auth message.\n* Format: Alphanumeric\n* maxLength: 1",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataCommon" : {
             "properties" : {
                "RequestedTestErrorResponseCode" : {
                   "description" : "Triggers test scenarios that allow to replicate certain communication errors.\n\nAllowed values:\n* **NO_CONNECTION_AVAILABLE** – There wasn't a connection available to service the outgoing communication.\nThis is a transient, retriable error since no messaging could be initiated to an issuing system (or third-party acquiring system). Therefore, the header Transient-Error: true is returned in the response. A subsequent request using the same idempotency key will be processed as if it was the first request.\n* **IOEXCEPTION_RECEIVED** – Something went wrong during transmission of the message or receiving the response.\nThis is a classified as non-transient because the message could have been received by the issuing party and been acted upon. No transient error header is returned. If using idempotency, the (error) response is stored as the final result for the idempotency key. Subsequent messages with the same idempotency key not be processed beyond returning the stored response.",
+                  "type" : "string"
+               },
+               "allowPartialAuth" : {
+                  "description" : "Set to true to authorise a part of the requested amount in case the cardholder does not have enough funds on their account. \nIf a payment was partially authorised, the response includes resultCode: PartiallyAuthorised and the authorised amount in additionalData.authorisedAmountValue.\nTo enable this functionality, contact our Support Team.",
                   "type" : "string"
                },
                "authorisationType" : {
@@ -1972,6 +1993,10 @@
                      "NoShow",
                      "DelayedCharge"
                   ],
+                  "type" : "string"
+               },
+               "manualCapture" : {
+                  "description" : "Set to **true** to require [manual capture](https://docs.adyen.com/online-payments/capture) for the transaction.",
                   "type" : "string"
                },
                "networkTxReference" : {
@@ -2014,7 +2039,8 @@
                   "description" : "This field is required if the transaction is performed by a registered payment facilitator. This field must contain the tax ID of the actual merchant.\n* Format: alpha-numeric.\n* Fixed length: 11 or 14 characters.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataLevel23" : {
             "properties" : {
@@ -2086,7 +2112,8 @@
                   "description" : "Total tax amount, in minor units.\n\nFor example, 2000 means USD 20.00.\n\nMax length: 12 characters.\n\n> Required for Level 2 and Level 3 data.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataLodging" : {
             "properties" : {
@@ -2158,7 +2185,8 @@
                   "description" : "Indicates what market-specific dataset will be submitted or is being submitted. Value should be \"H\" for Hotel. This should be included in the auth message.\n\n* Format: Alphanumeric\n* maxLength: 1",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataModifications" : {
             "properties" : {
@@ -2166,7 +2194,8 @@
                   "description" : "This is the installment option selected by the shopper. It is required only if specified by the user.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataOpenInvoice" : {
             "properties" : {
@@ -2242,7 +2271,8 @@
                   "description" : "URI where the customer can track their shipment.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataOpi" : {
             "properties" : {
@@ -2250,7 +2280,8 @@
                   "description" : "Optional boolean indicator. Set to **true** if you want an ecommerce transaction to return an `opi.transToken` as additional data in the response.\n\nYou can store this Oracle Payment Interface token in your Oracle Opera database. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataRatepay" : {
             "properties" : {
@@ -2286,7 +2317,8 @@
                   "description" : "Identification name or number for the invoice, defined by the merchant.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataRetry" : {
             "properties" : {
@@ -2302,7 +2334,8 @@
                   "description" : "The Boolean value indicating whether Adyen should skip or retry this transaction, if possible.\n\n> If you submit `retry.chainAttemptNumber`, `retry.orderAttemptNumber`, and `retry.skipRetry` values, we also recommend you provide the `merchantOrderReference` to facilitate linking payment attempts together.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataRisk" : {
             "properties" : {
@@ -2390,7 +2423,8 @@
                   "description" : "If this parameter is provided with the value **true**, risk checks for the payment request are skipped and the transaction will not get a risk score.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataRiskStandalone" : {
             "properties" : {
@@ -2454,7 +2488,8 @@
                   "description" : "Required for PayPal payments only. The only supported value is: **paypal**.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataSubMerchant" : {
             "properties" : {
@@ -2498,7 +2533,8 @@
                   "description" : "Required for transactions performed by registered payment facilitators. The tax ID of the sub-merchant.\n* Format: Numeric\n* Fixed length: 11 digits for the CPF or 14 digits for the CNPJ",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataTemporaryServices" : {
             "properties" : {
@@ -2538,7 +2574,8 @@
                   "description" : "Total tax amount, in minor units. For example, 2000 means USD 20.00\n* maxLength: 12",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataWallets" : {
             "properties" : {
@@ -2566,7 +2603,8 @@
                   "description" : "The Visa Checkout Call ID retrieved from the SDK.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "Address" : {
             "properties" : {
@@ -2604,7 +2642,8 @@
                "city",
                "postalCode",
                "country"
-            ]
+            ],
+            "type" : "object"
          },
          "AdjustAuthorisationRequest" : {
             "properties" : {
@@ -2693,7 +2732,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -2714,7 +2753,8 @@
                "merchantAccount",
                "modificationAmount",
                "originalReference"
-            ]
+            ],
+            "type" : "object"
          },
          "Amount" : {
             "properties" : {
@@ -2733,7 +2773,8 @@
             "required" : [
                "value",
                "currency"
-            ]
+            ],
+            "type" : "object"
          },
          "ApplicationInfo" : {
             "properties" : {
@@ -2761,7 +2802,8 @@
                   "description" : "Shopper interaction device, such as terminal, mobile device or web browser, to initiate payment requests.",
                   "$ref" : "#/components/schemas/ShopperInteractionDevice"
                }
-            }
+            },
+            "type" : "object"
          },
          "AuthenticationResultRequest" : {
             "properties" : {
@@ -2777,7 +2819,8 @@
             "required" : [
                "merchantAccount",
                "pspReference"
-            ]
+            ],
+            "type" : "object"
          },
          "AuthenticationResultResponse" : {
             "properties" : {
@@ -2789,7 +2832,8 @@
                   "description" : "The result of the 3D Secure 2 authentication.",
                   "$ref" : "#/components/schemas/ThreeDS2Result"
                }
-            }
+            },
+            "type" : "object"
          },
          "BankAccount" : {
             "properties" : {
@@ -2831,14 +2875,13 @@
                   "description" : "The bank account holder's tax ID.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "BrowserInfo" : {
             "properties" : {
                "acceptHeader" : {
                   "description" : "The accept header value of the shopper's browser.",
-                  "maxLength" : 50,
-                  "minLength" : 10,
                   "type" : "string"
                },
                "colorDepth" : {
@@ -2883,8 +2926,6 @@
                },
                "userAgent" : {
                   "description" : "The user agent value of the shopper's browser.",
-                  "maxLength" : 50,
-                  "minLength" : 10,
                   "type" : "string"
                }
             },
@@ -2897,7 +2938,8 @@
                "screenWidth",
                "timeZoneOffset",
                "language"
-            ]
+            ],
+            "type" : "object"
          },
          "CancelOrRefundRequest" : {
             "properties" : {
@@ -2994,7 +3036,8 @@
             "required" : [
                "merchantAccount",
                "originalReference"
-            ]
+            ],
+            "type" : "object"
          },
          "CancelRequest" : {
             "properties" : {
@@ -3079,7 +3122,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -3099,7 +3142,8 @@
             "required" : [
                "merchantAccount",
                "originalReference"
-            ]
+            ],
+            "type" : "object"
          },
          "CaptureRequest" : {
             "properties" : {
@@ -3188,7 +3232,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -3209,7 +3253,8 @@
                "merchantAccount",
                "modificationAmount",
                "originalReference"
-            ]
+            ],
+            "type" : "object"
          },
          "Card" : {
             "properties" : {
@@ -3263,11 +3308,10 @@
                }
             },
             "required" : [
-               "number",
-               "expiryMonth",
                "expiryYear",
                "holderName"
-            ]
+            ],
+            "type" : "object"
          },
          "CommonField" : {
             "properties" : {
@@ -3279,7 +3323,8 @@
                   "description" : "Version of the field. For example, Version of External Platform.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "DeviceRenderOptions" : {
             "properties" : {
@@ -3307,7 +3352,8 @@
                   },
                   "type" : "array"
                }
-            }
+            },
+            "type" : "object"
          },
          "DonationRequest" : {
             "properties" : {
@@ -3336,7 +3382,8 @@
                "merchantAccount",
                "donationAccount",
                "modificationAmount"
-            ]
+            ],
+            "type" : "object"
          },
          "ExternalPlatform" : {
             "properties" : {
@@ -3352,7 +3399,8 @@
                   "description" : "Version of the field. For example, Version of External Platform.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ForexQuote" : {
             "properties" : {
@@ -3410,7 +3458,8 @@
             "required" : [
                "validTill",
                "basePoints"
-            ]
+            ],
+            "type" : "object"
          },
          "FraudCheckResult" : {
             "properties" : {
@@ -3433,7 +3482,8 @@
                "checkId",
                "name",
                "accountScore"
-            ]
+            ],
+            "type" : "object"
          },
          "FraudResult" : {
             "properties" : {
@@ -3452,7 +3502,8 @@
             },
             "required" : [
                "accountScore"
-            ]
+            ],
+            "type" : "object"
          },
          "Installments" : {
             "properties" : {
@@ -3464,7 +3515,8 @@
             },
             "required" : [
                "value"
-            ]
+            ],
+            "type" : "object"
          },
          "Mandate" : {
             "properties" : {
@@ -3524,7 +3576,8 @@
                "frequency",
                "amount",
                "endsAt"
-            ]
+            ],
+            "type" : "object"
          },
          "MerchantDevice" : {
             "properties" : {
@@ -3540,7 +3593,8 @@
                   "description" : "Merchant device reference.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "MerchantRiskIndicator" : {
             "properties" : {
@@ -3597,7 +3651,8 @@
                   "description" : "Indicator for whether the shopper has already purchased the same items in the past.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "ModificationResult" : {
             "properties" : {
@@ -3630,7 +3685,8 @@
             "required" : [
                "response",
                "pspReference"
-            ]
+            ],
+            "type" : "object"
          },
          "Name" : {
             "properties" : {
@@ -3646,7 +3702,8 @@
             "required" : [
                "firstName",
                "lastName"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentRequest" : {
             "properties" : {
@@ -3748,7 +3805,7 @@
                "dateOfBirth" : {
                   "x-addedInVersion" : "7",
                   "description" : "The shopper's date of birth.\n\nFormat [ISO-8601](https://www.w3.org/TR/NOTE-datetime): YYYY-MM-DD",
-                  "format" : "date-time",
+                  "format" : "date",
                   "type" : "string"
                },
                "dccQuote" : {
@@ -3922,7 +3979,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -3930,7 +3987,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -3968,7 +4025,8 @@
                "merchantAccount",
                "reference",
                "amount"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentRequest3d" : {
             "properties" : {
@@ -4062,7 +4120,7 @@
                "dateOfBirth" : {
                   "x-addedInVersion" : "7",
                   "description" : "The shopper's date of birth.\n\nFormat [ISO-8601](https://www.w3.org/TR/NOTE-datetime): YYYY-MM-DD",
-                  "format" : "date-time",
+                  "format" : "date",
                   "type" : "string"
                },
                "dccQuote" : {
@@ -4213,7 +4271,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -4221,7 +4279,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -4259,7 +4317,8 @@
                "merchantAccount",
                "paResponse",
                "md"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentRequest3ds2" : {
             "properties" : {
@@ -4353,7 +4412,7 @@
                "dateOfBirth" : {
                   "x-addedInVersion" : "7",
                   "description" : "The shopper's date of birth.\n\nFormat [ISO-8601](https://www.w3.org/TR/NOTE-datetime): YYYY-MM-DD",
-                  "format" : "date-time",
+                  "format" : "date",
                   "type" : "string"
                },
                "dccQuote" : {
@@ -4496,7 +4555,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -4504,7 +4563,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -4550,7 +4609,8 @@
                "merchantAccount",
                "reference",
                "amount"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentResult" : {
             "properties" : {
@@ -4628,6 +4688,7 @@
                   "description" : "The result of the payment. For more information, see [Result codes](https://docs.adyen.com/online-payments/payment-result-codes).\n\nPossible values:\n\n* **AuthenticationFinished** – The payment has been successfully authenticated with 3D Secure 2. Returned for 3D Secure 2 authentication-only transactions.\n* **AuthenticationNotRequired** – The transaction does not require 3D Secure authentication. Returned for [standalone authentication-only integrations](https://docs.adyen.com/online-payments/3d-secure/other-3ds-flows/authentication-only).\n* **Authorised** – The payment was successfully authorised. This state serves as an indicator to proceed with the delivery of goods and services. This is a final state.\n* **Cancelled** – Indicates the payment has been cancelled (either by the shopper or the merchant) before processing was completed. This is a final state.\n* **ChallengeShopper** – The issuer requires further shopper interaction before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Error** – There was an error when the payment was being processed. The reason is given in the `refusalReason` field. This is a final state.\n* **IdentifyShopper** – The issuer requires the shopper's device fingerprint before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Pending** – Indicates that it is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.\n* **PresentToShopper** – Indicates that the response contains additional information that you need to present to a shopper, so that they can use it to complete a payment.\n* **Received** – Indicates the payment has successfully been received by Adyen, and will be processed. This is the initial state for all payments.\n* **RedirectShopper** – Indicates the shopper should be redirected to an external web page or app to complete the authorisation.\n* **Refused** – Indicates the payment was refused. The reason is given in the `refusalReason` field. This is a final state.",
                   "enum" : [
                      "AuthenticationFinished",
+                     "AuthenticationNotRequired",
                      "Authorised",
                      "Cancelled",
                      "ChallengeShopper",
@@ -4642,7 +4703,8 @@
                   ],
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "Recurring" : {
             "properties" : {
@@ -4679,7 +4741,8 @@
                   ],
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "RefundRequest" : {
             "properties" : {
@@ -4768,7 +4831,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -4789,7 +4852,8 @@
                "merchantAccount",
                "modificationAmount",
                "originalReference"
-            ]
+            ],
+            "type" : "object"
          },
          "ResponseAdditionalData3DSecure" : {
             "properties" : {
@@ -4813,7 +4877,8 @@
                   "description" : "Indicates whether a card is enrolled for 3D Secure 2.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataBillingAddress" : {
             "properties" : {
@@ -4841,7 +4906,8 @@
                   "description" : "The billing address street passed in the payment request.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataCard" : {
             "properties" : {
@@ -4877,7 +4943,8 @@
                   "description" : "The first eight digits of the card number. Only returned if the card number is 16 digits or more.\n\nThis is the [Bank Identification Number (BIN)](https://docs.adyen.com/get-started-with-adyen/payment-glossary#bank-identification-number-bin) for card numbers with an eight-digit BIN.\n\nExample: 52123423",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataCommon" : {
             "properties" : {
@@ -5008,14 +5075,7 @@
                   "type" : "string"
                },
                "merchantAdviceCode" : {
-                  "description" : "A code and message that issuers send to provide more details about the payment. This field is especially useful when implementing a retry logic for declined payments.\n\nPossible values:\n\n* **01: New account information available**\n\n* **02: Cannot approve at this time, try again later**\n\n* **03: Do not try again**\n\n* **04: Token requirements not fulfilled for this token type**\n\n* **21: Payment Cancellation** (only for Mastercard)\n\n",
-                  "enum" : [
-                     "01: New account information available",
-                     "02: Cannot approve at this time, try again later",
-                     "03: Do not try again",
-                     "04: Token requirements not fulfilled for this token type",
-                     "21: Payment Cancellation"
-                  ],
+                  "description" : "The Merchant Advice Code (MAC) can be returned by Mastercard issuers for refused payments. If present, the MAC contains information about why the payment failed, and whether it can be retried.\n\nFor more information see [Mastercard Merchant Advice Codes](https://docs.adyen.com/development-resources/raw-acquirer-responses#mastercard-merchant-advice-codes).",
                   "type" : "string"
                },
                "merchantReference" : {
@@ -5146,7 +5206,8 @@
                   "description" : "The 3DS transaction ID of the 3DS session sent in notifications. The value is Base64-encoded and is returned for transactions with directoryResponse 'N' or 'Y'. If you want to submit the xid in your 3D Secure 1 request, use the `mpiData.xid`, field.\n\nExample: ODgxNDc2MDg2MDExODk5MAAAAAA=",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataInstallments" : {
             "properties" : {
@@ -5198,7 +5259,8 @@
                   "description" : "The number of installments that the payment amount should be charged with.\n\nExample: 5\n> Only relevant for card payments in countries that support installments.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataNetworkTokens" : {
             "properties" : {
@@ -5214,7 +5276,8 @@
                   "description" : "The last four digits of a network token.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataOpi" : {
             "properties" : {
@@ -5222,7 +5285,8 @@
                   "description" : "Returned in the response if you included `opi.includeTransToken: true` in an ecommerce payment request. This contains an Oracle Payment Interface token that you can store in your Oracle Opera database to identify tokenized ecommerce transactions. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataSepa" : {
             "properties" : {
@@ -5238,7 +5302,8 @@
                   "description" : "This field can take one of the following values:\n* OneOff: (OOFF) Direct debit instruction to initiate exactly one direct debit transaction.\n\n* First: (FRST) Initial/first collection in a series of direct debit instructions.\n* Recurring: (RCUR) Direct debit instruction to carry out regular direct debit transactions initiated by the creditor.\n* Final: (FNAL) Last/final collection in a series of direct debit instructions.\n\nExample: OOFF",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "SDKEphemPubKey" : {
             "properties" : {
@@ -5258,7 +5323,8 @@
                   "description" : "The `y` value as received from the 3D Secure 2 SDK.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ServiceError" : {
             "properties" : {
@@ -5267,7 +5333,7 @@
                   "additionalProperties" : {
                      "type" : "string"
                   },
-                  "description" : "Contains additional information about the payment. Some data fields are included only if you select them first: Go to **Customer Area** > **Account** > **API URLs**.",
+                  "description" : "Contains additional information about the payment. Some data fields are included only if you select them first. Go to **Customer Area** > **Developers** > **Additional data**.",
                   "type" : "object"
                },
                "errorCode" : {
@@ -5291,7 +5357,8 @@
                   "format" : "int32",
                   "type" : "integer"
                }
-            }
+            },
+            "type" : "object"
          },
          "ShopperInteractionDevice" : {
             "properties" : {
@@ -5307,7 +5374,8 @@
                   "description" : "Version of the operating system on the shopper interaction device.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "Split" : {
             "properties" : {
@@ -5328,7 +5396,7 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**, **Remainder**.",
+                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**, **Remainder**, **Surcharge**, **Tip**.",
                   "enum" : [
                      "BalanceAccount",
                      "Commission",
@@ -5336,6 +5404,8 @@
                      "MarketPlace",
                      "PaymentFee",
                      "Remainder",
+                     "Surcharge",
+                     "Tip",
                      "VAT",
                      "Verification"
                   ],
@@ -5345,7 +5415,8 @@
             "required" : [
                "amount",
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "SplitAmount" : {
             "properties" : {
@@ -5363,7 +5434,8 @@
             },
             "required" : [
                "value"
-            ]
+            ],
+            "type" : "object"
          },
          "TechnicalCancelRequest" : {
             "properties" : {
@@ -5448,7 +5520,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -5468,7 +5540,8 @@
             "required" : [
                "merchantAccount",
                "originalMerchantReference"
-            ]
+            ],
+            "type" : "object"
          },
          "ThreeDS1Result" : {
             "properties" : {
@@ -5496,7 +5569,8 @@
                   "description" : "A unique transaction identifier generated by the MPI on behalf of the merchant to identify the 3D Secure transaction, in `Base64` encoding.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ThreeDS2RequestData" : {
             "properties" : {
@@ -5622,7 +5696,8 @@
             },
             "required" : [
                "deviceChannel"
-            ]
+            ],
+            "type" : "object"
          },
          "ThreeDS2Result" : {
             "properties" : {
@@ -5669,7 +5744,8 @@
                   "description" : "The `whiteListStatus` value as defined in the 3D Secure 2 specification.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ThreeDS2ResultRequest" : {
             "properties" : {
@@ -5685,7 +5761,8 @@
             "required" : [
                "merchantAccount",
                "pspReference"
-            ]
+            ],
+            "type" : "object"
          },
          "ThreeDS2ResultResponse" : {
             "properties" : {
@@ -5693,7 +5770,8 @@
                   "description" : "The result of the 3D Secure 2 authentication.",
                   "$ref" : "#/components/schemas/ThreeDS2Result"
                }
-            }
+            },
+            "type" : "object"
          },
          "ThreeDSecureData" : {
             "properties" : {
@@ -5749,7 +5827,8 @@
                   "format" : "byte",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "VoidPendingRefundRequest" : {
             "properties" : {
@@ -5838,7 +5917,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -5857,7 +5936,8 @@
             },
             "required" : [
                "merchantAccount"
-            ]
+            ],
+            "type" : "object"
          }
       },
       "securitySchemes" : {
@@ -5972,8 +6052,14 @@
                   "currency" : "EUR"
                },
                "browserInfo" : {
-                  "userAgent" : "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008052912 Firefox/3.0",
-                  "acceptHeader" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                  "userAgent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36",
+                  "acceptHeader" : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                  "language" : "en",
+                  "colorDepth" : 24,
+                  "screenHeight" : 723,
+                  "screenWidth" : 1536,
+                  "timeZoneOffset" : 0,
+                  "javaEnabled" : false
                },
                "card" : {
                   "number" : "5212345678901234",
@@ -6014,7 +6100,7 @@
                "reference" : "YOUR_REFERENCE",
                "shopperEmail" : "s.hopper@test.com",
                "shopperIP" : "61.294.12.12",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "selectedRecurringDetailReference" : "LATEST",
                "recurring" : {
                   "contract" : "RECURRING"
@@ -6036,7 +6122,7 @@
                "reference" : "YOUR_REFERENCE",
                "shopperEmail" : "s.hopper@test.com",
                "shopperIP" : "61.294.12.12",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "selectedRecurringDetailReference" : "LATEST",
                "recurring" : {
                   "contract" : "ONECLICK"
@@ -6062,7 +6148,7 @@
                "reference" : "YOUR_REFERENCE",
                "shopperEmail" : "s.hopper@test.com",
                "shopperIP" : "61.294.12.12",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "recurring" : {
                   "contract" : "RECURRING,ONECLICK"
                },

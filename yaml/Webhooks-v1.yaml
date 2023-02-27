@@ -6,7 +6,7 @@ info:
   description: We use webhooks to send you notifications about payment status updates,
     newly available reports, and other events that you can subscribe to. For more
     information, refer to our [documentation](https://docs.adyen.com/development-resources/webhooks).
-  x-timestamp: '2022-05-03T09:24:07Z'
+  x-timestamp: '2023-02-20T18:23:07Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
@@ -29,6 +29,7 @@ webhooks:
       operationId: post-AUTHORISATION
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfAuthorisationRequest
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -61,6 +62,7 @@ webhooks:
       operationId: post-AUTHORISATION_ADJUSTMENT
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfPaymentAuthorisationAdjustmentRequest
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -92,6 +94,7 @@ webhooks:
       operationId: post-AUTORESCUE
       x-groupName: additional configuration
       x-sortIndex: 4
+      x-methodName: autoRescueProcessEnded
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -122,6 +125,7 @@ webhooks:
       operationId: post-CANCELLATION
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfCancelRequest
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -153,6 +157,7 @@ webhooks:
       operationId: post-CANCEL_AUTORESCUE
       x-groupName: additional configuration
       x-sortIndex: 4
+      x-methodName: autoRescueProcessCanceled
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -183,6 +188,7 @@ webhooks:
       operationId: post-CANCEL_OR_REFUND
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfCancelOrRefundRequest
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -213,6 +219,7 @@ webhooks:
       operationId: post-CAPTURE
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfCaptureRequest
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -243,6 +250,7 @@ webhooks:
       operationId: post-CAPTURE_FAILED
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: captureRequestFailedDueToTechnicalIssue
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -274,6 +282,7 @@ webhooks:
       operationId: post-CHARGEBACK
       x-groupName: dispute
       x-sortIndex: 2
+      x-methodName: paymentChargedBack
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -306,6 +315,7 @@ webhooks:
       operationId: post-CHARGEBACK_REVERSED
       x-groupName: dispute
       x-sortIndex: 2
+      x-methodName: chargebackSuccessfullyDefended
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -337,6 +347,7 @@ webhooks:
       operationId: post-MANUAL_REVIEW_ACCEPT
       x-groupName: additional configuration
       x-sortIndex: 4
+      x-methodName: manualReviewAccepted
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -368,6 +379,7 @@ webhooks:
       operationId: post-MANUAL_REVIEW_REJECT
       x-groupName: additional configuration
       x-sortIndex: 4
+      x-methodName: manualReviewRejected
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -399,6 +411,7 @@ webhooks:
       operationId: post-NOTIFICATION_OF_CHARGEBACK
       x-groupName: dispute
       x-sortIndex: 2
+      x-methodName: disputeProcessOpened
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -433,6 +446,7 @@ webhooks:
       operationId: post-NOTIFICATION_OF_FRAUD
       x-groupName: dispute
       x-sortIndex: 2
+      x-methodName: issuerSentFraudAlertNotification
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -464,6 +478,7 @@ webhooks:
       operationId: post-OFFER_CLOSED
       x-groupName: additional configuration
       x-sortIndex: 4
+      x-methodName: offerExpired
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -495,6 +510,7 @@ webhooks:
       operationId: post-ORDER_CLOSED
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfLastPartialPaymentForOrder
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -526,6 +542,7 @@ webhooks:
       operationId: post-ORDER_OPENED
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: firstPartialPaymentRequestForOrder
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -558,6 +575,7 @@ webhooks:
       operationId: post-PAIDOUT_REVERSED
       x-groupName: payout
       x-sortIndex: 3
+      x-methodName: financialInstitutionRejectedPayout
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -588,6 +606,7 @@ webhooks:
       operationId: post-PAYOUT_DECLINE
       x-groupName: payout
       x-sortIndex: 3
+      x-methodName: payoutDeclined
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -618,6 +637,7 @@ webhooks:
       operationId: post-PAYOUT_EXPIRE
       x-groupName: payout
       x-sortIndex: 3
+      x-methodName: payoutExpired
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -648,6 +668,7 @@ webhooks:
       operationId: post-PAYOUT_THIRDPARTY
       x-groupName: payout
       x-sortIndex: 3
+      x-methodName: resultOfPayoutRequest
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -675,9 +696,11 @@ webhooks:
       - additional configuration
       summary: Refund postponed until after payment capture
       description: The refund was postponed until after [payment capture](https://docs.adyen.com/online-payments/capture).
+        To enable this notification, contact our [Support Team](https://www.adyen.help/hc/en-us/requests/new).
       operationId: post-POSTPONED_REFUND
       x-groupName: additional configuration
       x-sortIndex: 4
+      x-methodName: refundPostponedUntilAfterPaymentCapture
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -709,6 +732,7 @@ webhooks:
       operationId: post-PREARBITRATION_LOST
       x-groupName: dispute
       x-sortIndex: 2
+      x-methodName: cardholdersBankDeclinedPrearbitrationCase
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -740,6 +764,7 @@ webhooks:
       operationId: post-PREARBITRATION_WON
       x-groupName: dispute
       x-sortIndex: 2
+      x-methodName: cardholdersBankAcceptedPrearbitrationCase
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -766,10 +791,12 @@ webhooks:
       tags:
       - additional configuration
       summary: Recurring contract created
-      description: The recurring contract was created.
+      description: A recurring contract has been created. [Enable this notification](https://docs.adyen.com/development-resources/webhooks/understand-notifications#webhook-settings-page)
+        in your Customer Area.
       operationId: post-RECURRING_CONTRACT
       x-groupName: additional configuration
       x-sortIndex: 4
+      x-methodName: recurringContractCreated
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -800,6 +827,7 @@ webhooks:
       operationId: post-REFUND
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfRefundRequest
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -831,6 +859,7 @@ webhooks:
       operationId: post-REFUNDED_REVERSED
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: refundedAmountReversed
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -861,6 +890,7 @@ webhooks:
       operationId: post-REFUND_FAILED
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: refundFailedDueToSchemeRejection
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -891,6 +921,7 @@ webhooks:
       operationId: post-REFUND_WITH_DATA
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfRefundRequestWithData
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -916,12 +947,12 @@ webhooks:
     post:
       tags:
       - standard
-      summary: Automatically generated report available
-      description: The [automatically generated report](https://docs.adyen.com/reporting/automatically-get-reports)
-        is available.
+      summary: Report available
+      description: The report is generated and ready to be downloaded.
       operationId: post-REPORT_AVAILABLE
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: reportAvailable
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -954,6 +985,7 @@ webhooks:
       operationId: post-REQUEST_FOR_INFORMATION
       x-groupName: dispute
       x-sortIndex: 2
+      x-methodName: issuerOpenedRequestForInformationrfi
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -986,6 +1018,7 @@ webhooks:
       operationId: post-SECOND_CHARGEBACK
       x-groupName: dispute
       x-sortIndex: 2
+      x-methodName: issuingBankDeclinedChargebackDefense
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -1017,6 +1050,7 @@ webhooks:
       operationId: post-TECHNICAL_CANCEL
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfTechnicalCancelRequest
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -1047,6 +1081,7 @@ webhooks:
       operationId: post-VOID_PENDING_REFUND
       x-groupName: standard
       x-sortIndex: 1
+      x-methodName: resultOfRequestToCancelPosRefund
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -1084,6 +1119,7 @@ components:
       required:
       - value
       - currency
+      type: object
     AuthorisationNotificationAdditionalData:
       properties:
         PaymentAccountReference:
@@ -1581,31 +1617,31 @@ components:
 
             Example: ODgxNDc2MDg2MDExODk5MAAAAAA='
           type: string
+      type: object
     AuthorisationNotificationRequest:
       properties:
         live:
           description: Informs about the origin of the notification. The value is
-            `true` when originating from the live environment, `false` for the test
-            environment.
-          type: boolean
+            **true** when originating from the live environment, **false** for the
+            test environment.
+          type: string
         notificationItems:
           description: A container object for the details included in the notification.
           items:
             $ref: '#/components/schemas/AuthorisationNotificationRequestItem'
           type: array
+      type: object
     AuthorisationNotificationRequestItem:
       properties:
         additionalData:
           description: This object is a generic container that can hold extra fields.
           $ref: '#/components/schemas/AuthorisationNotificationAdditionalData'
         amount:
-          description: A container object vor the payable amount information for the
-            transaction. For HTTP POST notifications, currency and value are returned
-            as URL parameters.
+          description: The payment amount. For HTTP POST notifications, currency and
+            value are returned as URL parameters.
           $ref: '#/components/schemas/Amount'
         eventCode:
-          description: 'The type of event the notification item refers to. <TODO>
-            : This equals the name of the ''endpoint''.'
+          description: The type of event the notification item is for.
           type: string
         eventDate:
           description: 'The time when the event was generated. Format: ISO 8601; yyyy-MM-DDThh:mm:ssTZD'
@@ -1614,10 +1650,10 @@ components:
           type: string
         merchantAccountCode:
           description: The merchant account identifier used in the transaction the
-            notification item refers to.
+            notification item is for.
           type: string
         merchantReference:
-          description: A reference to uniquely identify the payment. <TODO>
+          description: Your reference to uniquely identify the payment.
           type: string
         operations:
           description: 'The operations indicate the supported follow-up actions concerning
@@ -1638,8 +1674,8 @@ components:
           example: visa, mc, iDeal
           type: string
         pspReference:
-          description: Adyen's 16-character unique reference associated with the transaction/the
-            request. This value is globally unique; quote it when communicating with
+          description: Adyen's 16-character unique reference associated with the transaction
+            or request. This value is globally unique. Use it when communicating with
             us about this request.
           type: string
         reason:
@@ -1655,15 +1691,13 @@ components:
             \ information."
           type: string
       required:
-      - pspReference
       - merchantReference
       - merchantAccountCode
       - eventDate
       - eventCode
       - amount
       - paymentMethod
-      - success
-      - operations
+      type: object
     NotificationAdditionalData:
       properties:
         PaymentAccountReference:
@@ -2063,31 +2097,31 @@ components:
 
             Example: ODgxNDc2MDg2MDExODk5MAAAAAA='
           type: string
+      type: object
     NotificationRequest:
       properties:
         live:
           description: Informs about the origin of the notification. The value is
-            `true` when originating from the live environment, `false` for the test
-            environment.
-          type: boolean
+            **true** when originating from the live environment, **false** for the
+            test environment.
+          type: string
         notificationItems:
           description: A container object for the details included in the notification.
           items:
             $ref: '#/components/schemas/NotificationRequestItem'
           type: array
+      type: object
     NotificationRequestItem:
       properties:
         additionalData:
-          description: This object is a generic container that can hold extra fields.
+          description: A generic container for extra fields.
           $ref: '#/components/schemas/NotificationAdditionalData'
         amount:
-          description: A container object vor the payable amount information for the
-            transaction. For HTTP POST notifications, currency and value are returned
-            as URL parameters.
+          description: The payment amount. For HTTP POST notifications, currency and
+            value are returned as URL parameters.
           $ref: '#/components/schemas/Amount'
         eventCode:
-          description: 'The type of event the notification item refers to. <TODO>
-            : This equals the name of the ''endpoint''.'
+          description: The type of event the notification item is for.
           type: string
         eventDate:
           description: 'The time when the event was generated. Format: ISO 8601; yyyy-MM-DDThh:mm:ssTZD'
@@ -2096,18 +2130,18 @@ components:
           type: string
         merchantAccountCode:
           description: The merchant account identifier used in the transaction the
-            notification item refers to.
+            notification item is for.
           type: string
         merchantReference:
-          description: A reference to uniquely identify the payment. <TODO>
+          description: Your reference to uniquely identify the payment.
           type: string
         paymentMethod:
           description: The payment method used in the transaction.
           example: visa, mc, iDeal
           type: string
         pspReference:
-          description: Adyen's 16-character unique reference associated with the transaction/the
-            request. This value is globally unique; quote it when communicating with
+          description: Adyen's 16-character unique reference associated with the transaction
+            or request. This value is globally unique. Use it when communicating with
             us about this request.
           type: string
         reason:
@@ -2116,49 +2150,48 @@ components:
           type: string
         success:
           description: "Informs about the outcome of the event (`eventCode`) the notification\
-            \ refers to. \nIf `true`: the event the notification refers to was executed\
-            \ successfully. \nIf `false`: the event was not executed successfully."
-          type: boolean
+            \ is for. \nIf `true`: the event was executed successfully. \nIf `false`:\
+            \ the event was not executed successfully."
+          type: string
       required:
-      - pspReference
       - merchantReference
       - merchantAccountCode
       - eventDate
       - eventCode
       - amount
-      - success
       - paymentMethod
+      type: object
     NotificationResponse:
       properties:
         notificationResponse:
           description: Set this parameter to **[accepted]** to acknowledge that you
             received a notification from Adyen.
           type: string
+      type: object
     PaidoutReversedNotificationRequest:
       properties:
         live:
           description: Informs about the origin of the notification. The value is
-            `true` when originating from the live environment, `false` for the test
-            environment.
-          type: boolean
+            **true** when originating from the live environment, **false** for the
+            test environment.
+          type: string
         notificationItems:
           description: A container object for the details included in the notification.
           items:
             $ref: '#/components/schemas/PaidoutReversedNotificationRequestItem'
           type: array
+      type: object
     PaidoutReversedNotificationRequestItem:
       properties:
         additionalData:
-          description: This object is a generic container that can hold extra fields.
+          description: A generic container for extra fields.
           $ref: '#/components/schemas/NotificationAdditionalData'
         amount:
-          description: A container object vor the payable amount information for the
-            transaction. For HTTP POST notifications, currency and value are returned
-            as URL parameters.
+          description: The payment amount. For HTTP POST notifications, currency and
+            value are returned as URL parameters.
           $ref: '#/components/schemas/Amount'
         eventCode:
-          description: 'The type of event the notification item refers to. <TODO>
-            : This equals the name of the ''endpoint''.'
+          description: The type of event the notification item is for.
           type: string
         eventDate:
           description: 'The time when the event was generated. Format: ISO 8601; yyyy-MM-DDThh:mm:ssTZD'
@@ -2167,10 +2200,10 @@ components:
           type: string
         merchantAccountCode:
           description: The merchant account identifier used in the transaction the
-            notification item refers to.
+            notification item is for.
           type: string
         merchantReference:
-          description: A reference to uniquely identify the payment. <TODO>
+          description: Your reference to uniquely identify the payment.
           type: string
         paymentMethod:
           description: The payment method used in the transaction.
@@ -2185,71 +2218,17 @@ components:
           type: string
         success:
           description: "Informs about the outcome of the event (`eventCode`) the notification\
-            \ refers to. \nIf `true`: the event the notification refers to was executed\
-            \ successfully. \nIf `false`: the event was not executed successfully."
-          type: boolean
+            \ is for. \nIf `true`: the event was executed successfully. \nIf `false`:\
+            \ the event was not executed successfully."
+          type: string
       required:
       - merchantReference
       - merchantAccountCode
       - eventDate
       - eventCode
       - amount
-      - success
       - paymentMethod
-      - pspReference
-    RecurringContractNoficationRequestItem:
-      properties:
-        additionalData:
-          description: This object is a generic container that can hold extra fields.
-          $ref: '#/components/schemas/RecurringContractNotificationAdditionalData'
-        amount:
-          description: A container object vor the payable amount information for the
-            transaction. For HTTP POST notifications, currency and value are returned
-            as URL parameters.
-          $ref: '#/components/schemas/Amount'
-        eventCode:
-          description: 'The type of event the notification item refers to. <TODO>
-            : This equals the name of the ''endpoint''.'
-          type: string
-        eventDate:
-          description: 'The time when the event was generated. Format: ISO 8601; yyyy-MM-DDThh:mm:ssTZD'
-          example: '2021-07-17T13:42:40+01:00'
-          format: date-time
-          type: string
-        merchantAccountCode:
-          description: The merchant account identifier used in the transaction the
-            notification item refers to.
-          type: string
-        merchantReference:
-          description: A reference to uniquely identify the payment. <TODO>
-          type: string
-        paymentMethod:
-          description: The payment method used in the transaction.
-          example: visa, mc, iDeal
-          type: string
-        pspReference:
-          description: Adyen's 16-character unique reference associated with the transaction/the
-            request. This value is globally unique; quote it when communicating with
-            us about this request.
-          type: string
-        reason:
-          description: If `success` = `false`, then this includes a short message
-            with an explanation for the refusal.
-          type: string
-        success:
-          description: "Informs about the outcome of the event (`eventCode`) the notification\
-            \ refers to. \nIf `true`: the event the notification refers to was executed\
-            \ successfully. \nIf `false`: the event was not executed successfully."
-          type: boolean
-      required:
-      - pspReference
-      - merchantReference
-      - merchantAccountCode
-      - eventDate
-      - eventCode
-      - amount
-      - success
-      - paymentMethod
+      type: object
     RecurringContractNotificationAdditionalData:
       properties:
         PaymentAccountReference:
@@ -2656,43 +2635,31 @@ components:
 
             Example: ODgxNDc2MDg2MDExODk5MAAAAAA='
           type: string
+      type: object
     RecurringContractNotificationRequest:
       properties:
         live:
           description: Informs about the origin of the notification. The value is
-            `true` when originating from the live environment, `false` for the test
-            environment.
-          type: boolean
+            **true** when originating from the live environment, **false** for the
+            test environment.
+          type: string
         notificationItems:
           description: A container object for the details included in the notification.
           items:
-            $ref: '#/components/schemas/RecurringContractNoficationRequestItem'
+            $ref: '#/components/schemas/RecurringContractNotificationRequestItem'
           type: array
-    ReportAvailableNotificationRequest:
-      properties:
-        live:
-          description: Informs about the origin of the notification. The value is
-            `true` when originating from the live environment, `false` for the test
-            environment.
-          type: boolean
-        notificationItems:
-          description: A container object for the details included in the notification.
-          items:
-            $ref: '#/components/schemas/ReportAvailableNotificationRequestItem'
-          type: array
-    ReportAvailableNotificationRequestItem:
+      type: object
+    RecurringContractNotificationRequestItem:
       properties:
         additionalData:
           description: This object is a generic container that can hold extra fields.
-          $ref: '#/components/schemas/NotificationAdditionalData'
+          $ref: '#/components/schemas/RecurringContractNotificationAdditionalData'
         amount:
-          description: A container object vor the payable amount information for the
-            transaction. For HTTP POST notifications, currency and value are returned
-            as URL parameters.
+          description: The payment amount. For HTTP POST notifications, currency and
+            value are returned as URL parameters.
           $ref: '#/components/schemas/Amount'
         eventCode:
-          description: 'The type of event the notification item refers to. <TODO>
-            : This equals the name of the ''endpoint''.'
+          description: The type of event the notification item is for.
           type: string
         eventDate:
           description: 'The time when the event was generated. Format: ISO 8601; yyyy-MM-DDThh:mm:ssTZD'
@@ -2701,10 +2668,77 @@ components:
           type: string
         merchantAccountCode:
           description: The merchant account identifier used in the transaction the
-            notification item refers to.
+            notification item is for.
           type: string
         merchantReference:
-          description: A reference to uniquely identify the payment. <TODO>
+          description: Your reference to uniquely identify the payment.
+          type: string
+        originalPsp:
+          description: The `pspReference` of the initial payment.
+          type: string
+        paymentMethod:
+          description: The payment method used in the transaction.
+          example: visa, mc, iDeal
+          type: string
+        pspReference:
+          description: The token for the shopper's saved payment details that you
+            need to make recurring payments.
+          type: string
+        reason:
+          description: If `success` = `false`, then this includes a short message
+            with an explanation for the refusal.
+          type: string
+        success:
+          description: "Informs about the outcome of the event (`eventCode`) the notification\
+            \ is for. \nIf `true`: the event was executed successfully. \nIf `false`:\
+            \ the event was not executed successfully."
+          type: string
+      required:
+      - merchantReference
+      - merchantAccountCode
+      - eventDate
+      - eventCode
+      - amount
+      - paymentMethod
+      - originalPsp
+      - pspReference
+      type: object
+    ReportAvailableNotificationRequest:
+      properties:
+        live:
+          description: Informs about the origin of the notification. The value is
+            **true** when originating from the live environment, **false** for the
+            test environment.
+          type: string
+        notificationItems:
+          description: A container object for the details included in the notification.
+          items:
+            $ref: '#/components/schemas/ReportAvailableNotificationRequestItem'
+          type: array
+      type: object
+    ReportAvailableNotificationRequestItem:
+      properties:
+        additionalData:
+          description: A generic container for extra fields.
+          $ref: '#/components/schemas/NotificationAdditionalData'
+        amount:
+          description: The payment amount. For HTTP POST notifications, currency and
+            value are returned as URL parameters.
+          $ref: '#/components/schemas/Amount'
+        eventCode:
+          description: The type of event the notification item is for.
+          type: string
+        eventDate:
+          description: 'The time when the event was generated. Format: ISO 8601; yyyy-MM-DDThh:mm:ssTZD'
+          example: '2021-07-17T13:42:40+01:00'
+          format: date-time
+          type: string
+        merchantAccountCode:
+          description: The merchant account identifier used in the transaction the
+            notification item is for.
+          type: string
+        merchantReference:
+          description: Your reference to uniquely identify the payment.
           type: string
         paymentMethod:
           description: The payment method used in the transaction.
@@ -2729,7 +2763,7 @@ components:
       - paymentMethod
       - reason
       - success
-      - pspReference
+      type: object
   securitySchemes:
     ApiKeyAuth:
       in: header
@@ -2760,6 +2794,10 @@ components:
             merchantAccountCode: YOUR_MERCHANT_ACCOUNT
             merchantReference: YOUR_MERCHANT_REFERENCE
             paymentMethod: ach
+            operations:
+            - CANCEL
+            - CAPTURE
+            - REFUND
             pspReference: YOUR_PSP_REFERENCE
             reason: 'null'
             success: 'true'
@@ -3246,20 +3284,17 @@ components:
         notificationItems:
         - NotificationRequestItem:
             additionalData:
-              shopperEmail: s.hopper@adyen.com
-              paymentMethodVariant: ideal
-              paymentLinkId: PL50C5F751CED39G71
-              shopperReference: YOU_SHOPPER_REFERENCE
+              shopperReference: YOUR_SHOPPER_REFERENCE
             amount:
               currency: EUR
               value: 1000
             eventCode: RECURRING_CONTRACT
             eventDate: '2021-01-01T01:00:00+01:00'
             merchantAccountCode: YOUR_MERCHANT_ACCOUNT
-            merchantReference: YOUR_MERCHANT_REFERENCE
-            originalReference: '9913140798220028'
+            merchantReference: YOUR_PAYMENT_REFERENCE
+            originalReference: INITIAL_PAYMENT_PSP_REFERENCE
             paymentMethod: ideal
-            pspReference: YOUR_PSP_REFERENCE
+            pspReference: YOUR_RECURRING_DETAIL_REFERENCE
             reason: ''
             success: 'true'
     post-REFUND-refund:

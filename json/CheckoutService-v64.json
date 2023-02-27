@@ -9,8 +9,8 @@
       "version" : "64",
       "x-publicVersion" : true,
       "title" : "Adyen Checkout API",
-      "description" : "Adyen Checkout API provides a simple and flexible way to initiate and authorise online payments. You can use the same integration for payments made with cards (including 3D Secure), mobile wallets, and local payment methods (for example, iDEAL and Sofort).\n\nThis API reference provides information on available endpoints and how to interact with them. To learn more about the API, visit [Checkout documentation](https://docs.adyen.com/online-payments).\n\n## Authentication\nEach request to the Checkout API must be signed with an API key. For this, obtain an API Key from your Customer Area, as described in [How to get the API key](https://docs.adyen.com/development-resources/api-credentials#generate-api-key). Then set this key to the `X-API-Key` header value, for example:\n\n```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: Your_Checkout_API_key\" \\\n...\n```\nNote that when going live, you need to generate a new API Key to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\n## Versioning\nCheckout API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://checkout-test.adyen.com/v64/payments\n```\n\n## Release notes\nHave a look at the [release notes](https://docs.adyen.com/online-payments/release-notes?integration_type=api&version=64) to find out what changed in this version!",
-      "x-timestamp" : "2022-08-22T16:23:21Z",
+      "description" : "Adyen Checkout API provides a simple and flexible way to initiate and authorise online payments. You can use the same integration for payments made with cards (including 3D Secure), mobile wallets, and local payment methods (for example, iDEAL and Sofort).\n\nThis API reference provides information on available endpoints and how to interact with them. To learn more about the API, visit [online payments documentation](https://docs.adyen.com/online-payments).\n\n## Authentication\nEach request to Checkout API must be signed with an API key. For this, [get your API key](https://docs.adyen.com/development-resources/api-credentials#generate-api-key) from your Customer Area, and set this key to the `X-API-Key` header value, for example:\n\n```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n## Versioning\nCheckout API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://checkout-test.adyen.com/v64/payments\n```\n\n## Going live\n\nTo access the live endpoints, you need an API key from your live Customer Area.\n\nThe live endpoint URLs contain a prefix which is unique to your company account, for example:\n```\nhttps://{PREFIX}-checkout-live.adyenpayments.com/checkout/v64/payments\n```\n\nGet your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.\n\nWhen preparing to do live transactions with Checkout API, follow the [go-live checklist](https://docs.adyen.com/online-payments/go-live-checklist) to make sure you've got all the required configuration in place.\n\n## Release notes\nHave a look at the [release notes](https://docs.adyen.com/online-payments/release-notes?integration_type=api&version=64) to find out what changed in this version!",
+      "x-timestamp" : "2023-02-20T18:22:18Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
@@ -57,6 +57,7 @@
             "operationId" : "post-applePay-sessions",
             "x-groupName" : "Utility",
             "x-sortIndex" : 2,
+            "x-methodName" : "getApplePaySession",
             "security" : [
                {
                   "BasicAuth" : [
@@ -120,6 +121,7 @@
             "operationId" : "post-cancels",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 3,
+            "x-methodName" : "cancelAuthorisedPayment",
             "security" : [
                {
                   "BasicAuth" : [
@@ -268,6 +270,7 @@
             "operationId" : "post-cardDetails",
             "x-groupName" : "Payments",
             "x-sortIndex" : 6,
+            "x-methodName" : "cardDetails",
             "security" : [
                {
                   "BasicAuth" : [
@@ -337,6 +340,7 @@
             "operationId" : "post-donations",
             "x-groupName" : "Payments",
             "x-sortIndex" : 5,
+            "x-methodName" : "donations",
             "security" : [
                {
                   "BasicAuth" : [
@@ -483,6 +487,7 @@
             "operationId" : "post-orders",
             "x-groupName" : "Orders",
             "x-sortIndex" : 2,
+            "x-methodName" : "orders",
             "security" : [
                {
                   "BasicAuth" : [
@@ -626,6 +631,7 @@
             "operationId" : "post-orders-cancel",
             "x-groupName" : "Orders",
             "x-sortIndex" : 3,
+            "x-methodName" : "cancelOrder",
             "security" : [
                {
                   "BasicAuth" : [
@@ -769,6 +775,7 @@
             "operationId" : "post-originKeys",
             "x-groupName" : "Utility",
             "x-sortIndex" : 1,
+            "x-methodName" : "originKeys",
             "security" : [
                {
                   "BasicAuth" : [
@@ -912,6 +919,7 @@
             "operationId" : "post-paymentLinks",
             "x-groupName" : "Payment links",
             "x-sortIndex" : 1,
+            "x-methodName" : "paymentLinks",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1070,6 +1078,7 @@
             "operationId" : "get-paymentLinks-linkId",
             "x-groupName" : "Payment links",
             "x-sortIndex" : 2,
+            "x-methodName" : "getPaymentLink",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1193,6 +1202,7 @@
             "operationId" : "patch-paymentLinks-linkId",
             "x-groupName" : "Payment links",
             "x-sortIndex" : 3,
+            "x-methodName" : "updatePaymentLink",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1332,6 +1342,7 @@
             "operationId" : "post-paymentMethods",
             "x-groupName" : "Payments",
             "x-sortIndex" : 2,
+            "x-methodName" : "paymentMethods",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1487,6 +1498,7 @@
             "operationId" : "post-paymentMethods-balance",
             "x-groupName" : "Orders",
             "x-sortIndex" : 1,
+            "x-methodName" : "getBalanceOfGiftCard",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1630,9 +1642,12 @@
             ],
             "summary" : "Create a payment session",
             "description" : "Provides the data object that can be used to start the Checkout SDK. To set up the payment, pass its amount, currency, and other required parameters. We use this to optimise the payment flow and perform better risk assessment of the transaction.\n\nFor more information, refer to [How it works](https://docs.adyen.com/online-payments#howitworks).",
+            "deprecated" : true,
+            "x-deprecatedInVersion" : "37",
             "operationId" : "post-paymentSession",
             "x-groupName" : "Classic Checkout SDK",
             "x-sortIndex" : 1,
+            "x-methodName" : "paymentSession",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1791,6 +1806,7 @@
             "operationId" : "post-payments",
             "x-groupName" : "Payments",
             "x-sortIndex" : 3,
+            "x-methodName" : "payments",
             "security" : [
                {
                   "BasicAuth" : [
@@ -1813,9 +1829,6 @@
                         },
                         "card-3d-secure-direct" : {
                            "$ref" : "#/components/examples/post-payments-card-3d-secure-direct"
-                        },
-                        "card-3d-secure-securedfields" : {
-                           "$ref" : "#/components/examples/post-payments-card-3d-secure-securedfields"
                         },
                         "card-direct" : {
                            "$ref" : "#/components/examples/post-payments-card-direct"
@@ -1876,15 +1889,6 @@
                   "content" : {
                      "application/json" : {
                         "examples" : {
-                           "card-3d-secure-2-web" : {
-                              "$ref" : "#/components/examples/post-payments-card-3d-secure-2-web-200"
-                           },
-                           "card-3d-secure-direct" : {
-                              "$ref" : "#/components/examples/post-payments-card-3d-secure-direct-200"
-                           },
-                           "card-3d-secure-securedfields" : {
-                              "$ref" : "#/components/examples/post-payments-card-3d-secure-securedfields-200"
-                           },
                            "card-direct" : {
                               "$ref" : "#/components/examples/post-payments-card-direct-200"
                            },
@@ -2015,6 +2019,7 @@
             "operationId" : "post-payments-details",
             "x-groupName" : "Payments",
             "x-sortIndex" : 4,
+            "x-methodName" : "paymentsDetails",
             "security" : [
                {
                   "BasicAuth" : [
@@ -2159,9 +2164,12 @@
             ],
             "summary" : "Verify a payment result",
             "description" : "Verifies the payment result using the payload returned from the Checkout SDK.\n\nFor more information, refer to [How it works](https://docs.adyen.com/online-payments#howitworks).",
+            "deprecated" : true,
+            "x-deprecatedInVersion" : "37",
             "operationId" : "post-payments-result",
             "x-groupName" : "Classic Checkout SDK",
             "x-sortIndex" : 2,
+            "x-methodName" : "verifyPaymentResult",
             "security" : [
                {
                   "BasicAuth" : [
@@ -2300,6 +2308,7 @@
             "operationId" : "post-payments-paymentPspReference-amountUpdates",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 6,
+            "x-methodName" : "updateAuthorisedAmount",
             "security" : [
                {
                   "BasicAuth" : [
@@ -2457,6 +2466,7 @@
             "operationId" : "post-payments-paymentPspReference-cancels",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 2,
+            "x-methodName" : "cancelAuthorisedPaymentByPspReference",
             "security" : [
                {
                   "BasicAuth" : [
@@ -2614,6 +2624,7 @@
             "operationId" : "post-payments-paymentPspReference-captures",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 1,
+            "x-methodName" : "captureAuthorisedPayment",
             "security" : [
                {
                   "BasicAuth" : [
@@ -2771,6 +2782,7 @@
             "operationId" : "post-payments-paymentPspReference-refunds",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 4,
+            "x-methodName" : "refundCapturedPayment",
             "security" : [
                {
                   "BasicAuth" : [
@@ -2928,6 +2940,7 @@
             "operationId" : "post-payments-paymentPspReference-reversals",
             "x-groupName" : "Modifications",
             "x-sortIndex" : 5,
+            "x-methodName" : "refundOrCancelPayment",
             "security" : [
                {
                   "BasicAuth" : [
@@ -3204,7 +3217,8 @@
                   "description" : "Shopper's work phone number (including the country code).",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AchDetails" : {
             "additionalProperties" : false,
@@ -3253,7 +3267,8 @@
             "required" : [
                "bankAccountNumber"
             ],
-            "title" : "ACH Direct Debit"
+            "title" : "ACH Direct Debit",
+            "type" : "object"
          },
          "AdditionalData3DSecure" : {
             "properties" : {
@@ -3288,7 +3303,8 @@
                   "description" : "Indicates your preference for the 3D Secure version. \n> If you use this parameter, you override the checks from Adyen's Authentication Engine. We recommend to use this field only if you have an extensive knowledge of 3D Secure.\n\nPossible values:\n* **1.0.2**: Apply 3D Secure version 1.0.2. \n* **2.1.0**: Apply 3D Secure version 2.1.0. \n* **2.2.0**: Apply 3D Secure version 2.2.0. If the issuer does not support version 2.2.0, we will fall back to 2.1.0.\n\nThe following rules apply:\n* If you prefer 2.1.0 or 2.2.0 but we receive a negative `transStatus` in the `ARes`, we will apply the fallback policy configured in your account. For example, if the configuration is to fall back to 3D Secure 1, we will apply version 1.0.2.\n* If you prefer 2.1.0 or 2.2.0 but the BIN is not enrolled, you will receive an error.\n\n",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataAirline" : {
             "properties" : {
@@ -3407,7 +3423,8 @@
             },
             "required" : [
                "airline.passenger_name"
-            ]
+            ],
+            "type" : "object"
          },
          "AdditionalDataCarRental" : {
             "properties" : {
@@ -3503,12 +3520,17 @@
                   "description" : "Indicates what market-specific dataset will be submitted or is being submitted. Value should be \"A\" for Car rental. This should be included in the auth message.\n* Format: Alphanumeric\n* maxLength: 1",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataCommon" : {
             "properties" : {
                "RequestedTestErrorResponseCode" : {
                   "description" : "Triggers test scenarios that allow to replicate certain communication errors.\n\nAllowed values:\n* **NO_CONNECTION_AVAILABLE** – There wasn't a connection available to service the outgoing communication.\nThis is a transient, retriable error since no messaging could be initiated to an issuing system (or third-party acquiring system). Therefore, the header Transient-Error: true is returned in the response. A subsequent request using the same idempotency key will be processed as if it was the first request.\n* **IOEXCEPTION_RECEIVED** – Something went wrong during transmission of the message or receiving the response.\nThis is a classified as non-transient because the message could have been received by the issuing party and been acted upon. No transient error header is returned. If using idempotency, the (error) response is stored as the final result for the idempotency key. Subsequent messages with the same idempotency key not be processed beyond returning the stored response.",
+                  "type" : "string"
+               },
+               "allowPartialAuth" : {
+                  "description" : "Set to true to authorise a part of the requested amount in case the cardholder does not have enough funds on their account. \nIf a payment was partially authorised, the response includes resultCode: PartiallyAuthorised and the authorised amount in additionalData.authorisedAmountValue.\nTo enable this functionality, contact our Support Team.",
                   "type" : "string"
                },
                "authorisationType" : {
@@ -3535,6 +3557,10 @@
                      "NoShow",
                      "DelayedCharge"
                   ],
+                  "type" : "string"
+               },
+               "manualCapture" : {
+                  "description" : "Set to **true** to require [manual capture](https://docs.adyen.com/online-payments/capture) for the transaction.",
                   "type" : "string"
                },
                "networkTxReference" : {
@@ -3577,7 +3603,8 @@
                   "description" : "This field is required if the transaction is performed by a registered payment facilitator. This field must contain the tax ID of the actual merchant.\n* Format: alpha-numeric.\n* Fixed length: 11 or 14 characters.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataLevel23" : {
             "properties" : {
@@ -3649,7 +3676,8 @@
                   "description" : "Total tax amount, in minor units.\n\nFor example, 2000 means USD 20.00.\n\nMax length: 12 characters.\n\n> Required for Level 2 and Level 3 data.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataLodging" : {
             "properties" : {
@@ -3721,7 +3749,8 @@
                   "description" : "Indicates what market-specific dataset will be submitted or is being submitted. Value should be \"H\" for Hotel. This should be included in the auth message.\n\n* Format: Alphanumeric\n* maxLength: 1",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataOpenInvoice" : {
             "properties" : {
@@ -3797,7 +3826,8 @@
                   "description" : "URI where the customer can track their shipment.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataOpi" : {
             "properties" : {
@@ -3805,7 +3835,8 @@
                   "description" : "Optional boolean indicator. Set to **true** if you want an ecommerce transaction to return an `opi.transToken` as additional data in the response.\n\nYou can store this Oracle Payment Interface token in your Oracle Opera database. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataRatepay" : {
             "properties" : {
@@ -3841,7 +3872,8 @@
                   "description" : "Identification name or number for the invoice, defined by the merchant.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataRetry" : {
             "properties" : {
@@ -3857,7 +3889,8 @@
                   "description" : "The Boolean value indicating whether Adyen should skip or retry this transaction, if possible.\n\n> If you submit `retry.chainAttemptNumber`, `retry.orderAttemptNumber`, and `retry.skipRetry` values, we also recommend you provide the `merchantOrderReference` to facilitate linking payment attempts together.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataRisk" : {
             "properties" : {
@@ -3945,7 +3978,8 @@
                   "description" : "If this parameter is provided with the value **true**, risk checks for the payment request are skipped and the transaction will not get a risk score.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataRiskStandalone" : {
             "properties" : {
@@ -4009,7 +4043,8 @@
                   "description" : "Required for PayPal payments only. The only supported value is: **paypal**.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataSubMerchant" : {
             "properties" : {
@@ -4053,7 +4088,8 @@
                   "description" : "Required for transactions performed by registered payment facilitators. The tax ID of the sub-merchant.\n* Format: Numeric\n* Fixed length: 11 digits for the CPF or 14 digits for the CNPJ",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataTemporaryServices" : {
             "properties" : {
@@ -4093,7 +4129,8 @@
                   "description" : "Total tax amount, in minor units. For example, 2000 means USD 20.00\n* maxLength: 12",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "AdditionalDataWallets" : {
             "properties" : {
@@ -4121,7 +4158,8 @@
                   "description" : "The Visa Checkout Call ID retrieved from the SDK.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "Address" : {
             "properties" : {
@@ -4159,7 +4197,8 @@
                "city",
                "postalCode",
                "country"
-            ]
+            ],
+            "type" : "object"
          },
          "AfterpayDetails" : {
             "additionalProperties" : false,
@@ -4202,7 +4241,8 @@
             "required" : [
                "type"
             ],
-            "title" : "Afterpay"
+            "title" : "Afterpay",
+            "type" : "object"
          },
          "AmazonPayDetails" : {
             "additionalProperties" : false,
@@ -4220,7 +4260,8 @@
                   "type" : "string"
                }
             },
-            "title" : "Amazon Pay"
+            "title" : "Amazon Pay",
+            "type" : "object"
          },
          "Amount" : {
             "properties" : {
@@ -4239,7 +4280,8 @@
             "required" : [
                "value",
                "currency"
-            ]
+            ],
+            "type" : "object"
          },
          "AndroidPayDetails" : {
             "additionalProperties" : false,
@@ -4253,7 +4295,8 @@
                   "type" : "string"
                }
             },
-            "title" : "Android Pay"
+            "title" : "Android Pay",
+            "type" : "object"
          },
          "ApplePayDetails" : {
             "additionalProperties" : false,
@@ -4294,18 +4337,20 @@
             "required" : [
                "applePayToken"
             ],
-            "title" : "Apple Pay"
+            "title" : "Apple Pay",
+            "type" : "object"
          },
          "ApplePaySessionResponse" : {
             "properties" : {
                "data" : {
-                  "description" : "Base64 encoded data you need to [complete the Apple Pay merchant vlaidation](https://docs.adyen.com/payment-methods/apple-pay/api-only?tab=adyen-certificate-validation_1#complete-apple-pay-session-validation).",
+                  "description" : "Base64 encoded data you need to [complete the Apple Pay merchant validation](https://docs.adyen.com/payment-methods/apple-pay/api-only?tab=adyen-certificate-validation_1#complete-apple-pay-session-validation).",
                   "type" : "string"
                }
             },
             "required" : [
                "data"
-            ]
+            ],
+            "type" : "object"
          },
          "ApplicationInfo" : {
             "properties" : {
@@ -4333,7 +4378,8 @@
                   "description" : "Shopper interaction device, such as terminal, mobile device or web browser, to initiate payment requests.",
                   "$ref" : "#/components/schemas/ShopperInteractionDevice"
                }
-            }
+            },
+            "type" : "object"
          },
          "Avs" : {
             "properties" : {
@@ -4350,7 +4396,8 @@
                   ],
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "BacsDirectDebitDetails" : {
             "additionalProperties" : false,
@@ -4376,7 +4423,8 @@
                   "type" : "string"
                }
             },
-            "title" : "BACS Direct Debit"
+            "title" : "BACS Direct Debit",
+            "type" : "object"
          },
          "BankAccount" : {
             "properties" : {
@@ -4418,7 +4466,8 @@
                   "description" : "The bank account holder's tax ID.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "BillDeskDetails" : {
             "additionalProperties" : false,
@@ -4442,7 +4491,8 @@
                "type",
                "issuer"
             ],
-            "title" : "BillDesk"
+            "title" : "BillDesk",
+            "type" : "object"
          },
          "BlikDetails" : {
             "additionalProperties" : false,
@@ -4471,14 +4521,13 @@
                   "type" : "string"
                }
             },
-            "title" : "BLIK"
+            "title" : "BLIK",
+            "type" : "object"
          },
          "BrowserInfo" : {
             "properties" : {
                "acceptHeader" : {
                   "description" : "The accept header value of the shopper's browser.",
-                  "maxLength" : 50,
-                  "minLength" : 10,
                   "type" : "string"
                },
                "colorDepth" : {
@@ -4523,8 +4572,6 @@
                },
                "userAgent" : {
                   "description" : "The user agent value of the shopper's browser.",
-                  "maxLength" : 50,
-                  "minLength" : 10,
                   "type" : "string"
                }
             },
@@ -4537,7 +4584,8 @@
                "screenWidth",
                "timeZoneOffset",
                "language"
-            ]
+            ],
+            "type" : "object"
          },
          "Card" : {
             "properties" : {
@@ -4591,11 +4639,10 @@
                }
             },
             "required" : [
-               "number",
-               "expiryMonth",
                "expiryYear",
                "holderName"
-            ]
+            ],
+            "type" : "object"
          },
          "CardBrandDetails" : {
             "properties" : {
@@ -4607,7 +4654,8 @@
                   "description" : "The name of the card brand.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "CardDetails" : {
             "additionalProperties" : false,
@@ -4700,22 +4748,13 @@
                      "networkToken",
                      "giftcard",
                      "alliancedata",
-                     "card",
-                     "qiwiwallet",
-                     "lianlianpay_ebanking_enterprise",
-                     "lianlianpay_ebanking_credit",
-                     "lianlianpay_ebanking_debit",
-                     "entercash"
+                     "card"
                   ],
                   "type" : "string"
                }
             },
-            "required" : [
-               "encryptedCardNumber",
-               "encryptedExpiryMonth",
-               "encryptedExpiryYear"
-            ],
-            "title" : "Card"
+            "title" : "Card",
+            "type" : "object"
          },
          "CardDetailsRequest" : {
             "properties" : {
@@ -4725,6 +4764,10 @@
                },
                "countryCode" : {
                   "description" : "The shopper country.\n\nFormat: [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)\nExample: NL or DE",
+                  "type" : "string"
+               },
+               "encryptedCardNumber" : {
+                  "description" : "The encrypted card number.",
                   "type" : "string"
                },
                "merchantAccount" : {
@@ -4742,7 +4785,8 @@
             "required" : [
                "cardNumber",
                "merchantAccount"
-            ]
+            ],
+            "type" : "object"
          },
          "CardDetailsResponse" : {
             "properties" : {
@@ -4753,7 +4797,8 @@
                   },
                   "type" : "array"
                }
-            }
+            },
+            "type" : "object"
          },
          "CellulantDetails" : {
             "additionalProperties" : false,
@@ -4771,7 +4816,8 @@
                   "type" : "string"
                }
             },
-            "title" : "Cellulant"
+            "title" : "Cellulant",
+            "type" : "object"
          },
          "CheckoutAwaitAction" : {
             "additionalProperties" : false,
@@ -4798,7 +4844,8 @@
             },
             "required" : [
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutBalanceCheckRequest" : {
             "properties" : {
@@ -4892,7 +4939,7 @@
                "dateOfBirth" : {
                   "x-addedInVersion" : "7",
                   "description" : "The shopper's date of birth.\n\nFormat [ISO-8601](https://www.w3.org/TR/NOTE-datetime): YYYY-MM-DD",
-                  "format" : "date-time",
+                  "format" : "date",
                   "type" : "string"
                },
                "dccQuote" : {
@@ -5042,7 +5089,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -5050,7 +5097,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -5086,10 +5133,9 @@
             },
             "required" : [
                "merchantAccount",
-               "reference",
-               "amount",
                "paymentMethod"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutBalanceCheckResponse" : {
             "properties" : {
@@ -5155,58 +5201,8 @@
             "required" : [
                "balance",
                "resultCode"
-            ]
-         },
-         "CheckoutBankTransferAction" : {
-            "additionalProperties" : false,
-            "properties" : {
-               "beneficiary" : {
-                  "description" : "The name of the account holder.",
-                  "type" : "string"
-               },
-               "bic" : {
-                  "description" : "The BIC of the IBAN.",
-                  "type" : "string"
-               },
-               "downloadUrl" : {
-                  "description" : "The url to download payment details with.",
-                  "type" : "string"
-               },
-               "iban" : {
-                  "description" : "The IBAN of the bank transfer.",
-                  "type" : "string"
-               },
-               "paymentMethodType" : {
-                  "description" : "Specifies the payment method.",
-                  "type" : "string"
-               },
-               "reference" : {
-                  "description" : "The transfer reference.",
-                  "type" : "string"
-               },
-               "shopperEmail" : {
-                  "description" : "The e-mail of the shopper, included if an e-mail was sent to the shopper.",
-                  "type" : "string"
-               },
-               "totalAmount" : {
-                  "description" : "The amount of the bank transfer.",
-                  "$ref" : "#/components/schemas/Amount"
-               },
-               "type" : {
-                  "description" : "The type of the action.",
-                  "enum" : [
-                     "bankTransfer"
-                  ],
-                  "type" : "string"
-               },
-               "url" : {
-                  "description" : "Specifies the URL to redirect to.",
-                  "type" : "string"
-               }
-            },
-            "required" : [
-               "type"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutCancelOrderRequest" : {
             "properties" : {
@@ -5222,7 +5218,8 @@
             "required" : [
                "order",
                "merchantAccount"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutCancelOrderResponse" : {
             "properties" : {
@@ -5241,7 +5238,8 @@
             "required" : [
                "pspReference",
                "resultCode"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutCreateOrderRequest" : {
             "properties" : {
@@ -5266,7 +5264,8 @@
                "merchantAccount",
                "reference",
                "amount"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutCreateOrderResponse" : {
             "properties" : {
@@ -5344,11 +5343,27 @@
                "expiresAt",
                "orderData",
                "resultCode"
-            ]
+            ],
+            "type" : "object"
          },
-         "CheckoutDonationAction" : {
+         "CheckoutNativeRedirectAction" : {
             "additionalProperties" : false,
             "properties" : {
+               "data" : {
+                  "additionalProperties" : {
+                     "type" : "string"
+                  },
+                  "description" : "When the redirect URL must be accessed via POST, use this data to post to the redirect URL.",
+                  "type" : "object"
+               },
+               "method" : {
+                  "description" : "Specifies the HTTP method, for example GET or POST.",
+                  "type" : "string"
+               },
+               "nativeRedirectData" : {
+                  "description" : "Native SDK's redirect data containing the direct issuer link and state data that must be submitted to the /v1/nativeRedirect/redirectResult.",
+                  "type" : "string"
+               },
                "paymentData" : {
                   "description" : "A value that must be submitted to the `/payments/details` endpoint to verify this payment.",
                   "type" : "string"
@@ -5358,9 +5373,9 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of the action.",
+                  "description" : "**nativeRedirect**",
                   "enum" : [
-                     "donate"
+                     "nativeRedirect"
                   ],
                   "type" : "string"
                },
@@ -5371,52 +5386,8 @@
             },
             "required" : [
                "type"
-            ]
-         },
-         "CheckoutOneTimePasscodeAction" : {
-            "additionalProperties" : false,
-            "properties" : {
-               "paymentData" : {
-                  "description" : "A value that must be submitted to the `/payments/details` endpoint to verify this payment.",
-                  "type" : "string"
-               },
-               "paymentMethodType" : {
-                  "description" : "Specifies the payment method.",
-                  "type" : "string"
-               },
-               "redirect" : {
-                  "description" : "When the payment flow requires a redirect as fallback, this object contains information about the redirect.",
-                  "$ref" : "#/components/schemas/Redirect"
-               },
-               "resendInterval" : {
-                  "description" : "The interval in second between OTP resend.",
-                  "format" : "int32",
-                  "type" : "integer"
-               },
-               "resendMaxAttempts" : {
-                  "description" : "The maximum number of OTP resend attempts.",
-                  "format" : "int32",
-                  "type" : "integer"
-               },
-               "resendUrl" : {
-                  "description" : "The URL, to which you make POST request to trigger OTP resend.",
-                  "type" : "string"
-               },
-               "type" : {
-                  "description" : "The type of the action.",
-                  "enum" : [
-                     "oneTimePasscode"
-                  ],
-                  "type" : "string"
-               },
-               "url" : {
-                  "description" : "Specifies the URL to redirect to.",
-                  "type" : "string"
-               }
-            },
-            "required" : [
-               "type"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutOrder" : {
             "properties" : {
@@ -5432,7 +5403,8 @@
             "required" : [
                "pspReference",
                "orderData"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutOrderResponse" : {
             "properties" : {
@@ -5463,7 +5435,8 @@
             },
             "required" : [
                "pspReference"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutQrCodeAction" : {
             "additionalProperties" : false,
@@ -5494,7 +5467,8 @@
             },
             "required" : [
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutRedirectAction" : {
             "additionalProperties" : false,
@@ -5532,7 +5506,8 @@
             },
             "required" : [
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutSDKAction" : {
             "additionalProperties" : false,
@@ -5567,7 +5542,8 @@
             },
             "required" : [
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutThreeDS2ChallengeAction" : {
             "additionalProperties" : false,
@@ -5598,7 +5574,8 @@
             },
             "required" : [
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutThreeDS2FingerPrintAction" : {
             "additionalProperties" : false,
@@ -5629,7 +5606,8 @@
             },
             "required" : [
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutUtilityRequest" : {
             "properties" : {
@@ -5643,7 +5621,8 @@
             },
             "required" : [
                "originDomains"
-            ]
+            ],
+            "type" : "object"
          },
          "CheckoutUtilityResponse" : {
             "properties" : {
@@ -5655,7 +5634,8 @@
                   "description" : "The list of origin keys for all requested domains. For each list item, the key is the domain and the value is the origin key.",
                   "type" : "object"
                }
-            }
+            },
+            "type" : "object"
          },
          "CheckoutVoucherAction" : {
             "additionalProperties" : false,
@@ -5746,7 +5726,8 @@
             },
             "required" : [
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "CommonField" : {
             "properties" : {
@@ -5758,7 +5739,8 @@
                   "description" : "Version of the field. For example, Version of External Platform.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "Company" : {
             "properties" : {
@@ -5786,7 +5768,8 @@
                   "description" : "The company type.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "Configuration" : {
             "properties" : {
@@ -5813,7 +5796,8 @@
                   "description" : "Determines how to display the details fields.",
                   "$ref" : "#/components/schemas/ShopperInput"
                }
-            }
+            },
+            "type" : "object"
          },
          "CreateApplePaySessionRequest" : {
             "properties" : {
@@ -5834,7 +5818,8 @@
                "domainName",
                "merchantIdentifier",
                "displayName"
-            ]
+            ],
+            "type" : "object"
          },
          "CreatePaymentAmountUpdateRequest" : {
             "properties" : {
@@ -5859,7 +5844,7 @@
                   "type" : "string"
                },
                "splits" : {
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -5869,7 +5854,8 @@
             "required" : [
                "merchantAccount",
                "amount"
-            ]
+            ],
+            "type" : "object"
          },
          "CreatePaymentCancelRequest" : {
             "properties" : {
@@ -5884,7 +5870,8 @@
             },
             "required" : [
                "merchantAccount"
-            ]
+            ],
+            "type" : "object"
          },
          "CreatePaymentCaptureRequest" : {
             "properties" : {
@@ -5908,7 +5895,7 @@
                   "type" : "string"
                },
                "splits" : {
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -5918,7 +5905,8 @@
             "required" : [
                "merchantAccount",
                "amount"
-            ]
+            ],
+            "type" : "object"
          },
          "CreatePaymentLinkRequest" : {
             "properties" : {
@@ -5934,6 +5922,7 @@
                   "$ref" : "#/components/schemas/Amount"
                },
                "applicationInfo" : {
+                  "deprecated" : true,
                   "description" : "Information about your application. For more details, see [Building Adyen solutions](https://docs.adyen.com/development-resources/building-adyen-solutions).",
                   "$ref" : "#/components/schemas/ApplicationInfo"
                },
@@ -5983,6 +5972,10 @@
                   },
                   "type" : "array"
                },
+               "manualCapture" : {
+                  "description" : "Indicates if the payment must be [captured manually](https://docs.adyen.com/online-payments/capture).",
+                  "type" : "boolean"
+               },
                "merchantAccount" : {
                   "description" : "The merchant account identifier for which the payment link is created.",
                   "type" : "string"
@@ -5999,7 +5992,7 @@
                   "type" : "object"
                },
                "recurringProcessingModel" : {
-                  "description" : "Defines a recurring payment type.\nPossible values:\n* **Subscription** – A transaction for a fixed or variable amount, which follows a fixed schedule.\n* **CardOnFile** – With a card-on-file (CoF) transaction, card details are stored to enable one-click or omnichannel journeys, or simply to streamline the checkout process. Any subscription not following a fixed schedule is also considered a card-on-file transaction.\n* **UnscheduledCardOnFile** – An unscheduled card-on-file (UCoF) transaction is a transaction that occurs on a non-fixed schedule and/or has variable amounts. For example, automatic top-ups when a cardholder's balance drops below a certain amount.\n",
+                  "description" : "Defines a recurring payment type. Required when creating a token to store payment details.\nPossible values:\n* **Subscription** – A transaction for a fixed or variable amount, which follows a fixed schedule.\n* **CardOnFile** – With a card-on-file (CoF) transaction, card details are stored to enable one-click or omnichannel journeys, or simply to streamline the checkout process. Any subscription not following a fixed schedule is also considered a card-on-file transaction.\n* **UnscheduledCardOnFile** – An unscheduled card-on-file (UCoF) transaction is a transaction that occurs on a non-fixed schedule and/or has variable amounts. For example, automatic top-ups when a cardholder's balance drops below a certain amount.\n",
                   "enum" : [
                      "CardOnFile",
                      "Subscription",
@@ -6024,7 +6017,7 @@
                   "type" : "string"
                },
                "shopperLocale" : {
-                  "description" : "The language to be used in the payment page, specified by a combination of a language and country code. For example, `en-US`.\n\nFor a list of shopper locales that Pay by Link supports, refer to [Language and localization](https://docs.adyen.com/online-payments/pay-by-link#language-and-localization).",
+                  "description" : "The language to be used in the payment page, specified by a combination of a language and country code. For example, `en-US`.\n\nFor a list of shopper locales that Pay by Link supports, refer to [Language and localization](https://docs.adyen.com/unified-commerce/pay-by-link/payment-links/api#language).",
                   "type" : "string"
                },
                "shopperName" : {
@@ -6035,8 +6028,13 @@
                   "description" : "Your reference to uniquely identify this shopper, for example user ID or account ID. Minimum length: 3 characters.\n> Your reference must not include personally identifiable information (PII), for example name or email address.",
                   "type" : "string"
                },
+               "showRemovePaymentMethodButton" : {
+                  "default" : true,
+                  "description" : "Set to **false** to hide the button that lets the shopper remove a stored payment method.",
+                  "type" : "boolean"
+               },
                "splits" : {
-                  "description" : "An array of objects specifying how the payment should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the payment should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -6056,7 +6054,8 @@
                "amount",
                "reference",
                "merchantAccount"
-            ]
+            ],
+            "type" : "object"
          },
          "CreatePaymentRefundRequest" : {
             "properties" : {
@@ -6075,12 +6074,23 @@
                   "description" : "The merchant account that is used to process the payment.",
                   "type" : "string"
                },
+               "merchantRefundReason" : {
+                  "description" : "Your reason for the refund request",
+                  "enum" : [
+                     "FRAUD",
+                     "CUSTOMER REQUEST",
+                     "RETURN",
+                     "DUPLICATE",
+                     "OTHER"
+                  ],
+                  "type" : "string"
+               },
                "reference" : {
                   "description" : "Your reference for the refund request. Maximum length: 80 characters.",
                   "type" : "string"
                },
                "splits" : {
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -6090,7 +6100,8 @@
             "required" : [
                "merchantAccount",
                "amount"
-            ]
+            ],
+            "type" : "object"
          },
          "CreatePaymentReversalRequest" : {
             "properties" : {
@@ -6105,7 +6116,8 @@
             },
             "required" : [
                "merchantAccount"
-            ]
+            ],
+            "type" : "object"
          },
          "CreateStandalonePaymentCancelRequest" : {
             "properties" : {
@@ -6125,7 +6137,8 @@
             "required" : [
                "merchantAccount",
                "paymentReference"
-            ]
+            ],
+            "type" : "object"
          },
          "DetailsRequest" : {
             "properties" : {
@@ -6146,7 +6159,8 @@
             },
             "required" : [
                "details"
-            ]
+            ],
+            "type" : "object"
          },
          "DeviceRenderOptions" : {
             "properties" : {
@@ -6174,7 +6188,8 @@
                   },
                   "type" : "array"
                }
-            }
+            },
+            "type" : "object"
          },
          "DokuDetails" : {
             "additionalProperties" : false,
@@ -6213,7 +6228,8 @@
                "lastName",
                "shopperEmail"
             ],
-            "title" : "Doku"
+            "title" : "Doku",
+            "type" : "object"
          },
          "DonationResponse" : {
             "properties" : {
@@ -6250,7 +6266,8 @@
                   ],
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "DotpayDetails" : {
             "additionalProperties" : false,
@@ -6271,7 +6288,8 @@
             "required" : [
                "issuer"
             ],
-            "title" : "Dotpay"
+            "title" : "Dotpay",
+            "type" : "object"
          },
          "DragonpayDetails" : {
             "additionalProperties" : false,
@@ -6299,7 +6317,8 @@
                "type",
                "issuer"
             ],
-            "title" : "Dragonpay"
+            "title" : "Dragonpay",
+            "type" : "object"
          },
          "EcontextVoucherDetails" : {
             "additionalProperties" : false,
@@ -6336,7 +6355,8 @@
                "shopperEmail",
                "telephoneNumber"
             ],
-            "title" : "Voucher"
+            "title" : "Voucher",
+            "type" : "object"
          },
          "ExternalPlatform" : {
             "properties" : {
@@ -6352,7 +6372,8 @@
                   "description" : "Version of the field. For example, Version of External Platform.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ForexQuote" : {
             "properties" : {
@@ -6410,7 +6431,8 @@
             "required" : [
                "validTill",
                "basePoints"
-            ]
+            ],
+            "type" : "object"
          },
          "FraudCheckResult" : {
             "properties" : {
@@ -6433,7 +6455,8 @@
                "checkId",
                "name",
                "accountScore"
-            ]
+            ],
+            "type" : "object"
          },
          "FraudResult" : {
             "properties" : {
@@ -6452,7 +6475,8 @@
             },
             "required" : [
                "accountScore"
-            ]
+            ],
+            "type" : "object"
          },
          "GenericIssuerPaymentMethodDetails" : {
             "additionalProperties" : false,
@@ -6476,6 +6500,7 @@
                "type" : {
                   "description" : "**genericissuer**",
                   "enum" : [
+                     "onlineBanking_PL",
                      "eps",
                      "onlineBanking_SK",
                      "onlineBanking_CZ"
@@ -6487,7 +6512,8 @@
                "type",
                "issuer"
             ],
-            "title" : "Stored Payment Method"
+            "title" : "Stored Payment Method",
+            "type" : "object"
          },
          "GiropayDetails" : {
             "additionalProperties" : false,
@@ -6513,7 +6539,8 @@
                   "type" : "string"
                }
             },
-            "title" : "Giropay"
+            "title" : "Giropay",
+            "type" : "object"
          },
          "GooglePayDetails" : {
             "additionalProperties" : false,
@@ -6553,7 +6580,8 @@
             "required" : [
                "googlePayToken"
             ],
-            "title" : "Google Pay"
+            "title" : "Google Pay",
+            "type" : "object"
          },
          "IdealDetails" : {
             "additionalProperties" : false,
@@ -6586,7 +6614,8 @@
             "required" : [
                "issuer"
             ],
-            "title" : "iDEAL"
+            "title" : "iDEAL",
+            "type" : "object"
          },
          "InputDetail" : {
             "properties" : {
@@ -6639,7 +6668,8 @@
                   "description" : "The value can be pre-filled, if available.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "InstallmentOption" : {
             "properties" : {
@@ -6675,7 +6705,8 @@
                   },
                   "type" : "array"
                }
-            }
+            },
+            "type" : "object"
          },
          "Installments" : {
             "properties" : {
@@ -6696,7 +6727,8 @@
             },
             "required" : [
                "value"
-            ]
+            ],
+            "type" : "object"
          },
          "InstallmentsNumber" : {
             "properties" : {
@@ -6708,7 +6740,8 @@
             },
             "required" : [
                "maxNumberOfInstallments"
-            ]
+            ],
+            "type" : "object"
          },
          "Item" : {
             "properties" : {
@@ -6720,7 +6753,8 @@
                   "description" : "The display name.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "KlarnaDetails" : {
             "additionalProperties" : false,
@@ -6767,7 +6801,8 @@
             "required" : [
                "type"
             ],
-            "title" : "Klarna"
+            "title" : "Klarna",
+            "type" : "object"
          },
          "LineItem" : {
             "properties" : {
@@ -6816,7 +6851,8 @@
                   "format" : "int64",
                   "type" : "integer"
                }
-            }
+            },
+            "type" : "object"
          },
          "Mandate" : {
             "properties" : {
@@ -6876,7 +6912,8 @@
                "frequency",
                "amount",
                "endsAt"
-            ]
+            ],
+            "type" : "object"
          },
          "MasterpassDetails" : {
             "additionalProperties" : false,
@@ -6904,7 +6941,8 @@
             "required" : [
                "masterpassTransactionId"
             ],
-            "title" : "Masterpass"
+            "title" : "Masterpass",
+            "type" : "object"
          },
          "MbwayDetails" : {
             "additionalProperties" : false,
@@ -6930,7 +6968,8 @@
                "telephoneNumber",
                "shopperEmail"
             ],
-            "title" : "MBWay"
+            "title" : "MBWay",
+            "type" : "object"
          },
          "MerchantDevice" : {
             "properties" : {
@@ -6946,7 +6985,8 @@
                   "description" : "Merchant device reference.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "MerchantRiskIndicator" : {
             "properties" : {
@@ -7003,7 +7043,8 @@
                   "description" : "Indicator for whether the shopper has already purchased the same items in the past.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "MobilePayDetails" : {
             "additionalProperties" : false,
@@ -7017,7 +7058,8 @@
                   "type" : "string"
                }
             },
-            "title" : "MobilePay"
+            "title" : "MobilePay",
+            "type" : "object"
          },
          "MolPayDetails" : {
             "additionalProperties" : false,
@@ -7039,7 +7081,8 @@
                "type",
                "issuer"
             ],
-            "title" : "MOLPay"
+            "title" : "MOLPay",
+            "type" : "object"
          },
          "Name" : {
             "properties" : {
@@ -7055,7 +7098,8 @@
             "required" : [
                "firstName",
                "lastName"
-            ]
+            ],
+            "type" : "object"
          },
          "OpenInvoiceDetails" : {
             "additionalProperties" : false,
@@ -7095,7 +7139,8 @@
                   "type" : "string"
                }
             },
-            "title" : "Open Invoice"
+            "title" : "Open Invoice",
+            "type" : "object"
          },
          "PayPalDetails" : {
             "additionalProperties" : false,
@@ -7140,7 +7185,8 @@
             "required" : [
                "type"
             ],
-            "title" : "PayPal"
+            "title" : "PayPal",
+            "type" : "object"
          },
          "PayUUpiDetails" : {
             "additionalProperties" : false,
@@ -7177,7 +7223,8 @@
             "required" : [
                "type"
             ],
-            "title" : "PayU"
+            "title" : "PayU",
+            "type" : "object"
          },
          "PayWithGoogleDetails" : {
             "additionalProperties" : false,
@@ -7217,7 +7264,8 @@
             "required" : [
                "googlePayToken"
             ],
-            "title" : "Google Pay"
+            "title" : "Google Pay",
+            "type" : "object"
          },
          "PaymentAmountUpdateResource" : {
             "properties" : {
@@ -7250,7 +7298,7 @@
                   "type" : "string"
                },
                "splits" : {
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -7271,7 +7319,8 @@
                "reference",
                "pspReference",
                "paymentPspReference"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentCancelResource" : {
             "properties" : {
@@ -7304,7 +7353,8 @@
                "merchantAccount",
                "paymentPspReference",
                "pspReference"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentCaptureResource" : {
             "properties" : {
@@ -7336,7 +7386,7 @@
                   "type" : "string"
                },
                "splits" : {
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -7356,7 +7406,8 @@
                "amount",
                "pspReference",
                "paymentPspReference"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentCompletionDetails" : {
             "properties" : {
@@ -7416,6 +7467,10 @@
                   "maxLength" : 20000,
                   "type" : "string"
                },
+               "resultCode" : {
+                  "description" : "Value you received from the WeChat Pay SDK.",
+                  "type" : "string"
+               },
                "threeDSResult" : {
                   "description" : "Base64-encoded string returned by the Component after the challenge flow. It contains the following parameters: `transStatus`, `authorisationToken`.",
                   "maxLength" : 50000,
@@ -7431,7 +7486,8 @@
                   "maxLength" : 100000,
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "PaymentDetails" : {
             "additionalProperties" : false,
@@ -7446,6 +7502,7 @@
                      "paynow",
                      "affirm",
                      "affirm_pos",
+                     "trustly",
                      "trustlyvector",
                      "oney",
                      "facilypay",
@@ -7468,16 +7525,17 @@
                      "upi_qr",
                      "paytm",
                      "molpay_ebanking_VN",
-                     "onlineBanking_PL",
                      "openbanking_UK",
+                     "paybybank",
                      "ebanking_FI",
                      "molpay_ebanking_MY",
                      "molpay_ebanking_direct_MY",
                      "swish",
                      "twint",
-                     "pix",
                      "walley",
                      "walley_b2b",
+                     "pix",
+                     "bizum",
                      "alma",
                      "molpay_fpx",
                      "konbini",
@@ -7487,7 +7545,6 @@
                      "dana",
                      "paysafecard",
                      "cashticket",
-                     "isracard",
                      "ikano",
                      "karenmillen",
                      "oasis",
@@ -7534,7 +7591,8 @@
                   "type" : "string"
                }
             },
-            "title" : "Payment Details"
+            "title" : "Payment Details",
+            "type" : "object"
          },
          "PaymentDetailsResponse" : {
             "properties" : {
@@ -7659,6 +7717,7 @@
                   "description" : "The result of the payment. For more information, see [Result codes](https://docs.adyen.com/online-payments/payment-result-codes).\n\nPossible values:\n\n* **AuthenticationFinished** – The payment has been successfully authenticated with 3D Secure 2. Returned for 3D Secure 2 authentication-only transactions.\n* **AuthenticationNotRequired** – The transaction does not require 3D Secure authentication. Returned for [standalone authentication-only integrations](https://docs.adyen.com/online-payments/3d-secure/other-3ds-flows/authentication-only).\n* **Authorised** – The payment was successfully authorised. This state serves as an indicator to proceed with the delivery of goods and services. This is a final state.\n* **Cancelled** – Indicates the payment has been cancelled (either by the shopper or the merchant) before processing was completed. This is a final state.\n* **ChallengeShopper** – The issuer requires further shopper interaction before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Error** – There was an error when the payment was being processed. The reason is given in the `refusalReason` field. This is a final state.\n* **IdentifyShopper** – The issuer requires the shopper's device fingerprint before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Pending** – Indicates that it is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.\n* **PresentToShopper** – Indicates that the response contains additional information that you need to present to a shopper, so that they can use it to complete a payment.\n* **Received** – Indicates the payment has successfully been received by Adyen, and will be processed. This is the initial state for all payments.\n* **RedirectShopper** – Indicates the shopper should be redirected to an external web page or app to complete the authorisation.\n* **Refused** – Indicates the payment was refused. The reason is given in the `refusalReason` field. This is a final state.",
                   "enum" : [
                      "AuthenticationFinished",
+                     "AuthenticationNotRequired",
                      "Authorised",
                      "Cancelled",
                      "ChallengeShopper",
@@ -7682,7 +7741,8 @@
                   "description" : "Result of the 3D Secure 2 authentication.",
                   "$ref" : "#/components/schemas/ThreeDS2Result"
                }
-            }
+            },
+            "type" : "object"
          },
          "PaymentDonationRequest" : {
             "properties" : {
@@ -7795,7 +7855,7 @@
                "dateOfBirth" : {
                   "x-addedInVersion" : "7",
                   "description" : "The shopper's date of birth.\n\nFormat [ISO-8601](https://www.w3.org/TR/NOTE-datetime): YYYY-MM-DD",
-                  "format" : "date-time",
+                  "format" : "date",
                   "type" : "string"
                },
                "dccQuote" : {
@@ -8137,7 +8197,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -8145,7 +8205,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -8184,7 +8244,8 @@
                "returnUrl",
                "paymentMethod",
                "donationAccount"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentLinkResponse" : {
             "properties" : {
@@ -8200,6 +8261,7 @@
                   "$ref" : "#/components/schemas/Amount"
                },
                "applicationInfo" : {
+                  "deprecated" : true,
                   "description" : "Information about your application. For more details, see [Building Adyen solutions](https://docs.adyen.com/development-resources/building-adyen-solutions).",
                   "$ref" : "#/components/schemas/ApplicationInfo"
                },
@@ -8255,6 +8317,10 @@
                   },
                   "type" : "array"
                },
+               "manualCapture" : {
+                  "description" : "Indicates if the payment must be [captured manually](https://docs.adyen.com/online-payments/capture).",
+                  "type" : "boolean"
+               },
                "merchantAccount" : {
                   "description" : "The merchant account identifier for which the payment link is created.",
                   "type" : "string"
@@ -8271,7 +8337,7 @@
                   "type" : "object"
                },
                "recurringProcessingModel" : {
-                  "description" : "Defines a recurring payment type.\nPossible values:\n* **Subscription** – A transaction for a fixed or variable amount, which follows a fixed schedule.\n* **CardOnFile** – With a card-on-file (CoF) transaction, card details are stored to enable one-click or omnichannel journeys, or simply to streamline the checkout process. Any subscription not following a fixed schedule is also considered a card-on-file transaction.\n* **UnscheduledCardOnFile** – An unscheduled card-on-file (UCoF) transaction is a transaction that occurs on a non-fixed schedule and/or has variable amounts. For example, automatic top-ups when a cardholder's balance drops below a certain amount.\n",
+                  "description" : "Defines a recurring payment type. Required when creating a token to store payment details.\nPossible values:\n* **Subscription** – A transaction for a fixed or variable amount, which follows a fixed schedule.\n* **CardOnFile** – With a card-on-file (CoF) transaction, card details are stored to enable one-click or omnichannel journeys, or simply to streamline the checkout process. Any subscription not following a fixed schedule is also considered a card-on-file transaction.\n* **UnscheduledCardOnFile** – An unscheduled card-on-file (UCoF) transaction is a transaction that occurs on a non-fixed schedule and/or has variable amounts. For example, automatic top-ups when a cardholder's balance drops below a certain amount.\n",
                   "enum" : [
                      "CardOnFile",
                      "Subscription",
@@ -8296,7 +8362,7 @@
                   "type" : "string"
                },
                "shopperLocale" : {
-                  "description" : "The language to be used in the payment page, specified by a combination of a language and country code. For example, `en-US`.\n\nFor a list of shopper locales that Pay by Link supports, refer to [Language and localization](https://docs.adyen.com/online-payments/pay-by-link#language-and-localization).",
+                  "description" : "The language to be used in the payment page, specified by a combination of a language and country code. For example, `en-US`.\n\nFor a list of shopper locales that Pay by Link supports, refer to [Language and localization](https://docs.adyen.com/unified-commerce/pay-by-link/payment-links/api#language).",
                   "type" : "string"
                },
                "shopperName" : {
@@ -8307,8 +8373,13 @@
                   "description" : "Your reference to uniquely identify this shopper, for example user ID or account ID. Minimum length: 3 characters.\n> Your reference must not include personally identifiable information (PII), for example name or email address.",
                   "type" : "string"
                },
+               "showRemovePaymentMethodButton" : {
+                  "default" : true,
+                  "description" : "Set to **false** to hide the button that lets the shopper remove a stored payment method.",
+                  "type" : "boolean"
+               },
                "splits" : {
-                  "description" : "An array of objects specifying how the payment should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the payment should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -8356,6 +8427,11 @@
                   "description" : "When this is set to **true** and the `shopperReference` is provided, the payment details will be stored.",
                   "type" : "boolean"
                },
+               "updatedAt" : {
+                  "description" : "The date when the payment link status was updated.\n\n[ISO 8601](https://www.w3.org/TR/NOTE-datetime) format: YYYY-MM-DDThh:mm:ss+TZD, for example, **2020-12-18T10:15:30+01:00**.",
+                  "format" : "date-time",
+                  "type" : "string"
+               },
                "url" : {
                   "description" : "The URL at which the shopper can complete the payment.",
                   "readOnly" : true,
@@ -8369,7 +8445,8 @@
                "id",
                "url",
                "status"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentMethod" : {
             "properties" : {
@@ -8427,7 +8504,8 @@
                   "description" : "The unique payment method code.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "PaymentMethodGroup" : {
             "properties" : {
@@ -8443,7 +8521,8 @@
                   "description" : "The unique code of the group.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "PaymentMethodsGroup" : {
             "properties" : {
@@ -8462,7 +8541,8 @@
                   },
                   "type" : "array"
                }
-            }
+            },
+            "type" : "object"
          },
          "PaymentMethodsRequest" : {
             "properties" : {
@@ -8585,7 +8665,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -8593,7 +8673,8 @@
             },
             "required" : [
                "merchantAccount"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentMethodsResponse" : {
             "properties" : {
@@ -8626,7 +8707,8 @@
                   },
                   "type" : "array"
                }
-            }
+            },
+            "type" : "object"
          },
          "PaymentRefundResource" : {
             "properties" : {
@@ -8645,6 +8727,17 @@
                   "description" : "The merchant account that is used to process the payment.",
                   "type" : "string"
                },
+               "merchantRefundReason" : {
+                  "description" : "Your reason for the refund request.",
+                  "enum" : [
+                     "FRAUD",
+                     "CUSTOMER REQUEST",
+                     "RETURN",
+                     "DUPLICATE",
+                     "OTHER"
+                  ],
+                  "type" : "string"
+               },
                "paymentPspReference" : {
                   "description" : "The [`pspReference`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__resParam_pspReference) of the payment to refund. ",
                   "type" : "string"
@@ -8658,7 +8751,7 @@
                   "type" : "string"
                },
                "splits" : {
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -8678,7 +8771,8 @@
                "amount",
                "pspReference",
                "paymentPspReference"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentRequest" : {
             "properties" : {
@@ -8791,7 +8885,7 @@
                "dateOfBirth" : {
                   "x-addedInVersion" : "7",
                   "description" : "The shopper's date of birth.\n\nFormat [ISO-8601](https://www.w3.org/TR/NOTE-datetime): YYYY-MM-DD",
-                  "format" : "date-time",
+                  "format" : "date",
                   "type" : "string"
                },
                "dccQuote" : {
@@ -9121,7 +9215,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -9129,7 +9223,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -9167,7 +9261,8 @@
                "amount",
                "returnUrl",
                "paymentMethod"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentResponse" : {
             "properties" : {
@@ -9179,13 +9274,7 @@
                         "$ref" : "#/components/schemas/CheckoutAwaitAction"
                      },
                      {
-                        "$ref" : "#/components/schemas/CheckoutBankTransferAction"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/CheckoutDonationAction"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/CheckoutOneTimePasscodeAction"
+                        "$ref" : "#/components/schemas/CheckoutNativeRedirectAction"
                      },
                      {
                         "$ref" : "#/components/schemas/CheckoutQrCodeAction"
@@ -9319,6 +9408,7 @@
                   "description" : "The result of the payment. For more information, see [Result codes](https://docs.adyen.com/online-payments/payment-result-codes).\n\nPossible values:\n\n* **AuthenticationFinished** – The payment has been successfully authenticated with 3D Secure 2. Returned for 3D Secure 2 authentication-only transactions.\n* **AuthenticationNotRequired** – The transaction does not require 3D Secure authentication. Returned for [standalone authentication-only integrations](https://docs.adyen.com/online-payments/3d-secure/other-3ds-flows/authentication-only).\n* **Authorised** – The payment was successfully authorised. This state serves as an indicator to proceed with the delivery of goods and services. This is a final state.\n* **Cancelled** – Indicates the payment has been cancelled (either by the shopper or the merchant) before processing was completed. This is a final state.\n* **ChallengeShopper** – The issuer requires further shopper interaction before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Error** – There was an error when the payment was being processed. The reason is given in the `refusalReason` field. This is a final state.\n* **IdentifyShopper** – The issuer requires the shopper's device fingerprint before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Pending** – Indicates that it is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.\n* **PresentToShopper** – Indicates that the response contains additional information that you need to present to a shopper, so that they can use it to complete a payment.\n* **Received** – Indicates the payment has successfully been received by Adyen, and will be processed. This is the initial state for all payments.\n* **RedirectShopper** – Indicates the shopper should be redirected to an external web page or app to complete the authorisation.\n* **Refused** – Indicates the payment was refused. The reason is given in the `refusalReason` field. This is a final state.",
                   "enum" : [
                      "AuthenticationFinished",
+                     "AuthenticationNotRequired",
                      "Authorised",
                      "Cancelled",
                      "ChallengeShopper",
@@ -9338,7 +9428,8 @@
                   "description" : "Result of the 3D Secure 2 authentication.",
                   "$ref" : "#/components/schemas/ThreeDS2Result"
                }
-            }
+            },
+            "type" : "object"
          },
          "PaymentReversalResource" : {
             "properties" : {
@@ -9371,7 +9462,8 @@
                "merchantAccount",
                "pspReference",
                "paymentPspReference"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentSetupRequest" : {
             "properties" : {
@@ -9495,7 +9587,7 @@
                "dateOfBirth" : {
                   "x-addedInVersion" : "7",
                   "description" : "The shopper's date of birth.\n\nFormat [ISO-8601](https://www.w3.org/TR/NOTE-datetime): YYYY-MM-DD",
-                  "format" : "date-time",
+                  "format" : "date",
                   "type" : "string"
                },
                "dccQuote" : {
@@ -9667,7 +9759,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -9675,7 +9767,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -9712,7 +9804,8 @@
                "amount",
                "returnUrl",
                "countryCode"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentSetupResponse" : {
             "properties" : {
@@ -9728,7 +9821,8 @@
                   },
                   "type" : "array"
                }
-            }
+            },
+            "type" : "object"
          },
          "PaymentVerificationRequest" : {
             "properties" : {
@@ -9740,7 +9834,8 @@
             },
             "required" : [
                "payload"
-            ]
+            ],
+            "type" : "object"
          },
          "PaymentVerificationResponse" : {
             "properties" : {
@@ -9810,6 +9905,7 @@
                   "description" : "The result of the payment. For more information, see [Result codes](https://docs.adyen.com/online-payments/payment-result-codes).\n\nPossible values:\n\n* **AuthenticationFinished** – The payment has been successfully authenticated with 3D Secure 2. Returned for 3D Secure 2 authentication-only transactions.\n* **AuthenticationNotRequired** – The transaction does not require 3D Secure authentication. Returned for [standalone authentication-only integrations](https://docs.adyen.com/online-payments/3d-secure/other-3ds-flows/authentication-only).\n* **Authorised** – The payment was successfully authorised. This state serves as an indicator to proceed with the delivery of goods and services. This is a final state.\n* **Cancelled** – Indicates the payment has been cancelled (either by the shopper or the merchant) before processing was completed. This is a final state.\n* **ChallengeShopper** – The issuer requires further shopper interaction before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Error** – There was an error when the payment was being processed. The reason is given in the `refusalReason` field. This is a final state.\n* **IdentifyShopper** – The issuer requires the shopper's device fingerprint before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Pending** – Indicates that it is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.\n* **PresentToShopper** – Indicates that the response contains additional information that you need to present to a shopper, so that they can use it to complete a payment.\n* **Received** – Indicates the payment has successfully been received by Adyen, and will be processed. This is the initial state for all payments.\n* **RedirectShopper** – Indicates the shopper should be redirected to an external web page or app to complete the authorisation.\n* **Refused** – Indicates the payment was refused. The reason is given in the `refusalReason` field. This is a final state.",
                   "enum" : [
                      "AuthenticationFinished",
+                     "AuthenticationNotRequired",
                      "Authorised",
                      "Cancelled",
                      "ChallengeShopper",
@@ -9837,7 +9933,8 @@
                "merchantReference",
                "paymentMethod",
                "shopperLocale"
-            ]
+            ],
+            "type" : "object"
          },
          "RatepayDetails" : {
             "additionalProperties" : false,
@@ -9879,7 +9976,8 @@
             "required" : [
                "type"
             ],
-            "title" : "Ratepay"
+            "title" : "Ratepay",
+            "type" : "object"
          },
          "Recurring" : {
             "properties" : {
@@ -9916,7 +10014,8 @@
                   ],
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "RecurringDetail" : {
             "properties" : {
@@ -9982,7 +10081,8 @@
                   "description" : "The unique payment method code.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "Redirect" : {
             "properties" : {
@@ -10005,7 +10105,8 @@
                   "description" : "The URL, to which you must redirect a shopper to complete a payment.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalData3DSecure" : {
             "properties" : {
@@ -10029,7 +10130,8 @@
                   "description" : "Indicates whether a card is enrolled for 3D Secure 2.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataBillingAddress" : {
             "properties" : {
@@ -10057,7 +10159,8 @@
                   "description" : "The billing address street passed in the payment request.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataCard" : {
             "properties" : {
@@ -10093,7 +10196,8 @@
                   "description" : "The first eight digits of the card number. Only returned if the card number is 16 digits or more.\n\nThis is the [Bank Identification Number (BIN)](https://docs.adyen.com/get-started-with-adyen/payment-glossary#bank-identification-number-bin) for card numbers with an eight-digit BIN.\n\nExample: 52123423",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataCommon" : {
             "properties" : {
@@ -10224,14 +10328,7 @@
                   "type" : "string"
                },
                "merchantAdviceCode" : {
-                  "description" : "A code and message that issuers send to provide more details about the payment. This field is especially useful when implementing a retry logic for declined payments.\n\nPossible values:\n\n* **01: New account information available**\n\n* **02: Cannot approve at this time, try again later**\n\n* **03: Do not try again**\n\n* **04: Token requirements not fulfilled for this token type**\n\n* **21: Payment Cancellation** (only for Mastercard)\n\n",
-                  "enum" : [
-                     "01: New account information available",
-                     "02: Cannot approve at this time, try again later",
-                     "03: Do not try again",
-                     "04: Token requirements not fulfilled for this token type",
-                     "21: Payment Cancellation"
-                  ],
+                  "description" : "The Merchant Advice Code (MAC) can be returned by Mastercard issuers for refused payments. If present, the MAC contains information about why the payment failed, and whether it can be retried.\n\nFor more information see [Mastercard Merchant Advice Codes](https://docs.adyen.com/development-resources/raw-acquirer-responses#mastercard-merchant-advice-codes).",
                   "type" : "string"
                },
                "merchantReference" : {
@@ -10362,7 +10459,8 @@
                   "description" : "The 3DS transaction ID of the 3DS session sent in notifications. The value is Base64-encoded and is returned for transactions with directoryResponse 'N' or 'Y'. If you want to submit the xid in your 3D Secure 1 request, use the `mpiData.xid`, field.\n\nExample: ODgxNDc2MDg2MDExODk5MAAAAAA=",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataInstallments" : {
             "properties" : {
@@ -10414,7 +10512,8 @@
                   "description" : "The number of installments that the payment amount should be charged with.\n\nExample: 5\n> Only relevant for card payments in countries that support installments.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataNetworkTokens" : {
             "properties" : {
@@ -10430,7 +10529,8 @@
                   "description" : "The last four digits of a network token.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataOpi" : {
             "properties" : {
@@ -10438,7 +10538,8 @@
                   "description" : "Returned in the response if you included `opi.includeTransToken: true` in an ecommerce payment request. This contains an Oracle Payment Interface token that you can store in your Oracle Opera database to identify tokenized ecommerce transactions. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ResponseAdditionalDataSepa" : {
             "properties" : {
@@ -10454,7 +10555,8 @@
                   "description" : "This field can take one of the following values:\n* OneOff: (OOFF) Direct debit instruction to initiate exactly one direct debit transaction.\n\n* First: (FRST) Initial/first collection in a series of direct debit instructions.\n* Recurring: (RCUR) Direct debit instruction to carry out regular direct debit transactions initiated by the creditor.\n* Final: (FNAL) Last/final collection in a series of direct debit instructions.\n\nExample: OOFF",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "RiskData" : {
             "properties" : {
@@ -10462,7 +10564,8 @@
                   "description" : "Contains client-side data, like the device fingerprint, cookies, and specific browser settings.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "SDKEphemPubKey" : {
             "properties" : {
@@ -10482,7 +10585,8 @@
                   "description" : "The `y` value as received from the 3D Secure 2 SDK.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "SamsungPayDetails" : {
             "additionalProperties" : false,
@@ -10522,7 +10626,8 @@
             "required" : [
                "samsungPayToken"
             ],
-            "title" : "Samsung Pay"
+            "title" : "Samsung Pay",
+            "type" : "object"
          },
          "SepaDirectDebitDetails" : {
             "additionalProperties" : false,
@@ -10561,7 +10666,8 @@
                "iban",
                "ownerName"
             ],
-            "title" : "SEPA Direct Debit"
+            "title" : "SEPA Direct Debit",
+            "type" : "object"
          },
          "ServiceError" : {
             "properties" : {
@@ -10570,7 +10676,7 @@
                   "additionalProperties" : {
                      "type" : "string"
                   },
-                  "description" : "Contains additional information about the payment. Some data fields are included only if you select them first: Go to **Customer Area** > **Account** > **API URLs**.",
+                  "description" : "Contains additional information about the payment. Some data fields are included only if you select them first. Go to **Customer Area** > **Developers** > **Additional data**.",
                   "type" : "object"
                },
                "errorCode" : {
@@ -10594,7 +10700,8 @@
                   "format" : "int32",
                   "type" : "integer"
                }
-            }
+            },
+            "type" : "object"
          },
          "ServiceError-2" : {
             "properties" : {
@@ -10610,7 +10717,8 @@
                "pspReference" : {
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ShopperInput" : {
             "properties" : {
@@ -10641,7 +10749,8 @@
                   ],
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ShopperInteractionDevice" : {
             "properties" : {
@@ -10657,7 +10766,8 @@
                   "description" : "Version of the operating system on the shopper interaction device.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "Split" : {
             "properties" : {
@@ -10678,7 +10788,7 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**, **Remainder**.",
+                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**, **Remainder**, **Surcharge**, **Tip**.",
                   "enum" : [
                      "BalanceAccount",
                      "Commission",
@@ -10686,6 +10796,8 @@
                      "MarketPlace",
                      "PaymentFee",
                      "Remainder",
+                     "Surcharge",
+                     "Tip",
                      "VAT",
                      "Verification"
                   ],
@@ -10695,7 +10807,8 @@
             "required" : [
                "amount",
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "SplitAmount" : {
             "properties" : {
@@ -10713,7 +10826,8 @@
             },
             "required" : [
                "value"
-            ]
+            ],
+            "type" : "object"
          },
          "StandalonePaymentCancelResource" : {
             "properties" : {
@@ -10746,7 +10860,8 @@
                "merchantAccount",
                "pspReference",
                "paymentReference"
-            ]
+            ],
+            "type" : "object"
          },
          "StoredDetails" : {
             "properties" : {
@@ -10762,7 +10877,8 @@
                   "description" : "The email associated with stored payment details.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "StoredPaymentMethod" : {
             "properties" : {
@@ -10809,7 +10925,8 @@
                   "description" : "The type of payment method.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "StoredPaymentMethodDetails" : {
             "additionalProperties" : false,
@@ -10849,7 +10966,8 @@
                   "type" : "string"
                }
             },
-            "title" : "Stored Payment Method"
+            "title" : "Stored Payment Method",
+            "type" : "object"
          },
          "SubInputDetail" : {
             "properties" : {
@@ -10883,7 +11001,8 @@
                   "description" : "The value can be pre-filled, if available.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ThreeDS2RequestData" : {
             "properties" : {
@@ -11009,7 +11128,8 @@
             },
             "required" : [
                "deviceChannel"
-            ]
+            ],
+            "type" : "object"
          },
          "ThreeDS2Result" : {
             "properties" : {
@@ -11056,7 +11176,8 @@
                   "description" : "The `whiteListStatus` value as defined in the 3D Secure 2 specification.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "ThreeDSecureData" : {
             "properties" : {
@@ -11112,7 +11233,8 @@
                   "format" : "byte",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "UpdatePaymentLinkRequest" : {
             "properties" : {
@@ -11148,7 +11270,8 @@
             },
             "required" : [
                "status"
-            ]
+            ],
+            "type" : "object"
          },
          "UpiCollectDetails" : {
             "additionalProperties" : false,
@@ -11190,11 +11313,28 @@
                "type",
                "billingSequenceNumber"
             ],
-            "title" : "UPI Collect"
+            "title" : "UPI Collect",
+            "type" : "object"
          },
          "UpiIntentDetails" : {
             "additionalProperties" : false,
             "properties" : {
+               "recurringDetailReference" : {
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "49",
+                  "x-deprecatedMessage" : "Use `storedPaymentMethodId` instead.",
+                  "description" : "This is the `recurringDetailReference` returned in the response when you created the token.",
+                  "type" : "string"
+               },
+               "shopperNotificationReference" : {
+                  "description" : "The `shopperNotificationReference` returned in the response when you requested to notify the shopper. Used for recurring payment only.",
+                  "type" : "string"
+               },
+               "storedPaymentMethodId" : {
+                  "x-addedInVersion" : "49",
+                  "description" : "This is the `recurringDetailReference` returned in the response when you created the token.",
+                  "type" : "string"
+               },
                "type" : {
                   "default" : "upi_intent",
                   "description" : "**upi_intent**",
@@ -11207,7 +11347,8 @@
             "required" : [
                "type"
             ],
-            "title" : "UPI Intent"
+            "title" : "UPI Intent",
+            "type" : "object"
          },
          "VippsDetails" : {
             "additionalProperties" : false,
@@ -11240,7 +11381,8 @@
             "required" : [
                "telephoneNumber"
             ],
-            "title" : "Vipps"
+            "title" : "Vipps",
+            "type" : "object"
          },
          "VisaCheckoutDetails" : {
             "additionalProperties" : false,
@@ -11268,7 +11410,8 @@
             "required" : [
                "visaCheckoutCallId"
             ],
-            "title" : "Visa Checkout"
+            "title" : "Visa Checkout",
+            "type" : "object"
          },
          "WeChatPayDetails" : {
             "additionalProperties" : false,
@@ -11283,7 +11426,8 @@
                   "type" : "string"
                }
             },
-            "title" : "WeChat Pay"
+            "title" : "WeChat Pay",
+            "type" : "object"
          },
          "WeChatPayMiniProgramDetails" : {
             "additionalProperties" : false,
@@ -11303,7 +11447,8 @@
                   "type" : "string"
                }
             },
-            "title" : "WeChat Pay - Mini Program"
+            "title" : "WeChat Pay - Mini Program",
+            "type" : "object"
          },
          "ZipDetails" : {
             "additionalProperties" : false,
@@ -11334,7 +11479,8 @@
                   "type" : "string"
                }
             },
-            "title" : "Zip"
+            "title" : "Zip",
+            "type" : "object"
          }
       },
       "securitySchemes" : {
@@ -11423,12 +11569,13 @@
                },
                "countryCode" : "NL",
                "expiresAt" : "2021-04-08T14:06:39Z",
-               "merchantAccount" : "TestMerchantCheckout",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
                "reference" : "shopper-reference-ekvL83",
                "shopperLocale" : "hu-HU",
                "shopperReference" : "shopper-reference-LZfdWZ",
                "status" : "active",
-               "url" : "https://test.adyen.link/PL61C53A8B97E6915A"
+               "url" : "https://test.adyen.link/PL61C53A8B97E6915A",
+               "id" : "PL61C53A8B97E6915A"
             }
          },
          "patch-paymentLinks-linkId-basic" : {
@@ -11446,12 +11593,13 @@
                },
                "countryCode" : "NL",
                "expiresAt" : "2021-04-08T14:06:39Z",
-               "merchantAccount" : "TestMerchantCheckout",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
                "reference" : "shopper-reference-ekvL83",
                "shopperLocale" : "hu-HU",
                "shopperReference" : "shopper-reference-LZfdWZ",
                "status" : "expired",
-               "url" : "https://test.adyen.link/PL61C53A8B97E6915A"
+               "url" : "https://test.adyen.link/PL61C53A8B97E6915A",
+               "id" : "PL61C53A8B97E6915A"
             }
          },
          "post-applePay-sessions-basic" : {
@@ -11483,11 +11631,11 @@
                "brands" : [
                   {
                      "type" : "visa",
-                     "supported" : "true"
+                     "supported" : true
                   },
                   {
                      "type" : "cartebancaire",
-                     "supported" : "true"
+                     "supported" : true
                   }
                ]
             }
@@ -11512,11 +11660,11 @@
                "brands" : [
                   {
                      "type" : "visa",
-                     "supported" : "true"
+                     "supported" : true
                   },
                   {
                      "type" : "cartebancaire",
-                     "supported" : "false"
+                     "supported" : false
                   }
                ]
             }
@@ -11573,7 +11721,7 @@
                "reference" : "YOUR_DONATION_REFERENCE",
                "paymentMethod" : {
                   "type" : "scheme",
-                  "storedPaymentMethodId" : "8415718415172200"
+                  "recurringDetailReference" : "7219687191761347"
                },
                "returnUrl" : "https://your-company.com/...",
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
@@ -11677,15 +11825,39 @@
             }
          },
          "post-paymentLinks-basic-200" : {
-            "summary" : "Example response for request 'basic'",
+            "summary" : "Payment link created",
             "value" : {
                "amount" : {
-                  "currency" : "EUR",
+                  "currency" : "BRL",
                   "value" : 1250
                },
-               "expiresAt" : "2021-04-09T14:17:31Z",
-               "reference" : "shopper-reference-ekvL83",
-               "url" : "https://test.adyen.link/PL6DB3157D27FFBBCF"
+               "billingAddress" : {
+                  "city" : "São Paulo",
+                  "country" : "BR",
+                  "houseNumberOrName" : "999",
+                  "postalCode" : "59000060",
+                  "stateOrProvince" : "SP",
+                  "street" : "Roque Petroni Jr"
+               },
+               "countryCode" : "BR",
+               "deliveryAddress" : {
+                  "city" : "São Paulo",
+                  "country" : "BR",
+                  "houseNumberOrName" : "999",
+                  "postalCode" : "59000060",
+                  "stateOrProvince" : "SP",
+                  "street" : "Roque Petroni Jr"
+               },
+               "expiresAt" : "2022-10-28T09:16:22Z",
+               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
+               "reference" : "YOUR_ORDER_NUMBER",
+               "reusable" : false,
+               "shopperEmail" : "test@email.com",
+               "shopperLocale" : "pt-BR",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
+               "id" : "PLE83C39B0A0DE0C1E",
+               "status" : "active",
+               "url" : "https://test.adyen.link/PLE83C39B0A0DE0C1E"
             }
          },
          "post-paymentMethods-balance-basic" : {
@@ -14084,7 +14256,7 @@
                      "type" : "molpay_nganluong"
                   },
                   {
-                     "name" : "Tesco Lotus",
+                     "name" : "Convenience Stores Thailand",
                      "type" : "molpay_paysbuy"
                   },
                   {
@@ -15236,7 +15408,7 @@
                   "currency" : "EUR",
                   "value" : 1000
                },
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j"
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID"
             }
          },
          "post-paymentMethods-include-oneclick-200" : {
@@ -15851,7 +16023,7 @@
                   "value" : 17408
                },
                "reference" : "Your order number",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "channel" : "Android",
                "token" : "TOKEN_YOU_GET_FROM_CHECKOUT_SDK",
                "returnUrl" : "app://",
@@ -15869,7 +16041,7 @@
                   "value" : 17408
                },
                "reference" : "Your order number",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "enableOneClick" : true,
                "enableRecurring" : true,
                "channel" : "Web",
@@ -15896,7 +16068,7 @@
                   "value" : 17408
                },
                "reference" : "Your order number",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "channel" : "iOS",
                "token" : "TOKEN_YOU_GET_FROM_CHECKOUT_SDK",
                "returnUrl" : "app://",
@@ -15928,7 +16100,7 @@
                   "split.item2.reference" : "6124146"
                },
                "reference" : "Your order number",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "channel" : "Android",
                "token" : "TOKEN_YOU_GET_FROM_CHECKOUT_SDK",
                "returnUrl" : "app://",
@@ -15946,7 +16118,7 @@
                   "value" : 17408
                },
                "reference" : "Your order number",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "channel" : "Web",
                "html" : true,
                "origin" : "https://www.yourwebsite.com",
@@ -15983,23 +16155,20 @@
             "summary" : "Make a card payment with 3D Secure 2 native authentication",
             "value" : {
                "amount" : {
-                  "currency" : "USD",
+                  "currency" : "EUR",
                   "value" : 1000
                },
                "reference" : "YOUR_ORDER_NUMBER",
                "paymentMethod" : {
                   "type" : "scheme",
-                  "number" : "4917610000000000",
-                  "expiryMonth" : "03",
-                  "expiryYear" : "2030",
-                  "holderName" : "John Smith",
-                  "cvc" : "737"
+                  "encryptedCardNumber" : "test_4035501428146300",
+                  "encryptedExpiryMonth" : "test_03",
+                  "encryptedExpiryYear" : "test_2030",
+                  "encryptedSecurityCode" : "test_737",
+                  "holderName" : "John Smith"
                },
                "additionalData" : {
-                  "allow3DS2" : true
-               },
-               "accountInfo" : {
-                  "accountCreationDate" : "2019-01-17T13:42:40+01:00"
+                  "allow3DS2" : "true"
                },
                "billingAddress" : {
                   "country" : "US",
@@ -16021,28 +16190,10 @@
                   "timeZoneOffset" : 0,
                   "javaEnabled" : true
                },
-               "channel" : "web",
+               "channel" : "Web",
                "origin" : "https://your-company.com",
                "returnUrl" : "https://your-company.com/checkout/",
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
-            }
-         },
-         "post-payments-card-3d-secure-2-web-200" : {
-            "summary" : "Example response for request 'card-3d-secure-2-web'",
-            "value" : {
-               "additionalData" : {
-                  "cvcResult" : "1 Matches",
-                  "authCode" : "097410",
-                  "avsResult" : "4 AVS not supported for this card type",
-                  "avsResultRaw" : "C",
-                  "cvcResultRaw" : "M",
-                  "refusalReasonRaw" : "AUTHORISED",
-                  "acquirerCode" : "TestPmmAcquirer",
-                  "acquirerReference" : "8PQMP9VHQOF"
-               },
-               "pspReference" : "993617895214576G",
-               "resultCode" : "Authorised",
-               "merchantReference" : "string"
             }
          },
          "post-payments-card-3d-secure-direct" : {
@@ -16063,70 +16214,16 @@
                },
                "browserInfo" : {
                   "userAgent" : "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008052912 Firefox/3.0",
-                  "acceptHeader" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                  "acceptHeader" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                  "javaEnabled" : true,
+                  "colorDepth" : 10,
+                  "screenHeight" : 2000,
+                  "screenWidth" : 3000,
+                  "timeZoneOffset" : 5,
+                  "language" : "en"
                },
                "returnUrl" : "https://your-company.com/...",
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
-            }
-         },
-         "post-payments-card-3d-secure-direct-200" : {
-            "summary" : "Example response for request 'card-3d-secure-direct'",
-            "value" : {
-               "additionalData" : {
-                  "cvcResult" : "1 Matches",
-                  "authCode" : "054817",
-                  "avsResult" : "4 AVS not supported for this card type",
-                  "avsResultRaw" : "4",
-                  "cvcResultRaw" : "M",
-                  "refusalReasonRaw" : "AUTHORISED",
-                  "acquirerCode" : "TestPmmAcquirer",
-                  "acquirerReference" : "8PQMP9VIO26"
-               },
-               "pspReference" : "993617895217578K",
-               "resultCode" : "Authorised",
-               "merchantReference" : "string"
-            }
-         },
-         "post-payments-card-3d-secure-securedfields" : {
-            "summary" : "Make a payment with 3D Secure 2 native authentication",
-            "value" : {
-               "amount" : {
-                  "currency" : "USD",
-                  "value" : 1000
-               },
-               "reference" : "Your order number",
-               "paymentMethod" : {
-                  "type" : "scheme",
-                  "encryptedCardNumber" : "test_4212345678901237",
-                  "encryptedExpiryMonth" : "test_03",
-                  "encryptedExpiryYear" : "test_2030",
-                  "encryptedSecurityCode" : "test_737",
-                  "holderName" : "John Smith"
-               },
-               "browserInfo" : {
-                  "userAgent" : "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9) Gecko/2008052912 Firefox/3.0",
-                  "acceptHeader" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-               },
-               "returnUrl" : "https://your-company.com/...",
-               "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
-            }
-         },
-         "post-payments-card-3d-secure-securedfields-200" : {
-            "summary" : "Example response for request 'card-3d-secure-securedfields'",
-            "value" : {
-               "additionalData" : {
-                  "cvcResult" : "1 Matches",
-                  "authCode" : "046773",
-                  "avsResult" : "4 AVS not supported for this card type",
-                  "avsResultRaw" : "4",
-                  "cvcResultRaw" : "M",
-                  "refusalReasonRaw" : "AUTHORISED",
-                  "acquirerCode" : "TestPmmAcquirer",
-                  "acquirerReference" : "8PQMP9VCAVH"
-               },
-               "pspReference" : "993617895196572H",
-               "resultCode" : "Authorised",
-               "merchantReference" : "string"
             }
          },
          "post-payments-card-direct" : {
@@ -16256,7 +16353,7 @@
                   "encryptedExpiryYear" : "test_2030",
                   "encryptedSecurityCode" : "test_737"
                },
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "storePaymentMethod" : true,
                "shopperInteraction" : "Ecommerce",
                "recurringProcessingModel" : "CardOnFile",
@@ -16276,7 +16373,7 @@
                   "avsResultRaw" : "4",
                   "cvcResultRaw" : "M",
                   "refusalReasonRaw" : "AUTHORISED",
-                  "recurring.shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+                  "recurring.shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                   "acquirerCode" : "TestPmmAcquirer",
                   "acquirerReference" : "8PQMP9VC172"
                },
@@ -16301,7 +16398,7 @@
                   "holderName" : "John Smith",
                   "cvc" : "737"
                },
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "shopperInteraction" : "Ecommerce",
                "recurringProcessingModel" : "CardOnFile",
                "storePaymentMethod" : true,
@@ -16321,7 +16418,7 @@
                   "avsResultRaw" : "4",
                   "cvcResultRaw" : "M",
                   "refusalReasonRaw" : "AUTHORISED",
-                  "recurring.shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+                  "recurring.shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                   "acquirerCode" : "TestPmmAcquirer",
                   "acquirerReference" : "8PQMP9VCKO0"
                },
@@ -16378,7 +16475,7 @@
                },
                "reference" : "Your order number",
                "paymentMethod" : {
-                  "type" : "paywithgoogle",
+                  "type" : "googlepay",
                   "googlePayToken" : "==Payload as retrieved from Google Pay response=="
                },
                "returnUrl" : "https://your-company.com/...",
@@ -16435,7 +16532,7 @@
                },
                "amount" : {
                   "currency" : "SEK",
-                  "value" : "1000"
+                  "value" : 1000
                },
                "shopperLocale" : "en_US",
                "countryCode" : "SE",
@@ -16446,7 +16543,7 @@
                   "gender" : "UNKNOWN",
                   "lastName" : "Approved"
                },
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "billingAddress" : {
                   "city" : "Ankeborg",
                   "country" : "SE",
@@ -16464,24 +16561,24 @@
                "returnUrl" : "https://www.your-company.com/...",
                "lineItems" : [
                   {
-                     "quantity" : "1",
-                     "amountExcludingTax" : "331",
-                     "taxPercentage" : "2100",
+                     "quantity" : 1,
+                     "amountExcludingTax" : 331,
+                     "taxPercentage" : 2100,
                      "description" : "Shoes",
                      "id" : "Item #1",
-                     "taxAmount" : "69",
-                     "amountIncludingTax" : "400",
+                     "taxAmount" : 69,
+                     "amountIncludingTax" : 400,
                      "productUrl" : "URL_TO_PURCHASED_ITEM",
                      "imageUrl" : "URL_TO_PICTURE_OF_PURCHASED_ITEM"
                   },
                   {
-                     "quantity" : "2",
-                     "amountExcludingTax" : "248",
-                     "taxPercentage" : "2100",
+                     "quantity" : 2,
+                     "amountExcludingTax" : 248,
+                     "taxPercentage" : 2100,
                      "description" : "Socks",
                      "id" : "Item #2",
-                     "taxAmount" : "52",
-                     "amountIncludingTax" : "300",
+                     "taxAmount" : 52,
+                     "amountIncludingTax" : 300,
                      "productUrl" : "URL_TO_PURCHASED_ITEM",
                      "imageUrl" : "URL_TO_PICTURE_OF_PURCHASED_ITEM"
                   }
@@ -16499,7 +16596,7 @@
                "paymentMethod" : {
                   "type" : "scheme",
                   "storedPaymentMethodId" : "8416038790273850",
-                  "cardDetails.cvc" : "737"
+                  "cvc" : "737"
                },
                "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_6738oneoff",
                "returnUrl" : "https://your-company.com/...",
@@ -16535,6 +16632,7 @@
                },
                "reference" : "Your order number",
                "paymentMethod" : {
+                  "type" : "scheme",
                   "storedPaymentMethodId" : "8316038796685850"
                },
                "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3subscription",
@@ -16643,7 +16741,7 @@
                   "holderName" : "John Smith",
                   "cvc" : "737"
                },
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "storePaymentMethod" : true,
                "shopperInteraction" : "Ecommerce",
                "recurringProcessingModel" : "Subscription",
@@ -16663,7 +16761,7 @@
                   "avsResultRaw" : "4",
                   "cvcResultRaw" : "M",
                   "refusalReasonRaw" : "AUTHORISED",
-                  "recurring.shopperReference" : "YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j",
+                  "recurring.shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                   "acquirerCode" : "TestPmmAcquirer",
                   "acquirerReference" : "8PQMP9VD896"
                },

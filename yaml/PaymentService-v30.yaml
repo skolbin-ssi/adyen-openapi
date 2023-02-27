@@ -5,54 +5,27 @@ info:
   version: '30'
   x-publicVersion: true
   title: Adyen Payment API
-  description: 'A set of API endpoints that allow you to initiate, settle, and modify
-    payments on the Adyen payments platform. You can use the API to accept card payments
-    (including One-Click and 3D Secure), bank transfers, ewallets, and many other
-    payment methods.
-
-
-    To learn more about the API, visit [Classic integration](https://docs.adyen.com/classic-integration).
-
-
-    ## Authentication
-
-    To connect to the Payments API, you must use your basic authentication credentials.
-    For this, create your web service user, as described in [How to get the WS user
-    password](https://docs.adyen.com/development-resources/api-credentials). Then
-    use its credentials to authenticate your request, for example:
-
-
-    ```
-
-    curl
-
-    -U "ws@Company.YourCompany":"YourWsPassword" \
-
-    -H "Content-Type: application/json" \
-
-    ...
-
-    ```
-
-    Note that when going live, you need to generate new web service user credentials
-    to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).
-
-
-    ## Versioning
-
-    Payments API supports [versioning](https://docs.adyen.com/development-resources/versioning)
-    using a version suffix in the endpoint URL. This suffix has the following format:
-    "vXX", where XX is the version number.
-
-
-    For example:
-
-    ```
-
-    https://pal-test.adyen.com/pal/servlet/Payment/v30/authorise
-
-    ```'
-  x-timestamp: '2022-08-22T16:23:37Z'
+  description: "A set of API endpoints that allow you to initiate, settle, and modify\
+    \ payments on the Adyen payments platform. You can use the API to accept card\
+    \ payments (including One-Click and 3D Secure), bank transfers, ewallets, and\
+    \ many other payment methods.\n\nTo learn more about the API, visit [Classic integration](https://docs.adyen.com/classic-integration).\n\
+    \n## Authentication\nYou need an [API credential](https://docs.adyen.com/development-resources/api-credentials)\
+    \ to authenticate to the API.\n\nIf using an API key, add an `X-API-Key` header\
+    \ with the API key as the value, for example:\n\n ```\ncurl\n-H \"Content-Type:\
+    \ application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n\nAlternatively,\
+    \ you can use the username and password to connect to the API using basic authentication,\
+    \ for example:\n\n```\ncurl\n-U \"ws@Company.YOUR_COMPANY_ACCOUNT\":\"YOUR_BASIC_AUTHENTICATION_PASSWORD\"\
+    \ \\\n-H \"Content-Type: application/json\" \\\n...\n```\n\n## Versioning\nPayments\
+    \ API supports [versioning](https://docs.adyen.com/development-resources/versioning)\
+    \ using a version suffix in the endpoint URL. This suffix has the following format:\
+    \ \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://pal-test.adyen.com/pal/servlet/Payment/v30/authorise\n\
+    ```\n\n## Going live\n\nTo authenticate to the live endpoints, you need an [API\
+    \ credential](https://docs.adyen.com/development-resources/api-credentials) from\
+    \ your live Customer Area.\n\nThe live endpoint URLs contain a prefix which is\
+    \ unique to your company account:\n```\n\nhttps://{PREFIX}-pal-live.adyenpayments.com/pal/servlet/Payment/v30/authorise\n\
+    ```\n\nGet your `{PREFIX}` from your live Customer Area under **Developers** >\
+    \ **API URLs** > **Prefix**."
+  x-timestamp: '2023-02-20T18:23:08Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
@@ -91,6 +64,7 @@ paths:
       operationId: post-adjustAuthorisation
       x-groupName: Modifications
       x-sortIndex: 6
+      x-methodName: adjustAuthorisation
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -168,6 +142,7 @@ paths:
       operationId: post-authorise
       x-groupName: General
       x-sortIndex: 1
+      x-methodName: authorise
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -252,6 +227,7 @@ paths:
       operationId: post-authorise3d
       x-groupName: General
       x-sortIndex: 2
+      x-methodName: authorise3d
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -329,6 +305,7 @@ paths:
       operationId: post-cancel
       x-groupName: Modifications
       x-sortIndex: 2
+      x-methodName: cancel
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -395,7 +372,7 @@ paths:
         \ it if it has already been captured. This is useful when it is not certain\
         \ if the payment has been captured or not (for example, when using auto-capture).\n\
         \nDo not use this endpoint for payments that involve:\n * [Multiple partial\
-        \ captures](https://docs.adyen.com/online-payments/capture).\n * [Split data](https://docs.adyen.com/platforms/processing-payments#providing-split-information)\
+        \ captures](https://docs.adyen.com/online-payments/capture).\n * [Split data](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information)\
         \ either at time of payment or capture for Adyen for Platforms.\n\n Instead,\
         \ check if the payment has been captured and make a corresponding [`/refund`](https://docs.adyen.com/api-explorer/#/Payment/refund)\
         \ or [`/cancel`](https://docs.adyen.com/api-explorer/#/Payment/cancel) call.\n\
@@ -407,6 +384,7 @@ paths:
       operationId: post-cancelOrRefund
       x-groupName: Modifications
       x-sortIndex: 4
+      x-methodName: cancelOrRefund
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -497,6 +475,7 @@ paths:
       operationId: post-capture
       x-groupName: Modifications
       x-sortIndex: 1
+      x-methodName: capture
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -586,6 +565,7 @@ paths:
       operationId: post-refund
       x-groupName: Modifications
       x-sortIndex: 3
+      x-methodName: refund
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -663,6 +643,7 @@ paths:
       operationId: post-technicalCancel
       x-groupName: Modifications
       x-sortIndex: 5
+      x-methodName: technicalCancel
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -743,6 +724,7 @@ paths:
       operationId: post-voidPendingRefund
       x-groupName: Modifications
       x-sortIndex: 7
+      x-methodName: voidPendingRefund
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -870,6 +852,7 @@ components:
             \ 1, we will apply version 1.0.2.\n* If you prefer 2.1.0 or 2.2.0 but\
             \ the BIN is not enrolled, you will receive an error.\n\n"
           type: string
+      type: object
     AdditionalDataAirline:
       properties:
         airline.agency_invoice_number:
@@ -1151,6 +1134,7 @@ components:
           type: string
       required:
       - airline.passenger_name
+      type: object
     AdditionalDataCarRental:
       properties:
         carRental.checkOutDate:
@@ -1314,6 +1298,7 @@ components:
 
             * maxLength: 1'
           type: string
+      type: object
     AdditionalDataCommon:
       properties:
         RequestedTestErrorResponseCode:
@@ -1332,6 +1317,13 @@ components:
             \ as the final result for the idempotency key. Subsequent messages with\
             \ the same idempotency key not be processed beyond returning the stored\
             \ response."
+          type: string
+        allowPartialAuth:
+          description: "Set to true to authorise a part of the requested amount in\
+            \ case the cardholder does not have enough funds on their account. \n\
+            If a payment was partially authorised, the response includes resultCode:\
+            \ PartiallyAuthorised and the authorised amount in additionalData.authorisedAmountValue.\n\
+            To enable this functionality, contact our Support Team."
           type: string
         authorisationType:
           description: "Flags a card payment request for either pre-authorisation\
@@ -1372,6 +1364,10 @@ components:
           enum:
           - NoShow
           - DelayedCharge
+          type: string
+        manualCapture:
+          description: Set to **true** to require [manual capture](https://docs.adyen.com/online-payments/capture)
+            for the transaction.
           type: string
         networkTxReference:
           description: 'Allows you to link the transaction to the original or previous
@@ -1474,6 +1470,7 @@ components:
 
             * Fixed length: 11 or 14 characters.'
           type: string
+      type: object
     AdditionalDataLevel23:
       properties:
         enhancedSchemeData.customerReference:
@@ -1634,6 +1631,7 @@ components:
 
             > Required for Level 2 and Level 3 data.'
           type: string
+      type: object
     AdditionalDataLodging:
       properties:
         lodging.checkInDate:
@@ -1757,12 +1755,14 @@ components:
 
             * maxLength: 1'
           type: string
+      type: object
     AdditionalDataModifications:
       properties:
         installmentPaymentData.selectedInstallmentOption:
           description: This is the installment option selected by the shopper. It
             is required only if specified by the user.
           type: string
+      type: object
     AdditionalDataOpenInvoice:
       properties:
         openinvoicedata.merchantData:
@@ -1854,6 +1854,7 @@ components:
         openinvoicedataLine[itemNr].trackingUri:
           description: URI where the customer can track their shipment.
           type: string
+      type: object
     AdditionalDataOpi:
       properties:
         opi.includeTransToken:
@@ -1865,6 +1866,7 @@ components:
             You can store this Oracle Payment Interface token in your Oracle Opera
             database. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).'
           type: string
+      type: object
     AdditionalDataRatepay:
       properties:
         ratepay.installmentAmount:
@@ -1893,6 +1895,7 @@ components:
           description: Identification name or number for the invoice, defined by the
             merchant.
           type: string
+      type: object
     AdditionalDataRetry:
       properties:
         retry.chainAttemptNumber:
@@ -1926,6 +1929,7 @@ components:
             and `retry.skipRetry` values, we also recommend you provide the `merchantOrderReference`
             to facilitate linking payment attempts together.'
           type: string
+      type: object
     AdditionalDataRisk:
       properties:
         riskdata.[customFieldName]:
@@ -2004,6 +2008,7 @@ components:
             checks for the payment request are skipped and the transaction will not
             get a risk score.
           type: string
+      type: object
     AdditionalDataRiskStandalone:
       properties:
         PayPal.CountryCode:
@@ -2063,6 +2068,7 @@ components:
           description: 'Required for PayPal payments only. The only supported value
             is: **paypal**.'
           type: string
+      type: object
     AdditionalDataSubMerchant:
       properties:
         subMerchant.numberOfSubSellers:
@@ -2140,6 +2146,7 @@ components:
 
             * Fixed length: 11 digits for the CPF or 14 digits for the CNPJ'
           type: string
+      type: object
     AdditionalDataTemporaryServices:
       properties:
         enhancedSchemeData.customerReference:
@@ -2197,6 +2204,7 @@ components:
 
             * maxLength: 12'
           type: string
+      type: object
     AdditionalDataWallets:
       properties:
         androidpay.token:
@@ -2218,6 +2226,7 @@ components:
         visacheckout.callId:
           description: The Visa Checkout Call ID retrieved from the SDK.
           type: string
+      type: object
     Address:
       properties:
         city:
@@ -2258,6 +2267,7 @@ components:
       - city
       - postalCode
       - country
+      type: object
     AdjustAuthorisationRequest:
       properties:
         additionalData:
@@ -2331,6 +2341,7 @@ components:
       - merchantAccount
       - modificationAmount
       - originalReference
+      type: object
     Amount:
       properties:
         currency:
@@ -2345,6 +2356,7 @@ components:
       required:
       - value
       - currency
+      type: object
     BankAccount:
       properties:
         bankAccountNumber:
@@ -2393,21 +2405,19 @@ components:
           x-addedInVersion: '18'
           description: The bank account holder's tax ID.
           type: string
+      type: object
     BrowserInfo:
       properties:
         acceptHeader:
           description: The accept header value of the shopper's browser.
-          maxLength: 50
-          minLength: 10
           type: string
         userAgent:
           description: The user agent value of the shopper's browser.
-          maxLength: 50
-          minLength: 10
           type: string
       required:
       - userAgent
       - acceptHeader
+      type: object
     CancelOrRefundRequest:
       properties:
         additionalData:
@@ -2475,6 +2485,7 @@ components:
       required:
       - merchantAccount
       - originalReference
+      type: object
     CancelRequest:
       properties:
         additionalData:
@@ -2542,6 +2553,7 @@ components:
       required:
       - merchantAccount
       - originalReference
+      type: object
     CaptureRequest:
       properties:
         additionalData:
@@ -2615,6 +2627,7 @@ components:
       - merchantAccount
       - modificationAmount
       - originalReference
+      type: object
     Card:
       properties:
         cvc:
@@ -2679,10 +2692,9 @@ components:
           minLength: 4
           type: string
       required:
-      - number
-      - expiryMonth
       - expiryYear
       - holderName
+      type: object
     ForexQuote:
       properties:
         account:
@@ -2726,6 +2738,7 @@ components:
       required:
       - validTill
       - basePoints
+      type: object
     FraudCheckResult:
       properties:
         accountScore:
@@ -2743,6 +2756,7 @@ components:
       - checkId
       - name
       - accountScore
+      type: object
     FraudResult:
       properties:
         accountScore:
@@ -2756,6 +2770,7 @@ components:
           type: array
       required:
       - accountScore
+      type: object
     Installments:
       properties:
         value:
@@ -2770,6 +2785,7 @@ components:
           type: integer
       required:
       - value
+      type: object
     Mandate:
       properties:
         amount:
@@ -2832,6 +2848,7 @@ components:
       - frequency
       - amount
       - endsAt
+      type: object
     ModificationResult:
       properties:
         additionalData:
@@ -2861,6 +2878,7 @@ components:
       required:
       - response
       - pspReference
+      type: object
     Name:
       properties:
         firstName:
@@ -2872,6 +2890,7 @@ components:
       required:
       - firstName
       - lastName
+      type: object
     PaymentRequest:
       properties:
         additionalAmount:
@@ -2954,7 +2973,7 @@ components:
 
 
             Format [ISO-8601](https://www.w3.org/TR/NOTE-datetime): YYYY-MM-DD'
-          format: date-time
+          format: date
           type: string
         dccQuote:
           description: The forex quote as returned in the response of the forex service.
@@ -3181,7 +3200,7 @@ components:
         store:
           x-addedInVersion: '23'
           description: The ecommerce or point-of-sale store that is processing the
-            payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments)
+            payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments)
             for Adyen for Platforms.
           maxLength: 16
           minLength: 1
@@ -3201,6 +3220,7 @@ components:
       - merchantAccount
       - reference
       - amount
+      type: object
     PaymentRequest3d:
       properties:
         additionalAmount:
@@ -3272,7 +3292,7 @@ components:
 
 
             Format [ISO-8601](https://www.w3.org/TR/NOTE-datetime): YYYY-MM-DD'
-          format: date-time
+          format: date
           type: string
         dccQuote:
           description: The forex quote as returned in the response of the forex service.
@@ -3487,7 +3507,7 @@ components:
         store:
           x-addedInVersion: '23'
           description: The ecommerce or point-of-sale store that is processing the
-            payment. Used in [partner arrangement integrations](https://docs.adyen.com/platforms/platforms-for-partners#route-payments)
+            payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments)
             for Adyen for Platforms.
           maxLength: 16
           minLength: 1
@@ -3507,6 +3527,7 @@ components:
       - merchantAccount
       - paResponse
       - md
+      type: object
     PaymentResult:
       properties:
         additionalData:
@@ -3614,6 +3635,7 @@ components:
             \ field. This is a final state."
           enum:
           - AuthenticationFinished
+          - AuthenticationNotRequired
           - Authorised
           - Cancelled
           - ChallengeShopper
@@ -3626,6 +3648,7 @@ components:
           - Refused
           - Success
           type: string
+      type: object
     Recurring:
       properties:
         contract:
@@ -3652,6 +3675,7 @@ components:
           - VISATOKENSERVICE
           - MCTOKENSERVICE
           type: string
+      type: object
     RefundRequest:
       properties:
         additionalData:
@@ -3725,6 +3749,7 @@ components:
       - merchantAccount
       - modificationAmount
       - originalReference
+      type: object
     ResponseAdditionalData3DSecure:
       properties:
         cardHolderInfo:
@@ -3746,6 +3771,7 @@ components:
         threeds2.cardEnrolled:
           description: Indicates whether a card is enrolled for 3D Secure 2.
           type: boolean
+      type: object
     ResponseAdditionalDataBillingAddress:
       properties:
         billingAddress.city:
@@ -3777,6 +3803,7 @@ components:
         billingAddress.street:
           description: The billing address street passed in the payment request.
           type: string
+      type: object
     ResponseAdditionalDataCard:
       properties:
         cardBin:
@@ -3831,6 +3858,7 @@ components:
 
             Example: 52123423'
           type: string
+      type: object
     ResponseAdditionalDataCommon:
       properties:
         acquirerAccountCode:
@@ -4073,36 +4101,12 @@ components:
             > Contact Support Team to enable this field.'
           type: string
         merchantAdviceCode:
-          description: 'A code and message that issuers send to provide more details
-            about the payment. This field is especially useful when implementing a
-            retry logic for declined payments.
+          description: 'The Merchant Advice Code (MAC) can be returned by Mastercard
+            issuers for refused payments. If present, the MAC contains information
+            about why the payment failed, and whether it can be retried.
 
 
-            Possible values:
-
-
-            * **01: New account information available**
-
-
-            * **02: Cannot approve at this time, try again later**
-
-
-            * **03: Do not try again**
-
-
-            * **04: Token requirements not fulfilled for this token type**
-
-
-            * **21: Payment Cancellation** (only for Mastercard)
-
-
-            '
-          enum:
-          - '01: New account information available'
-          - '02: Cannot approve at this time, try again later'
-          - '03: Do not try again'
-          - '04: Token requirements not fulfilled for this token type'
-          - '21: Payment Cancellation'
+            For more information see [Mastercard Merchant Advice Codes](https://docs.adyen.com/development-resources/raw-acquirer-responses#mastercard-merchant-advice-codes).'
           type: string
         merchantReference:
           description: The reference provided for the transaction.
@@ -4283,6 +4287,7 @@ components:
 
             Example: ODgxNDc2MDg2MDExODk5MAAAAAA='
           type: string
+      type: object
     ResponseAdditionalDataInstallments:
       properties:
         installmentPaymentData.installmentType:
@@ -4334,6 +4339,7 @@ components:
 
             > Only relevant for card payments in countries that support installments.'
           type: string
+      type: object
     ResponseAdditionalDataNetworkTokens:
       properties:
         networkToken.available:
@@ -4347,6 +4353,7 @@ components:
         networkToken.tokenSummary:
           description: The last four digits of a network token.
           type: string
+      type: object
     ResponseAdditionalDataOpi:
       properties:
         opi.transToken:
@@ -4356,6 +4363,7 @@ components:
             tokenized ecommerce transactions. For more information and required settings,
             see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).'
           type: string
+      type: object
     ResponseAdditionalDataSepa:
       properties:
         sepadirectdebit.dateOfSignature:
@@ -4384,6 +4392,7 @@ components:
 
             Example: OOFF'
           type: string
+      type: object
     ServiceError:
       properties:
         errorCode:
@@ -4402,6 +4411,7 @@ components:
           description: The HTTP response status.
           format: int32
           type: integer
+      type: object
     TechnicalCancelRequest:
       properties:
         additionalData:
@@ -4463,6 +4473,7 @@ components:
       required:
       - merchantAccount
       - originalMerchantReference
+      type: object
     ThreeDSecureData:
       properties:
         authenticationResponse:
@@ -4510,6 +4521,7 @@ components:
             20 bytes in a decoded form).
           format: byte
           type: string
+      type: object
     VoidPendingRefundRequest:
       properties:
         additionalData:
@@ -4582,6 +4594,7 @@ components:
           type: string
       required:
       - merchantAccount
+      type: object
   securitySchemes:
     ApiKeyAuth:
       in: header
@@ -4668,7 +4681,7 @@ components:
         reference: YOUR_REFERENCE
         shopperEmail: s.hopper@test.com
         shopperIP: 61.294.12.12
-        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID
         selectedRecurringDetailReference: LATEST
         recurring:
           contract: RECURRING
@@ -4685,7 +4698,7 @@ components:
         reference: YOUR_REFERENCE
         shopperEmail: s.hopper@test.com
         shopperIP: 61.294.12.12
-        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID
         selectedRecurringDetailReference: LATEST
         recurring:
           contract: ONECLICK
@@ -4706,7 +4719,7 @@ components:
         reference: YOUR_REFERENCE
         shopperEmail: s.hopper@test.com
         shopperIP: 61.294.12.12
-        shopperReference: YOUR_UNIQUE_SHOPPER_ID_IOfW3k9G2PvXFu2j
+        shopperReference: YOUR_UNIQUE_SHOPPER_ID
         recurring:
           contract: RECURRING,ONECLICK
         merchantAccount: YOUR_MERCHANT_ACCOUNT
