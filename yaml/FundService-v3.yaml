@@ -24,7 +24,7 @@ info:
     \ using a version suffix in the endpoint URL. This suffix has the following format:\
     \ \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://cal-test.adyen.com/cal/services/Fund/v3/accountHolderBalance\n\
     ```"
-  x-timestamp: '2022-09-27T19:26:19Z'
+  x-timestamp: '2023-04-11T21:25:34Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
@@ -47,6 +47,7 @@ paths:
       operationId: post-accountHolderBalance
       x-groupName: General
       x-sortIndex: 1
+      x-methodName: accountHolderBalance
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -116,6 +117,7 @@ paths:
       operationId: post-accountHolderTransactionList
       x-groupName: General
       x-sortIndex: 2
+      x-methodName: accountHolderTransactionList
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -187,6 +189,7 @@ paths:
       operationId: post-debitAccountHolder
       x-groupName: General
       x-sortIndex: 8
+      x-methodName: debitAccountHolder
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -255,6 +258,7 @@ paths:
       operationId: post-payoutAccountHolder
       x-groupName: General
       x-sortIndex: 3
+      x-methodName: payoutAccountHolder
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -320,6 +324,7 @@ paths:
       operationId: post-refundFundsTransfer
       x-groupName: General
       x-sortIndex: 5
+      x-methodName: refundFundsTransfer
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -389,6 +394,7 @@ paths:
       operationId: post-refundNotPaidOutTransfers
       x-groupName: General
       x-sortIndex: 7
+      x-methodName: refundNotPaidOutTransfers
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -459,6 +465,7 @@ paths:
       operationId: post-setupBeneficiary
       x-groupName: General
       x-sortIndex: 6
+      x-methodName: setupBeneficiary
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -526,6 +533,7 @@ paths:
       operationId: post-transferFunds
       x-groupName: General
       x-sortIndex: 4
+      x-methodName: transferFunds
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
@@ -591,6 +599,11 @@ components:
         detailBalance:
           description: Details of the balance held by the account.
           $ref: '#/components/schemas/DetailBalance'
+      type: object
+    AccountDetailBalanceWrapper:
+      properties:
+        AccountDetailBalance:
+          $ref: '#/components/schemas/AccountDetailBalance'
     AccountHolderBalanceRequest:
       properties:
         accountHolderCode:
@@ -598,12 +611,13 @@ components:
           type: string
       required:
       - accountHolderCode
+      type: object
     AccountHolderBalanceResponse:
       properties:
         balancePerAccount:
           description: A list of each account and their balances.
           items:
-            $ref: '#/components/schemas/AccountDetailBalance'
+            $ref: '#/components/schemas/AccountDetailBalanceWrapper'
           type: array
         pspReference:
           description: The reference of a request. Can be used to uniquely identify
@@ -626,6 +640,7 @@ components:
         totalBalance:
           description: The total balance of the account holder.
           $ref: '#/components/schemas/DetailBalance'
+      type: object
     AccountHolderTransactionListRequest:
       properties:
         accountHolderCode:
@@ -637,7 +652,7 @@ components:
             blank, the last fifty (50) transactions for all accounts of the account
             holder will be included.
           items:
-            $ref: '#/components/schemas/TransactionListForAccount'
+            $ref: '#/components/schemas/TransactionListForAccountWrapper'
           type: array
         transactionStatuses:
           description: 'A list of statuses to include in the transaction list. If
@@ -691,7 +706,7 @@ components:
             enum:
             - BalanceNotPaidOutTransfer
             - BalancePlatformSweep
-            - BalancePlatfromSweepReturned
+            - BalancePlatformSweepReturned
             - Chargeback
             - ChargebackCorrection
             - ChargebackCorrectionReceived
@@ -738,12 +753,13 @@ components:
           type: array
       required:
       - accountHolderCode
+      type: object
     AccountHolderTransactionListResponse:
       properties:
         accountTransactionLists:
           description: A list of the transactions.
           items:
-            $ref: '#/components/schemas/AccountTransactionList'
+            $ref: '#/components/schemas/AccountTransactionListWrapper'
           type: array
         pspReference:
           description: The reference of a request. Can be used to uniquely identify
@@ -763,6 +779,7 @@ components:
             * **false**: The processing of the request is immediately attempted; it
             may result in an error if the providing service is unavailable.'
           type: boolean
+      type: object
     AccountTransactionList:
       properties:
         accountCode:
@@ -774,8 +791,13 @@ components:
         transactions:
           description: The list of transactions.
           items:
-            $ref: '#/components/schemas/Transaction'
+            $ref: '#/components/schemas/TransactionWrapper'
           type: array
+      type: object
+    AccountTransactionListWrapper:
+      properties:
+        AccountTransactionList:
+          $ref: '#/components/schemas/AccountTransactionList'
     Amount:
       properties:
         currency:
@@ -790,6 +812,11 @@ components:
       required:
       - value
       - currency
+      type: object
+    AmountWrapper:
+      properties:
+        Amount:
+          $ref: '#/components/schemas/Amount'
     BankAccountDetail:
       properties:
         accountNumber:
@@ -993,6 +1020,7 @@ components:
             >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
             for details on field requirements.'
           type: string
+      type: object
     DebitAccountHolderRequest:
       properties:
         accountHolderCode:
@@ -1028,6 +1056,7 @@ components:
       - amount
       - splits
       - merchantAccount
+      type: object
     DebitAccountHolderResponse:
       properties:
         accountHolderCode:
@@ -1061,18 +1090,20 @@ components:
             * **false**: The processing of the request is immediately attempted; it
             may result in an error if the providing service is unavailable.'
           type: boolean
+      type: object
     DetailBalance:
       properties:
         balance:
           description: The list of balances held by the account.
           items:
-            $ref: '#/components/schemas/Amount'
+            $ref: '#/components/schemas/AmountWrapper'
           type: array
         pendingBalance:
           description: The list of pending balances held by the account.
           items:
-            $ref: '#/components/schemas/Amount'
+            $ref: '#/components/schemas/AmountWrapper'
           type: array
+      type: object
     PayoutAccountHolderRequest:
       properties:
         accountCode:
@@ -1116,6 +1147,7 @@ components:
       required:
       - accountHolderCode
       - accountCode
+      type: object
     PayoutAccountHolderResponse:
       properties:
         bankAccountUUID:
@@ -1144,6 +1176,7 @@ components:
             * **false**: The processing of the request is immediately attempted; it
             may result in an error if the providing service is unavailable.'
           type: boolean
+      type: object
     RefundFundsTransferRequest:
       properties:
         amount:
@@ -1159,6 +1192,7 @@ components:
       required:
       - originalReference
       - amount
+      type: object
     RefundFundsTransferResponse:
       properties:
         merchantReference:
@@ -1189,6 +1223,7 @@ components:
             * **false**: The processing of the request is immediately attempted; it
             may result in an error if the providing service is unavailable.'
           type: boolean
+      type: object
     RefundNotPaidOutTransfersRequest:
       properties:
         accountCode:
@@ -1201,6 +1236,7 @@ components:
       required:
       - accountHolderCode
       - accountCode
+      type: object
     RefundNotPaidOutTransfersResponse:
       properties:
         pspReference:
@@ -1221,6 +1257,7 @@ components:
             * **false**: The processing of the request is immediately attempted; it
             may result in an error if the providing service is unavailable.'
           type: boolean
+      type: object
     ServiceError:
       properties:
         errorCode:
@@ -1239,6 +1276,7 @@ components:
           description: The HTTP response status.
           format: int32
           type: integer
+      type: object
     SetupBeneficiaryRequest:
       properties:
         destinationAccountCode:
@@ -1254,6 +1292,7 @@ components:
       required:
       - sourceAccountCode
       - destinationAccountCode
+      type: object
     SetupBeneficiaryResponse:
       properties:
         pspReference:
@@ -1274,6 +1313,7 @@ components:
             * **false**: The processing of the request is immediately attempted; it
             may result in an error if the providing service is unavailable.'
           type: boolean
+      type: object
     Split:
       properties:
         account:
@@ -1305,7 +1345,7 @@ components:
           description: 'The type of split.
 
             Possible values: **Default**, **PaymentFee**, **VAT**, **Commission**,
-            **MarketPlace**, **BalanceAccount**, **Remainder**.'
+            **MarketPlace**, **BalanceAccount**, **Remainder**, **Surcharge**, **Tip**.'
           enum:
           - BalanceAccount
           - Commission
@@ -1313,12 +1353,15 @@ components:
           - MarketPlace
           - PaymentFee
           - Remainder
+          - Surcharge
+          - Tip
           - VAT
           - Verification
           type: string
       required:
       - amount
       - type
+      type: object
     SplitAmount:
       properties:
         currency:
@@ -1336,6 +1379,7 @@ components:
           type: integer
       required:
       - value
+      type: object
     Transaction:
       properties:
         amount:
@@ -1396,7 +1440,7 @@ components:
           enum:
           - BalanceNotPaidOutTransfer
           - BalancePlatformSweep
-          - BalancePlatfromSweepReturned
+          - BalancePlatformSweepReturned
           - Chargeback
           - ChargebackCorrection
           - ChargebackCorrectionReceived
@@ -1443,6 +1487,7 @@ components:
         transferCode:
           description: The transfer code of the transaction.
           type: string
+      type: object
     TransactionListForAccount:
       properties:
         accountCode:
@@ -1458,6 +1503,15 @@ components:
       required:
       - accountCode
       - page
+      type: object
+    TransactionListForAccountWrapper:
+      properties:
+        TransactionListForAccount:
+          $ref: '#/components/schemas/TransactionListForAccount'
+    TransactionWrapper:
+      properties:
+        Transaction:
+          $ref: '#/components/schemas/Transaction'
     TransferFundsRequest:
       properties:
         amount:
@@ -1490,6 +1544,7 @@ components:
       - destinationAccountCode
       - transferCode
       - amount
+      type: object
     TransferFundsResponse:
       properties:
         merchantReference:
@@ -1515,6 +1570,7 @@ components:
             * **false**: The processing of the request is immediately attempted; it
             may result in an error if the providing service is unavailable.'
           type: boolean
+      type: object
   securitySchemes:
     ApiKeyAuth:
       in: header

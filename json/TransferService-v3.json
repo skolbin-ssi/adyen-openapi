@@ -10,7 +10,7 @@
       "x-publicVersion" : true,
       "title" : "Transfers API",
       "description" : "The Transfers API provides endpoints that you can use to get information about all your transactions, move funds within your balance platform or send funds from your balance platform to a [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments).\n\n## Authentication\nYour Adyen contact will provide your API credential and an API key. To connect to the API, add an `X-API-Key` header with the API key as the value, for example:\n\n ```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n\nAlternatively, you can use the username and password to connect to the API using basic authentication. For example:\n\n```\ncurl\n-H \"Content-Type: application/json\" \\\n-U \"ws@BalancePlatform.YOUR_BALANCE_PLATFORM\":\"YOUR_WS_PASSWORD\" \\\n...\n```\n## Roles and permissions\nTo use the Transfers API, you need an additional role for your API credential. Transfers must also be enabled for the source balance account. Your Adyen contact will set up the roles and permissions for you.\n## Versioning\nThe Transfers API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://balanceplatform-api-test.adyen.com/btl/v3/transfers\n```\n## Going live\nWhen going live, your Adyen contact will provide your API credential for the live environment. You can then use the username and password to send requests to `https://balanceplatform-api-live.adyen.com/btl/v3`.\n\n",
-      "x-timestamp" : "2023-02-20T18:21:55Z",
+      "x-timestamp" : "2023-04-26T16:27:03Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
@@ -456,7 +456,7 @@
                   "type" : "string"
                },
                "country" : {
-                  "description" : "The two-character ISO 3166-1 alpha-2 country code. For example, **US**.\n>If you don't know the country or are not collecting the country from the shopper, provide `country` as `ZZ`.",
+                  "description" : "The two-character ISO 3166-1 alpha-2 country code. For example, **US**, **NL**, or **GB**.",
                   "type" : "string"
                },
                "line1" : {
@@ -606,6 +606,15 @@
                   "description" : "The 5- to 12-digit bank account number, without separators or whitespace.",
                   "maxLength" : 12,
                   "minLength" : 5,
+                  "type" : "string"
+               },
+               "accountType" : {
+                  "default" : "checking",
+                  "description" : "The bank account type.\n\nPossible values: **checking** or **savings**. Defaults to **checking**.",
+                  "enum" : [
+                     "checking",
+                     "savings"
+                  ],
                   "type" : "string"
                },
                "institutionNumber" : {
@@ -989,8 +998,13 @@
                   "description" : "Address of the bank account owner.",
                   "$ref" : "#/components/schemas/Address-2"
                },
+               "dateOfBirth" : {
+                  "description" : "The date of birth of the individual in [ISO-8601](https://www.w3.org/TR/NOTE-datetime) format. For example, **YYYY-MM-DD**.\n\nAllowed only when `type` is **individual**.",
+                  "format" : "date",
+                  "type" : "string"
+               },
                "firstName" : {
-                  "description" : "First name of the individual. Required when `type` is **individual**.",
+                  "description" : "First name of the individual.\n\nAllowed only when `type` is **individual**.",
                   "type" : "string"
                },
                "fullName" : {
@@ -998,7 +1012,11 @@
                   "type" : "string"
                },
                "lastName" : {
-                  "description" : "Last name of the individual. Required when `type` is **individual**.",
+                  "description" : "Last name of the individual.\n\nAllowed only when `type` is **individual**.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your unique reference of the party. This should be consistent for all transfers initiated to/from the same party/counterparty. e.g Your client's unique wallet or payee ID",
                   "type" : "string"
                },
                "type" : {
@@ -1015,6 +1033,45 @@
             "required" : [
                "fullName"
             ],
+            "type" : "object"
+         },
+         "PaymentInstrument" : {
+            "properties" : {
+               "description" : {
+                  "description" : "The description of the resource.",
+                  "type" : "string"
+               },
+               "id" : {
+                  "description" : "The unique identifier of the resource.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "The reference for the resource.",
+                  "type" : "string"
+               },
+               "tokenType" : {
+                  "x-addedInVersion" : "3",
+                  "description" : "The type of wallet the network token is associated with.",
+                  "type" : "string"
+               }
+            },
+            "type" : "object"
+         },
+         "ResourceReference" : {
+            "properties" : {
+               "description" : {
+                  "description" : "The description of the resource.",
+                  "type" : "string"
+               },
+               "id" : {
+                  "description" : "The unique identifier of the resource.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "The reference for the resource.",
+                  "type" : "string"
+               }
+            },
             "type" : "object"
          },
          "RestServiceError" : {
@@ -1298,12 +1355,26 @@
          },
          "Transfer" : {
             "properties" : {
+               "accountHolder" : {
+                  "x-addedInVersion" : "3",
+                  "description" : "The account holder associated with the balance account used in the transfer.",
+                  "$ref" : "#/components/schemas/ResourceReference"
+               },
                "amount" : {
                   "x-addedInVersion" : "1",
                   "description" : "The amount of the transfer.",
                   "$ref" : "#/components/schemas/Amount"
                },
+               "balanceAccount" : {
+                  "x-addedInVersion" : "3",
+                  "description" : "Contains information about the balance account involved in the transfer.",
+                  "$ref" : "#/components/schemas/ResourceReference"
+               },
                "balanceAccountId" : {
+                  "x-addedInVersion" : "2",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the ID in the [`balanceAccount`](https://docs.adyen.com/api-explorer/transfer-webhooks/latest/post/balancePlatform.transfer.created#request-data-balanceAccount-id) object instead.",
                   "description" : "The unique identifier of the source [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).",
                   "type" : "string"
                },
@@ -1325,7 +1396,7 @@
                },
                "description" : {
                   "x-addedInVersion" : "1",
-                  "description" : "A human-readable description for the transfer. You can use alphanumeric characters and hyphens. We recommend sending a maximum of 140 characters, otherwise the description may be truncated.",
+                  "description" : "Your description for the transfer. It is used by most banks as the transfer description. We recommend sending a maximum of 140 characters, otherwise the description may be truncated.\n\nSupported characters: **[a-z] [A-Z] [0-9] / - ?** **: ( ) . , ' + Space**\n\nSupported characters for **regular** and **fast** transfers to a US counterparty: **[a-z] [A-Z] [0-9] & $ % # @** **~ = + - _ ' \" ! ?**",
                   "type" : "string"
                },
                "direction" : {
@@ -1341,13 +1412,22 @@
                   "description" : "The ID of the resource.",
                   "type" : "string"
                },
+               "paymentInstrument" : {
+                  "x-addedInVersion" : "3",
+                  "description" : "Contains information about the payment instrument used in the transfer.",
+                  "$ref" : "#/components/schemas/PaymentInstrument"
+               },
                "paymentInstrumentId" : {
-                  "description" : "The unique identifier of the source [payment instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/paymentInstruments__resParam_id).",
+                  "x-addedInVersion" : "2",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the ID in the [`paymentInstrument`](https://docs.adyen.com/api-explorer/transfer-webhooks/latest/post/balancePlatform.transfer.created#request-data-paymentInstrument-id) object instead.",
+                  "description" : "The unique identifier of the [payment instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id) used in the transfer.",
                   "type" : "string"
                },
                "priority" : {
                   "x-addedInVersion" : "3",
-                  "description" : "The priority for the bank transfer. This sets the speed at which the transfer is sent and the fees that you have to pay. Required for transfers with `category` **bank**.\n\nPossible values:\n\n* **regular**: For normal, low-value transactions.\n\n* **fast**: Faster way to transfer funds but has higher fees. Recommended for high-priority, low-value transactions.\n\n* **wire**: Fastest way to transfer funds but has the highest fees. Recommended for high-priority, high-value transactions.\n\n* **instant**: Instant way to transfer funds in [SEPA countries](https://www.ecb.europa.eu/paym/integration/retail/sepa/html/index.en.html).\n\n* **crossBorder**: High value transfer to receipt in a different country.\n\n* **internal**: Bank transfers to a bank account held at Adyen (by bank account number/IBAN).",
+                  "description" : "The priority for the bank transfer. This sets the speed at which the transfer is sent and the fees that you have to pay. Required for transfers with `category` **bank**.\n\nPossible values:\n\n* **regular**: For normal, low-value transactions.\n\n* **fast**: Faster way to transfer funds but has higher fees. Recommended for high-priority, low-value transactions.\n\n* **wire**: Fastest way to transfer funds but has the highest fees. Recommended for high-priority, high-value transactions.\n\n* **instant**: Instant way to transfer funds in [SEPA countries](https://www.ecb.europa.eu/paym/integration/retail/sepa/html/index.en.html).\n\n* **crossBorder**: High-value transfer to a recipient in a different country.\n\n* **internal**: Transfer to an Adyen-issued business bank account (by bank account number/IBAN).",
                   "enum" : [
                      "crossBorder",
                      "directDebit",
@@ -1363,7 +1443,7 @@
                   "x-addedInVersion" : "2",
                   "description" : "Additional information about the status of the transfer.",
                   "enum" : [
-                     "amountLimitExceded",
+                     "amountLimitExceeded",
                      "approved",
                      "counterpartyAccountBlocked",
                      "counterpartyAccountClosed",
@@ -1395,6 +1475,7 @@
                   "x-addedInVersion" : "2",
                   "description" : "The result of the transfer.\n\n For example, **authorised**, **refused**, or **error**.",
                   "enum" : [
+                     "approvalPending",
                      "atmWithdrawal",
                      "atmWithdrawalReversalPending",
                      "atmWithdrawalReversed",
@@ -1496,7 +1577,7 @@
                },
                "description" : {
                   "x-addedInVersion" : "1",
-                  "description" : "A human-readable description for the transfer. You can use alphanumeric characters and hyphens. We recommend sending a maximum of 140 characters, otherwise the description may be truncated.",
+                  "description" : "Your description for the transfer. It is used by most banks as the transfer description. We recommend sending a maximum of 140 characters, otherwise the description may be truncated.\n\nSupported characters: **[a-z] [A-Z] [0-9] / - ?** **: ( ) . , ' + Space**\n\nSupported characters for **regular** and **fast** transfers to a US counterparty: **[a-z] [A-Z] [0-9] & $ % # @** **~ = + - _ ' \" ! ?**",
                   "type" : "string"
                },
                "id" : {
@@ -1509,7 +1590,7 @@
                },
                "priority" : {
                   "x-addedInVersion" : "3",
-                  "description" : "The priority for the bank transfer. This sets the speed at which the transfer is sent and the fees that you have to pay. Required for transfers with `category` **bank**.\n\nPossible values:\n\n* **regular**: For normal, low-value transactions.\n\n* **fast**: Faster way to transfer funds but has higher fees. Recommended for high-priority, low-value transactions.\n\n* **wire**: Fastest way to transfer funds but has the highest fees. Recommended for high-priority, high-value transactions.\n\n* **instant**: Instant way to transfer funds in [SEPA countries](https://www.ecb.europa.eu/paym/integration/retail/sepa/html/index.en.html).\n\n* **crossBorder**: High value transfer to receipt in a different country.\n\n* **internal**: Bank transfers to a bank account held at Adyen (by bank account number/IBAN).",
+                  "description" : "The priority for the bank transfer. This sets the speed at which the transfer is sent and the fees that you have to pay. Required for transfers with `category` **bank**.\n\nPossible values:\n\n* **regular**: For normal, low-value transactions.\n\n* **fast**: Faster way to transfer funds but has higher fees. Recommended for high-priority, low-value transactions.\n\n* **wire**: Fastest way to transfer funds but has the highest fees. Recommended for high-priority, high-value transactions.\n\n* **instant**: Instant way to transfer funds in [SEPA countries](https://www.ecb.europa.eu/paym/integration/retail/sepa/html/index.en.html).\n\n* **crossBorder**: High-value transfer to a recipient in a different country.\n\n* **internal**: Transfer to an Adyen-issued business bank account (by bank account number/IBAN).",
                   "enum" : [
                      "crossBorder",
                      "directDebit",
@@ -1532,6 +1613,11 @@
                   "description" : " A reference that is sent to the recipient. This reference is also sent in all notification webhooks related to the transfer, so you can use it to track statuses for both the source and recipient of funds.\n\n Supported characters: **a-z**, **A-Z**, **0-9**. The maximum length depends on the `category`.\n\n- **internal**: 80 characters\n\n- **bank**: 35 characters when transferring to an IBAN, 15 characters for others.",
                   "maxLength" : 80,
                   "type" : "string"
+               },
+               "ultimateParty" : {
+                  "x-addedInVersion" : "3",
+                  "description" : "The ultimate sender of the funds of the transfer (ultimate debtor).",
+                  "$ref" : "#/components/schemas/UltimatePartyIdentification"
                }
             },
             "required" : [
@@ -1611,6 +1697,49 @@
                "routingNumber"
             ],
             "type" : "object"
+         },
+         "UltimatePartyIdentification" : {
+            "properties" : {
+               "address" : {
+                  "description" : "Address of the bank account owner.",
+                  "$ref" : "#/components/schemas/Address-2"
+               },
+               "dateOfBirth" : {
+                  "description" : "The date of birth of the individual in [ISO-8601](https://www.w3.org/TR/NOTE-datetime) format. For example, **YYYY-MM-DD**.\n\nAllowed only when `type` is **individual**.",
+                  "format" : "date",
+                  "type" : "string"
+               },
+               "firstName" : {
+                  "description" : "First name of the individual.\n\nAllowed only when `type` is **individual**.",
+                  "type" : "string"
+               },
+               "fullName" : {
+                  "description" : "The name of the entity.",
+                  "type" : "string"
+               },
+               "lastName" : {
+                  "description" : "Last name of the individual.\n\nAllowed only when `type` is **individual**.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your unique reference of the party. This should be consistent for all transfers initiated to/from the same party/counterparty. e.g Your client's unique wallet or payee ID",
+                  "type" : "string"
+               },
+               "type" : {
+                  "default" : "unknown",
+                  "description" : "The type of entity that owns the bank account.\n\n Possible values: **individual**, **organization**, or **unknown**.",
+                  "enum" : [
+                     "individual",
+                     "organization",
+                     "unknown"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "fullName"
+            ],
+            "type" : "object"
          }
       },
       "securitySchemes" : {
@@ -1639,7 +1768,7 @@
                "bookingDate" : "2022-03-14T12:01:00+01:00",
                "category" : "bank",
                "counterparty" : {
-                  "balanceAccountId" : "NL29ADYX0000000001"
+                  "balanceAccountId" : "BA00000000000000000000001"
                },
                "createdAt" : "2022-03-14T12:01:00+01:00",
                "description" : "YOUR_DESCRIPTION",
@@ -1671,6 +1800,9 @@
                      "balancePlatform" : "YOUR_BALANCE_PLATFORM",
                      "bookingDate" : "2022-03-11T11:21:24+01:00",
                      "category" : "internal",
+                     "counterparty" : {
+                        "balanceAccountId" : "BA00000000000000000000001"
+                     },
                      "createdAt" : "2022-03-11T11:21:24+01:00",
                      "id" : "1VVF0D5U66PIUIVP",
                      "instructedAmount" : {
@@ -1693,6 +1825,9 @@
                      "balancePlatform" : "YOUR_BALANCE_PLATFORM",
                      "bookingDate" : "2022-03-12T14:22:52+01:00",
                      "category" : "internal",
+                     "counterparty" : {
+                        "balanceAccountId" : "BA00000000000000000000001"
+                     },
                      "createdAt" : "2022-03-12T14:22:52+01:00",
                      "id" : "1WEPGD5U6MS1CFK3",
                      "instructedAmount" : {
@@ -1717,6 +1852,10 @@
                      "createdAt" : "2022-03-14T15:00:00+01:00",
                      "description" : "YOUR_DESCRIPTION_2",
                      "id" : "2QP32A5U7IWC5WKG",
+                     "counterparty" : {
+                        "balanceAccountId" : "BA00000000000000000000001"
+                     },
+                     "reference" : "REFERENCE_46e8c40e",
                      "instructedAmount" : {
                         "currency" : "EUR",
                         "value" : -8
@@ -1733,46 +1872,9 @@
             }
          },
          "post-transfers-payout-cross-border" : {
-            "summary" : "Make a cross border transfer",
-            "description" : "Example request to make a cross border transfer",
+            "summary" : "Make a cross-border transfer",
+            "description" : "Example request to make a cross-border transfer",
             "value" : {
-               "amount" : {
-                  "value" : 110000,
-                  "currency" : "EUR"
-               },
-               "balanceAccountId" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
-               "category" : "bank",
-               "counterparty" : {
-                  "bankAccount" : {
-                     "accountHolder" : {
-                        "fullName" : "A. Klaassen",
-                        "address" : {
-                           "city" : "San Francisco",
-                           "country" : "US",
-                           "postalCode" : "94678",
-                           "stateOrProvince" : "CA",
-                           "street" : "Brannan Street",
-                           "street2" : "274"
-                        }
-                     }
-                  },
-                  "accountIdentification" : {
-                     "type" : "numberAndBic",
-                     "accountNumber" : "123456789",
-                     "bic" : "BOFAUS3NXXX"
-                  }
-               },
-               "priority" : "wire",
-               "referenceForBeneficiary" : "Your reference sent to the beneficiary",
-               "reference" : "Your internal reference for the transfer",
-               "description" : "Your description for the transfer"
-            }
-         },
-         "post-transfers-payout-cross-border-200" : {
-            "summary" : "Response code - 200 OK",
-            "description" : "Example response for a transfers request",
-            "value" : {
-               "id" : "1W1UG35U8A9J5ZLG",
                "amount" : {
                   "value" : 110000,
                   "currency" : "EUR"
@@ -1797,15 +1899,68 @@
                         "accountNumber" : "123456789",
                         "bic" : "BOFAUS3NXXX"
                      }
-                  },
-                  "priority" : "wire",
-                  "referenceForBeneficiary" : "Your reference sent to the beneficiary",
-                  "reference" : "Your internal reference for the transfer",
-                  "description" : "Your description for the transfer",
-                  "direction" : "outgoing",
-                  "reason" : "approved",
-                  "status" : "authorised"
-               }
+                  }
+               },
+               "priority" : "crossBorder",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
+               "reference" : "Your internal reference for the transfer",
+               "description" : "Your description for the transfer"
+            }
+         },
+         "post-transfers-payout-cross-border-200" : {
+            "summary" : "Response code - 200 OK",
+            "description" : "Example response for a transfers request",
+            "value" : {
+               "id" : "1W1UG35U8A9J5ZLG",
+               "accountHolder" : {
+                  "description" : "Your account holder description",
+                  "id" : "AH3227C223222C5GXQXF658WB",
+                  "reference" : "Your account holder reference"
+               },
+               "amount" : {
+                  "value" : 110000,
+                  "currency" : "EUR"
+               },
+               "balanceAccount" : {
+                  "description" : "Your balance account description",
+                  "id" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
+                  "reference" : "Your balance account reference"
+               },
+               "balanceAccountId" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
+               "category" : "bank",
+               "counterparty" : {
+                  "bankAccount" : {
+                     "accountHolder" : {
+                        "fullName" : "A. Klaassen",
+                        "address" : {
+                           "city" : "San Francisco",
+                           "country" : "US",
+                           "postalCode" : "94678",
+                           "stateOrProvince" : "CA",
+                           "street" : "Brannan Street",
+                           "street2" : "274"
+                        }
+                     },
+                     "accountIdentification" : {
+                        "type" : "numberAndBic",
+                        "accountNumber" : "123456789",
+                        "bic" : "BOFAUS3NXXX"
+                     }
+                  }
+               },
+               "paymentInstrumentId" : "PI3222G223222G59347DAA265",
+               "paymentInstrument" : {
+                  "description" : "Your payment instrument description",
+                  "id" : "PI3222G223222G59347DAA265",
+                  "reference" : "Your payment instrument reference"
+               },
+               "priority" : "crossBorder",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
+               "reference" : "Your internal reference for the transfer",
+               "description" : "Your description for the transfer",
+               "direction" : "outgoing",
+               "reason" : "approved",
+               "status" : "authorised"
             }
          },
          "post-transfers-payout-local-transfer-sepa" : {
@@ -1830,7 +1985,7 @@
                   }
                },
                "priority" : "regular",
-               "referenceForBeneficiary" : "Your reference sent to the beneficiary",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
                "reference" : "Your internal reference for the transfer",
                "description" : "Your description for the transfer"
             }
@@ -1840,9 +1995,19 @@
             "description" : "Example response for a transfers request",
             "value" : {
                "id" : "1W1UG35U8A9J5ZLG",
+               "accountHolder" : {
+                  "description" : "Your account holder description",
+                  "id" : "AH3227C223222C5GXQXF658WB",
+                  "reference" : "Your account holder reference"
+               },
                "amount" : {
                   "value" : 110000,
                   "currency" : "EUR"
+               },
+               "balanceAccount" : {
+                  "description" : "Your balance account description",
+                  "id" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
+                  "reference" : "Your balance account reference"
                },
                "balanceAccountId" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
                "category" : "bank",
@@ -1857,8 +2022,14 @@
                      }
                   }
                },
+               "paymentInstrumentId" : "PI3222G223222G59347DAA265",
+               "paymentInstrument" : {
+                  "description" : "Your payment instrument description",
+                  "id" : "PI3222G223222G59347DAA265",
+                  "reference" : "Your payment instrument reference"
+               },
                "priority" : "regular",
-               "referenceForBeneficiary" : "Your reference sent to the beneficiary",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
                "reference" : "Your internal reference for the transfer",
                "description" : "Your description for the transfer",
                "direction" : "outgoing",
@@ -1889,7 +2060,7 @@
                   }
                },
                "priority" : "regular",
-               "referenceForBeneficiary" : "Your reference sent to the beneficiary",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
                "reference" : "Your internal reference for the transfer",
                "description" : "Your description for the transfer"
             }
@@ -1899,9 +2070,19 @@
             "description" : "Example response for a transfers request",
             "value" : {
                "id" : "1W1UG35U8A9J5ZLG",
+               "accountHolder" : {
+                  "description" : "Your account holder description",
+                  "id" : "AH3227C223222C5GXQXF658WB",
+                  "reference" : "Your account holder reference"
+               },
                "amount" : {
                   "value" : 110000,
                   "currency" : "USD"
+               },
+               "balanceAccount" : {
+                  "description" : "Your balance account description",
+                  "id" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
+                  "reference" : "Your balance account reference"
                },
                "balanceAccountId" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
                "category" : "bank",
@@ -1917,8 +2098,14 @@
                      }
                   }
                },
+               "paymentInstrumentId" : "PI3222G223222G59347DAA265",
+               "paymentInstrument" : {
+                  "description" : "Your payment instrument description",
+                  "id" : "PI3222G223222G59347DAA265",
+                  "reference" : "Your payment instrument reference"
+               },
                "priority" : "regular",
-               "referenceForBeneficiary" : "Your reference sent to the beneficiary",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
                "reference" : "Your internal reference for the transfer",
                "description" : "Your description for the transfer",
                "direction" : "outgoing",
@@ -1939,7 +2126,7 @@
                "counterparty" : {
                   "balanceAccountId" : "BA32272223222B5LPRFDW7J9G"
                },
-               "referenceForBeneficiary" : "Your reference sent to the beneficiary",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
                "reference" : "Your internal reference for the transfer",
                "description" : "Your description for the transfer"
             }
@@ -1949,16 +2136,26 @@
             "description" : "Example response for a transfers request",
             "value" : {
                "id" : "1W1UG35U8A9J5ZLG",
+               "accountHolder" : {
+                  "description" : "Your account holder description",
+                  "id" : "AH3227C223222C5GXQXF658WB",
+                  "reference" : "Your account holder reference"
+               },
                "amount" : {
                   "currency" : "EUR",
                   "value" : 10000
+               },
+               "balanceAccount" : {
+                  "description" : "Your balance account description",
+                  "id" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
+                  "reference" : "Your balance account reference"
                },
                "balanceAccountId" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
                "category" : "internal",
                "counterparty" : {
                   "balanceAccountId" : "BA32272223222B5LPRFDW7J9G"
                },
-               "referenceForBeneficiary" : "Your reference sent to the beneficiary",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
                "reference" : "Your internal reference for the transfer",
                "description" : "Your description for the transfer",
                "direction" : "outgoing",
@@ -1980,7 +2177,7 @@
                   "transferInstrumentId" : "SE1234567890ABC1234567890"
                },
                "priority" : "regular",
-               "referenceForBeneficiary" : "Your reference sent to the beneficiary",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
                "reference" : "Your internal reference for the transfer",
                "description" : "Your description for the transfer"
             }
@@ -1990,17 +2187,33 @@
             "description" : "Example response for a transfers request",
             "value" : {
                "id" : "1W1UG35U8A9J5ZLG",
+               "accountHolder" : {
+                  "description" : "Your account holder description",
+                  "id" : "AH3227C223222C5GXQXF658WB",
+                  "reference" : "Your account holder reference"
+               },
                "amount" : {
                   "value" : 80000,
                   "currency" : "EUR"
+               },
+               "balanceAccount" : {
+                  "description" : "Your balance account description",
+                  "id" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
+                  "reference" : "Your balance account reference"
                },
                "balanceAccountId" : "BAB8B2C3D4E5F6G7H8D9J6GD4",
                "category" : "bank",
                "counterparty" : {
                   "transferInstrumentId" : "SE1234567890ABC1234567890"
                },
+               "paymentInstrumentId" : "PI3222G223222G59347DAA265",
+               "paymentInstrument" : {
+                  "description" : "Your payment instrument description",
+                  "id" : "PI3222G223222G59347DAA265",
+                  "reference" : "Your payment instrument reference"
+               },
                "priority" : "regular",
-               "referenceForBeneficiary" : "Your reference sent to the beneficiary",
+               "referenceForBeneficiary" : "Your-reference-sent-to-the-beneficiary",
                "reference" : "Your internal reference for the transfer",
                "description" : "Your description for the transfer",
                "direction" : "outgoing",

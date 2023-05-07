@@ -1,11 +1,16 @@
 {
    "openapi" : "3.1.0",
+   "servers" : [
+      {
+         "url" : "https://balanceplatform-api-test.adyen.com/btl/v3"
+      }
+   ],
    "info" : {
       "version" : "3",
       "x-publicVersion" : true,
       "title" : "Transfer webhooks",
       "description" : "Adyen sends notifications through webhooks to inform your system about incoming and outgoing transfers in your platform.\n\nYou can use these webhooks to build your implementation. For example, you can use this information to update balances in your own dashboards or to keep track of incoming funds.",
-      "x-timestamp" : "2023-02-20T18:21:55Z",
+      "x-timestamp" : "2023-04-26T16:27:04Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
@@ -153,14 +158,14 @@
             },
             "type" : "object"
          },
-         "Address-2" : {
+         "Address" : {
             "properties" : {
                "city" : {
                   "description" : "The name of the city.",
                   "type" : "string"
                },
                "country" : {
-                  "description" : "The two-character ISO 3166-1 alpha-2 country code. For example, **US**.\n>If you don't know the country or are not collecting the country from the shopper, provide `country` as `ZZ`.",
+                  "description" : "The two-character ISO 3166-1 alpha-2 country code. For example, **US**, **NL**, or **GB**.",
                   "type" : "string"
                },
                "line1" : {
@@ -311,7 +316,7 @@
             "properties" : {
                "accountHolder" : {
                   "description" : "Information about the owner of the bank account.",
-                  "$ref" : "#/components/schemas/PartyIdentification-2"
+                  "$ref" : "#/components/schemas/PartyIdentification"
                },
                "accountIdentification" : {
                   "description" : "Contains the bank account details. The fields required in this object depend on the country of the bank account and the currency of the transfer.",
@@ -374,6 +379,15 @@
                   "description" : "The 5- to 12-digit bank account number, without separators or whitespace.",
                   "maxLength" : 12,
                   "minLength" : 5,
+                  "type" : "string"
+               },
+               "accountType" : {
+                  "default" : "checking",
+                  "description" : "The bank account type.\n\nPossible values: **checking** or **savings**. Defaults to **checking**.",
+                  "enum" : [
+                     "checking",
+                     "savings"
+                  ],
                   "type" : "string"
                },
                "institutionNumber" : {
@@ -666,14 +680,19 @@
             ],
             "type" : "object"
          },
-         "PartyIdentification-2" : {
+         "PartyIdentification" : {
             "properties" : {
                "address" : {
                   "description" : "Address of the bank account owner.",
-                  "$ref" : "#/components/schemas/Address-2"
+                  "$ref" : "#/components/schemas/Address"
+               },
+               "dateOfBirth" : {
+                  "description" : "The date of birth of the individual in [ISO-8601](https://www.w3.org/TR/NOTE-datetime) format. For example, **YYYY-MM-DD**.\n\nAllowed only when `type` is **individual**.",
+                  "format" : "date",
+                  "type" : "string"
                },
                "firstName" : {
-                  "description" : "First name of the individual. Required when `type` is **individual**.",
+                  "description" : "First name of the individual.\n\nAllowed only when `type` is **individual**.",
                   "type" : "string"
                },
                "fullName" : {
@@ -681,7 +700,11 @@
                   "type" : "string"
                },
                "lastName" : {
-                  "description" : "Last name of the individual. Required when `type` is **individual**.",
+                  "description" : "Last name of the individual.\n\nAllowed only when `type` is **individual**.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "Your unique reference of the party. This should be consistent for all transfers initiated to/from the same party/counterparty. e.g Your client's unique wallet or payee ID",
                   "type" : "string"
                },
                "type" : {
@@ -722,7 +745,7 @@
             },
             "type" : "object"
          },
-         "RelayedAuthorisationData-2" : {
+         "RelayedAuthorisationData" : {
             "properties" : {
                "metadata" : {
                   "x-addedInVersion" : "3",
@@ -910,6 +933,11 @@
          },
          "TransferEvent" : {
             "properties" : {
+               "amount" : {
+                  "x-addedInVersion" : "3",
+                  "description" : "The original journal amount.",
+                  "$ref" : "#/components/schemas/Amount"
+               },
                "amountAdjustments" : {
                   "x-addedInVersion" : "3",
                   "description" : "The amount adjustments in this transfer.",
@@ -921,6 +949,12 @@
                "bookingDate" : {
                   "x-addedInVersion" : "3",
                   "description" : "The date when the transfer request was sent.",
+                  "format" : "date-time",
+                  "type" : "string"
+               },
+               "estimatedArrivalTime" : {
+                  "x-addedInVersion" : "3",
+                  "description" : "The estimated time the beneficiary should have access to the funds.",
                   "format" : "date-time",
                   "type" : "string"
                },
@@ -946,7 +980,7 @@
                   "x-addedInVersion" : "3",
                   "description" : "The reason for the transfer status.",
                   "enum" : [
-                     "amountLimitExceded",
+                     "amountLimitExceeded",
                      "approved",
                      "counterpartyAccountBlocked",
                      "counterpartyAccountClosed",
@@ -966,6 +1000,7 @@
                   "x-addedInVersion" : "3",
                   "description" : "The status of the transfer event.",
                   "enum" : [
+                     "approvalPending",
                      "atmWithdrawal",
                      "atmWithdrawalReversalPending",
                      "atmWithdrawalReversed",
@@ -1076,11 +1111,15 @@
                   "$ref" : "#/components/schemas/ResourceReference"
                },
                "balanceAccountId" : {
-                  "x-addedInVersion" : "3",
+                  "x-addedInVersion" : "2",
                   "deprecated" : true,
                   "x-deprecatedInVersion" : "3",
                   "x-deprecatedMessage" : "Use the ID in the [`balanceAccount`](https://docs.adyen.com/api-explorer/transfer-webhooks/latest/post/balancePlatform.transfer.created#request-data-balanceAccount-id) object instead.",
                   "description" : "The unique identifier of the source [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).",
+                  "type" : "string"
+               },
+               "balancePlatform" : {
+                  "description" : "The unique identifier of the balance platform.",
                   "type" : "string"
                },
                "balances" : {
@@ -1107,9 +1146,14 @@
                   "description" : "The other party in the transfer.",
                   "$ref" : "#/components/schemas/CounterpartyV3"
                },
+               "creationDate" : {
+                  "description" : "The date and time when the event was triggered, in ISO 8601 extended format. For example, **2020-12-18T10:15:30+01:00**.",
+                  "format" : "date-time",
+                  "type" : "string"
+               },
                "description" : {
                   "x-addedInVersion" : "1",
-                  "description" : "A human-readable description for the transfer. You can use alphanumeric characters and hyphens. We recommend sending a maximum of 140 characters, otherwise the description may be truncated.",
+                  "description" : "Your description for the transfer. It is used by most banks as the transfer description. We recommend sending a maximum of 140 characters, otherwise the description may be truncated.\n\nSupported characters: **[a-z] [A-Z] [0-9] / - ?** **: ( ) . , ' + Space**\n\nSupported characters for **regular** and **fast** transfers to a US counterparty: **[a-z] [A-Z] [0-9] & $ % # @** **~ = + - _ ' \" ! ?**",
                   "type" : "string"
                },
                "direction" : {
@@ -1135,16 +1179,25 @@
                },
                "modificationMerchantReference" : {
                   "x-addedInVersion" : "3",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the [modificationMerchantReference](https://docs.adyen.com/api-explorer/accounting-webhooks/latest/post/balancePlatform.transfer.created#request-data-categoryData-platformPayment-modificationMerchantReference) in the `categoryData` object instead.",
                   "description" : "The capture's merchant reference included in the transfer.",
                   "type" : "string"
                },
                "modificationPspReference" : {
                   "x-addedInVersion" : "3",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the [modificationPspReference](https://docs.adyen.com/api-explorer/accounting-webhooks/latest/post/balancePlatform.transfer.created#request-data-categoryData-platformPayment-modificationPspReference) in the `categoryData` object instead.",
                   "description" : "The capture reference included in the transfer.",
                   "type" : "string"
                },
                "panEntryMode" : {
                   "x-addedInVersion" : "3",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the [panEntryMode](https://docs.adyen.com/api-explorer/accounting-webhooks/latest/post/balancePlatform.transfer.created#request-data-categoryData-issuedCard-panEntryMode) in the `categoryData` object instead.",
                   "description" : "Indicates the method used for entering the PAN to initiate a transaction.\n\nPossible values: **manual**, **chip**, **magstripe**, **contactless**, **cof**, **ecommerce**, **token**.",
                   "enum" : [
                      "chip",
@@ -1163,7 +1216,7 @@
                   "$ref" : "#/components/schemas/PaymentInstrument"
                },
                "paymentInstrumentId" : {
-                  "x-addedInVersion" : "3",
+                  "x-addedInVersion" : "2",
                   "deprecated" : true,
                   "x-deprecatedInVersion" : "3",
                   "x-deprecatedMessage" : "Use the ID in the [`paymentInstrument`](https://docs.adyen.com/api-explorer/transfer-webhooks/latest/post/balancePlatform.transfer.created#request-data-paymentInstrument-id) object instead.",
@@ -1172,12 +1225,15 @@
                },
                "paymentMerchantReference" : {
                   "x-addedInVersion" : "3",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the [paymentMerchantReference](https://docs.adyen.com/api-explorer/accounting-webhooks/latest/post/balancePlatform.transfer.created#request-data-categoryData-platformPayment-paymentMerchantReference) in the `categoryData` object instead.",
                   "description" : "The payment's merchant reference included in the transfer.",
                   "type" : "string"
                },
                "priority" : {
                   "x-addedInVersion" : "3",
-                  "description" : "The priority for the bank transfer. This sets the speed at which the transfer is sent and the fees that you have to pay. Required for transfers with `category` **bank**.\n\nPossible values:\n\n* **regular**: For normal, low-value transactions.\n\n* **fast**: Faster way to transfer funds but has higher fees. Recommended for high-priority, low-value transactions.\n\n* **wire**: Fastest way to transfer funds but has the highest fees. Recommended for high-priority, high-value transactions.\n\n* **instant**: Instant way to transfer funds in [SEPA countries](https://www.ecb.europa.eu/paym/integration/retail/sepa/html/index.en.html).\n\n* **crossBorder**: High value transfer to receipt in a different country.\n\n* **internal**: Bank transfers to a bank account held at Adyen (by bank account number/IBAN).",
+                  "description" : "The priority for the bank transfer. This sets the speed at which the transfer is sent and the fees that you have to pay. Required for transfers with `category` **bank**.\n\nPossible values:\n\n* **regular**: For normal, low-value transactions.\n\n* **fast**: Faster way to transfer funds but has higher fees. Recommended for high-priority, low-value transactions.\n\n* **wire**: Fastest way to transfer funds but has the highest fees. Recommended for high-priority, high-value transactions.\n\n* **instant**: Instant way to transfer funds in [SEPA countries](https://www.ecb.europa.eu/paym/integration/retail/sepa/html/index.en.html).\n\n* **crossBorder**: High-value transfer to a recipient in a different country.\n\n* **internal**: Transfer to an Adyen-issued business bank account (by bank account number/IBAN).",
                   "enum" : [
                      "crossBorder",
                      "directDebit",
@@ -1191,6 +1247,9 @@
                },
                "processingType" : {
                   "x-addedInVersion" : "3",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the [processingType](https://docs.adyen.com/api-explorer/accounting-webhooks/latest/post/balancePlatform.transfer.created#request-data-categoryData-issuedCard-processingType) in the `categoryData` object instead.",
                   "description" : "Contains information about how the payment was processed. For example, **ecommerce** for online or **pos** for in-person payments.",
                   "enum" : [
                      "atmWithdraw",
@@ -1206,6 +1265,9 @@
                },
                "pspPaymentReference" : {
                   "x-addedInVersion" : "3",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the [pspPaymentReference](https://docs.adyen.com/api-explorer/accounting-webhooks/latest/post/balancePlatform.transfer.created#request-data-categoryData-platformPayment-pspPaymentReference) in the `categoryData` object instead.",
                   "description" : "The payment reference included in the transfer.",
                   "type" : "string"
                },
@@ -1213,7 +1275,7 @@
                   "x-addedInVersion" : "2",
                   "description" : "Additional information about the status of the transfer.",
                   "enum" : [
-                     "amountLimitExceded",
+                     "amountLimitExceeded",
                      "approved",
                      "counterpartyAccountBlocked",
                      "counterpartyAccountClosed",
@@ -1244,7 +1306,7 @@
                "relayedAuthorisationData" : {
                   "x-addedInVersion" : "3",
                   "description" : "If you are using relayed authorisation, this object contains information from the relayed authorisation response from your server.",
-                  "$ref" : "#/components/schemas/RelayedAuthorisationData-2"
+                  "$ref" : "#/components/schemas/RelayedAuthorisationData"
                },
                "sequenceNumber" : {
                   "x-addedInVersion" : "3",
@@ -1256,6 +1318,7 @@
                   "x-addedInVersion" : "2",
                   "description" : "The result of the transfer.\n\n For example, **authorised**, **refused**, or **error**.",
                   "enum" : [
+                     "approvalPending",
                      "atmWithdrawal",
                      "atmWithdrawalReversalPending",
                      "atmWithdrawalReversed",
@@ -1334,6 +1397,9 @@
                },
                "transactionRulesResult" : {
                   "x-addedInVersion" : "3",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the [transactionRulesResult](https://docs.adyen.com/api-explorer/accounting-webhooks/latest/post/balancePlatform.transfer.created#request-data-categoryData-issuedCard-transactionRulesResult) in the `categoryData` object instead.",
                   "description" : "Contains the results of the evaluation of the transaction rules.",
                   "$ref" : "#/components/schemas/TransactionRulesResult"
                },
@@ -1372,6 +1438,9 @@
                },
                "validationFacts" : {
                   "x-addedInVersion" : "3",
+                  "deprecated" : true,
+                  "x-deprecatedInVersion" : "3",
+                  "x-deprecatedMessage" : "Use the [validationFacts](https://docs.adyen.com/api-explorer/accounting-webhooks/latest/post/balancePlatform.transfer.created#request-data-categoryData-issuedCard-validationFacts) in the `categoryData` object instead.",
                   "description" : "The evaluation of the validation facts. See [validation checks](https://docs.adyen.com/issuing/validation-checks) for more information.",
                   "items" : {
                      "$ref" : "#/components/schemas/TransferNotificationValidationFact"
@@ -1382,7 +1451,6 @@
             "required" : [
                "category",
                "amount",
-               "counterparty",
                "status"
             ],
             "type" : "object"
@@ -1414,6 +1482,12 @@
          },
          "TransferNotificationTransferTracking" : {
             "properties" : {
+               "estimatedArrivalTime" : {
+                  "x-addedInVersion" : "3",
+                  "description" : "The estimated time the beneficiary should have access to the funds.",
+                  "format" : "date-time",
+                  "type" : "string"
+               },
                "status" : {
                   "x-addedInVersion" : "3",
                   "description" : "The tracking status of the transfer.",

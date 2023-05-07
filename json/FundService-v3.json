@@ -10,7 +10,7 @@
       "x-publicVersion" : true,
       "title" : "Fund API",
       "description" : "This API is used for the classic integration. If you are just starting your implementation, refer to our [new integration guide](https://docs.adyen.com/marketplaces-and-platforms) instead.\n\nThe Fund API provides endpoints for managing the funds in the accounts on your platform. These management operations include, for example, the transfer of funds from one account to another, the payout of funds to an account holder, and the retrieval of balances in an account.\n\nFor more information, refer to our [documentation](https://docs.adyen.com/marketplaces-and-platforms/classic/).\n## Authentication\nYour Adyen contact will provide your API credential and an API key. To connect to the API, add an `X-API-Key` header with the API key as the value, for example:\n\n ```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n\nAlternatively, you can use the username and password to connect to the API using basic authentication. For example:\n\n```\ncurl\n-U \"ws@MarketPlace.YOUR_PLATFORM_ACCOUNT\":\"YOUR_WS_PASSWORD\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\nWhen going live, you need to generate new web service user credentials to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\n## Versioning\nThe Fund API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://cal-test.adyen.com/cal/services/Fund/v3/accountHolderBalance\n```",
-      "x-timestamp" : "2022-09-27T19:26:19Z",
+      "x-timestamp" : "2023-04-11T21:25:34Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
@@ -38,6 +38,7 @@
             "operationId" : "post-accountHolderBalance",
             "x-groupName" : "General",
             "x-sortIndex" : 1,
+            "x-methodName" : "accountHolderBalance",
             "security" : [
                {
                   "BasicAuth" : [
@@ -146,6 +147,7 @@
             "operationId" : "post-accountHolderTransactionList",
             "x-groupName" : "General",
             "x-sortIndex" : 2,
+            "x-methodName" : "accountHolderTransactionList",
             "security" : [
                {
                   "BasicAuth" : [
@@ -257,6 +259,7 @@
             "operationId" : "post-debitAccountHolder",
             "x-groupName" : "General",
             "x-sortIndex" : 8,
+            "x-methodName" : "debitAccountHolder",
             "security" : [
                {
                   "BasicAuth" : [
@@ -370,6 +373,7 @@
             "operationId" : "post-payoutAccountHolder",
             "x-groupName" : "General",
             "x-sortIndex" : 3,
+            "x-methodName" : "payoutAccountHolder",
             "security" : [
                {
                   "BasicAuth" : [
@@ -478,6 +482,7 @@
             "operationId" : "post-refundFundsTransfer",
             "x-groupName" : "General",
             "x-sortIndex" : 5,
+            "x-methodName" : "refundFundsTransfer",
             "security" : [
                {
                   "BasicAuth" : [
@@ -586,6 +591,7 @@
             "operationId" : "post-refundNotPaidOutTransfers",
             "x-groupName" : "General",
             "x-sortIndex" : 7,
+            "x-methodName" : "refundNotPaidOutTransfers",
             "security" : [
                {
                   "BasicAuth" : [
@@ -694,6 +700,7 @@
             "operationId" : "post-setupBeneficiary",
             "x-groupName" : "General",
             "x-sortIndex" : 6,
+            "x-methodName" : "setupBeneficiary",
             "security" : [
                {
                   "BasicAuth" : [
@@ -802,6 +809,7 @@
             "operationId" : "post-transferFunds",
             "x-groupName" : "General",
             "x-sortIndex" : 4,
+            "x-methodName" : "transferFunds",
             "security" : [
                {
                   "BasicAuth" : [
@@ -913,6 +921,14 @@
                   "description" : "Details of the balance held by the account.",
                   "$ref" : "#/components/schemas/DetailBalance"
                }
+            },
+            "type" : "object"
+         },
+         "AccountDetailBalanceWrapper" : {
+            "properties" : {
+               "AccountDetailBalance" : {
+                  "$ref" : "#/components/schemas/AccountDetailBalance"
+               }
             }
          },
          "AccountHolderBalanceRequest" : {
@@ -924,14 +940,15 @@
             },
             "required" : [
                "accountHolderCode"
-            ]
+            ],
+            "type" : "object"
          },
          "AccountHolderBalanceResponse" : {
             "properties" : {
                "balancePerAccount" : {
                   "description" : "A list of each account and their balances.",
                   "items" : {
-                     "$ref" : "#/components/schemas/AccountDetailBalance"
+                     "$ref" : "#/components/schemas/AccountDetailBalanceWrapper"
                   },
                   "type" : "array"
                },
@@ -951,7 +968,8 @@
                   "description" : "The total balance of the account holder.",
                   "$ref" : "#/components/schemas/DetailBalance"
                }
-            }
+            },
+            "type" : "object"
          },
          "AccountHolderTransactionListRequest" : {
             "properties" : {
@@ -962,7 +980,7 @@
                "transactionListsPerAccount" : {
                   "description" : "A list of accounts to include in the transaction list. If left blank, the last fifty (50) transactions for all accounts of the account holder will be included.",
                   "items" : {
-                     "$ref" : "#/components/schemas/TransactionListForAccount"
+                     "$ref" : "#/components/schemas/TransactionListForAccountWrapper"
                   },
                   "type" : "array"
                },
@@ -972,7 +990,7 @@
                      "enum" : [
                         "BalanceNotPaidOutTransfer",
                         "BalancePlatformSweep",
-                        "BalancePlatfromSweepReturned",
+                        "BalancePlatformSweepReturned",
                         "Chargeback",
                         "ChargebackCorrection",
                         "ChargebackCorrectionReceived",
@@ -1023,14 +1041,15 @@
             },
             "required" : [
                "accountHolderCode"
-            ]
+            ],
+            "type" : "object"
          },
          "AccountHolderTransactionListResponse" : {
             "properties" : {
                "accountTransactionLists" : {
                   "description" : "A list of the transactions.",
                   "items" : {
-                     "$ref" : "#/components/schemas/AccountTransactionList"
+                     "$ref" : "#/components/schemas/AccountTransactionListWrapper"
                   },
                   "type" : "array"
                },
@@ -1046,7 +1065,8 @@
                   "description" : "Indicates whether the request is processed asynchronously. Depending on the request's platform settings, the following scenarios may be applied:\n* **true**: The request is queued and will be executed when the providing service is available in the order in which the requests are received.\n* **false**: The processing of the request is immediately attempted; it may result in an error if the providing service is unavailable.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "AccountTransactionList" : {
             "properties" : {
@@ -1061,9 +1081,17 @@
                "transactions" : {
                   "description" : "The list of transactions.",
                   "items" : {
-                     "$ref" : "#/components/schemas/Transaction"
+                     "$ref" : "#/components/schemas/TransactionWrapper"
                   },
                   "type" : "array"
+               }
+            },
+            "type" : "object"
+         },
+         "AccountTransactionListWrapper" : {
+            "properties" : {
+               "AccountTransactionList" : {
+                  "$ref" : "#/components/schemas/AccountTransactionList"
                }
             }
          },
@@ -1084,7 +1112,15 @@
             "required" : [
                "value",
                "currency"
-            ]
+            ],
+            "type" : "object"
+         },
+         "AmountWrapper" : {
+            "properties" : {
+               "Amount" : {
+                  "$ref" : "#/components/schemas/Amount"
+               }
+            }
          },
          "BankAccountDetail" : {
             "properties" : {
@@ -1189,7 +1225,8 @@
                   "description" : "The URL to be used for bank account verification.\nThis may be generated on bank account creation.\n\n>Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information) for details on field requirements.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "DebitAccountHolderRequest" : {
             "properties" : {
@@ -1228,7 +1265,8 @@
                "amount",
                "splits",
                "merchantAccount"
-            ]
+            ],
+            "type" : "object"
          },
          "DebitAccountHolderResponse" : {
             "properties" : {
@@ -1259,25 +1297,27 @@
                   "description" : "Indicates whether the request is processed asynchronously. Depending on the request's platform settings, the following scenarios may be applied:\n* **true**: The request is queued and will be executed when the providing service is available in the order in which the requests are received.\n* **false**: The processing of the request is immediately attempted; it may result in an error if the providing service is unavailable.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "DetailBalance" : {
             "properties" : {
                "balance" : {
                   "description" : "The list of balances held by the account.",
                   "items" : {
-                     "$ref" : "#/components/schemas/Amount"
+                     "$ref" : "#/components/schemas/AmountWrapper"
                   },
                   "type" : "array"
                },
                "pendingBalance" : {
                   "description" : "The list of pending balances held by the account.",
                   "items" : {
-                     "$ref" : "#/components/schemas/Amount"
+                     "$ref" : "#/components/schemas/AmountWrapper"
                   },
                   "type" : "array"
                }
-            }
+            },
+            "type" : "object"
          },
          "PayoutAccountHolderRequest" : {
             "properties" : {
@@ -1311,7 +1351,8 @@
             "required" : [
                "accountHolderCode",
                "accountCode"
-            ]
+            ],
+            "type" : "object"
          },
          "PayoutAccountHolderResponse" : {
             "properties" : {
@@ -1336,7 +1377,8 @@
                   "description" : "Indicates whether the request is processed asynchronously. Depending on the request's platform settings, the following scenarios may be applied:\n* **true**: The request is queued and will be executed when the providing service is available in the order in which the requests are received.\n* **false**: The processing of the request is immediately attempted; it may result in an error if the providing service is unavailable.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "RefundFundsTransferRequest" : {
             "properties" : {
@@ -1356,7 +1398,8 @@
             "required" : [
                "originalReference",
                "amount"
-            ]
+            ],
+            "type" : "object"
          },
          "RefundFundsTransferResponse" : {
             "properties" : {
@@ -1384,7 +1427,8 @@
                   "description" : "Indicates whether the request is processed asynchronously. Depending on the request's platform settings, the following scenarios may be applied:\n* **true**: The request is queued and will be executed when the providing service is available in the order in which the requests are received.\n* **false**: The processing of the request is immediately attempted; it may result in an error if the providing service is unavailable.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "RefundNotPaidOutTransfersRequest" : {
             "properties" : {
@@ -1400,7 +1444,8 @@
             "required" : [
                "accountHolderCode",
                "accountCode"
-            ]
+            ],
+            "type" : "object"
          },
          "RefundNotPaidOutTransfersResponse" : {
             "properties" : {
@@ -1416,7 +1461,8 @@
                   "description" : "Indicates whether the request is processed asynchronously. Depending on the request's platform settings, the following scenarios may be applied:\n* **true**: The request is queued and will be executed when the providing service is available in the order in which the requests are received.\n* **false**: The processing of the request is immediately attempted; it may result in an error if the providing service is unavailable.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "ServiceError" : {
             "properties" : {
@@ -1441,7 +1487,8 @@
                   "format" : "int32",
                   "type" : "integer"
                }
-            }
+            },
+            "type" : "object"
          },
          "SetupBeneficiaryRequest" : {
             "properties" : {
@@ -1461,7 +1508,8 @@
             "required" : [
                "sourceAccountCode",
                "destinationAccountCode"
-            ]
+            ],
+            "type" : "object"
          },
          "SetupBeneficiaryResponse" : {
             "properties" : {
@@ -1477,7 +1525,8 @@
                   "description" : "Indicates whether the request is processed asynchronously. Depending on the request's platform settings, the following scenarios may be applied:\n* **true**: The request is queued and will be executed when the providing service is available in the order in which the requests are received.\n* **false**: The processing of the request is immediately attempted; it may result in an error if the providing service is unavailable.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          },
          "Split" : {
             "properties" : {
@@ -1498,7 +1547,7 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**, **Remainder**.",
+                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**, **Remainder**, **Surcharge**, **Tip**.",
                   "enum" : [
                      "BalanceAccount",
                      "Commission",
@@ -1506,6 +1555,8 @@
                      "MarketPlace",
                      "PaymentFee",
                      "Remainder",
+                     "Surcharge",
+                     "Tip",
                      "VAT",
                      "Verification"
                   ],
@@ -1515,7 +1566,8 @@
             "required" : [
                "amount",
                "type"
-            ]
+            ],
+            "type" : "object"
          },
          "SplitAmount" : {
             "properties" : {
@@ -1533,7 +1585,8 @@
             },
             "required" : [
                "value"
-            ]
+            ],
+            "type" : "object"
          },
          "Transaction" : {
             "properties" : {
@@ -1601,7 +1654,7 @@
                   "enum" : [
                      "BalanceNotPaidOutTransfer",
                      "BalancePlatformSweep",
-                     "BalancePlatfromSweepReturned",
+                     "BalancePlatformSweepReturned",
                      "Chargeback",
                      "ChargebackCorrection",
                      "ChargebackCorrectionReceived",
@@ -1651,7 +1704,8 @@
                   "description" : "The transfer code of the transaction.",
                   "type" : "string"
                }
-            }
+            },
+            "type" : "object"
          },
          "TransactionListForAccount" : {
             "properties" : {
@@ -1668,7 +1722,22 @@
             "required" : [
                "accountCode",
                "page"
-            ]
+            ],
+            "type" : "object"
+         },
+         "TransactionListForAccountWrapper" : {
+            "properties" : {
+               "TransactionListForAccount" : {
+                  "$ref" : "#/components/schemas/TransactionListForAccount"
+               }
+            }
+         },
+         "TransactionWrapper" : {
+            "properties" : {
+               "Transaction" : {
+                  "$ref" : "#/components/schemas/Transaction"
+               }
+            }
          },
          "TransferFundsRequest" : {
             "properties" : {
@@ -1699,7 +1768,8 @@
                "destinationAccountCode",
                "transferCode",
                "amount"
-            ]
+            ],
+            "type" : "object"
          },
          "TransferFundsResponse" : {
             "properties" : {
@@ -1720,7 +1790,8 @@
                   "description" : "Indicates whether the request is processed asynchronously. Depending on the request's platform settings, the following scenarios may be applied:\n* **true**: The request is queued and will be executed when the providing service is available in the order in which the requests are received.\n* **false**: The processing of the request is immediately attempted; it may result in an error if the providing service is unavailable.",
                   "type" : "boolean"
                }
-            }
+            },
+            "type" : "object"
          }
       },
       "securitySchemes" : {

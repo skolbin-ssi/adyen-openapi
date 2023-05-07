@@ -1,4 +1,6 @@
 openapi: 3.1.0
+servers:
+- url: https://balanceplatform-api-test.adyen.com/btl/v1
 info:
   version: '1'
   x-publicVersion: true
@@ -14,7 +16,7 @@ info:
     You can use these webhooks to build your implementation. For example, you can
     use this information to update balances in your own dashboards or to keep track
     of incoming funds.'
-  x-timestamp: '2023-02-20T18:21:54Z'
+  x-timestamp: '2023-04-17T15:23:17Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
@@ -456,8 +458,8 @@ components:
         status:
           description: "The event status. The possible values depend on the `type`.\n\
             \n* **Authorised**, **Refused**, or **Error** for type `balancePlatform.payment.created`\n\
-            \n * **Expired** or **Cancelled** or **AuthAdjustmentAuthorised** for\
-            \ type `balancePlatform.payment.updated`\n\n* **PendingIncomingTransfer**\
+            \n * **Expired** or **Cancelled** or **AuthAdjustmentAuthorised** or **AuthAdjustmentRefused**\
+            \ for type `balancePlatform.payment.updated`\n\n* **PendingIncomingTransfer**\
             \ for type `balancePlatform.incomingTransfer.created` \n\n* **Refunded**\
             \ or **IncomingTransfer** for type `balancePlatform.incomingTransfer.updated`\n\
             \n * **Captured** or **OutgoingTransfer** for type `balancePlatform.outgoingTransfer.created`\n\
@@ -469,8 +471,6 @@ components:
             in ISO 8601 extended format. For example, **2021-08-17T15:34:37+02:00**.
           format: date-time
           type: string
-      required:
-      - counterparty
       type: object
     IncomingTransferNotificationRequest:
       properties:
@@ -668,8 +668,8 @@ components:
         status:
           description: "The event status. The possible values depend on the `type`.\n\
             \n* **Authorised**, **Refused**, or **Error** for type `balancePlatform.payment.created`\n\
-            \n * **Expired** or **Cancelled** or **AuthAdjustmentAuthorised** for\
-            \ type `balancePlatform.payment.updated`\n\n* **PendingIncomingTransfer**\
+            \n * **Expired** or **Cancelled** or **AuthAdjustmentAuthorised** or **AuthAdjustmentRefused**\
+            \ for type `balancePlatform.payment.updated`\n\n* **PendingIncomingTransfer**\
             \ for type `balancePlatform.incomingTransfer.created` \n\n* **Refunded**\
             \ or **IncomingTransfer** for type `balancePlatform.incomingTransfer.updated`\n\
             \n * **Captured** or **OutgoingTransfer** for type `balancePlatform.outgoingTransfer.created`\n\
@@ -799,8 +799,8 @@ components:
         status:
           description: "The event status. The possible values depend on the `type`.\n\
             \n* **Authorised**, **Refused**, or **Error** for type `balancePlatform.payment.created`\n\
-            \n * **Expired** or **Cancelled** or **AuthAdjustmentAuthorised** for\
-            \ type `balancePlatform.payment.updated`\n\n* **PendingIncomingTransfer**\
+            \n * **Expired** or **Cancelled** or **AuthAdjustmentAuthorised** or **AuthAdjustmentRefused**\
+            \ for type `balancePlatform.payment.updated`\n\n* **PendingIncomingTransfer**\
             \ for type `balancePlatform.incomingTransfer.created` \n\n* **Refunded**\
             \ or **IncomingTransfer** for type `balancePlatform.incomingTransfer.updated`\n\
             \n * **Captured** or **OutgoingTransfer** for type `balancePlatform.outgoingTransfer.created`\n\
@@ -1034,8 +1034,8 @@ components:
         status:
           description: "The event status. The possible values depend on the `type`.\n\
             \n* **Authorised**, **Refused**, or **Error** for type `balancePlatform.payment.created`\n\
-            \n * **Expired** or **Cancelled** or **AuthAdjustmentAuthorised** for\
-            \ type `balancePlatform.payment.updated`\n\n* **PendingIncomingTransfer**\
+            \n * **Expired** or **Cancelled** or **AuthAdjustmentAuthorised** or **AuthAdjustmentRefused**\
+            \ for type `balancePlatform.payment.updated`\n\n* **PendingIncomingTransfer**\
             \ for type `balancePlatform.incomingTransfer.created` \n\n* **Refunded**\
             \ or **IncomingTransfer** for type `balancePlatform.incomingTransfer.updated`\n\
             \n * **Captured** or **OutgoingTransfer** for type `balancePlatform.outgoingTransfer.created`\n\
@@ -1141,8 +1141,7 @@ components:
   examples:
     WebhookAck:
       summary: Acknowledge Webhook
-      value:
-        notificationResponse: '[accepted]'
+      value: '[accepted]'
     post-balancePlatform.incomingTransfer.created-balancePlatform-incomingTransfer-created:
       summary: Pending incoming transfer
       description: Example webhook when there is an incoming transfer
@@ -1168,6 +1167,8 @@ components:
           originalAmount:
             currency: EUR
             value: 15000
+          counterparty:
+            balanceAccountId: BA00000000000000000000001
           paymentId: IZL6685QQEBKFON0
           status: PendingIncomingTransfer
         environment: test
@@ -1198,6 +1199,8 @@ components:
           originalAmount:
             currency: EUR
             value: 1500
+          counterparty:
+            balanceAccountId: BA00000000000000000000001
           paymentId: IZL6685QQEBKFON0
           status: IncomingTransfer
         environment: test
@@ -1227,6 +1230,8 @@ components:
               currency: EUR
               value: -1500
             type: OutgoingTransfer
+          counterparty:
+            balanceAccountId: BA00000000000000000000001
           paymentId: 1W1UG35QQEBJLHZ8
           status: OutgoingTransfer
           valueDate: '2021-08-10T14:57:01+02:00'
@@ -1257,6 +1262,8 @@ components:
               currency: EUR
               value: -1500
             type: OutgoingTransfer
+          counterparty:
+            balanceAccountId: BA00000000000000000000001
           paymentId: 1W1UG35QQEBJLHZ8
           status: TransferFailed
           valueDate: '2021-08-10T14:57:01+02:00'
@@ -1308,7 +1315,7 @@ components:
               key3: value3
           status: Authorised
           transactionRulesResult:
-            allRulesPassed: 'true'
+            allRulesPassed: true
           validationResult:
           - result: valid
             type: BalanceCheck
@@ -1430,7 +1437,7 @@ components:
           processingType: ecommerce
           status: Refused
           transactionRulesResult:
-            allRulesPassed: 'false'
+            allRulesPassed: false
             failedTransactionRules:
             - reason: This event exceeds the maximum allowed number of transactions
                 (1) in interval monthly
@@ -1507,7 +1514,7 @@ components:
               key3: value3
           status: Expired
           transactionRulesResult:
-            allRulesPassed: 'true'
+            allRulesPassed: true
           validationResult:
           - result: valid
             type: AccountLookup
@@ -1574,7 +1581,7 @@ components:
               key3: value3
           status: Expired
           transactionRulesResult:
-            allRulesPassed: 'true'
+            allRulesPassed: true
           validationResult:
           - result: valid
             type: AccountLookup
@@ -1641,7 +1648,7 @@ components:
               key3: value3
           status: Expired
           transactionRulesResult:
-            allRulesPassed: 'true'
+            allRulesPassed: true
           validationResult:
           - result: valid
             type: AccountLookup

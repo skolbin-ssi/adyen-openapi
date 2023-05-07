@@ -10,7 +10,7 @@
       "x-publicVersion" : true,
       "title" : "Management API",
       "description" : "Configure and manage your Adyen company and merchant accounts, stores, and payment terminals.\n## Authentication\nEach request to the Management API must be signed with an API key. [Generate your API key](https://docs.adyen.com/development-resources/api-credentials#generate-api-key) in the Customer Area and then set this key to the `X-API-Key` header value.\n\nTo access the live endpoints, you need to generate a new API key in your live Customer Area.\n## Versioning\n\nManagement API handles versioning as part of the endpoint URL. For example, to send a request to version 1 of the `/companies/{companyId}/webhooks` endpoint, use:\n\n```text\nhttps://management-test.adyen.com/v1/companies/{companyId}/webhooks\n```\n\n## Going live\n\nTo access the live endpoints, you need an API key from your live Customer Area. Use this API key to make requests to:\n\n```text\nhttps://management-live.adyen.com/v1\n```",
-      "x-timestamp" : "2023-02-20T18:22:28Z",
+      "x-timestamp" : "2023-04-03T23:26:06Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
@@ -3618,7 +3618,7 @@
                "Terminal settings - company level"
             ],
             "summary" : "Update terminal settings",
-            "description" : "Updates payment terminal settings for the company identified in the path. These settings apply to all terminals under the company, unless different values are configured at a lower level (merchant account, store, or individual terminal).\n\n* To change a parameter value, include the full object that contains the parameter, even if you don't want to change all parameters in the object.\n* To restore a parameter value inherited from the Adyen PSP level, include the full object that contains the parameter, and specify an empty value for the parameter or omit the parameter.\n* Objects that are not included in the request are not updated.\n\nTo make this request, your API credential must have the following [role](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read and write",
+            "description" : "Updates payment terminal settings for the company identified in the path. These settings apply to all terminals under the company, unless different values are configured at a lower level (merchant account, store, or individual terminal).\n\n* To change a parameter value, include the full object that contains the parameter, even if you don't want to change all parameters in the object.\n* To restore a parameter value inherited from the Adyen PSP level, include the full object that contains the parameter, and specify an empty value for the parameter or omit the parameter.\n* Objects that are not included in the request are not updated.\n\nTo make this request, your API credential must have the following [role](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read and write\n\nFor [sensitive terminal settings](https://docs.adyen.com/point-of-sale/automating-terminal-management/configure-terminals-api#sensitive-terminal-settings), your API credential must have the following role:\n* Management API—Terminal settings Advanced read and write",
             "operationId" : "patch-companies-companyId-terminalSettings",
             "x-groupName" : "Terminal settings - company level",
             "x-sortIndex" : 3,
@@ -5187,7 +5187,7 @@
                   "content" : {
                      "application/json" : {
                         "schema" : {
-                           "$ref" : "#/components/schemas/AllowedOriginsResponse"
+                           "$ref" : "#/components/schemas/AllowedOrigin"
                         }
                      }
                   },
@@ -9116,7 +9116,7 @@
                "Terminal settings - store level"
             ],
             "summary" : "Get terminal settings",
-            "description" : "Returns the payment terminal settings that are configured for the store identified in the path. These settings apply to all terminals under the store unless different values are configured for an individual terminal.\n\nTo make this request, your API credential must have one of the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read\n* Management API—Terminal settings read and write",
+            "description" : "Returns the payment terminal settings that are configured for the store identified in the path. These settings apply to all terminals under the store unless different values are configured for an individual terminal.\n\nTo make this request, your API credential must have one of the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read\n* Management API—Terminal settings read and write\n\nFor [sensitive terminal settings](https://docs.adyen.com/point-of-sale/automating-terminal-management/configure-terminals-api#sensitive-terminal-settings), your API credential must have the following role:\n* Management API—Terminal settings Advanced read and write",
             "operationId" : "get-merchants-merchantId-stores-reference-terminalSettings",
             "x-groupName" : "Terminal settings - store level",
             "x-sortIndex" : 1,
@@ -9227,7 +9227,7 @@
                "Terminal settings - store level"
             ],
             "summary" : "Update terminal settings",
-            "description" : "Updates payment terminal settings for the store identified in the path. These settings apply to all terminals under the store, unless different values are configured for an individual terminal.\n\n* To change a parameter value, include the full object that contains the parameter, even if you don't want to change all parameters in the object.\n* To restore a parameter value inherited from a higher level, include the full object that contains the parameter, and specify an empty value for the parameter or omit the parameter.\n* Objects that are not included in the request are not updated.\n\nTo make this request, your API credential must have the following [role](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read and write",
+            "description" : "Updates payment terminal settings for the store identified in the path. These settings apply to all terminals under the store, unless different values are configured for an individual terminal.\n\n* To change a parameter value, include the full object that contains the parameter, even if you don't want to change all parameters in the object.\n* To restore a parameter value inherited from a higher level, include the full object that contains the parameter, and specify an empty value for the parameter or omit the parameter.\n* Objects that are not included in the request are not updated.\n\nTo make this request, your API credential must have the following [role](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read and write\n\nFor [sensitive terminal settings](https://docs.adyen.com/point-of-sale/automating-terminal-management/configure-terminals-api#sensitive-terminal-settings), your API credential must have the following role:\n* Management API—Terminal settings Advanced read and write",
             "operationId" : "patch-merchants-merchantId-stores-reference-terminalSettings",
             "x-groupName" : "Terminal settings - store level",
             "x-sortIndex" : 3,
@@ -12886,7 +12886,7 @@
                "Terminal settings - store level"
             ],
             "summary" : "Get terminal settings",
-            "description" : "Returns the payment terminal settings that are configured for the store identified in the path. These settings apply to all terminals under the store unless different values are configured for an individual terminal.\n\nTo make this request, your API credential must have one of the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read\n* Management API—Terminal settings read and write",
+            "description" : "Returns the payment terminal settings that are configured for the store identified in the path. These settings apply to all terminals under the store unless different values are configured for an individual terminal.\n\nTo make this request, your API credential must have one of the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read\n* Management API—Terminal settings read and write\n\nFor [sensitive terminal settings](https://docs.adyen.com/point-of-sale/automating-terminal-management/configure-terminals-api#sensitive-terminal-settings), your API credential must have the following role:\n* Management API—Terminal settings Advanced read and write",
             "operationId" : "get-stores-storeId-terminalSettings",
             "x-groupName" : "Terminal settings - store level",
             "x-sortIndex" : 1,
@@ -12985,7 +12985,7 @@
                "Terminal settings - store level"
             ],
             "summary" : "Update terminal settings",
-            "description" : "Updates payment terminal settings for the store identified in the path. These settings apply to all terminals under the store, unless different values are configured for an individual terminal.\n\n* To change a parameter value, include the full object that contains the parameter, even if you don't want to change all parameters in the object.\n* To restore a parameter value inherited from a higher level, include the full object that contains the parameter, and specify an empty value for the parameter or omit the parameter.\n* Objects that are not included in the request are not updated.\n\nTo make this request, your API credential must have the following [role](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read and write",
+            "description" : "Updates payment terminal settings for the store identified in the path. These settings apply to all terminals under the store, unless different values are configured for an individual terminal.\n\n* To change a parameter value, include the full object that contains the parameter, even if you don't want to change all parameters in the object.\n* To restore a parameter value inherited from a higher level, include the full object that contains the parameter, and specify an empty value for the parameter or omit the parameter.\n* Objects that are not included in the request are not updated.\n\nTo make this request, your API credential must have the following [role](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read and write\n\nFor [sensitive terminal settings](https://docs.adyen.com/point-of-sale/automating-terminal-management/configure-terminals-api#sensitive-terminal-settings), your API credential must have the following role:\n* Management API—Terminal settings Advanced read and write",
             "operationId" : "patch-stores-storeId-terminalSettings",
             "x-groupName" : "Terminal settings - store level",
             "x-sortIndex" : 3,
@@ -13106,7 +13106,7 @@
                "Terminals - terminal level"
             ],
             "summary" : "Get a list of terminals",
-            "description" : "Returns the payment terminals that the API credential has access to and that match the query parameters. \nWhen using `searchQuery`, other query parameters are ignored.\n\nTo make this request, your API credential must have the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* POS Terminal Management API\n* Management API—Terminal settings read",
+            "description" : "Returns the payment terminals that the API credential has access to and that match the query parameters. \nWhen using `searchQuery`, other query parameters are ignored.\n\nTo make this request, your API credential must have the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API — Terminal actions read",
             "operationId" : "get-terminals",
             "x-groupName" : "Terminals - terminal level",
             "x-sortIndex" : 1,
@@ -13601,7 +13601,7 @@
                "Terminal settings - terminal level"
             ],
             "summary" : "Get terminal settings",
-            "description" : "Returns the settings that are configured for the payment terminal identified in the path.\n\nTo make this request, your API credential must have one of the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read\n* Management API—Terminal settings read and write",
+            "description" : "Returns the settings that are configured for the payment terminal identified in the path.\n\nTo make this request, your API credential must have one of the following [roles](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read\n* Management API—Terminal settings read and write\n\nFor [sensitive terminal settings](https://docs.adyen.com/point-of-sale/automating-terminal-management/configure-terminals-api#sensitive-terminal-settings), your API credential must have the following role:\n* Management API—Terminal settings Advanced read and write",
             "operationId" : "get-terminals-terminalId-terminalSettings",
             "x-groupName" : "Terminal settings - terminal level",
             "x-sortIndex" : 3,
@@ -13700,7 +13700,7 @@
                "Terminal settings - terminal level"
             ],
             "summary" : "Update terminal settings",
-            "description" : "Updates the settings that are configured for the payment terminal identified in the path.\n\n* To change a parameter value, include the full object that contains the parameter, even if you don't want to change all parameters in the object.\n* To restore a parameter value inherited from a higher level, include the full object that contains the parameter, and specify an empty value for the parameter or omit the parameter.\n* Objects that are not included in the request are not updated.\n\nTo make this request, your API credential must have the following [role](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read and write",
+            "description" : "Updates the settings that are configured for the payment terminal identified in the path.\n\n* To change a parameter value, include the full object that contains the parameter, even if you don't want to change all parameters in the object.\n* To restore a parameter value inherited from a higher level, include the full object that contains the parameter, and specify an empty value for the parameter or omit the parameter.\n* Objects that are not included in the request are not updated.\n\nTo make this request, your API credential must have the following [role](https://docs.adyen.com/development-resources/api-credentials#api-permissions):\n* Management API—Terminal settings read and write\n\nFor [sensitive terminal settings](https://docs.adyen.com/point-of-sale/automating-terminal-management/configure-terminals-api#sensitive-terminal-settings), your API credential must have the following role:\n* Management API—Terminal settings Advanced read and write",
             "operationId" : "patch-terminals-terminalId-terminalSettings",
             "x-groupName" : "Terminal settings - terminal level",
             "x-sortIndex" : 5,
@@ -14369,6 +14369,13 @@
                   },
                   "type" : "array"
                },
+               "authnApps" : {
+                  "description" : "Set of authn apps available to this user",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
                "email" : {
                   "description" : "The email address of the user.",
                   "type" : "string"
@@ -14686,6 +14693,13 @@
                   },
                   "type" : "array"
                },
+               "authnApps" : {
+                  "description" : "Set of authn apps to add to this user",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
                "email" : {
                   "description" : "The email address of the user.",
                   "type" : "string"
@@ -14740,6 +14754,13 @@
                },
                "associatedMerchantAccounts" : {
                   "description" : "The list of [merchant accounts](https://docs.adyen.com/account/account-structure#merchant-accounts) associated with this user.",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
+               "authnApps" : {
+                  "description" : "Set of authn apps available to this user",
                   "items" : {
                      "type" : "string"
                   },
@@ -14809,11 +14830,11 @@
                "communicationFormat" : {
                   "description" : "Format or protocol for receiving webhooks. Possible values:\n* **soap**\n* **http**\n* **json** ",
                   "enum" : [
-                     "HTTP",
-                     "JSON",
-                     "SOAP"
+                     "http",
+                     "json",
+                     "soap"
                   ],
-                  "example" : "SOAP",
+                  "example" : "soap",
                   "type" : "string"
                },
                "description" : {
@@ -14823,9 +14844,9 @@
                "filterMerchantAccountType" : {
                   "description" : "Shows how merchant accounts are filtered when configuring the webhook. Possible values:\n* **includeAccounts**: The webhook is configured for the merchant accounts listed in `filterMerchantAccounts`.\n* **excludeAccounts**: The webhook is not configured for the merchant accounts listed in `filterMerchantAccounts`.\n* **allAccounts**: Includes all merchant accounts, and does not require specifying `filterMerchantAccounts`.",
                   "enum" : [
-                     "EXCLUDE_LIST",
-                     "INCLUDE_ALL",
-                     "INCLUDE_LIST"
+                     "allAccounts",
+                     "excludeAccounts",
+                     "includeAccounts"
                   ],
                   "type" : "string"
                },
@@ -14857,14 +14878,12 @@
                   "enum" : [
                      "HTTP",
                      "SSL",
-                     "SSLV3",
-                     "SSL_INSECURE_CIPHERS",
+                     "SSLv3",
                      "TLS",
-                     "TLSV1",
-                     "TLSV1_1",
-                     "TLSV1_2",
-                     "TLSV1_3",
-                     "TLSV1_INSECURE_CIPHERS"
+                     "TLSv1",
+                     "TLSv1.1",
+                     "TLSv1.2",
+                     "TLSv1.3"
                   ],
                   "example" : "TLSv1.2",
                   "type" : "string"
@@ -15000,6 +15019,13 @@
                   },
                   "type" : "array"
                },
+               "authnApps" : {
+                  "description" : "Set of authn apps to add to this user",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
                "email" : {
                   "description" : "The email address of the user.",
                   "type" : "string"
@@ -15060,11 +15086,11 @@
                "communicationFormat" : {
                   "description" : "Format or protocol for receiving webhooks. Possible values:\n* **soap**\n* **http**\n* **json** ",
                   "enum" : [
-                     "HTTP",
-                     "JSON",
-                     "SOAP"
+                     "http",
+                     "json",
+                     "soap"
                   ],
-                  "example" : "SOAP",
+                  "example" : "soap",
                   "type" : "string"
                },
                "description" : {
@@ -15092,14 +15118,12 @@
                   "enum" : [
                      "HTTP",
                      "SSL",
-                     "SSLV3",
-                     "SSL_INSECURE_CIPHERS",
+                     "SSLv3",
                      "TLS",
-                     "TLSV1",
-                     "TLSV1_1",
-                     "TLSV1_2",
-                     "TLSV1_3",
-                     "TLSV1_INSECURE_CIPHERS"
+                     "TLSv1",
+                     "TLSv1.1",
+                     "TLSv1.2",
+                     "TLSv1.3"
                   ],
                   "example" : "TLSv1.2",
                   "type" : "string"
@@ -15143,6 +15167,13 @@
                "active" : {
                   "description" : "Indicates whether this user is active.",
                   "type" : "boolean"
+               },
+               "authnApps" : {
+                  "description" : "Set of authn apps available to this user",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
                },
                "email" : {
                   "description" : "The email address of the user.",
@@ -15381,8 +15412,15 @@
                   "maxLength" : 20,
                   "minLength" : 16,
                   "type" : "string"
+               },
+               "reuseMerchantId" : {
+                  "description" : "Indicates whether the Google Pay Merchant ID is used for several merchant accounts. Default value: **false**.",
+                  "type" : "boolean"
                }
             },
+            "required" : [
+               "merchantId"
+            ],
             "type" : "object"
          },
          "Gratuity" : {
@@ -16156,7 +16194,7 @@
          "Opi" : {
             "properties" : {
                "enablePayAtTable" : {
-                  "description" : "Indicates if Pay at Table is enabled.",
+                  "description" : "Indicates if Pay at table is enabled.",
                   "type" : "boolean"
                },
                "payAtTableStoreNumber" : {
@@ -16175,6 +16213,11 @@
                "id" : {
                   "description" : "The unique identifier of the product.",
                   "type" : "string"
+               },
+               "installments" : {
+                  "description" : "The number of installments for the specified product `id`.",
+                  "format" : "int64",
+                  "type" : "integer"
                },
                "name" : {
                   "description" : "The name of the product.",
@@ -16244,6 +16287,23 @@
             },
             "type" : "object"
          },
+         "PayAtTable" : {
+            "properties" : {
+               "authenticationMethod" : {
+                  "description" : "Allowed authentication methods: Magswipe, Manual Entry.",
+                  "enum" : [
+                     "MAGSWIPE",
+                     "MKE"
+                  ],
+                  "type" : "string"
+               },
+               "enablePayAtTable" : {
+                  "description" : "Enable Pay at table.",
+                  "type" : "boolean"
+               }
+            },
+            "type" : "object"
+         },
          "PayPalInfo" : {
             "properties" : {
                "directCapture" : {
@@ -16265,6 +16325,18 @@
                "subject",
                "payerId"
             ],
+            "type" : "object"
+         },
+         "Payment" : {
+            "properties" : {
+               "hideMinorUnitsInCurrencies" : {
+                  "description" : "Hides the minor units for the listed [ISO currency codes](https://en.wikipedia.org/wiki/ISO_4217).",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               }
+            },
             "type" : "object"
          },
          "PaymentMethod" : {
@@ -16372,6 +16444,10 @@
                      "rejected"
                   ],
                   "type" : "string"
+               },
+               "vipps" : {
+                  "description" : "Vipps details.",
+                  "$ref" : "#/components/schemas/VippsInfo"
                }
             },
             "required" : [
@@ -16406,12 +16482,15 @@
                   "description" : "Payment method types with errors.",
                   "items" : {
                      "enum" : [
+                        "afterpaytouch",
                         "alipay",
+                        "alipay_hk",
                         "amex",
                         "applepay",
                         "bcmc",
                         "blik",
                         "cartebancaire",
+                        "clearpay",
                         "cup",
                         "diners",
                         "directEbanking",
@@ -16440,10 +16519,12 @@
                         "mealVoucher_FR",
                         "mobilepay",
                         "multibanco",
+                        "onlineBanking_PL",
                         "paypal",
                         "payshop",
                         "swish",
                         "trustly",
+                        "vipps",
                         "visa",
                         "visadebit",
                         "vpay",
@@ -16550,12 +16631,15 @@
                "type" : {
                   "description" : "Payment method [variant](https://docs.adyen.com/development-resources/paymentmethodvariant#management-api).",
                   "enum" : [
+                     "afterpaytouch",
                      "alipay",
+                     "alipay_hk",
                      "amex",
                      "applepay",
                      "bcmc",
                      "blik",
                      "cartebancaire",
+                     "clearpay",
                      "cup",
                      "diners",
                      "directEbanking",
@@ -16584,10 +16668,12 @@
                      "mealVoucher_FR",
                      "mobilepay",
                      "multibanco",
+                     "onlineBanking_PL",
                      "paypal",
                      "payshop",
                      "swish",
                      "trustly",
+                     "vipps",
                      "visa",
                      "visadebit",
                      "vpay",
@@ -16595,6 +16681,10 @@
                      "wechatpay_pos"
                   ],
                   "type" : "string"
+               },
+               "vipps" : {
+                  "description" : "Vipps details.",
+                  "$ref" : "#/components/schemas/VippsInfo"
                }
             },
             "type" : "object"
@@ -17686,8 +17776,16 @@
                   "$ref" : "#/components/schemas/Opi"
                },
                "passcodes" : {
-                  "description" : "Settings for passcodes features.",
+                  "description" : "Settings for [passcodes](https://docs.adyen.com/point-of-sale/managing-terminals/menu-access?tab=manage_passcodes_with_an_api_call_2#manage-passcodes) features.",
                   "$ref" : "#/components/schemas/Passcodes"
+               },
+               "payAtTable" : {
+                  "description" : "Settings for [Pay-at-table](https://docs.adyen.com/point-of-sale/pay-at-x) features.",
+                  "$ref" : "#/components/schemas/PayAtTable"
+               },
+               "payment" : {
+                  "description" : "Settings for payment features.",
+                  "$ref" : "#/components/schemas/Payment"
                },
                "receiptOptions" : {
                   "description" : "Generic receipt settings.",
@@ -17702,7 +17800,7 @@
                   "$ref" : "#/components/schemas/Signature"
                },
                "standalone" : {
-                  "description" : "Settings for standalone features.",
+                  "description" : "Settings for [standalone](https://docs.adyen.com/point-of-sale/standalone/standalone-build/set-up-standalone#set-up-standalone-using-an-api-call) features.",
                   "$ref" : "#/components/schemas/Standalone"
                },
                "surcharge" : {
@@ -17933,6 +18031,20 @@
                   },
                   "type" : "array"
                },
+               "authnAppsToAdd" : {
+                  "description" : "Set of authn apps to add to this user",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
+               "authnAppsToRemove" : {
+                  "description" : "Set of authn apps to remove from this user",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
                "email" : {
                   "description" : "The email address of the user.",
                   "type" : "string"
@@ -17982,11 +18094,11 @@
                "communicationFormat" : {
                   "description" : "Format or protocol for receiving webhooks. Possible values:\n* **soap**\n* **http**\n* **json** ",
                   "enum" : [
-                     "HTTP",
-                     "JSON",
-                     "SOAP"
+                     "http",
+                     "json",
+                     "soap"
                   ],
-                  "example" : "SOAP",
+                  "example" : "soap",
                   "type" : "string"
                },
                "description" : {
@@ -17996,9 +18108,9 @@
                "filterMerchantAccountType" : {
                   "description" : "Shows how merchant accounts are filtered when configuring the webhook. Possible values:\n* **includeAccounts**: The webhook is configured for the merchant accounts listed in `filterMerchantAccounts`.\n* **excludeAccounts**: The webhook is not configured for the merchant accounts listed in `filterMerchantAccounts`.\n* **allAccounts**: Includes all merchant accounts, and does not require specifying `filterMerchantAccounts`.",
                   "enum" : [
-                     "EXCLUDE_LIST",
-                     "INCLUDE_ALL",
-                     "INCLUDE_LIST"
+                     "allAccounts",
+                     "excludeAccounts",
+                     "includeAccounts"
                   ],
                   "type" : "string"
                },
@@ -18030,14 +18142,12 @@
                   "enum" : [
                      "HTTP",
                      "SSL",
-                     "SSLV3",
-                     "SSL_INSECURE_CIPHERS",
+                     "SSLv3",
                      "TLS",
-                     "TLSV1",
-                     "TLSV1_1",
-                     "TLSV1_2",
-                     "TLSV1_3",
-                     "TLSV1_INSECURE_CIPHERS"
+                     "TLSv1",
+                     "TLSv1.1",
+                     "TLSv1.2",
+                     "TLSv1.3"
                   ],
                   "example" : "TLSv1.2",
                   "type" : "string"
@@ -18053,9 +18163,6 @@
                   "type" : "string"
                }
             },
-            "required" : [
-               "url"
-            ],
             "type" : "object"
          },
          "UpdateMerchantApiCredentialRequest" : {
@@ -18097,6 +18204,20 @@
                "active" : {
                   "description" : "Sets the status of the user to active (**true**) or inactive (**false**).",
                   "type" : "boolean"
+               },
+               "authnAppsToAdd" : {
+                  "description" : "Set of authn apps to add to this user",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
+               "authnAppsToRemove" : {
+                  "description" : "Set of authn apps to remove from this user",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
                },
                "email" : {
                   "description" : "The email address of the user.",
@@ -18147,11 +18268,11 @@
                "communicationFormat" : {
                   "description" : "Format or protocol for receiving webhooks. Possible values:\n* **soap**\n* **http**\n* **json** ",
                   "enum" : [
-                     "HTTP",
-                     "JSON",
-                     "SOAP"
+                     "http",
+                     "json",
+                     "soap"
                   ],
-                  "example" : "SOAP",
+                  "example" : "soap",
                   "type" : "string"
                },
                "description" : {
@@ -18179,14 +18300,12 @@
                   "enum" : [
                      "HTTP",
                      "SSL",
-                     "SSLV3",
-                     "SSL_INSECURE_CIPHERS",
+                     "SSLv3",
                      "TLS",
-                     "TLSV1",
-                     "TLSV1_1",
-                     "TLSV1_2",
-                     "TLSV1_3",
-                     "TLSV1_INSECURE_CIPHERS"
+                     "TLSv1",
+                     "TLSv1.1",
+                     "TLSv1.2",
+                     "TLSv1.3"
                   ],
                   "example" : "TLSv1.2",
                   "type" : "string"
@@ -18202,11 +18321,6 @@
                   "type" : "string"
                }
             },
-            "required" : [
-               "url",
-               "active",
-               "communicationFormat"
-            ],
             "type" : "object"
          },
          "UpdatePaymentMethodInfo" : {
@@ -18239,6 +18353,13 @@
                "shopperStatement" : {
                   "description" : "Information regarding the shopper statement.",
                   "$ref" : "#/components/schemas/ShopperStatement"
+               },
+               "storeIds" : {
+                  "description" : "The list of stores for this payment method",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
                }
             },
             "type" : "object"
@@ -18291,6 +18412,10 @@
          },
          "Url" : {
             "properties" : {
+               "encrypted" : {
+                  "description" : "Indicates if the message sent to this URL should be encrypted.",
+                  "type" : "boolean"
+               },
                "password" : {
                   "description" : "The password for authentication of the notifications.",
                   "type" : "string"
@@ -18322,6 +18447,13 @@
                "active" : {
                   "description" : "Indicates whether this user is active.",
                   "type" : "boolean"
+               },
+               "authnApps" : {
+                  "description" : "Set of authn apps available to this user",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
                },
                "email" : {
                   "description" : "The email address of the user.",
@@ -18359,6 +18491,22 @@
                "timeZoneCode",
                "username",
                "roles"
+            ],
+            "type" : "object"
+         },
+         "VippsInfo" : {
+            "properties" : {
+               "logo" : {
+                  "description" : "Vipps logo. Format: Base64-encoded string.",
+                  "type" : "string"
+               },
+               "subscriptionCancelUrl" : {
+                  "description" : "Vipps subscription cancel url",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "logo"
             ],
             "type" : "object"
          },
@@ -18402,11 +18550,11 @@
                "communicationFormat" : {
                   "description" : "Format or protocol for receiving webhooks. Possible values:\n* **soap**\n* **http**\n* **json** ",
                   "enum" : [
-                     "HTTP",
-                     "JSON",
-                     "SOAP"
+                     "http",
+                     "json",
+                     "soap"
                   ],
-                  "example" : "SOAP",
+                  "example" : "soap",
                   "type" : "string"
                },
                "description" : {
@@ -18416,9 +18564,9 @@
                "filterMerchantAccountType" : {
                   "description" : "Shows how merchant accounts are included in company-level webhooks. Possible values:\n* **includeAccounts**\n* **excludeAccounts**\n* **allAccounts**: Includes all merchant accounts, and does not require specifying `filterMerchantAccounts`.",
                   "enum" : [
-                     "EXCLUDE_LIST",
-                     "INCLUDE_ALL",
-                     "INCLUDE_LIST"
+                     "allAccounts",
+                     "excludeAccounts",
+                     "includeAccounts"
                   ],
                   "type" : "string"
                },
@@ -18462,14 +18610,12 @@
                   "enum" : [
                      "HTTP",
                      "SSL",
-                     "SSLV3",
-                     "SSL_INSECURE_CIPHERS",
+                     "SSLv3",
                      "TLS",
-                     "TLSV1",
-                     "TLSV1_1",
-                     "TLSV1_2",
-                     "TLSV1_3",
-                     "TLSV1_INSECURE_CIPHERS"
+                     "TLSv1",
+                     "TLSv1.1",
+                     "TLSv1.2",
+                     "TLSv1.3"
                   ],
                   "example" : "TLSv1.2",
                   "type" : "string"
@@ -18912,6 +19058,7 @@
                   {
                      "id" : "YOUR_API_CREDENTIAL_6",
                      "username" : "YOUR_USERNAME_6",
+                     "clientKey" : "YOUR_CLIENT_KEY_6",
                      "allowedIpAddresses" : [
                         ],
                      "roles" : [
@@ -18941,6 +19088,7 @@
                   {
                      "id" : "YOUR_API_CREDENTIAL_7",
                      "username" : "YOUR_USERNAME_7",
+                     "clientKey" : "YOUR_CLIENT_KEY_7",
                      "allowedIpAddresses" : [
                         ],
                      "roles" : [
@@ -18972,6 +19120,7 @@
                   {
                      "id" : "YOUR_API_CREDENTIAL_8",
                      "username" : "YOUR_USERNAME_8",
+                     "clientKey" : "YOUR_CLIENT_KEY_8",
                      "allowedIpAddresses" : [
                         ],
                      "roles" : [
@@ -19001,6 +19150,7 @@
                   {
                      "id" : "YOUR_API_CREDENTIAL_9",
                      "username" : "YOUR_USERNAME_9",
+                     "clientKey" : "YOUR_CLIENT_KEY_9",
                      "allowedIpAddresses" : [
                         ],
                      "roles" : [
@@ -19032,6 +19182,7 @@
                   {
                      "id" : "YOUR_API_CREDENTIAL_10",
                      "username" : "YOUR_USERNAME_10",
+                     "clientKey" : "YOUR_CLIENT_KEY_10",
                      "allowedIpAddresses" : [
                         ],
                      "roles" : [
@@ -20210,6 +20361,7 @@
             "value" : {
                "id" : "YOUR_API_CREDENTIAL",
                "username" : "YOUR_USERNAME",
+               "clientKey" : "YOUR_CLIENT_KEY",
                "allowedIpAddresses" : [
                   ],
                "roles" : [
@@ -20259,6 +20411,7 @@
                   {
                      "id" : "YOUR_API_CREDENTIAL_1",
                      "username" : "YOUR_USERNAME_1",
+                     "clientKey" : "YOUR_CLIENT_KEY_1",
                      "allowedIpAddresses" : [
                         ],
                      "roles" : [
@@ -20286,6 +20439,7 @@
                   {
                      "id" : "YOUR_API_CREDENTIAL_2",
                      "username" : "YOUR_USERNAME_2",
+                     "clientKey" : "YOUR_CLIENT_KEY_2",
                      "allowedIpAddresses" : [
                         ],
                      "roles" : [
@@ -20460,6 +20614,7 @@
                   {
                      "id" : "YOUR_API_CREDENTIAL_6",
                      "username" : "YOUR_USERNAME_6",
+                     "clientKey" : "YOUR_CLIENT_KEY_6",
                      "allowedIpAddresses" : [
                         ],
                      "roles" : [
@@ -20491,6 +20646,7 @@
                   {
                      "id" : "YOUR_API_CREDENTIAL_7",
                      "username" : "YOUR_USERNAME_7",
+                     "clientKey" : "YOUR_CLIENT_KEY_7",
                      "allowedIpAddresses" : [
                         ],
                      "roles" : [
@@ -22094,7 +22250,7 @@
             "summary" : "Activate an API credential",
             "description" : "Example request for activating an API credential.",
             "value" : {
-               "active" : "true"
+               "active" : true
             }
          },
          "patch-companies-companyId-apiCredentials-apiCredentialId-patch-company-credential-200" : {
@@ -22103,6 +22259,7 @@
             "value" : {
                "id" : "YOUR_API_CREDENTIAL",
                "username" : "YOUR_USERNAME",
+               "clientKey" : "YOUR_CLIENT_KEY",
                "allowedIpAddresses" : [
                   ],
                "roles" : [
@@ -22642,7 +22799,7 @@
             "summary" : "Activate an API credential",
             "description" : "Example request for activating an API credential.",
             "value" : {
-               "active" : "true"
+               "active" : true
             }
          },
          "patch-merchants-merchantId-apiCredentials-apiCredentialId-patch-merchant-credential-200" : {
@@ -24473,7 +24630,7 @@
                   "Merchant standard role",
                   "Merchant admin"
                ],
-               "active" : "true",
+               "active" : true,
                "_links" : {
                   "self" : {
                      "href" : "https://management-test.adyen.com/v1/companies/YOUR_COMPANY_ACCOUNT/users/S2-5C334C6770"
@@ -24492,13 +24649,13 @@
                "url" : "YOUR_WEBHOOK_URL",
                "username" : "YOUR_USER",
                "password" : "YOUR_PASSWORD",
-               "active" : "true",
+               "active" : true,
                "sslVersion" : "TLSv1.2",
                "communicationFormat" : "soap",
-               "acceptsExpiredCertificate" : "false",
-               "acceptsSelfSignedCertificate" : "true",
-               "acceptsUntrustedRootCertificate" : "true",
-               "populateSoapActionHeader" : "false",
+               "acceptsExpiredCertificate" : false,
+               "acceptsSelfSignedCertificate" : true,
+               "acceptsUntrustedRootCertificate" : true,
+               "populateSoapActionHeader" : false,
                "filterMerchantAccountType" : "includeAccounts",
                "filterMerchantAccounts" : [
                   "YOUR_MERCHANT_ACCOUNT"
@@ -25069,7 +25226,7 @@
                "roles" : [
                   "Merchant standard role"
                ],
-               "active" : "true",
+               "active" : true,
                "_links" : {
                   "self" : {
                      "href" : "https://management-test.adyen.com/v1/merchants/YOUR_MERCHANT_ACCOUNT/users/S2-3B3C3C3B22"
@@ -25088,13 +25245,13 @@
                "url" : "YOUR_WEBHOOK_URL",
                "username" : "YOUR_USER",
                "password" : "YOUR_PASSWORD",
-               "active" : "true",
+               "active" : true,
                "sslVersion" : "TLSv1.2",
                "communicationFormat" : "json",
-               "acceptsExpiredCertificate" : "false",
-               "acceptsSelfSignedCertificate" : "true",
-               "acceptsUntrustedRootCertificate" : "true",
-               "populateSoapActionHeader" : "false"
+               "acceptsExpiredCertificate" : false,
+               "acceptsSelfSignedCertificate" : true,
+               "acceptsUntrustedRootCertificate" : true,
+               "populateSoapActionHeader" : false
             }
          },
          "post-merchants-merchantId-webhooks-post-merchant-webhook-200" : {
@@ -25433,24 +25590,11 @@
             "summary" : "Response code - 422 Unprocessable Entity",
             "description" : "Example response for failed verification of terminal IDs",
             "value" : {
-               "actionDetails" : {
-                  "appId" : "ANDA422LZ223223K5F694GCCF621J7",
-                  "type" : "InstallAndroidApp"
-               },
-               "scheduledAt" : "2021-12-11T20:21:22-0100",
-               "storeId" : "",
-               "terminalIds" : [
-                  "S1E-000150183300032",
-                  "S1E-000150183300033",
-                  "S1F2-100150183300034"
-               ],
-               "terminalsWithErrors" : {
-                  "InvalidTerminal" : [
-                     "S1F2-100150183300034"
-                  ]
-               },
-               "totalCreated" : 0,
-               "totalErrors" : 0
+               "type" : "https://docs.adyen.com/errors/unprocessable-entity",
+               "errorCode" : "02_005",
+               "title" : "Terminal ID verification failed.",
+               "status" : 422,
+               "detail" : "Terminal IDs are empty"
             }
          }
       }

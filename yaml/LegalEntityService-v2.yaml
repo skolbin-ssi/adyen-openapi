@@ -11,8 +11,8 @@ info:
     \ credentials of your web service user. If you don't have one, contact the [Adyen\
     \ Support Team](https://www.adyen.help/hc/en-us/requests/new). Use the web service\
     \ user credentials to authenticate your request, for example:\n\n```\ncurl\n-U\
-    \ \"ws12345@Scope.BalancePlatform_YourBalancePlatform\":\"YourWsPassword\" \\\n\
-    -H \"Content-Type: application/json\" \\\n...\n```\nNote that when going live,\
+    \ \"ws_123456@Scope.BalancePlatform_YourBalancePlatform\":\"YourWsPassword\" \\\
+    \n-H \"Content-Type: application/json\" \\\n...\n```\nNote that when going live,\
     \ you need to generate new web service user credentials to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\
     \n## Versioning\nThe Legal Entity Management API supports versioning of its endpoints\
     \ through a version suffix in the endpoint URL. This suffix has the following\
@@ -20,7 +20,7 @@ info:
     ```\n## Going live\nWhen going live, your Adyen contact will provide your API\
     \ credential for the live environment. You can then use the username and password\
     \ to send requests to `https://kyc-live.adyen.com/lem/v2`.\n\n"
-  x-timestamp: '2023-02-21T15:24:49Z'
+  x-timestamp: '2023-04-25T13:22:00Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
@@ -33,6 +33,7 @@ x-groups:
 - Documents
 - Terms of Service
 - Hosted Onboarding
+- PCI questionnaires
 tags:
 - name: Legal entities
 - name: Hosted Onboarding
@@ -40,6 +41,7 @@ tags:
 - name: Documents
 - name: Terms of Service
 - name: Transfer instruments
+- name: PCI questionnaires
 paths:
   /businessLines:
     post:
@@ -112,8 +114,8 @@ paths:
       tags:
       - Business lines
       summary: Delete a business line
-      description: "Deletes a business line.\n\n >\"If you delete a business line\
-        \ linked to a [payment method](https://docs.adyen.com/development-resources/paymentmethodvariant#management-api),\
+      description: "Deletes a business line.\n\n >If you delete a business line linked\
+        \ to a [payment method](https://docs.adyen.com/development-resources/paymentmethodvariant#management-api),\
         \ it can affect your merchant account's ability to use the [payment method](https://docs.adyen.com/api-explorer/Management/latest/post/merchants/_merchantId_/paymentMethodSettings).\
         \ The business line is removed from all linked merchant accounts."
       x-addedInVersion: '1'
@@ -510,8 +512,8 @@ paths:
           content:
             application/json:
               examples:
-                uploadDocument:
-                  $ref: '#/components/examples/patch-documents-id-uploadDocument-200'
+                updateDocument:
+                  $ref: '#/components/examples/patch-documents-id-updateDocument-200'
               schema:
                 $ref: '#/components/schemas/Document'
           description: OK - the request has succeeded.
@@ -903,6 +905,275 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
+  /legalEntities/{id}/pciQuestionnaires:
+    get:
+      tags:
+      - PCI questionnaires
+      summary: Get PCI questionnaire details
+      description: Get a list of signed PCI questionnaires.
+      x-addedInVersion: '1'
+      operationId: get-legalEntities-id-pciQuestionnaires
+      x-groupName: PCI questionnaires
+      x-sortIndex: 3
+      x-methodName: getPciQuestionnaireDetails
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      parameters:
+      - description: The unique identifier of the legal entity to get PCI questionnaire
+          information.
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-legalEntities-id-pciQuestionnaires-success-200'
+              schema:
+                $ref: '#/components/schemas/GetPciQuestionnaireInfosResponse'
+          description: OK - the request has succeeded.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /legalEntities/{id}/pciQuestionnaires/generatePciTemplates:
+    post:
+      tags:
+      - PCI questionnaires
+      summary: Generate PCI questionnaire
+      description: Generates the required PCI questionnaire based on the user's [salesChannel](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businessLines__reqParam_salesChannels).
+        If multiple questionnaires are required, this request creates a single consodilated
+        document to be signed.
+      x-addedInVersion: '1'
+      operationId: post-legalEntities-id-pciQuestionnaires-generatePciTemplates
+      x-groupName: PCI questionnaires
+      x-sortIndex: 1
+      x-methodName: generatePciQuestionnaire
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              createPciQuestionnaire:
+                $ref: '#/components/examples/post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire'
+            schema:
+              $ref: '#/components/schemas/GeneratePciDescriptionRequest'
+      parameters:
+      - description: The legal entity ID of the individual who will sign the PCI questionnaire.
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                createPciQuestionnaire:
+                  $ref: '#/components/examples/post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire-200'
+              schema:
+                $ref: '#/components/schemas/GeneratePciDescriptionResponse'
+          description: OK - the request has succeeded.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /legalEntities/{id}/pciQuestionnaires/signPciTemplates:
+    post:
+      tags:
+      - PCI questionnaires
+      summary: Sign PCI questionnaire
+      description: Signs the required PCI questionnaire.
+      x-addedInVersion: '1'
+      operationId: post-legalEntities-id-pciQuestionnaires-signPciTemplates
+      x-groupName: PCI questionnaires
+      x-sortIndex: 2
+      x-methodName: signPciQuestionnaire
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              signPciQuestionnaire:
+                $ref: '#/components/examples/post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire'
+            schema:
+              $ref: '#/components/schemas/PciSigningRequest'
+      parameters:
+      - description: The legal entity ID of the individual who signed the PCI questionnaire.
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                signPciQuestionnaire:
+                  $ref: '#/components/examples/post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire-200'
+              schema:
+                $ref: '#/components/schemas/PciSigningResponse'
+          description: OK - the request has succeeded.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
+  /legalEntities/{id}/pciQuestionnaires/{pciid}:
+    get:
+      tags:
+      - PCI questionnaires
+      summary: Get PCI questionnaire
+      description: Returns the signed PCI questionnaire.
+      x-addedInVersion: '1'
+      operationId: get-legalEntities-id-pciQuestionnaires-pciid
+      x-groupName: PCI questionnaires
+      x-sortIndex: 4
+      x-methodName: getPciQuestionnaire
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      parameters:
+      - description: The legal entity ID of the individual who signed the PCI questionnaire.
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The unique identifier of the signed PCI questionnaire.
+        name: pciid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-legalEntities-id-pciQuestionnaires-pciid-success-200'
+              schema:
+                $ref: '#/components/schemas/GetPciQuestionnaireResponse'
+          description: OK - the request has succeeded.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
   /legalEntities/{id}/termsOfService:
     post:
       tags:
@@ -912,7 +1183,7 @@ paths:
       x-addedInVersion: '1'
       operationId: post-legalEntities-id-termsOfService
       x-groupName: Terms of Service
-      x-sortIndex: 2
+      x-sortIndex: 1
       x-methodName: getTermsOfServiceDocument
       security:
       - BasicAuth: []
@@ -981,7 +1252,7 @@ paths:
       x-addedInVersion: '1'
       operationId: patch-legalEntities-id-termsOfService-termsofservicedocumentid
       x-groupName: Terms of Service
-      x-sortIndex: 3
+      x-sortIndex: 2
       x-methodName: acceptTermsOfService
       security:
       - BasicAuth: []
@@ -1050,7 +1321,7 @@ paths:
       x-addedInVersion: '1'
       operationId: get-legalEntities-id-termsOfServiceAcceptanceInfos
       x-groupName: Terms of Service
-      x-sortIndex: 4
+      x-sortIndex: 3
       x-methodName: getTermsOfServiceInformationForLegalEntity
       security:
       - BasicAuth: []
@@ -1071,68 +1342,6 @@ paths:
                   $ref: '#/components/examples/get-legalEntities-id-termsOfServiceAcceptanceInfos-success-200'
               schema:
                 $ref: '#/components/schemas/GetTermsOfServiceAcceptanceInfosResponse'
-          description: OK - the request has succeeded.
-        '400':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceError'
-          description: Bad Request - a problem reading or understanding the request.
-        '401':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceError'
-          description: Unauthorized - authentication required.
-        '403':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceError'
-          description: Forbidden - insufficient permissions to process the request.
-        '422':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceError'
-          description: Unprocessable Entity - a request validation error.
-        '500':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ServiceError'
-          description: Internal Server Error - the server could not process the request.
-  /legalEntities/{id}/termsOfServiceStatus:
-    get:
-      tags:
-      - Terms of Service
-      summary: Get Terms of Service status
-      description: Returns the required types of Terms of Service that need to be
-        accepted by a legal entity.
-      x-addedInVersion: '1'
-      operationId: get-legalEntities-id-termsOfServiceStatus
-      x-groupName: Terms of Service
-      x-sortIndex: 1
-      x-methodName: getTermsOfServiceStatus
-      security:
-      - BasicAuth: []
-      - ApiKeyAuth: []
-      parameters:
-      - description: The unique identifier of the legal entity.
-        name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              examples:
-                success:
-                  $ref: '#/components/examples/get-legalEntities-id-termsOfServiceStatus-success-200'
-              schema:
-                $ref: '#/components/schemas/CalculateTermsOfServiceStatusResponse'
           description: OK - the request has succeeded.
         '400':
           content:
@@ -1564,8 +1773,10 @@ components:
           enum:
           - adyenAccount
           - adyenCapital
+          - adyenCard
           - adyenForPlatformsAdvanced
           - adyenForPlatformsManage
+          - adyenFranchisee
           - adyenIssuing
           type: string
       type: object
@@ -1721,16 +1932,7 @@ components:
           description: 'A list of channels where goods or services are sold.
 
 
-            Possible values:
-
-
-            - For point of sale: **pos** and **posMoto**
-
-
-            - For ecommerce: **eCommerce** and **ecomMoto**
-
-
-            - For Pay by Link: **payByLink**
+            Possible values: **pos**, **posMoto**, **eCommerce**, **ecomMoto**, **payByLink**.
 
 
             Required only in combination with the `capability` to **receivePayments**
@@ -1776,16 +1978,7 @@ components:
           description: 'A list of channels where goods or services are sold.
 
 
-            Possible values:
-
-
-            - For point of sale: **pos** and **posMoto**
-
-
-            - For ecommerce: **eCommerce** and **ecomMoto**
-
-
-            - For Pay by Link: **payByLink**
+            Possible values: **pos**, **posMoto**, **eCommerce**, **ecomMoto**, **payByLink**.
 
 
             Required only in combination with the `capability` to **receivePayments**
@@ -1830,16 +2023,7 @@ components:
           description: 'A list of channels where goods or services are sold.
 
 
-            Possible values:
-
-
-            - For point of sale: **pos** and **posMoto**
-
-
-            - For ecommerce: **eCommerce** and **ecomMoto**
-
-
-            - For Pay by Link: **payByLink**
+            Possible values: **pos**, **posMoto**, **eCommerce**, **ecomMoto**, **payByLink**.
 
 
             Required only in combination with the `capability` to **receivePayments**
@@ -1872,21 +2056,6 @@ components:
       required:
       - businessLines
       type: object
-    CalculateTermsOfServiceStatusResponse:
-      properties:
-        termsOfServiceTypes:
-          description: The type of Terms of Service that the legal entity needs to
-            accept. If empty, no Terms of Service needs to be accepted.
-          items:
-            enum:
-            - adyenAccount
-            - adyenCapital
-            - adyenForPlatformsAdvanced
-            - adyenForPlatformsManage
-            - adyenIssuing
-            type: string
-          type: array
-      type: object
     CapabilityProblem:
       properties:
         entity:
@@ -1898,6 +2067,12 @@ components:
       type: object
     CapabilityProblemEntity:
       properties:
+        documents:
+          description: List of document IDs corresponding to the verification errors
+            from capabilities.
+          items:
+            type: string
+          type: array
         id:
           type: string
         owner:
@@ -1911,6 +2086,12 @@ components:
       type: object
     CapabilityProblemEntity-recursive:
       properties:
+        documents:
+          description: List of document IDs corresponding to the verification errors
+            from capabilities.
+          items:
+            type: string
+          type: array
         id:
           type: string
         type:
@@ -2043,7 +2224,6 @@ components:
       - description
       - owner
       - attachments
-      - id
       type: object
     DocumentReference:
       properties:
@@ -2074,6 +2254,58 @@ components:
           description: The unique identifier of the resource.
           type: string
       type: object
+    GeneratePciDescriptionRequest:
+      properties:
+        language:
+          description: Sets the language of the PCI questionnaire. Its value is a
+            two-character [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) language
+            code, for example, **en**.
+          type: string
+      type: object
+    GeneratePciDescriptionResponse:
+      properties:
+        content:
+          description: The generated questionnaires in a base64 encoded format.
+          format: byte
+          type: string
+        language:
+          description: The two-letter [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+            language code for the questionnaire. For example, **en**.
+          type: string
+        pciTemplateReferences:
+          description: The array of Adyen-generated unique identifiers for the questionnaires.
+          items:
+            type: string
+          type: array
+      type: object
+    GetPciQuestionnaireInfosResponse:
+      properties:
+        data:
+          description: Information about the signed PCI questionnaires.
+          items:
+            $ref: '#/components/schemas/PciDocumentInfo'
+          type: array
+      type: object
+    GetPciQuestionnaireResponse:
+      properties:
+        content:
+          description: The generated questionnaire in a base64 encoded format.
+          format: byte
+          type: string
+        createdAt:
+          description: The date the questionnaire was created, in ISO 8601 extended
+            format. For example, 2022-12-18T10:15:30+01:00
+          format: date-time
+          type: string
+        id:
+          description: The unique identifier of the signed questionnaire.
+          type: string
+        validUntil:
+          description: The expiration date of the questionnaire, in ISO 8601 extended
+            format. For example, 2022-12-18T10:15:30+01:00
+          format: date-time
+          type: string
+      type: object
     GetTermsOfServiceAcceptanceInfosResponse:
       properties:
         data:
@@ -2094,8 +2326,10 @@ components:
           enum:
           - adyenAccount
           - adyenCapital
+          - adyenCard
           - adyenForPlatformsAdvanced
           - adyenForPlatformsManage
+          - adyenFranchisee
           - adyenIssuing
           type: string
       type: object
@@ -2121,8 +2355,10 @@ components:
           enum:
           - adyenAccount
           - adyenCapital
+          - adyenCard
           - adyenForPlatformsAdvanced
           - adyenForPlatformsManage
+          - adyenFranchisee
           - adyenIssuing
           type: string
       type: object
@@ -2315,10 +2551,10 @@ components:
             or **signatory**.
           type: string
         legalEntityId:
-          description: The unique identifier of the associated [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id).
+          description: The unique identifier of the associated [legal entity](https://docs.adyen.com/api-explorer/legalentity/latest/post/legalEntities#responses-200-id).
           type: string
         name:
-          description: 'The name of the associated [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id).
+          description: 'The name of the associated [legal entity](https://docs.adyen.com/api-explorer/legalentity/latest/post/legalEntities#responses-200-id).
 
 
             - For **individual**, `name.firstName` and `name.lastName`.
@@ -2330,14 +2566,16 @@ components:
           type: string
         type:
           description: "Defines the relationship of the legal entity to the current\
-            \ legal entity. \n\nFor example, **uboThroughOwnership**, **uboThroughControl**,\
-            \ **signatory**, or **soleProprietorship**. "
+            \ legal entity. \n\nPossible values for organizations: **uboThroughOwnership**,\
+            \ **uboThroughControl**, **signatory**, or **ultimateParentCompany**.\
+            \ \n\nPossible values for sole proprietorships: **soleProprietorship**. "
           enum:
           - pciSignatory
           - signatory
           - soleProprietorship
           - uboThroughControl
           - uboThroughOwnership
+          - ultimateParentCompany
           type: string
       required:
       - legalEntityId
@@ -2715,9 +2953,9 @@ components:
         id:
           description: Unique identifier of the resource that owns the document. For
             `type` **legalEntity**, this value is the unique identifier of the [legal
-            entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id).
+            entity](https://docs.adyen.com/api-explorer/legalentity/latest/post/legalEntities#responses-200-id).
             For `type` **bankAccount**, this value is the unique identifier of the
-            [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments__resParam_id).
+            [transfer instrument](https://docs.adyen.com/api-explorer/legalentity/latest/post/transferInstruments#responses-200-id).
           type: string
         type:
           description: 'Type of resource that owns the document.
@@ -2728,6 +2966,49 @@ components:
       required:
       - id
       - type
+      type: object
+    PciDocumentInfo:
+      properties:
+        createdAt:
+          description: The date the questionnaire was created, in ISO 8601 extended
+            format. For example, 2022-12-18T10:15:30+01:00
+          format: date-time
+          type: string
+        id:
+          description: The unique identifier of the signed questionnaire.
+          type: string
+        validUntil:
+          description: The expiration date of the questionnaire, in ISO 8601 extended
+            format. For example, 2022-12-18T10:15:30+01:00
+          format: date-time
+          type: string
+      type: object
+    PciSigningRequest:
+      properties:
+        pciTemplateReferences:
+          description: The array of Adyen-generated unique identifiers for the questionnaires.
+          items:
+            type: string
+          type: array
+        signedBy:
+          description: The [legal entity ID](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id)
+            of the individual who signs the PCI questionnaire.
+          type: string
+      required:
+      - signedBy
+      - pciTemplateReferences
+      type: object
+    PciSigningResponse:
+      properties:
+        pciQuestionnaireIds:
+          description: The unique identifiers of the signed PCI documents.
+          items:
+            type: string
+          type: array
+        signedBy:
+          description: The [legal entity ID](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id)
+            of the individual who signed the PCI questionnaire.
+          type: string
       type: object
     PhoneNumber:
       properties:
@@ -2826,7 +3107,8 @@ components:
           type: boolean
         description:
           description: Text describing the source of funds. For example, for `type`
-            **business**, provide a description of the business. Required when `adyenProcessedFunds`
+            **business**, provide a description of where the business transactions
+            come from, such as payments through bank transfer. Required when `adyenProcessedFunds`
             is **false**.
           type: string
         type:
@@ -2981,8 +3263,10 @@ components:
           enum:
           - adyenAccount
           - adyenCapital
+          - adyenCard
           - adyenForPlatformsAdvanced
           - adyenForPlatformsManage
+          - adyenFranchisee
           - adyenIssuing
           type: string
       type: object
@@ -3002,7 +3286,7 @@ components:
           readOnly: true
           type: string
         legalEntityId:
-          description: The unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id)
+          description: The unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/legalentity/latest/post/legalEntities#responses-200-id)
             that owns the transfer instrument.
           type: string
         type:
@@ -3026,7 +3310,7 @@ components:
           description: Contains information about the legal entity's bank account.
           $ref: '#/components/schemas/BankAccountInfo'
         legalEntityId:
-          description: The unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id)
+          description: The unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/legalentity/latest/post/legalEntities#responses-200-id)
             that owns the transfer instrument.
           type: string
         type:
@@ -3051,6 +3335,13 @@ components:
         id:
           description: The unique identifier of the resource.
           type: string
+        realLastFour:
+          description: Four last digits of the bank account number.
+          type: string
+        trustedSource:
+          description: Identifies if the TI was created from a trusted source.
+          readOnly: true
+          type: boolean
       required:
       - id
       - accountIdentifier
@@ -3262,7 +3553,7 @@ components:
       value:
         capability: issueBankAccount
         industryCode: '4531'
-        legalEntityId: LE322JV223222F5GV2LKZ8DFZ
+        legalEntityId: YOUR_LEGAL_ENTITY
         sourceOfFunds:
           adyenProcessedFunds: false
           description: Funds from my flower shop business
@@ -3277,11 +3568,11 @@ components:
       value:
         type: registrationDocument
         attachments:
-        - content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC...==
+        - content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==
         description: Registration doc for Example Company
         fileName: Registration doc for Example Company
         owner:
-          id: LE322KH223222D5GG4C9J83RN
+          id: YOUR_LEGAL_ENTITY
           type: legalEntity
         id: SE322JV223222F5GV2N9L8GDK
     get-legalEntities-id-businessLines-success-200:
@@ -3292,7 +3583,7 @@ components:
         businessLines:
         - capability: issueBankAccount
           industryCode: '55'
-          legalEntityId: LE322KH223222F5GVGMLF3WBL
+          legalEntityId: YOUR_LEGAL_ENTITY
           sourceOfFunds:
             adyenProcessedFunds: false
             description: Funds from my flower shop business
@@ -3303,7 +3594,7 @@ components:
           id: SE322JV223222F5GVGMLNB83F
         - capability: receivePayments
           industryCode: 339E
-          legalEntityId: LE322KH223222F5GVGMLF3WBL
+          legalEntityId: YOUR_LEGAL_ENTITY
           salesChannels:
           - eCommerce
           - ecomMoto
@@ -3311,6 +3602,25 @@ components:
           - webAddress: https://yoururl.com
             webAddressId: SE616CG45905K5H&M90J8BLM
           id: SE322JV223222F5GVGPNRB9GJ
+    get-legalEntities-id-pciQuestionnaires-pciid-success-200:
+      summary: Details of a PCI questionnaire
+      description: Example response when getting the details of a PCI questionnaire
+      value:
+        content: JVBERi0xLjUKJdDUxdgKMTAg.....
+        createdAt: '2023-03-02T17:54:19.538365Z'
+        id: PCID422GZ22322565HHMH48CW63CPH
+        validUntil: '2024-03-01T17:54:19.538365Z'
+    get-legalEntities-id-pciQuestionnaires-success-200:
+      summary: Details of PCI questionnaires signed by a user
+      description: Example response when getting the list of PCI questionnaires
+      value:
+        data:
+        - createdAt: '2023-03-02T17:54:19.538365Z'
+          id: PCID422GZ22322565HHMH48CW63CPH
+          validUntil: '2024-03-01T17:54:19.538365Z'
+        - createdAt: '2023-03-02T17:54:19.538365Z'
+          id: PCID422GZ22322565HHMH49CW75Z9H
+          validUntil: '2024-03-01T17:54:19.538365Z'
     get-legalEntities-id-success-200:
       summary: Details of a legal entity
       description: Example response when getting the details of a legal entity
@@ -3350,24 +3660,18 @@ components:
             street: Simon Carmiggeltstraat 6 - 50
             street2: '274'
         type: individual
-        id: LE322JV223222D5GG42KN6869
+        id: YOUR_LEGAL_ENTITY
     get-legalEntities-id-termsOfServiceAcceptanceInfos-success-200:
       summary: Terms of Service information for a legal entity
       description: Example response when getting Terms of Service information for
         a legal entity
       value:
         data:
-        - acceptedBy: LE00000000000000000000002
-          acceptedFor: LE00000000000000000000001
+        - acceptedBy: YOUR_LEGAL_ENTITY_2
+          acceptedFor: YOUR_LEGAL_ENTITY_1
           createdAt: '2022-12-05T13:36:58.212253Z'
           id: TOSA000AB00000000B2AAAB2BA0AA0
           type: adyenIssuing
-    get-legalEntities-id-termsOfServiceStatus-success-200:
-      summary: Terms of Service status for a legal entity
-      description: Example response when getting the type of Terms of Service
-      value:
-        termsOfServiceTypes:
-        - adyenIssuing
     get-themes-id-success-200:
       summary: Details of a page theme
       description: Example response when getting the details of a page theme
@@ -3423,7 +3727,7 @@ components:
           countryCode: NL
           currencyCode: EUR
           iban: NL62ABNA0000000123
-        legalEntityId: LE322JV223222D5G2SPGL59KT
+        legalEntityId: YOUR_LEGAL_ENTITY
         type: bankAccount
         id: SE322JV223222F5GNXSR89TMW
     patch-businessLines-id-updateBusinessLine:
@@ -3439,7 +3743,7 @@ components:
       value:
         capability: issueBankAccount
         industryCode: '55'
-        legalEntityId: LE322KH223222F5GVGMLF3WBL
+        legalEntityId: YOUR_LEGAL_ENTITY
         sourceOfFunds:
           adyenProcessedFunds: false
           description: Funds from my flower shop business
@@ -3454,17 +3758,17 @@ components:
       value:
         type: proofOfIndustry
         description: Proof of industry doc for Example Company
-    patch-documents-id-uploadDocument-200:
+    patch-documents-id-updateDocument-200:
       summary: Document updated
       description: Example response when a document is updated
       value:
         type: proofOfIndustry
         attachments:
-        - content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC...==
+        - content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==
         description: Proof of industry for Example Company
         fileName: Proof of industry for Example Company
         owner:
-          id: LE322KH223222D5GG4C9J83RN
+          id: YOUR_LEGAL_ENTITY
           type: legalEntity
         id: SE322JV223222F5GV2N9L8GDK
     patch-legalEntities-id-changeLegalEntityType:
@@ -3483,24 +3787,24 @@ components:
           residentialAddress:
             country: US
         type: individual
-        id: LE322JV223222J5HD8HZS2C8B
+        id: YOUR_LEGAL_ENTITY
     patch-legalEntities-id-updateLegalEntityOrganization:
       summary: Add entity associations to an organization
       description: Example request adding entity associations to a legal entity
       value:
         entityAssociations:
         - jobTitle: CEO
-          legalEntityId: LE322KH223222F5GV2SL953Z3
+          legalEntityId: YOUR_LEGAL_ENTITY_2
           type: uboThroughControl
     patch-legalEntities-id-updateLegalEntityOrganization-200:
       summary: Entity associations added
       description: Example response for adding an entity association to an organization
       value:
         entityAssociations:
-        - associatorId: LE322KH223222F5GVGNMJ3XC5
+        - associatorId: YOUR_LEGAL_ENTITY_1
           entityType: individual
           jobTitle: CEO
-          legalEntityId: LE322KH223222F5GV2SL953Z3
+          legalEntityId: YOUR_LEGAL_ENTITY_2
           name: Simone Hopper
           type: uboThroughControl
         organization:
@@ -3523,25 +3827,25 @@ components:
             marketIdentifier: ADYN
             stockNumber: NL012345ABC4
             tickerSymbol: ADYN.M
-          taxExempt: 'false'
+          taxExempt: false
           type: listedPublicCompany
         type: organization
-        id: LE322KH223222F5GVGNMJ3XC5
+        id: YOUR_LEGAL_ENTITY_1
     patch-legalEntities-id-updateLegalEntitySoleProp:
       summary: Add entity associations to a sole proprietorship
       description: Example request adding an entity association to a sole proprietorship
       value:
         entityAssociations:
-        - legalEntityId: LE00000000000000000000002
+        - legalEntityId: YOUR_LEGAL_ENTITY_2
           type: soleProprietorship
     patch-legalEntities-id-updateLegalEntitySoleProp-200:
       summary: Entity association added to a sole proprietorship
       description: Example response for adding an entity association to a sole proprietorship
       value:
         entityAssociations:
-        - associatorId: LE00000000000000000000001
+        - associatorId: YOUR_LEGAL_ENTITY_1
           entityType: soleProprietorship
-          legalEntityId: LE00000000000000000000002
+          legalEntityId: YOUR_LEGAL_ENTITY_2
           type: soleProprietorship
         individual:
           email: s.eller@example.com
@@ -3556,7 +3860,7 @@ components:
             postalCode: 1011DJ
             street: Simon Carmiggeltstraat 6 - 50
         type: individual
-        id: LE00000000000000000000001
+        id: YOUR_LEGAL_ENTITY_1
     post-businessLines-createBusinessLines-businessAccounts:
       summary: Create a business line for a business account
       description: Example request for creating a business line for a business account
@@ -3565,7 +3869,7 @@ components:
         industryCode: '4531'
         webData:
         - webAddress: https://www.adyen.com
-        legalEntityId: LE322JV223222D5FZ9N74BSGM
+        legalEntityId: YOUR_LEGAL_ENTITY
         sourceOfFunds:
           type: business
           adyenProcessedFunds: false
@@ -3576,7 +3880,7 @@ components:
       value:
         capability: issueBankAccount
         industryCode: '4531'
-        legalEntityId: LE322JV223222D5FZ9N74BSGM
+        legalEntityId: YOUR_LEGAL_ENTITY
         sourceOfFunds:
           adyenProcessedFunds: false
           description: Funds from my flower shop business
@@ -3591,10 +3895,10 @@ components:
       value:
         type: registrationDocument
         attachments:
-        - content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC...==
+        - content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==
         description: Registration doc for Example Company
         owner:
-          id: LE322KH223222D5GG4C9J83RN
+          id: YOUR_LEGAL_ENTITY
           type: legalEntity
     post-documents-uploadDocument-200:
       summary: Document uploaded
@@ -3602,11 +3906,11 @@ components:
       value:
         type: registrationDocument
         attachments:
-        - content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC...==
+        - content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==
         description: Registration doc for Example Company
         fileName: Registration doc for Example Company
         owner:
-          id: LE322KH223222D5GG4C9J83RN
+          id: YOUR_LEGAL_ENTITY
           type: legalEntity
         id: SE322JV223222F5GV2N9L8GDK
     post-legalEntities-createLegalEntityIndividualNL:
@@ -3645,7 +3949,7 @@ components:
             postalCode: 1011DJ
             street: Simon Carmiggeltstraat 6 - 50
         type: individual
-        id: LE322JV223222D5GG42KN6869
+        id: YOUR_LEGAL_ENTITY
     post-legalEntities-createLegalEntityIndividualUS:
       summary: Create a legal entity for an individual residing in the US
       description: Example request for creating a legal entity for an individual residing
@@ -3692,7 +3996,7 @@ components:
             street: 71 5th Avenue
             street2: 11th floor
         type: individual
-        id: LE322JV223222D5GGMHPC2FPL
+        id: YOUR_LEGAL_ENTITY
     post-legalEntities-createLegalEntityOrganizationNL:
       summary: Create a legal entity for a Dutch organization
       description: Example request for creating a legal entity for an organization
@@ -3712,27 +4016,33 @@ components:
           email: organization@example.com
         entityAssociations:
         - jobTitle: CEO
-          legalEntityId: LE322JV223222D5GG42KN6869
+          legalEntityId: YOUR_LEGAL_ENTITY_1
           type: signatory
     post-legalEntities-createLegalEntityOrganizationNL-200:
       summary: Organization legal entity created
       description: Example response for creating a legal entity for an organization
         operating in the Netherlands
       value:
+        entityAssociations:
+        - associatorId: YOUR_LEGAL_ENTITY_2
+          entityType: individual
+          jobTitle: CEO
+          legalEntityId: YOUR_LEGAL_ENTITY_1
+          name: Simone Hopper
+          type: signatory
         organization:
-          legalName: Explorer Company based in NL
-          doingBusinessAs: API Company Trading
-          registrationNumber: '34179503'
           email: organization@example.com
+          doingBusinessAs: API Company Trading
+          legalName: Explorer Company based in NL
           registeredAddress:
             city: Amsterdam
             country: NL
             postalCode: 1011DJ
             street: Simon Carmiggeltstraat 6 - 50
-          taxExempt: false
+          registrationNumber: '34179503'
           type: privateCompany
         type: organization
-        id: LE322JV223222D5FZ9N74BSGM
+        id: YOUR_LEGAL_ENTITY_2
     post-legalEntities-createLegalEntityOrganizationUS:
       summary: Create a legal entity for an organization in the US
       description: Example request for creating a legal entity for an organization
@@ -3768,7 +4078,7 @@ components:
           taxExempt: false
           type: privateCompany
         type: organization
-        id: LE322JV223222D5FZ9N74BSGM
+        id: YOUR_LEGAL_ENTITY
     post-legalEntities-createLegalEntitySolePropNL:
       summary: Create a legal entity for a Dutch sole proprietor
       description: Example request for creating a legal entity for a sole proprietor
@@ -3797,7 +4107,7 @@ components:
             country: NL
             postalCode: 1011DJ
             street: Simon Carmiggeltstraat 6 - 50
-        id: LE32272223222D5CGBR254SKT
+        id: YOUR_LEGAL_ENTITY
     post-legalEntities-createLegalEntitySolePropUS:
       summary: Create a legal entity for a sole proprietor in the US
       description: Example request for creating a legal entity for a sole proprietor
@@ -3830,7 +4140,7 @@ components:
             stateOrProvince: NY
             street: 71 5th Avenue
             street2: 11th floor
-        id: LE32272223222D5CGBR254SKT
+        id: YOUR_LEGAL_ENTITY
     post-legalEntities-id-onboardingLinks-createOnboardingLink:
       summary: Create a hosted onboarding link
       description: Example request for creating a hosted onboarding link
@@ -3842,6 +4152,35 @@ components:
       description: Example response for a hosted onboarding link
       value:
         url: https://balanceplatform-test.adyen.com/balanceplatform/uo/form/xtl-...?signature=..&cd=..&redirectUrl=https%3A%2F%2Fyour.redirect-url.com%2F&expiry=1667226404807&locale=nl-NL
+    post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire:
+      summary: Generate the PCI questionnaire
+      description: Example request for generating the PCI questionnaire in French
+      value:
+        language: fr
+    post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire-200:
+      summary: PCI questionnaire returned
+      description: Example response for getting a PCI questionnaire
+      value:
+        content: l345JKNFj345FJLG3lk...
+        language: fr
+        pciTemplateReferences:
+        - PCIT-T7KC6VGL
+        - PCIT-PKB6DKS4
+    post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire:
+      summary: Sign the PCI questionnaires
+      description: Example request for signing the PCI questionnaires
+      value:
+        signedBy: LE00000000000000000000002
+        pciTemplateReferences:
+        - PCIT-T7KC6VGL
+        - PCIT-PKB6DKS4
+    post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire-200:
+      summary: PCI questionnaires signed
+      description: Example response for signing PCI questionnaires
+      value:
+        pciQuestionnaireIds:
+        - PCID422GZ22322565HHMH48CW63CPH
+        - PCID422GZ22322565HHMH49CW75Z9H
     post-legalEntities-id-termsOfService-createTermsofService:
       summary: Get the Terms of Service document
       description: Example request for getting the Terms of Service document
@@ -3852,16 +4191,16 @@ components:
       summary: Terms of Service document returned
       description: Example response for getting a Terms of Service document
       value:
-        id: LE00000000000000000000001
+        id: YOUR_LEGAL_ENTITY
         type: adyenIssuing
         language: en
-        document: termsOfServiceDocumentResponse
+        document: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==
         termsOfServiceDocumentId: abc123
     post-transferInstruments-createTransferInstrumentEUR:
       summary: Add a EUR bank account
       description: Example request for creating a transfer instrument for EUR
       value:
-        legalEntityId: LE322KH223222D5GG4C9J83RN
+        legalEntityId: YOUR_LEGAL_ENTITY
         type: bankAccount
         bankAccount:
           countryCode: NL
@@ -3876,14 +4215,14 @@ components:
           countryCode: NL
           currencyCode: EUR
           iban: NL62ABNA0000000123
-        legalEntityId: LE322KH223222D5GG4C9J83RN
+        legalEntityId: YOUR_LEGAL_ENTITY
         type: bankAccount
         id: SE576BH223222F5GJVKHH6BDT
     post-transferInstruments-createTransferInstrumentUSD:
       summary: Add a USD bank account
       description: Example request for creating a transfer instrument for USD
       value:
-        legalEntityId: LE322JV223222D5GGMHPC2FPL
+        legalEntityId: YOUR_LEGAL_ENTITY
         type: bankAccount
         bankAccount:
           countryCode: US
@@ -3902,6 +4241,6 @@ components:
           branchCode: '121202211'
           countryCode: US
           currencyCode: USD
-        legalEntityId: LE322JV223222D5GGMHPC2FPL
+        legalEntityId: YOUR_LEGAL_ENTITY
         type: bankAccount
         id: SE322JV223222F5GJVKHH8DTC
