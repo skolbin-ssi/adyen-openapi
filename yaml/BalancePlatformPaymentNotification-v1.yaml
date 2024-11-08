@@ -1,6 +1,4 @@
 openapi: 3.1.0
-servers:
-- url: https://balanceplatform-api-test.adyen.com/btl/v1
 info:
   version: '1'
   x-publicVersion: true
@@ -9,24 +7,20 @@ info:
     instead.
 
 
-    Adyen sends notifications through webhooks to inform your system about the creation
-    of payment resources and money movements in your platform.
+    Adyen sends webhooks to inform your system about the creation of payment resources
+    and money movements in your platform.
 
 
     You can use these webhooks to build your implementation. For example, you can
     use this information to update balances in your own dashboards or to keep track
     of incoming funds.'
-  x-timestamp: '2023-04-17T15:23:17Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
-    url: https://www.adyen.help/hc/en-us/community/topics
-    email: developer-experience@adyen.com
-x-groups:
-- Payment authorisation, refund, or funds transfer initiated
-- Fund movements
-tags: []
-x-staticResponse: response.json
+    url: https://github.com/Adyen/adyen-openapi
+tags:
+- name: Payment authorisation, refund, or funds transfer initiated
+- name: Fund movements
 webhooks:
   balancePlatform.incomingTransfer.created:
     post:
@@ -51,11 +45,10 @@ webhooks:
         instead.
       x-addedInVersion: '1'
       operationId: post-balancePlatform.incomingTransfer.created
-      x-groupName: Fund movements
       x-sortIndex: 3
       x-methodName: incomingTransferCreated
       security:
-      - ApiKeyAuth: []
+      - BasicAuth: []
       requestBody:
         content:
           application/json:
@@ -68,9 +61,6 @@ webhooks:
         '200':
           content:
             application/json:
-              examples:
-                balancePlatform-incomingTransfer-created:
-                  $ref: '#/components/examples/WebhookAck'
               schema:
                 $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
@@ -91,11 +81,10 @@ webhooks:
         instead.
       x-addedInVersion: '1'
       operationId: post-balancePlatform.incomingTransfer.updated
-      x-groupName: Fund movements
       x-sortIndex: 4
       x-methodName: incomingTransferUpdated
       security:
-      - ApiKeyAuth: []
+      - BasicAuth: []
       requestBody:
         content:
           application/json:
@@ -108,9 +97,6 @@ webhooks:
         '200':
           content:
             application/json:
-              examples:
-                balancePlatform-incomingTransfer-updated:
-                  $ref: '#/components/examples/WebhookAck'
               schema:
                 $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
@@ -131,11 +117,10 @@ webhooks:
         instead.
       x-addedInVersion: '1'
       operationId: post-balancePlatform.outgoingTransfer.created
-      x-groupName: Fund movements
       x-sortIndex: 1
       x-methodName: outgoingTransferCreated
       security:
-      - ApiKeyAuth: []
+      - BasicAuth: []
       requestBody:
         content:
           application/json:
@@ -148,9 +133,6 @@ webhooks:
         '200':
           content:
             application/json:
-              examples:
-                balancePlatform-outgoingTransfer-created:
-                  $ref: '#/components/examples/WebhookAck'
               schema:
                 $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
@@ -172,11 +154,10 @@ webhooks:
         instead.
       x-addedInVersion: '1'
       operationId: post-balancePlatform.outgoingTransfer.updated
-      x-groupName: Fund movements
       x-sortIndex: 2
       x-methodName: outgoingTransferUpdated
       security:
-      - ApiKeyAuth: []
+      - BasicAuth: []
       requestBody:
         content:
           application/json:
@@ -189,9 +170,6 @@ webhooks:
         '200':
           content:
             application/json:
-              examples:
-                balancePlatform-outgoingTransfer-updated:
-                  $ref: '#/components/examples/WebhookAck'
               schema:
                 $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
@@ -217,11 +195,10 @@ webhooks:
         instead.
       x-addedInVersion: '1'
       operationId: post-balancePlatform.payment.created
-      x-groupName: Payment authorisation, refund, or funds transfer initiated
       x-sortIndex: 1
       x-methodName: paymentAuthorisationRefundOrFundsTransferInitiated
       security:
-      - ApiKeyAuth: []
+      - BasicAuth: []
       requestBody:
         content:
           application/json:
@@ -240,15 +217,6 @@ webhooks:
         '200':
           content:
             application/json:
-              examples:
-                balancePlatform-payment-created-authorized:
-                  $ref: '#/components/examples/WebhookAck'
-                balancePlatform-payment-created-funds-transfer:
-                  $ref: '#/components/examples/WebhookAck'
-                balancePlatform-payment-created-refund-requested:
-                  $ref: '#/components/examples/WebhookAck'
-                balancePlatform-payment-created-rejected:
-                  $ref: '#/components/examples/WebhookAck'
               schema:
                 $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
@@ -266,11 +234,10 @@ webhooks:
         instead.
       x-addedInVersion: '1'
       operationId: post-balancePlatform.payment.updated
-      x-groupName: Payment authorisation, refund, or funds transfer initiated
       x-sortIndex: 2
       x-methodName: paymentAuthorisationExpiredOrCancelled
       security:
-      - ApiKeyAuth: []
+      - BasicAuth: []
       requestBody:
         content:
           application/json:
@@ -287,19 +254,13 @@ webhooks:
         '200':
           content:
             application/json:
-              examples:
-                balancePlatform-payment-updated-expired:
-                  $ref: '#/components/examples/WebhookAck'
-                balancePlatform-payment-updated-partially-cancelled:
-                  $ref: '#/components/examples/WebhookAck'
-                balancePlatform-payment-updated-partially-expired:
-                  $ref: '#/components/examples/WebhookAck'
               schema:
                 $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
 components:
   schemas:
     Address:
+      additionalProperties: false
       properties:
         city:
           description: 'The name of the city. Maximum length: 3000 characters.'
@@ -341,6 +302,7 @@ components:
       - country
       type: object
     Amount:
+      additionalProperties: false
       properties:
         currency:
           description: The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
@@ -356,13 +318,14 @@ components:
       - currency
       type: object
     BalancePlatformNotificationResponse:
+      additionalProperties: false
       properties:
         notificationResponse:
-          description: Respond with **HTTP 200 OK** and `[accepted]` in the response
-            body to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).
+          description: Respond with any **2xx** HTTP status code to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).
           type: string
       type: object
     BankAccountInfo:
+      additionalProperties: false
       properties:
         address:
           description: The address of the bank account owner.
@@ -376,9 +339,10 @@ components:
           $ref: '#/components/schemas/Name'
       type: object
     Counterparty:
+      additionalProperties: false
       properties:
         balanceAccountId:
-          description: Unique identifier of the [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).
+          description: The unique identifier of the [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).
           type: string
         bankAccount:
           description: Contains information about the bank account.
@@ -387,10 +351,11 @@ components:
           description: Contains information about the merchant.
           $ref: '#/components/schemas/MerchantData'
         transferInstrumentId:
-          description: Unique identifier of the [transfer instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/transferInstruments__resParam_id).
+          description: The unique identifier of the [transfer instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/transferInstruments__resParam_id).
           type: string
       type: object
     IncomingTransferNotificationData:
+      additionalProperties: false
       properties:
         accountHolder:
           description: Contains information about the account holder.
@@ -473,6 +438,7 @@ components:
           type: string
       type: object
     IncomingTransferNotificationRequest:
+      additionalProperties: false
       properties:
         data:
           description: Contains event details.
@@ -484,7 +450,7 @@ components:
             Possible values: **test**, **live**.'
           type: string
         type:
-          description: Type of notification.
+          description: Type of webhook.
           enum:
           - balancePlatform.incomingTransfer.updated
           - balancePlatform.incomingTransfer.created
@@ -495,7 +461,11 @@ components:
       - data
       type: object
     MerchantData:
+      additionalProperties: false
       properties:
+        acquirerId:
+          description: The unique identifier of the merchant's acquirer.
+          type: string
         mcc:
           description: The merchant category code.
           type: string
@@ -510,6 +480,7 @@ components:
           type: string
       type: object
     Name:
+      additionalProperties: false
       properties:
         firstName:
           description: The first name.
@@ -525,6 +496,7 @@ components:
           type: string
       type: object
     NameLocation:
+      additionalProperties: false
       properties:
         city:
           description: The city where the merchant is located.
@@ -548,6 +520,7 @@ components:
           type: string
       type: object
     NotificationModificationData:
+      additionalProperties: false
       properties:
         amount:
           description: "The amount of the modification converted to the balance account's\
@@ -567,6 +540,7 @@ components:
           type: string
       type: object
     OutgoingTransferNotificationData:
+      additionalProperties: false
       properties:
         accountHolder:
           description: Contains information about the account holder.
@@ -688,6 +662,7 @@ components:
       - counterparty
       type: object
     OutgoingTransferNotificationRequest:
+      additionalProperties: false
       properties:
         data:
           description: Contains details about the event.
@@ -699,7 +674,7 @@ components:
             Possible values: **test**, **live**.'
           type: string
         type:
-          description: Type of notification.
+          description: Type of webhook.
           enum:
           - balancePlatform.outgoingTransfer.created
           - balancePlatform.outgoingTransfer.updated
@@ -710,6 +685,7 @@ components:
       - data
       type: object
     PaymentNotificationData:
+      additionalProperties: false
       properties:
         accountHolder:
           description: Contains information about the account holder.
@@ -818,6 +794,7 @@ components:
           type: array
       type: object
     PaymentNotificationRequest:
+      additionalProperties: false
       properties:
         data:
           description: Contains event details.
@@ -829,7 +806,7 @@ components:
             Possible values: **test**, **live**.'
           type: string
         type:
-          description: Type of notification.
+          description: Type of webhook.
           enum:
           - balancePlatform.payment.created
           - balancePlatform.payment.updated
@@ -840,6 +817,7 @@ components:
       - data
       type: object
     PlatformPayment:
+      additionalProperties: false
       properties:
         account:
           description: The account given in the related split.
@@ -865,14 +843,25 @@ components:
         type:
           description: The type of the related split.
           enum:
+          - AcquiringFees
+          - AdyenCommission
+          - AdyenFees
+          - AdyenMarkup
           - BalanceAccount
           - Commission
           - Default
+          - Interchange
           - PaymentFee
+          - Remainder
+          - SchemeFee
+          - Surcharge
+          - Tip
+          - TopUp
           - VAT
           type: string
       type: object
     RelayedAuthorisationData:
+      additionalProperties: false
       properties:
         metadata:
           additionalProperties:
@@ -891,6 +880,7 @@ components:
           type: string
       type: object
     Resource:
+      additionalProperties: false
       properties:
         balancePlatform:
           description: The unique identifier of the balance platform.
@@ -905,6 +895,7 @@ components:
           type: string
       type: object
     ResourceReference:
+      additionalProperties: false
       properties:
         description:
           description: The description of the resource.
@@ -917,6 +908,7 @@ components:
           type: string
       type: object
     TransactionEventViolation:
+      additionalProperties: false
       properties:
         reason:
           description: An explanation about why the transaction rule failed.
@@ -930,6 +922,7 @@ components:
           $ref: '#/components/schemas/TransactionRuleSource'
       type: object
     TransactionNotificationData:
+      additionalProperties: false
       properties:
         accountHolder:
           description: Contains information about the account holder.
@@ -1060,6 +1053,7 @@ components:
       - counterparty
       type: object
     TransactionRuleReference:
+      additionalProperties: false
       properties:
         description:
           description: The description of the resource.
@@ -1072,6 +1066,7 @@ components:
           type: string
       type: object
     TransactionRuleSource:
+      additionalProperties: false
       properties:
         id:
           description: ID of the resource, when applicable.
@@ -1085,6 +1080,7 @@ components:
           type: string
       type: object
     TransactionRulesResult:
+      additionalProperties: false
       properties:
         advice:
           description: The advice given by the Risk analysis.
@@ -1105,6 +1101,7 @@ components:
           type: integer
       type: object
     ValidationResult:
+      additionalProperties: false
       properties:
         result:
           description: 'The result of the check.
@@ -1131,17 +1128,10 @@ components:
           type: string
       type: object
   securitySchemes:
-    ApiKeyAuth:
-      in: header
-      name: X-API-Key
-      type: apiKey
     BasicAuth:
       scheme: basic
       type: http
   examples:
-    WebhookAck:
-      summary: Acknowledge Webhook
-      value: '[accepted]'
     post-balancePlatform.incomingTransfer.created-balancePlatform-incomingTransfer-created:
       summary: Pending incoming transfer
       description: Example webhook when there is an incoming transfer

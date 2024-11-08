@@ -10,17 +10,12 @@
       "x-publicVersion" : true,
       "title" : "Adyen Recurring API",
       "description" : "The Recurring APIs allow you to manage and remove your tokens or saved payment details. Tokens should be created with validation during a payment request.\n\nFor more information, refer to our [Tokenization documentation](https://docs.adyen.com/online-payments/tokenization).\n## Authentication\nYou need an [API credential](https://docs.adyen.com/development-resources/api-credentials) to authenticate to the API.\n\nIf using an API key, add an `X-API-Key` header with the API key as the value, for example:\n\n ```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n\nAlternatively, you can use the username and password to connect to the API using basic authentication, for example:\n\n```\ncurl\n-U \"ws@Company.YOUR_COMPANY_ACCOUNT\":\"YOUR_BASIC_AUTHENTICATION_PASSWORD\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\n\n## Versioning\nRecurring API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://pal-test.adyen.com/pal/servlet/Recurring/v67/disable\n```\n\n## Going live\n\nTo authenticate to the live endpoints, you need an [API credential](https://docs.adyen.com/development-resources/api-credentials) from your live Customer Area.\n\nThe live endpoint URLs contain a prefix which is unique to your company account:\n```\n\nhttps://{PREFIX}-pal-live.adyenpayments.com/pal/servlet/Recurring/v67/disable\n```\n\nGet your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.",
-      "x-timestamp" : "2023-04-11T21:25:15Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
-         "url" : "https://www.adyen.help/hc/en-us/community/topics",
-         "email" : "developer-experience@adyen.com"
+         "url" : "https://github.com/Adyen/adyen-openapi"
       }
    },
-   "x-groups" : [
-      "General"
-   ],
    "tags" : [
       {
          "name" : "General"
@@ -36,7 +31,6 @@
             "description" : "Create permits for a recurring contract, including support for defining restrictions.",
             "x-addedInVersion" : "40",
             "operationId" : "post-createPermit",
-            "x-groupName" : "General",
             "x-sortIndex" : 0,
             "x-methodName" : "createPermit",
             "security" : [
@@ -130,7 +124,6 @@
             "summary" : "Disable stored payment details",
             "description" : "Disables stored payment details to stop charging a shopper with this particular recurring detail ID.\n\nFor more information, refer to [Disable stored details](https://docs.adyen.com/classic-integration/recurring-payments/disable-stored-details/).",
             "operationId" : "post-disable",
-            "x-groupName" : "General",
             "x-sortIndex" : 2,
             "x-methodName" : "disable",
             "security" : [
@@ -230,7 +223,6 @@
             "description" : "Disable a permit that was previously linked to a recurringDetailReference.",
             "x-addedInVersion" : "61",
             "operationId" : "post-disablePermit",
-            "x-groupName" : "General",
             "x-sortIndex" : 0,
             "x-methodName" : "disablePermit",
             "security" : [
@@ -324,7 +316,6 @@
             "summary" : "Get stored payment details",
             "description" : "Lists the stored payment details for a shopper, if there are any available. The recurring detail ID can be used with a regular authorisation request to charge the shopper. A summary of the payment detail is returned for presentation to the shopper.\n\nFor more information, refer to [Retrieve stored details](https://docs.adyen.com/classic-integration/recurring-payments/retrieve-stored-details/).",
             "operationId" : "post-listRecurringDetails",
-            "x-groupName" : "General",
             "x-sortIndex" : 1,
             "x-methodName" : "listRecurringDetails",
             "security" : [
@@ -423,7 +414,6 @@
             "summary" : "Ask issuer to notify the shopper",
             "description" : "Sends a request to the issuer so they can inform the shopper about the upcoming recurring payment. This endpoint is used only for local acquiring in India. For more information, refer to [Recurring card payments in India](https://docs.adyen.com/payment-methods/cards/cards-recurring-india).",
             "operationId" : "post-notifyShopper",
-            "x-groupName" : "General",
             "x-sortIndex" : 4,
             "x-methodName" : "notifyShopper",
             "security" : [
@@ -528,7 +518,6 @@
             "description" : "When making the API call, you can submit either the credit card information, or the recurring detail reference and the shopper reference:\n* If the card information is provided, all the sub-fields for `card` are mandatory.\n* If the recurring detail reference is provided, the fields for `shopperReference` and `selectedRecurringDetailReference` are mandatory.",
             "x-addedInVersion" : "4",
             "operationId" : "post-scheduleAccountUpdater",
-            "x-groupName" : "General",
             "x-sortIndex" : 3,
             "x-methodName" : "scheduleAccountUpdater",
             "security" : [
@@ -562,6 +551,14 @@
                "200" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "scheduleAccountUpdaterWithCardData" : {
+                              "$ref" : "#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithCardData-200"
+                           },
+                           "scheduleAccountUpdaterWithTokenData" : {
+                              "$ref" : "#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData-200"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ScheduleAccountUpdaterResult"
                         }
@@ -602,6 +599,11 @@
                "422" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "scheduleAccountUpdaterWithTokenData" : {
+                              "$ref" : "#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData-422"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/ServiceError"
                         }
@@ -626,6 +628,7 @@
    "components" : {
       "schemas" : {
          "Address" : {
+            "additionalProperties" : false,
             "properties" : {
                "city" : {
                   "description" : "The name of the city. Maximum length: 3000 characters.",
@@ -665,6 +668,7 @@
             "type" : "object"
          },
          "Amount" : {
+            "additionalProperties" : false,
             "properties" : {
                "currency" : {
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).",
@@ -685,6 +689,7 @@
             "type" : "object"
          },
          "BankAccount" : {
+            "additionalProperties" : false,
             "properties" : {
                "bankAccountNumber" : {
                   "description" : "The bank account number (without separators).",
@@ -728,6 +733,7 @@
             "type" : "object"
          },
          "Card" : {
+            "additionalProperties" : false,
             "properties" : {
                "cvc" : {
                   "description" : "The [card verification code](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-security-code-cvc-cvv-cid) (1-20 characters). Depending on the card brand, it is known also as:\n* CVV2/CVC2 – length: 3 digits\n* CID – length: 4 digits\n> If you are using [Client-Side Encryption](https://docs.adyen.com/classic-integration/cse-integration-ecommerce), the CVC code is present in the encrypted data. You must never post the card details to the server.\n> This field must be always present in a [one-click payment request](https://docs.adyen.com/classic-integration/recurring-payments).\n> When this value is returned in a response, it is always empty because it is not stored.",
@@ -781,6 +787,7 @@
             "type" : "object"
          },
          "CreatePermitRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "merchantAccount" : {
                   "description" : "The merchant account identifier, with which you want to process the transaction.",
@@ -811,6 +818,7 @@
             "type" : "object"
          },
          "CreatePermitResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "permitResultList" : {
                   "description" : "List of new permits.",
@@ -827,6 +835,7 @@
             "type" : "object"
          },
          "DisablePermitRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "merchantAccount" : {
                   "description" : "The merchant account identifier, with which you want to process the transaction.",
@@ -844,6 +853,7 @@
             "type" : "object"
          },
          "DisablePermitResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "pspReference" : {
                   "description" : "A unique reference associated with the request. This value is globally unique; quote it when communicating with us about this request.",
@@ -857,6 +867,7 @@
             "type" : "object"
          },
          "DisableRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "contract" : {
                   "x-addedInVersion" : "3",
@@ -883,6 +894,7 @@
             "type" : "object"
          },
          "DisableResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "response" : {
                   "description" : "Depending on whether a specific recurring detail was in the request, result is either [detail-successfully-disabled] or [all-details-successfully-disabled].",
@@ -892,13 +904,16 @@
             "type" : "object"
          },
          "Name" : {
+            "additionalProperties" : false,
             "properties" : {
                "firstName" : {
                   "description" : "The first name.",
+                  "maxLength" : 80,
                   "type" : "string"
                },
                "lastName" : {
                   "description" : "The last name.",
+                  "maxLength" : 80,
                   "type" : "string"
                }
             },
@@ -909,6 +924,7 @@
             "type" : "object"
          },
          "NotifyShopperRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "amount" : {
                   "description" : "The amount of the upcoming payment.",
@@ -956,6 +972,7 @@
             "type" : "object"
          },
          "NotifyShopperResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "displayedReference" : {
                   "description" : "Reference of Pre-debit notification that is displayed to the shopper",
@@ -989,6 +1006,7 @@
             "type" : "object"
          },
          "Permit" : {
+            "additionalProperties" : false,
             "properties" : {
                "partnerId" : {
                   "description" : "Partner ID (when using the permit-per-partner token sharing model).",
@@ -1015,6 +1033,7 @@
             "type" : "object"
          },
          "PermitRestriction" : {
+            "additionalProperties" : false,
             "properties" : {
                "maxAmount" : {
                   "description" : "The total sum amount of one or more payments made using this permit may not exceed this amount if set.",
@@ -1032,6 +1051,7 @@
             "type" : "object"
          },
          "PermitResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "resultKey" : {
                   "x-addedInVersion" : "32",
@@ -1047,6 +1067,7 @@
             "type" : "object"
          },
          "Recurring" : {
+            "additionalProperties" : false,
             "properties" : {
                "contract" : {
                   "description" : "The type of recurring contract to be used.\nPossible values:\n* `ONECLICK` – Payment details can be used to initiate a one-click payment, where the shopper enters the [card security code (CVC/CVV)](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-security-code-cvc-cvv-cid).\n* `RECURRING` – Payment details can be used without the card security code to initiate [card-not-present transactions](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-not-present-cnp).\n* `ONECLICK,RECURRING` – Payment details can be used regardless of whether the shopper is on your site or not.\n* `PAYOUT` – Payment details can be used to [make a payout](https://docs.adyen.com/online-payments/online-payouts).",
@@ -1077,7 +1098,9 @@
                   "description" : "The name of the token service.",
                   "enum" : [
                      "VISATOKENSERVICE",
-                     "MCTOKENSERVICE"
+                     "MCTOKENSERVICE",
+                     "AMEXTOKENSERVICE",
+                     "TOKEN_SHARING"
                   ],
                   "type" : "string"
                }
@@ -1085,6 +1108,7 @@
             "type" : "object"
          },
          "RecurringDetail" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "x-addedInVersion" : "5",
@@ -1181,6 +1205,7 @@
             }
          },
          "RecurringDetailsRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "merchantAccount" : {
                   "description" : "The merchant account identifier you want to process the (transaction) request with.",
@@ -1202,6 +1227,7 @@
             "type" : "object"
          },
          "RecurringDetailsResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "creationDate" : {
                   "description" : "The date when the recurring details were created.",
@@ -1227,6 +1253,7 @@
             "type" : "object"
          },
          "ScheduleAccountUpdaterRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -1263,6 +1290,7 @@
             "type" : "object"
          },
          "ScheduleAccountUpdaterResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "pspReference" : {
                   "description" : "Adyen's 16-character unique reference associated with the transaction. This value is globally unique; quote it when communicating with us about this request.",
@@ -1280,6 +1308,7 @@
             "type" : "object"
          },
          "ServiceError" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "x-addedInVersion" : "46",
@@ -1314,6 +1343,7 @@
             "type" : "object"
          },
          "TokenDetails" : {
+            "additionalProperties" : false,
             "properties" : {
                "tokenData" : {
                   "additionalProperties" : {
@@ -1343,7 +1373,7 @@
          "post-disable-disableARecurringContract" : {
             "summary" : "Disable a recurring contract",
             "value" : {
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
+               "shopperReference" : "YOUR_SHOPPER_REFERENCE",
                "recurringDetailReference" : "8314442372419167",
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
             }
@@ -1354,7 +1384,7 @@
                "recurring" : {
                   "contract" : "RECURRING"
                },
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
+               "shopperReference" : "YOUR_SHOPPER_REFERENCE",
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT"
             }
          },
@@ -1398,13 +1428,36 @@
                }
             }
          },
+         "post-scheduleAccountUpdater-scheduleAccountUpdaterWithCardData-200" : {
+            "summary" : "Scheduled Account Updater with card data",
+            "value" : {
+               "pspReference" : "QFQTPCQ8HXSKGK82",
+               "result" : "Success"
+            }
+         },
          "post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData" : {
             "summary" : "Schedule AccountUpdater with token data",
             "value" : {
                "merchantAccount" : "YOUR_MERCHANT_ACCOUNT",
                "reference" : "YOUR_REFERENCE",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
+               "shopperReference" : "YOUR_SHOPPER_REFERENCE",
                "selectedRecurringDetailReference" : "8814232895168272"
+            }
+         },
+         "post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData-200" : {
+            "summary" : "Scheduled Account Updater with token data",
+            "value" : {
+               "pspReference" : "JLCMPCQ8HXSKGK82",
+               "result" : "Success"
+            }
+         },
+         "post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData-422" : {
+            "summary" : "Error response for RecurringShopper not found",
+            "value" : {
+               "status" : 422,
+               "errorCode" : "000",
+               "message" : "RecurringShopper not found",
+               "errorType" : "validation"
             }
          }
       }

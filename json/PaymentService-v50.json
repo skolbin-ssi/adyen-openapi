@@ -10,24 +10,18 @@
       "x-publicVersion" : true,
       "title" : "Adyen Payment API",
       "description" : "A set of API endpoints that allow you to initiate, settle, and modify payments on the Adyen payments platform. You can use the API to accept card payments (including One-Click and 3D Secure), bank transfers, ewallets, and many other payment methods.\n\nTo learn more about the API, visit [Classic integration](https://docs.adyen.com/classic-integration).\n\n## Authentication\nYou need an [API credential](https://docs.adyen.com/development-resources/api-credentials) to authenticate to the API.\n\nIf using an API key, add an `X-API-Key` header with the API key as the value, for example:\n\n ```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n\nAlternatively, you can use the username and password to connect to the API using basic authentication, for example:\n\n```\ncurl\n-U \"ws@Company.YOUR_COMPANY_ACCOUNT\":\"YOUR_BASIC_AUTHENTICATION_PASSWORD\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\n\n## Versioning\nPayments API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://pal-test.adyen.com/pal/servlet/Payment/v50/authorise\n```\n\n## Going live\n\nTo authenticate to the live endpoints, you need an [API credential](https://docs.adyen.com/development-resources/api-credentials) from your live Customer Area.\n\nThe live endpoint URLs contain a prefix which is unique to your company account:\n```\n\nhttps://{PREFIX}-pal-live.adyenpayments.com/pal/servlet/Payment/v50/authorise\n```\n\nGet your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.",
-      "x-timestamp" : "2023-04-17T17:24:20Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
-         "url" : "https://www.adyen.help/hc/en-us/community/topics",
-         "email" : "developer-experience@adyen.com"
+         "url" : "https://github.com/Adyen/adyen-openapi"
       }
    },
-   "x-groups" : [
-      "General",
-      "Modifications"
-   ],
    "tags" : [
       {
-         "name" : "Modifications"
+         "name" : "Payments"
       },
       {
-         "name" : "General"
+         "name" : "Modifications"
       }
    ],
    "paths" : {
@@ -40,7 +34,6 @@
             "description" : "Allows you to increase or decrease the authorised amount after the initial authorisation has taken place. This functionality enables for example tipping, improving the chances your authorisation will be valid, or charging the shopper when they have already left the merchant premises.\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce).\n> If you have a [newer integration](https://docs.adyen.com/online-payments), and are doing:\n> * [Asynchronous adjustments](https://docs.adyen.com/online-payments/adjust-authorisation#asynchronous-or-synchronous-adjustment), use the [`/payments/{paymentPspReference}/amountUpdates`](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/{paymentPspReference}/amountUpdates) endpoint on Checkout API.\n> * [Synchronous adjustments](https://docs.adyen.com/online-payments/adjust-authorisation#asynchronous-or-synchronous-adjustment), use this endpoint.",
             "x-addedInVersion" : "30",
             "operationId" : "post-adjustAuthorisation",
-            "x-groupName" : "Modifications",
             "x-sortIndex" : 6,
             "x-methodName" : "adjustAuthorisation",
             "security" : [
@@ -154,12 +147,11 @@
       "/authorise" : {
          "post" : {
             "tags" : [
-               "General"
+               "Payments"
             ],
             "summary" : "Create an authorisation",
             "description" : "Creates a payment with a unique reference (`pspReference`) and attempts to obtain an authorisation hold. For cards, this amount can be captured or cancelled later. Non-card payment methods typically don't support this and will automatically capture as part of the authorisation.\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments) endpoint under Checkout API instead.",
             "operationId" : "post-authorise",
-            "x-groupName" : "General",
             "x-sortIndex" : 1,
             "x-methodName" : "authorise",
             "security" : [
@@ -286,12 +278,11 @@
       "/authorise3d" : {
          "post" : {
             "tags" : [
-               "General"
+               "Payments"
             ],
             "summary" : "Complete a 3DS authorisation",
             "description" : "For an authenticated 3D Secure session, completes the payment authorisation. This endpoint must receive the `md` and `paResponse` parameters that you get from the card issuer after a shopper pays via 3D Secure.\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce/3d-secure). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/details`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/details) endpoint under Checkout API instead.",
             "operationId" : "post-authorise3d",
-            "x-groupName" : "General",
             "x-sortIndex" : 2,
             "x-methodName" : "authorise3d",
             "security" : [
@@ -400,13 +391,12 @@
       "/authorise3ds2" : {
          "post" : {
             "tags" : [
-               "General"
+               "Payments"
             ],
             "summary" : "Complete a 3DS2 authorisation",
             "description" : "For an authenticated 3D Secure 2 session, completes the payment authorisation. This endpoint must receive the `threeDS2Token` and `threeDS2Result` parameters.\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce/3d-secure). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/details`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/details) endpoint under Checkout API instead.",
             "x-addedInVersion" : "37",
             "operationId" : "post-authorise3ds2",
-            "x-groupName" : "General",
             "x-sortIndex" : 3,
             "x-methodName" : "authorise3ds2",
             "security" : [
@@ -520,7 +510,6 @@
             "summary" : "Cancel an authorisation",
             "description" : "Cancels the authorisation hold on a payment, returning a unique reference for this request. You can cancel payments after authorisation only for payment methods that support distinct authorisations and captures.\n\nFor more information, refer to [Cancel](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/cancel).\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/{paymentPspReference}/cancels`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/{paymentPspReference}/cancels) endpoint under Checkout API instead.",
             "operationId" : "post-cancel",
-            "x-groupName" : "Modifications",
             "x-sortIndex" : 2,
             "x-methodName" : "cancel",
             "security" : [
@@ -632,9 +621,8 @@
                "Modifications"
             ],
             "summary" : "Cancel or refund a payment",
-            "description" : "Cancels a payment if it has not been captured yet, or refunds it if it has already been captured. This is useful when it is not certain if the payment has been captured or not (for example, when using auto-capture).\n\nDo not use this endpoint for payments that involve:\n * [Multiple partial captures](https://docs.adyen.com/online-payments/capture).\n * [Split data](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) either at time of payment or capture for Adyen for Platforms.\n\n Instead, check if the payment has been captured and make a corresponding [`/refund`](https://docs.adyen.com/api-explorer/#/Payment/refund) or [`/cancel`](https://docs.adyen.com/api-explorer/#/Payment/cancel) call.\n\nFor more information, refer to [Cancel or refund](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/cancel-or-refund).\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/{paymentPspReference}/reversals) endpoint under Checkout API instead.",
+            "description" : "Cancels a payment if it has not been captured yet, or refunds it if it has already been captured. This is useful when it is not certain if the payment has been captured or not (for example, when using auto-capture).\n\nDo not use this endpoint for payments that involve:\n * [Multiple partial captures](https://docs.adyen.com/online-payments/capture).\n * [Split data](https://docs.adyen.com/classic-platforms/processing-payments#providing-split-information) either at time of payment or capture for Adyen for Platforms.\n\n Instead, check if the payment has been captured and make a corresponding [`/refund`](https://docs.adyen.com/api-explorer/#/Payment/refund) or [`/cancel`](https://docs.adyen.com/api-explorer/#/Payment/cancel) call.\n\nFor more information, refer to [Cancel or refund](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/cancel-or-refund).\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/{paymentPspReference}/reversals`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/{paymentPspReference}/reversals) endpoint under Checkout API instead.",
             "operationId" : "post-cancelOrRefund",
-            "x-groupName" : "Modifications",
             "x-sortIndex" : 4,
             "x-methodName" : "cancelOrRefund",
             "security" : [
@@ -751,9 +739,8 @@
                "Modifications"
             ],
             "summary" : "Capture an authorisation",
-            "description" : "Captures the authorisation hold on a payment, returning a unique reference for this request. Usually the full authorisation amount is captured, however it's also possible to capture a smaller amount, which results in cancelling the remaining authorisation balance.\n\nPayment methods that are captured automatically after authorisation don't need to be captured. However, submitting a capture request on these transactions will not result in double charges. If immediate or delayed auto-capture is enabled, calling the capture method is not neccessary.\n\nFor more information refer to [Capture](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/capture).\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/{paymentPspReference}/captures`](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/{paymentPspReference}/captures) endpoint on Checkout API instead.\n\n",
+            "description" : "Captures the authorisation hold on a payment, returning a unique reference for this request. Usually the full authorisation amount is captured, however it's also possible to capture a smaller amount, which results in cancelling the remaining authorisation balance.\n\nPayment methods that are captured automatically after authorisation don't need to be captured. However, submitting a capture request on these transactions will not result in double charges. If immediate or delayed auto-capture is enabled, calling the capture method is not necessary.\n\nFor more information refer to [Capture](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/capture).\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/{paymentPspReference}/captures`](https://docs.adyen.com/api-explorer/#/CheckoutService/v67/post/payments/{paymentPspReference}/captures) endpoint on Checkout API instead.\n\n",
             "operationId" : "post-capture",
-            "x-groupName" : "Modifications",
             "x-sortIndex" : 1,
             "x-methodName" : "capture",
             "security" : [
@@ -871,9 +858,9 @@
             ],
             "summary" : "Create a donation",
             "description" : "Schedules a new payment to be created (including a new authorisation request) for the specified donation using the payment details of the original payment.\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/donations`](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/donations) endpoint under Checkout API instead.",
+            "deprecated" : true,
             "x-addedInVersion" : "40",
             "operationId" : "post-donate",
-            "x-groupName" : "Modifications",
             "x-sortIndex" : 6,
             "x-methodName" : "donate",
             "security" : [
@@ -987,7 +974,6 @@
             "summary" : "Refund a captured payment",
             "description" : "Refunds a payment that has previously been captured, returning a unique reference for this request. Refunding can be done on the full captured amount or a partial amount. Multiple (partial) refunds will be accepted as long as their sum doesn't exceed the captured amount. Payments which have been authorised, but not captured, cannot be refunded, use the /cancel method instead.\n\nSome payment methods/gateways do not support partial/multiple refunds.\nA margin above the captured limit can be configured to cover shipping/handling costs.\n\nFor more information, refer to [Refund](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/refund).\n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/payments/{paymentPspReference}/refunds`](https://docs.adyen.com/api-explorer/#/CheckoutService/payments/{paymentPspReference}/refunds) endpoint under Checkout API instead.",
             "operationId" : "post-refund",
-            "x-groupName" : "Modifications",
             "x-sortIndex" : 3,
             "x-methodName" : "refund",
             "security" : [
@@ -1101,13 +1087,12 @@
       "/retrieve3ds2Result" : {
          "post" : {
             "tags" : [
-               "General"
+               "Payments"
             ],
             "summary" : "Get the 3DS2 authentication result",
             "description" : "Retrieves the `threeDS2Result` after doing a 3D Secure 2 authentication only.",
             "x-addedInVersion" : "40",
             "operationId" : "post-retrieve3ds2Result",
-            "x-groupName" : "General",
             "x-sortIndex" : 4,
             "x-methodName" : "retrieve3ds2Result",
             "security" : [
@@ -1222,7 +1207,6 @@
             "description" : "This endpoint allows you to cancel a payment if you do not have the PSP reference of the original payment request available.\n\nIn your call, refer to the original payment by using the `reference` that you specified in your payment request.\n\nFor more information, see [Technical cancel](https://docs.adyen.com/online-payments/classic-integrations/modify-payments/cancel#technical-cancel). \n\n> This endpoint is part of our [classic API integration](https://docs.adyen.com/online-payments/classic-integrations/api-integration-ecommerce). If using a [newer integration](https://docs.adyen.com/online-payments), use the [`/cancels`](https://docs.adyen.com/api-explorer/#/CheckoutService/cancels) endpoint under Checkout API instead.",
             "x-addedInVersion" : "30",
             "operationId" : "post-technicalCancel",
-            "x-groupName" : "Modifications",
             "x-sortIndex" : 5,
             "x-methodName" : "technicalCancel",
             "security" : [
@@ -1342,7 +1326,6 @@
             "description" : "This endpoint allows you to cancel an unreferenced refund request before it has been completed.\n\nIn your call, you can refer to the original refund request either by using the `tenderReference`, or the `pspReference`. We recommend implementing based on the `tenderReference`, as this is generated for both offline and online transactions.\n\nFor more information, refer to [Cancel an unreferenced refund](https://docs.adyen.com/point-of-sale/refund-payment/cancel-unreferenced).",
             "x-addedInVersion" : "25",
             "operationId" : "post-voidPendingRefund",
-            "x-groupName" : "Modifications",
             "x-sortIndex" : 7,
             "x-methodName" : "voidPendingRefund",
             "security" : [
@@ -1463,6 +1446,7 @@
    "components" : {
       "schemas" : {
          "AccountInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountAgeIndicator" : {
                   "description" : "Indicator for the length of time since this shopper account was created in the merchant's environment.\nAllowed values:\n* notApplicable\n* thisTransaction\n* lessThan30Days\n* from30To60Days\n* moreThan60Days",
@@ -1592,9 +1576,10 @@
             "type" : "object"
          },
          "AdditionalData3DSecure" : {
+            "additionalProperties" : false,
             "properties" : {
                "allow3DS2" : {
-                  "description" : "Indicates if you are able to process 3D Secure 2 transactions natively on your payment page. Send this parameter when you are using `/payments` endpoint with any of our [native 3D Secure 2 solutions](https://docs.adyen.com/online-payments/3d-secure/native-3ds2).\n\n > This parameter only indicates readiness to support native 3D Secure 2 authentication. To specify if you _want_ to perform 3D Secure, use [Dynamic 3D Secure](/risk-management/dynamic-3d-secure) or send the `executeThreeD` parameter.\n\nPossible values:\n* **true** - Ready to support native 3D Secure 2 authentication. Setting this to true does not mean always applying 3D Secure 2. Adyen still selects the version of 3D Secure based on configuration to optimize authorisation rates and improve the shopper's experience.\n* **false** – Not ready to support native 3D Secure 2 authentication. Adyen will not offer 3D Secure 2 to your shopper regardless of your configuration.\n",
+                  "description" : "Indicates if you are able to process 3D Secure 2 transactions natively on your payment page. Send this parameter when you are using `/payments` endpoint with any of our [native 3D Secure 2 solutions](https://docs.adyen.com/online-payments/3d-secure/native-3ds2).\n\n > This parameter only indicates readiness to support native 3D Secure 2 authentication. To specify if you _want_ to perform 3D Secure, use [Dynamic 3D Secure](/risk-management/dynamic-3d-secure) or send the `executeThreeD` parameter.\n\nPossible values:\n* **true** - Ready to support native 3D Secure 2 authentication. Setting this to true does not mean always applying 3D Secure 2. Adyen selects redirect or native authentication based on your configuration to optimize authorization rates and improve the shopper's experience.\n* **false** – Not ready to support native 3D Secure 2 authentication. Adyen offers redirect 3D Secure 2 authentication instead, based on your configuration.\n",
                   "type" : "string"
                },
                "challengeWindowSize" : {
@@ -1628,117 +1613,122 @@
             "type" : "object"
          },
          "AdditionalDataAirline" : {
+            "additionalProperties" : false,
             "properties" : {
                "airline.agency_invoice_number" : {
-                  "description" : "Reference number for the invoice, issued by the agency.\n* minLength: 1\n* maxLength: 6",
+                  "description" : "The reference number for the invoice, issued by the agency.\n* Encoding: ASCII\n* minLength: 1 character\n* maxLength: 6 characters",
                   "type" : "string"
                },
                "airline.agency_plan_name" : {
-                  "description" : "2-letter agency plan identifier; alphabetical.\n* minLength: 2\n* maxLength: 2",
+                  "description" : "The two-letter agency plan identifier.\n* Encoding: ASCII\n* minLength: 2 characters\n* maxLength: 2 characters",
                   "type" : "string"
                },
                "airline.airline_code" : {
-                  "description" : "[IATA](https://www.iata.org/services/pages/codes.aspx) 3-digit accounting code (PAX); numeric. It identifies the carrier.\n* Format: IATA 3-digit accounting code (PAX)\n* Example: KLM = 074\n* minLength: 3\n* maxLength: 3",
+                  "description" : "The [IATA](https://www.iata.org/services/pages/codes.aspx) 3-digit accounting code (PAX) that identifies the carrier.\n* Format: IATA 3-digit accounting code (PAX)\n* Example: KLM = 074\n* minLength: 3 characters\n* maxLength: 3 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.airline_designator_code" : {
-                  "description" : "[IATA](https://www.iata.org/services/pages/codes.aspx) 2-letter accounting code (PAX); alphabetical. It identifies the carrier.\n* Format: [IATA](https://www.iata.org/services/pages/codes.aspx) 2-letter airline code\n* Example: KLM = KL\n* minLength: 2\n* maxLength: 2",
+                  "description" : "The [IATA](https://www.iata.org/services/pages/codes.aspx) 2-letter accounting code (PAX) that identifies the carrier.\n* Encoding: ASCII\n* Example: KLM = KL\n* minLength: 2 characters\n* maxLength: 2 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.boarding_fee" : {
-                  "description" : "Chargeable amount for boarding the plane.\nThe transaction amount needs to be represented in minor units according to the [following table](https://docs.adyen.com/development-resources/currency-codes).\n* minLength: 1\n* maxLength: 18",
+                  "description" : "The amount charged for boarding the plane, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Encoding: Numeric\n* minLength: 1 character\n* maxLength: 18 characters",
                   "type" : "string"
                },
                "airline.computerized_reservation_system" : {
-                  "description" : "The [CRS](https://en.wikipedia.org/wiki/Computer_reservation_system) used to make the reservation and purchase the ticket.\n* Format: alphanumeric.\n* minLength: 4\n* maxLength: 4",
+                  "description" : "The [CRS](https://en.wikipedia.org/wiki/Computer_reservation_system) used to make the reservation and purchase the ticket.\n* Encoding: ASCII\n* minLength: 4 characters\n* maxLength: 4 characters",
                   "type" : "string"
                },
                "airline.customer_reference_number" : {
-                  "description" : "Reference number; alphanumeric.\n* minLength: 0\n* maxLength: 20",
+                  "description" : "The alphanumeric customer reference number.\n* Encoding: ASCII\n* maxLength: 20 characters\n* If you send more than 20 characters, the customer reference number is truncated\n* Must not be all spaces",
                   "type" : "string"
                },
                "airline.document_type" : {
-                  "description" : "Optional 2-digit code; alphanumeric. It identifies the type of product of the transaction. The description of the code may appear on credit card statements.\n* Format: 2-digit code\n* Example: Passenger ticket = 01\n* minLength: 2\n* maxLength: 2",
+                  "description" : "A code that identifies the type of item bought. The description of the code can appear on credit card statements.\n* Encoding: ASCII\n* Example: Passenger ticket = 01\n* minLength: 2 characters\n* maxLength: 2 characters",
                   "type" : "string"
                },
                "airline.flight_date" : {
-                  "description" : "Flight departure date. Local time `(HH:mm)` is optional.\n* Date format: `yyyy-MM-dd`\n* Date and time format: `yyyy-MM-dd HH:mm`\n* minLength: 10\n* maxLength: 16",
+                  "description" : "The flight departure date. Local time `(HH:mm)` is optional.\n* Date format: `yyyy-MM-dd`\n* Date and time format: `yyyy-MM-dd HH:mm`\n* minLength: 10 characters\n* maxLength: 16 characters",
+                  "type" : "string"
+               },
+               "airline.issue_date" : {
+                  "description" : "The date that the ticket was issued to the passenger.\n* minLength: 6 characters\n* maxLength: 6 characters\n* Date format: YYMMDD",
                   "type" : "string"
                },
                "airline.leg.carrier_code" : {
-                  "description" : "[IATA](https://www.iata.org/services/pages/codes.aspx) 2-letter accounting code (PAX); alphabetical. It identifies the carrier.\nThis field is required/mandatory if the airline data includes leg details.\n* Format: IATA 2-letter airline code\n* Example: KLM = KL\n* minLength: 2\n* maxLength: 2",
+                  "description" : "The [IATA](https://www.iata.org/services/pages/codes.aspx) 2-letter accounting code (PAX) that identifies the carrier.\nThis field is required if the airline data includes leg details.\n* Example: KLM = KL\n* minLength: 2 characters\n* maxLength: 2 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.leg.class_of_travel" : {
-                  "description" : "1-letter travel class identifier; alphabetical. There is no standard; however, the following codes are used rather consistently:\n* F: first class\n* J: business class\n* Y: economy class\n* W: premium economy\n\nLimitations:\n* minLength: 1\n* maxLength: 1",
+                  "description" : "A one-letter travel class identifier.\n The following are common:\n * F: first class\n* J: business class\n* Y: economy class\n* W: premium economy\n\n* Encoding: ASCII\n* minLength: 1 character\n* maxLength: 1 character\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.leg.date_of_travel" : {
-                  "description" : "\t\nDate and time of travel. [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)-compliant.\n* Format: `yyyy-MM-dd HH:mm`\n* minLength: 16\n* maxLength: 16",
+                  "description" : "\t\nDate and time of travel in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format `yyyy-MM-dd HH:mm`.\n* Encoding: ASCII\n* minLength: 16 characters\n* maxLength: 16 characters",
                   "type" : "string"
                },
                "airline.leg.depart_airport" : {
-                  "description" : "Alphabetical identifier of the departure airport.\nThis field is required if the airline data includes leg details.\n* Format: [IATA](https://www.iata.org/services/pages/codes.aspx) 3-letter airport code.\n* Example: Amsterdam = AMS\n* minLength: 3\n* maxLength: 3",
+                  "description" : "The [IATA](https://www.iata.org/services/pages/codes.aspx) three-letter airport code of the departure airport.\nThis field is required if the airline data includes leg details.\n\n* Encoding: ASCII\n* Example: Amsterdam = AMS\n* minLength: 3 characters\n* maxLength: 3 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.leg.depart_tax" : {
-                  "description" : "[Departure tax](https://en.wikipedia.org/wiki/Departure_tax). Amount charged by a country to an individual upon their leaving. The transaction amount needs to be represented in minor units according to the [following table](https://docs.adyen.com/development-resources/currency-codes).\n* minLength: 1\n* maxLength: 12",
+                  "description" : "The amount of [departure tax](https://en.wikipedia.org/wiki/Departure_tax) charged, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Encoding: Numeric\n* minLength: 1\n* maxLength: 12\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.leg.destination_code" : {
-                  "description" : "Alphabetical identifier of the destination/arrival airport.\nThis field is required/mandatory if the airline data includes leg details.\n* Format: [IATA](https://www.iata.org/services/pages/codes.aspx) 3-letter airport code.\n* Example: Amsterdam = AMS\n* minLength: 3\n* maxLength: 3",
+                  "description" : "The [IATA](https://www.iata.org/services/pages/codes.aspx) 3-letter airport code of the destination airport.\nThis field is required if the airline data includes leg details.\n* Example: Amsterdam = AMS\n* Encoding: ASCII\n* minLength: 3 characters\n* maxLength: 3 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.leg.fare_base_code" : {
-                  "description" : "[Fare basis code](https://en.wikipedia.org/wiki/Fare_basis_code); alphanumeric.\n* minLength: 1\n* maxLength: 7",
+                  "description" : "The [fare basis code](https://en.wikipedia.org/wiki/Fare_basis_code), alphanumeric.\n* minLength: 1 character\n* maxLength: 6 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.leg.flight_number" : {
-                  "description" : "The flight identifier.\n* minLength: 1\n* maxLength: 5",
+                  "description" : "The flight identifier.\n* minLength: 1 character\n* maxLength: 5 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.leg.stop_over_code" : {
-                  "description" : "1-letter code that indicates whether the passenger is entitled to make a stopover. Only two types of characters are allowed:\n* O: Stopover allowed\n* X: Stopover not allowed\n\nLimitations:\n* minLength: 1\n* maxLength: 1",
+                  "description" : "A one-letter code that indicates whether the passenger is entitled to make a stopover. Can be a space, O if the passenger is entitled to make a stopover, or X if they are not.\n* Encoding: ASCII\n* minLength: 1 character\n* maxLength: 1 character",
                   "type" : "string"
                },
                "airline.passenger.date_of_birth" : {
-                  "description" : "Date of birth of the passenger.\n\nDate format: `yyyy-MM-dd`\n* minLength: 10\n* maxLength: 10",
+                  "description" : "The passenger's date of birth.\n\nDate format: `yyyy-MM-dd`\n* minLength: 10\n* maxLength: 10",
                   "type" : "string"
                },
                "airline.passenger.first_name" : {
-                  "description" : "Passenger first name/given name.\n> This field is required/mandatory if the airline data includes passenger details or leg details.",
+                  "description" : "The passenger's first name.\n> This field is required if the airline data includes passenger details or leg details.\n* Encoding: ASCII",
                   "type" : "string"
                },
                "airline.passenger.last_name" : {
-                  "description" : "Passenger last name/family name.\n> This field is required/mandatory if the airline data includes passenger details or leg details.",
+                  "description" : "The passenger's last name.\n> This field is required if the airline data includes passenger details or leg details.\n* Encoding: ASCII",
                   "type" : "string"
                },
                "airline.passenger.telephone_number" : {
-                  "description" : "Telephone number of the passenger, including country code. This is an alphanumeric field that can include the '+' and '-' signs.\n* minLength: 3\n* maxLength: 30",
+                  "description" : "The passenger's telephone number, including country code. This is an alphanumeric field that can include the '+' and '-' signs.\n* Encoding: ASCII\n* minLength: 3 characters\n* maxLength: 30 characters",
                   "type" : "string"
                },
                "airline.passenger.traveller_type" : {
-                  "description" : "Passenger type code (PTC). IATA PTC values are 3-letter alphabetical. Example: ADT, SRC, CNN, INS.\n\nHowever, several carriers use non-standard codes that can be up to 5 alphanumeric characters.\n* minLength: 3\n* maxLength: 6",
+                  "description" : "The IATA passenger type code (PTC).\n* Encoding: ASCII\n* minLength: 3 characters\n* maxLength: 6 characters",
                   "type" : "string"
                },
                "airline.passenger_name" : {
-                  "description" : "Passenger name, initials, and a title.\n* Format: last name + first name or initials + title.\n* Example: *FLYER / MARY MS*.\n* minLength: 1\n* maxLength: 49",
+                  "description" : "The passenger's name, initials, and title.\n* Format: last name + first name or initials + title\n* Example: *FLYER / MARY MS*\n* minLength: 1 character\n* maxLength: 20 characters\n* If you send more than 20 characters, the name is truncated\n* Must not be all spaces \n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.ticket_issue_address" : {
-                  "description" : "Address of the place/agency that issued the ticket.\n* minLength: 0\n* maxLength: 16",
+                  "description" : "The address of the organization that issued the ticket.\n* minLength: 0 characters\n* maxLength: 16 characters",
                   "type" : "string"
                },
                "airline.ticket_number" : {
-                  "description" : "The ticket's unique identifier.\n* minLength: 1\n* maxLength: 150",
+                  "description" : "The ticket's unique identifier.\n* minLength: 1 character\n* maxLength: 15 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.travel_agency_code" : {
-                  "description" : "IATA number, also ARC number or ARC/IATA number. Unique identifier number for travel agencies.\n* minLength: 1\n* maxLength: 8",
+                  "description" : "The unique identifier from IATA or ARC for the travel agency that issues the ticket.\n* Encoding: ASCII\n* minLength: 1 character\n* maxLength: 8 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "airline.travel_agency_name" : {
-                  "description" : "The name of the travel agency.\n* minLength: 1\n* maxLength: 25",
+                  "description" : "The name of the travel agency.\n\n* Encoding: ASCII\n* minLength: 1 character\n* maxLength: 25 characters\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                }
             },
@@ -1748,103 +1738,105 @@
             "type" : "object"
          },
          "AdditionalDataCarRental" : {
+            "additionalProperties" : false,
             "properties" : {
                "carRental.checkOutDate" : {
-                  "description" : "Pick-up date.\n* Date format: `yyyyMMdd`",
+                  "description" : "The pick-up date.\n* Date format: `yyyyMMdd`",
                   "type" : "string"
                },
                "carRental.customerServiceTollFreeNumber" : {
-                  "description" : "The customer service phone number of the car rental company.\n* Format: Alphanumeric\n* maxLength: 17",
+                  "description" : "The customer service phone number of the car rental company.\n* Format: Alphanumeric\n* maxLength: 17\n* For US and CA numbers must be 10 characters in length\n* Must not start with a space\n* Must not contain any special characters such as + or -\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.daysRented" : {
-                  "description" : "Number of days for which the car is being rented.\n* Format: Numeric\n* maxLength: 19",
+                  "description" : "Number of days for which the car is being rented.\n* Format: Numeric\n* maxLength: 4\n* Must not be all spaces",
                   "type" : "string"
                },
                "carRental.fuelCharges" : {
-                  "description" : "Any fuel charges associated with the rental.\n* Format: Numeric\n* maxLength: 12",
+                  "description" : "Any fuel charges associated with the rental, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Format: Numeric\n* maxLength: 12",
                   "type" : "string"
                },
                "carRental.insuranceCharges" : {
-                  "description" : "Any insurance charges associated with the rental.\n* Format: Numeric\n* maxLength: 12",
+                  "description" : "Any insurance charges associated with the rental, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Format: Numeric\n* maxLength: 12\n* Must not be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.locationCity" : {
-                  "description" : "The city from which the car is rented.\n* Format: Alphanumeric\n* maxLength: 18",
+                  "description" : "The city where the car is rented.\n* Format: Alphanumeric\n* maxLength: 18\n* Must not start with a space or be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.locationCountry" : {
-                  "description" : "The country from which the car is rented.\n* Format: Alphanumeric\n* maxLength: 2",
+                  "description" : "The country where the car is rented, in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.\n* Format: Alphanumeric\n* maxLength: 2",
                   "type" : "string"
                },
                "carRental.locationStateProvince" : {
-                  "description" : "The state or province from where the car is rented.\n* Format: Alphanumeric\n* maxLength: 3",
+                  "description" : "The state or province where the car is rented.\n* Format: Alphanumeric\n* maxLength: 2\n* Must not start with a space or be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.noShowIndicator" : {
-                  "description" : "Indicates if the customer was a \"no-show\" (neither keeps nor cancels their booking).\n* Y - Customer was a no show.\n* N - Not applicable.",
+                  "description" : "Indicates if the customer didn't pick up their rental car.\n* Y - Customer did not pick up their car\n* N - Not applicable",
                   "type" : "string"
                },
                "carRental.oneWayDropOffCharges" : {
-                  "description" : "Charge associated with not returning a vehicle to the original rental location.",
+                  "description" : "The charge for not returning a car to the original rental location, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* maxLength: 12",
                   "type" : "string"
                },
                "carRental.rate" : {
-                  "description" : "Daily rental rate.\n* Format: Alphanumeric\n* maxLength: 12",
+                  "description" : "The daily rental rate, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Format: Alphanumeric\n* maxLength: 12",
                   "type" : "string"
                },
                "carRental.rateIndicator" : {
-                  "description" : "Specifies whether the given rate is applied daily or weekly.\n* D - Daily rate.\n* W - Weekly rate.",
+                  "description" : "Specifies whether the given rate is applied daily or weekly.\n* D - Daily rate\n* W - Weekly rate",
                   "type" : "string"
                },
                "carRental.rentalAgreementNumber" : {
-                  "description" : "The rental agreement number associated with this car rental.\n* Format: Alphanumeric\n* maxLength: 9",
+                  "description" : "The rental agreement number for the car rental.\n* Format: Alphanumeric\n* maxLength: 9\n* Must not start with a space or be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.rentalClassId" : {
-                  "description" : "Daily rental rate.\n* Format: Alphanumeric\n* maxLength: 12",
+                  "description" : "The classification of the rental car.\n* Format: Alphanumeric\n* maxLength: 4\n* Must not start with a space or be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.renterName" : {
-                  "description" : "The name of the person renting the car.\n* Format: Alphanumeric\n* maxLength: 26",
+                  "description" : "The name of the person renting the car.\n* Format: Alphanumeric\n* maxLength: 26\n* If you send more than 26 characters, the name is truncated\n* Must not start with a space or be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.returnCity" : {
-                  "description" : "The city where the car must be returned.\n* Format: Alphanumeric\n* maxLength: 18",
+                  "description" : "The city where the car must be returned.\n* Format: Alphanumeric\n* maxLength: 18\n* Must not start with a space or be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.returnCountry" : {
-                  "description" : "The country where the car must be returned.\n* Format: Alphanumeric\n* maxLength: 2",
+                  "description" : "The country where the car must be returned, in [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format.\n* Format: Alphanumeric\n* maxLength: 2",
                   "type" : "string"
                },
                "carRental.returnDate" : {
-                  "description" : "The last date to return the car by.\n* Date format: `yyyyMMdd`",
+                  "description" : "The last date to return the car by.\n* Date format: `yyyyMMdd`\n* maxLength: 8",
                   "type" : "string"
                },
                "carRental.returnLocationId" : {
-                  "description" : "Agency code, phone number, or address abbreviation\n* Format: Alphanumeric\n* maxLength: 10",
+                  "description" : "The agency code, phone number, or address abbreviation\n* Format: Alphanumeric\n* maxLength: 10\n* Must not start with a space or be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.returnStateProvince" : {
-                  "description" : "The state or province where the car must be returned.\n* Format: Alphanumeric\n* maxLength: 3",
+                  "description" : "The state or province where the car must be returned.\n* Format: Alphanumeric\n* maxLength: 3\n* Must not start with a space or be all spaces\n*Must not be all zeros.",
                   "type" : "string"
                },
                "carRental.taxExemptIndicator" : {
-                  "description" : "Indicates whether the goods or services were tax-exempt, or tax was not collected.\n\nValues:\n* Y - Goods or services were tax exempt\n* N - Tax was not collected",
+                  "description" : "Indicates if the goods or services were tax-exempt, or if tax was not paid on them.\n\nValues:\n* Y - Goods or services were tax exempt\n* N - Tax was not collected",
                   "type" : "string"
                },
                "travelEntertainmentAuthData.duration" : {
-                  "description" : "Number of nights.  This should be included in the auth message.\n* Format: Numeric\n* maxLength: 2",
+                  "description" : "Number of days the car is rented for. This should be included in the auth message.\n* Format: Numeric\n* maxLength: 4",
                   "type" : "string"
                },
                "travelEntertainmentAuthData.market" : {
-                  "description" : "Indicates what market-specific dataset will be submitted or is being submitted. Value should be \"A\" for Car rental. This should be included in the auth message.\n* Format: Alphanumeric\n* maxLength: 1",
+                  "description" : "Indicates what market-specific dataset will be submitted or is being submitted. Value should be 'A' for car rental. This should be included in the auth message.\n* Format: Alphanumeric\n* maxLength: 1",
                   "type" : "string"
                }
             },
             "type" : "object"
          },
          "AdditionalDataCommon" : {
+            "additionalProperties" : false,
             "properties" : {
                "RequestedTestErrorResponseCode" : {
                   "description" : "Triggers test scenarios that allow to replicate certain communication errors.\n\nAllowed values:\n* **NO_CONNECTION_AVAILABLE** – There wasn't a connection available to service the outgoing communication.\nThis is a transient, retriable error since no messaging could be initiated to an issuing system (or third-party acquiring system). Therefore, the header Transient-Error: true is returned in the response. A subsequent request using the same idempotency key will be processed as if it was the first request.\n* **IOEXCEPTION_RECEIVED** – Something went wrong during transmission of the message or receiving the response.\nThis is a classified as non-transient because the message could have been received by the issuing party and been acted upon. No transient error header is returned. If using idempotency, the (error) response is stored as the final result for the idempotency key. Subsequent messages with the same idempotency key not be processed beyond returning the stored response.",
@@ -1863,16 +1855,6 @@
                   "type" : "string"
                },
                "industryUsage" : {
-                  "x-enum" : [
-                     {
-                        "description" : "An incremental charge is carried out because of a no-show for a guaranteed reservation.",
-                        "value" : "NoShow"
-                     },
-                     {
-                        "description" : "An incremental charge is carried out to process an additional payment after the original services have been rendered and the respective payment has been processed.",
-                        "value" : "DelayedCharge"
-                     }
-                  ],
                   "description" : "In case of [asynchronous authorisation adjustment](https://docs.adyen.com/online-payments/adjust-authorisation#adjust-authorisation), this field denotes why the additional payment is made.\n\nPossible values:\n\n * **NoShow**: An incremental charge is carried out because of a no-show for a guaranteed reservation.\n\n * **DelayedCharge**: An incremental charge is carried out to process an additional payment after the original services have been rendered and the respective payment has been processed.",
                   "enum" : [
                      "NoShow",
@@ -1928,80 +1910,86 @@
             "type" : "object"
          },
          "AdditionalDataLevel23" : {
+            "additionalProperties" : false,
             "properties" : {
                "enhancedSchemeData.customerReference" : {
-                  "description" : "Customer code, if supplied by a customer.\n\nEncoding: ASCII.\n\nMax length: 25 characters.\n\n> Required for Level 2 and Level 3 data.",
+                  "description" : "The customer code.\n* Encoding: ASCII\n* Max length: 25 characters\n* Must not start with a space or be all spaces\n* Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.destinationCountryCode" : {
-                  "description" : "Destination country code.\n\nEncoding: ASCII.\n\nMax length: 3 characters.",
+                  "description" : "The three-letter [ISO 3166-1 alpha-3 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) for the destination address.\n* Encoding: ASCII\n* Fixed length: 3 characters",
                   "type" : "string"
                },
                "enhancedSchemeData.destinationPostalCode" : {
-                  "description" : "The postal code of a destination address.\n\nEncoding: ASCII.\n\nMax length: 10 characters.\n\n> Required for American Express.",
+                  "description" : "The postal code of the destination address.\n* Encoding: ASCII\n* Max length: 10 characters\n* Must not start with a space",
                   "type" : "string"
                },
                "enhancedSchemeData.destinationStateProvinceCode" : {
-                  "description" : "Destination state or province code.\n\nEncoding: ASCII.Max length: 3 characters.",
+                  "description" : "Destination state or province code.\n* Encoding: ASCII\n* Max length: 3 characters\n* Must not start with a space",
                   "type" : "string"
                },
                "enhancedSchemeData.dutyAmount" : {
-                  "description" : "Duty amount, in minor units.\n\nFor example, 2000 means USD 20.00.\n\nMax length: 12 characters.",
+                  "description" : "The duty amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* For example, 2000 means USD 20.00.\n* Encoding: Numeric\n* Max length: 12 characters",
                   "type" : "string"
                },
                "enhancedSchemeData.freightAmount" : {
-                  "description" : "Shipping amount, in minor units.\n\nFor example, 2000 means USD 20.00.\n\nMax length: 12 characters.",
+                  "description" : "The shipping amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* For example, 2000 means USD 20.00.\n* Encoding: Numeric\n*Max length: 12 characters",
                   "type" : "string"
                },
                "enhancedSchemeData.itemDetailLine[itemNr].commodityCode" : {
-                  "description" : "Item commodity code.\n\nEncoding: ASCII.\n\nMax length: 12 characters.",
+                  "description" : "The [UNSPC commodity code](https://www.unspsc.org/) of the item.\n* Encoding: ASCII\n* Max length: 12 characters\n* Must not start with a space or be all spaces\n* Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.itemDetailLine[itemNr].description" : {
-                  "description" : "Item description.\n\nEncoding: ASCII.\n\nMax length: 26 characters.",
+                  "description" : "A description of the item.\n* Encoding: ASCII\n* Max length: 26 characters\n* Must not start with a space or be all spaces\n* Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.itemDetailLine[itemNr].discountAmount" : {
-                  "description" : "Discount amount, in minor units.\n\nFor example, 2000 means USD 20.00.\n\nMax length: 12 characters.",
+                  "description" : "The discount amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* For example, 2000 means USD 20.00.\n* Encoding: Numeric\n* Max length: 12 characters",
                   "type" : "string"
                },
                "enhancedSchemeData.itemDetailLine[itemNr].productCode" : {
-                  "description" : "Product code.\n\nEncoding: ASCII.\n\nMax length: 12 characters.",
+                  "description" : "The product code.\n* Encoding: ASCII.\n* Max length: 12 characters\n* Must not start with a space or be all spaces\n* Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.itemDetailLine[itemNr].quantity" : {
-                  "description" : "Quantity, specified as an integer value.\n\nValue must be greater than 0.\n\nMax length: 12 characters.",
+                  "description" : "The number of items. Must be an integer greater than zero.\n* Encoding: Numeric\n* Max length: 12 characters\n* Must not start with a space or be all spaces\n\n",
                   "type" : "string"
                },
                "enhancedSchemeData.itemDetailLine[itemNr].totalAmount" : {
-                  "description" : "Total amount, in minor units.\n\nFor example, 2000 means USD 20.00.\n\nMax length: 12 characters.",
+                  "description" : "The total amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* For example, 2000 means USD 20.00.\n* Max length: 12 characters\n* Must not start with a space or be all spaces\n* Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.itemDetailLine[itemNr].unitOfMeasure" : {
-                  "description" : "Item unit of measurement.\n\nEncoding: ASCII.\n\nMax length: 3 characters.",
+                  "description" : "The unit of measurement for an item.\n* Encoding: ASCII\n\nMax length: 3 characters\n* Must not start with a space or be all spaces\n* Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.itemDetailLine[itemNr].unitPrice" : {
-                  "description" : "Unit price, specified in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n\nMax length: 12 characters.",
+                  "description" : "The unit price in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* For example, 2000 means USD 20.00.\n* Encoding: Numeric\n* Max length: 12 characters\n* Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.orderDate" : {
-                  "description" : "Order date.\n* Format: `ddMMyy`\n\nEncoding: ASCII.\n\nMax length: 6 characters.",
+                  "description" : "The order date.\n* Format: `ddMMyy`\n* Encoding: ASCII\n* Max length: 6 characters",
                   "type" : "string"
                },
                "enhancedSchemeData.shipFromPostalCode" : {
-                  "description" : "The postal code of a \"ship-from\" address.\n\nEncoding: ASCII.\n\nMax length: 10 characters.",
+                  "description" : "The postal code of the address the item is shipped from.\n* Encoding: ASCII\n* Max length: 10 characters\n* Must not start with a space or be all spaces\n* Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.totalTaxAmount" : {
-                  "description" : "Total tax amount, in minor units.\n\nFor example, 2000 means USD 20.00.\n\nMax length: 12 characters.\n\n> Required for Level 2 and Level 3 data.",
+                  "description" : "The total tax amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* For example, 2000 means USD 20.00.\n*Encoding: Numeric\n*Max length: 12 characters\n* Must not be all zeros.",
                   "type" : "string"
                }
             },
             "type" : "object"
          },
          "AdditionalDataLodging" : {
+            "additionalProperties" : false,
             "properties" : {
+               "lodging.SpecialProgramCode" : {
+                  "description" : "A code that corresponds to the category of lodging charges for the payment. Possible values:\n* 1: Lodging\n* 2: No show reservation\n* 3: Advanced deposit",
+                  "type" : "string"
+               },
                "lodging.checkInDate" : {
                   "description" : "The arrival date.\n* Date format: **yyyyMmDd**. For example, for 2023 April 22, **20230422**.",
                   "type" : "string"
@@ -2011,69 +1999,66 @@
                   "type" : "string"
                },
                "lodging.customerServiceTollFreeNumber" : {
-                  "description" : "The toll-free phone number for the lodging.\n* Format: alphanumeric.\n* Max length: 17 characters.\n* For US numbers: must start with 3 digits and be at least 10 characters in length. Otherwise, the capture can fail.",
+                  "description" : "The toll-free phone number for the lodging.\n* Format: numeric\n* Max length: 17 characters.\n* For US and CA numbers must be 10 characters in length\n* Must not start with a space\n* Must not contain any special characters such as + or -\n* Must not be all zeros.",
                   "type" : "string"
                },
                "lodging.fireSafetyActIndicator" : {
-                  "description" : "Identifies that the facility complies with the Hotel and Motel Fire Safety Act of 1990. Values can be: 'Y' or 'N'.\n* Format: alphabetic.\n* Max length: 1 character.",
+                  "description" : "Identifies that the facility complies with the Hotel and Motel Fire Safety Act of 1990. Must be 'Y' or 'N'.\n* Format: alphabetic\n* Max length: 1 character",
                   "type" : "string"
                },
                "lodging.folioCashAdvances" : {
-                  "description" : "The folio cash advances.\n* Format: numeric.\n* Max length: 12 characters.",
+                  "description" : "The folio cash advances, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Format: numeric\n* Max length: 12 characters",
                   "type" : "string"
                },
                "lodging.folioNumber" : {
-                  "description" : "The card acceptor’s internal invoice or billing ID reference number.\n* Format: alphanumeric.\n* Max length: 25 characters.",
+                  "description" : "The card acceptor’s internal invoice or billing ID reference number.\n* Max length: 25 characters\n* Must not start with a space\n* Must not contain any special characters\n* Must not be all zeros.",
                   "type" : "string"
                },
                "lodging.foodBeverageCharges" : {
-                  "description" : "The additional charges for food and beverages associated with the booking.\n* Format: numeric.\n* Max length: 12 characters.",
+                  "description" : "Any charges for food and beverages associated with the booking, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Format: numeric\n* Max length: 12 characters",
                   "type" : "string"
                },
                "lodging.noShowIndicator" : {
-                  "description" : "Indicates if the customer didn't check in for their booking.\n Possible values: \n * **Y**: the customer didn't check in. \n **N**: the customer checked in.",
+                  "description" : "Indicates if the customer didn't check in for their booking.\n Possible values: \n* **Y**: the customer didn't check in \n* **N**: the customer checked in",
                   "type" : "string"
                },
                "lodging.prepaidExpenses" : {
-                  "description" : "The prepaid expenses for the booking.\n* Format: numeric.\n* Max length: 12 characters.",
+                  "description" : "The prepaid expenses for the booking.\n* Format: numeric\n* Max length: 12 characters",
                   "type" : "string"
                },
                "lodging.propertyPhoneNumber" : {
-                  "description" : "Identifies the location of the lodging by its local phone number.\n* Format: alphanumeric.\n* Max length: 17 characters.\n* For US numbers: must start with 3 digits and be at least 10 characters in length. Otherwise, the capture can fail.",
+                  "description" : "The lodging property location's phone number.\n* Format: numeric\n* Min length: 10 characters\n* Max length: 17 characters\n* For US and CA numbers must be 10 characters in length\n* Must not start with a space\n* Must not contain any special characters such as + or -\n* Must not be all zeros.",
                   "type" : "string"
                },
                "lodging.room1.numberOfNights" : {
-                  "description" : "The total number of nights the room is booked for.\n* Format: numeric.\n* Max length: 4 characters.",
+                  "description" : "The total number of nights the room is booked for.\n* Format: numeric\n* Must be a number between 0 and 99\n* Max length: 4 characters",
                   "type" : "string"
                },
                "lodging.room1.rate" : {
-                  "description" : "The rate of the room.\n* Format: numeric.\n* Max length: 12 characters.\n* Must be in [minor units](https://docs.adyen.com/development-resources/currency-codes).",
-                  "type" : "string"
-               },
-               "lodging.room1.tax" : {
-                  "description" : "The total amount of tax to be paid.\n* Format: numeric.\n* Max length: 12 chracters.\n* Must be in [minor units](https://docs.adyen.com/development-resources/currency-codes).",
+                  "description" : "The rate for the room, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Format: numeric\n* Max length: 12 characters\n* Must not be a negative number",
                   "type" : "string"
                },
                "lodging.totalRoomTax" : {
-                  "description" : "The total room tax amount.\n* Format: numeric.\n* Max length: 12 characters.\n* Must be in [minor units](https://docs.adyen.com/development-resources/currency-codes).",
+                  "description" : "The total room tax amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Format: numeric\n* Max length: 12 characters\n* Must not be a negative number",
                   "type" : "string"
                },
                "lodging.totalTax" : {
-                  "description" : "The total tax amount.\n* Format: numeric.\n* Max length: 12 characters.\n* Must be in [minor units](https://docs.adyen.com/development-resources/currency-codes).",
+                  "description" : "The total tax amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* Format: numeric\n* Max length: 12 characters\n* Must not be a negative number",
                   "type" : "string"
                },
                "travelEntertainmentAuthData.duration" : {
-                  "description" : "The number of nights. This should be included in the auth message.\n* Format: numeric.\n* Max length: 2 characters.",
+                  "description" : "The number of nights. This should be included in the auth message.\n* Format: numeric\n* Max length: 4 characters",
                   "type" : "string"
                },
                "travelEntertainmentAuthData.market" : {
-                  "description" : "Indicates what market-specific dataset will be submitted or is being submitted. Value should be \"H\" for Hotel. This should be included in the auth message.\n\n* Format: alphanumeric.\n* Max length: 1 character.",
+                  "description" : "Indicates what market-specific dataset will be submitted. Must be 'H' for Hotel. This should be included in the auth message.\n\n* Format: alphanumeric\n* Max length: 1 character",
                   "type" : "string"
                }
             },
             "type" : "object"
          },
          "AdditionalDataModifications" : {
+            "additionalProperties" : false,
             "properties" : {
                "installmentPaymentData.selectedInstallmentOption" : {
                   "description" : "This is the installment option selected by the shopper. It is required only if specified by the user.",
@@ -2083,6 +2068,7 @@
             "type" : "object"
          },
          "AdditionalDataOpenInvoice" : {
+            "additionalProperties" : false,
             "properties" : {
                "openinvoicedata.merchantData" : {
                   "description" : "Holds different merchant data points like product, purchase, customer, and so on. It takes data in a Base64 encoded string.\n\nThe `merchantData` parameter needs to be added to the `openinvoicedata` signature at the end.\n\nSince the field is optional, if it's not included it does not impact computing the merchant signature.\n\nApplies only to Klarna.\n\nYou can contact Klarna for the format and structure of the string.",
@@ -2160,6 +2146,7 @@
             "type" : "object"
          },
          "AdditionalDataOpi" : {
+            "additionalProperties" : false,
             "properties" : {
                "opi.includeTransToken" : {
                   "description" : "Optional boolean indicator. Set to **true** if you want an ecommerce transaction to return an `opi.transToken` as additional data in the response.\n\nYou can store this Oracle Payment Interface token in your Oracle Opera database. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).",
@@ -2169,6 +2156,7 @@
             "type" : "object"
          },
          "AdditionalDataRatepay" : {
+            "additionalProperties" : false,
             "properties" : {
                "ratepay.installmentAmount" : {
                   "description" : "Amount the customer has to pay each month.",
@@ -2206,6 +2194,7 @@
             "type" : "object"
          },
          "AdditionalDataRetry" : {
+            "additionalProperties" : false,
             "properties" : {
                "retry.chainAttemptNumber" : {
                   "description" : "The number of times the transaction (not order) has been retried between different payment service providers. For instance, the `chainAttemptNumber` set to 2 means that this transaction has been recently tried on another provider before being sent to Adyen.\n\n> If you submit `retry.chainAttemptNumber`, `retry.orderAttemptNumber`, and `retry.skipRetry` values, we also recommend you provide the `merchantOrderReference` to facilitate linking payment attempts together.",
@@ -2223,6 +2212,7 @@
             "type" : "object"
          },
          "AdditionalDataRisk" : {
+            "additionalProperties" : false,
             "properties" : {
                "riskdata.[customFieldName]" : {
                   "description" : "The data for your custom risk field. For more information, refer to [Create custom risk fields](https://docs.adyen.com/risk-management/configure-custom-risk-rules#step-1-create-custom-risk-fields).",
@@ -2312,6 +2302,7 @@
             "type" : "object"
          },
          "AdditionalDataRiskStandalone" : {
+            "additionalProperties" : false,
             "properties" : {
                "PayPal.CountryCode" : {
                   "description" : "Shopper's country of residence in the form of ISO standard 3166 2-character country codes.",
@@ -2350,7 +2341,7 @@
                   "type" : "string"
                },
                "bin" : {
-                  "description" : "The Bank Identification Number of a credit card, which is the first six digits of a card number. Required for [tokenized card request](https://docs.adyen.com/risk-management/standalone-risk#tokenised-pan-request).",
+                  "description" : "The Bank Identification Number of a credit card, which is the first six digits of a card number. Required for [tokenized card request](https://docs.adyen.com/online-payments/tokenization).",
                   "type" : "string"
                },
                "cvcResultRaw" : {
@@ -2377,6 +2368,7 @@
             "type" : "object"
          },
          "AdditionalDataSubMerchant" : {
+            "additionalProperties" : false,
             "properties" : {
                "subMerchant.numberOfSubSellers" : {
                   "description" : "Required for transactions performed by registered payment facilitators. Indicates the number of sub-merchants contained in the request. For example, **3**.",
@@ -2422,47 +2414,49 @@
             "type" : "object"
          },
          "AdditionalDataTemporaryServices" : {
+            "additionalProperties" : false,
             "properties" : {
                "enhancedSchemeData.customerReference" : {
-                  "description" : "Customer code, if supplied by a customer.\n* Encoding: ASCII\n* maxLength: 25",
+                  "description" : "The customer code, if supplied by a customer.\n* Encoding: ASCII\n* maxLength: 25",
                   "type" : "string"
                },
                "enhancedSchemeData.employeeName" : {
-                  "description" : "Name or ID associated with the individual working in a temporary capacity.\n* maxLength: 40",
+                  "description" : "The name or ID of the person working in a temporary capacity.\n* maxLength: 40.  \n* Must not be all spaces. \n*Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.jobDescription" : {
-                  "description" : "Description of the job or task of the individual working in a temporary capacity.\n* maxLength: 40",
+                  "description" : "The job description of the person working in a temporary capacity.\n* maxLength: 40 \n* Must not be all spaces. \n*Must not be all zeros.",
                   "type" : "string"
                },
                "enhancedSchemeData.regularHoursRate" : {
-                  "description" : "Amount paid per regular hours worked, minor units.\n* maxLength: 7",
+                  "description" : "The amount paid for regular hours worked, [minor units](https://docs.adyen.com/development-resources/currency-codes).\n* maxLength: 7\n* Must not be empty\n* Can be all zeros",
                   "type" : "string"
                },
                "enhancedSchemeData.regularHoursWorked" : {
-                  "description" : "Amount of time worked during a normal operation for the task or job.\n* maxLength: 7",
+                  "description" : "The hours worked.\n* maxLength: 7\n* Must not be empty\n* Can be all zeros",
                   "type" : "string"
                },
                "enhancedSchemeData.requestName" : {
-                  "description" : "Name of the individual requesting temporary services.\n* maxLength: 40",
+                  "description" : "The name of the person requesting temporary services.\n* maxLength: 40\n* Must not be all zeros\n* Must not be all spaces",
                   "type" : "string"
                },
                "enhancedSchemeData.tempStartDate" : {
-                  "description" : "Date for the beginning of the pay period.\n* Format: ddMMyy\n* maxLength: 6",
+                  "description" : "The billing period start date.\n* Format: ddMMyy\n* maxLength: 6",
                   "type" : "string"
                },
                "enhancedSchemeData.tempWeekEnding" : {
-                  "description" : "Date of the end of the billing cycle.\n* Format: ddMMyy\n* maxLength: 6",
+                  "description" : "The billing period end date.\n* Format: ddMMyy\n* maxLength: 6",
                   "type" : "string"
                },
                "enhancedSchemeData.totalTaxAmount" : {
-                  "description" : "Total tax amount, in minor units. For example, 2000 means USD 20.00\n* maxLength: 12",
+                  "description" : "The total tax amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes). For example, 2000 means USD 20.00\n* maxLength: 12",
                   "type" : "string"
                }
             },
             "type" : "object"
          },
          "AdditionalDataWallets" : {
+            "additionalProperties" : false,
             "properties" : {
                "androidpay.token" : {
                   "description" : "The Android Pay token retrieved from the SDK.",
@@ -2492,6 +2486,7 @@
             "type" : "object"
          },
          "Address" : {
+            "additionalProperties" : false,
             "properties" : {
                "city" : {
                   "description" : "The name of the city. Maximum length: 3000 characters.",
@@ -2531,6 +2526,7 @@
             "type" : "object"
          },
          "AdjustAuthorisationRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -2617,7 +2613,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For more information, see how to split payments for [platforms](https://docs.adyen.com/platforms/automatic-split-configuration/).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -2642,6 +2638,7 @@
             "type" : "object"
          },
          "Amount" : {
+            "additionalProperties" : false,
             "properties" : {
                "currency" : {
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).",
@@ -2662,6 +2659,7 @@
             "type" : "object"
          },
          "ApplicationInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "adyenLibrary" : {
                   "description" : "Adyen-developed software, such as libraries and plugins, used to interact with the Adyen API. For example, Magento plugin, Java API library, etc.",
@@ -2691,6 +2689,7 @@
             "type" : "object"
          },
          "BankAccount" : {
+            "additionalProperties" : false,
             "properties" : {
                "bankAccountNumber" : {
                   "description" : "The bank account number (without separators).",
@@ -2734,6 +2733,7 @@
             "type" : "object"
          },
          "BrowserInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "acceptHeader" : {
                   "description" : "The accept header value of the shopper's browser.",
@@ -2797,6 +2797,7 @@
             "type" : "object"
          },
          "CancelOrRefundRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -2895,6 +2896,7 @@
             "type" : "object"
          },
          "CancelRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -2977,7 +2979,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For more information, see how to split payments for [platforms](https://docs.adyen.com/platforms/automatic-split-configuration/).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -3001,6 +3003,7 @@
             "type" : "object"
          },
          "CaptureRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -3087,7 +3090,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For more information, see how to split payments for [platforms](https://docs.adyen.com/platforms/automatic-split-configuration/).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -3112,6 +3115,7 @@
             "type" : "object"
          },
          "Card" : {
+            "additionalProperties" : false,
             "properties" : {
                "cvc" : {
                   "description" : "The [card verification code](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-security-code-cvc-cvv-cid) (1-20 characters). Depending on the card brand, it is known also as:\n* CVV2/CVC2 – length: 3 digits\n* CID – length: 4 digits\n> If you are using [Client-Side Encryption](https://docs.adyen.com/classic-integration/cse-integration-ecommerce), the CVC code is present in the encrypted data. You must never post the card details to the server.\n> This field must be always present in a [one-click payment request](https://docs.adyen.com/classic-integration/recurring-payments).\n> When this value is returned in a response, it is always empty because it is not stored.",
@@ -3165,6 +3169,7 @@
             "type" : "object"
          },
          "CommonField" : {
+            "additionalProperties" : false,
             "properties" : {
                "name" : {
                   "description" : "Name of the field. For example, Name of External Platform.",
@@ -3178,6 +3183,7 @@
             "type" : "object"
          },
          "DeviceRenderOptions" : {
+            "additionalProperties" : false,
             "properties" : {
                "sdkInterface" : {
                   "default" : "both",
@@ -3207,6 +3213,7 @@
             "type" : "object"
          },
          "DonationRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "donationAccount" : {
                   "description" : "The Adyen account name of the charity.",
@@ -3237,6 +3244,7 @@
             "type" : "object"
          },
          "ExternalPlatform" : {
+            "additionalProperties" : false,
             "properties" : {
                "integrator" : {
                   "description" : "External platform integrator.",
@@ -3254,6 +3262,7 @@
             "type" : "object"
          },
          "ForexQuote" : {
+            "additionalProperties" : false,
             "properties" : {
                "account" : {
                   "description" : "The account name.",
@@ -3313,6 +3322,7 @@
             "type" : "object"
          },
          "FraudCheckResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountScore" : {
                   "description" : "The fraud score generated by the risk check.",
@@ -3344,6 +3354,7 @@
             }
          },
          "FraudResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountScore" : {
                   "description" : "The total fraud score generated by the risk checks.",
@@ -3364,9 +3375,10 @@
             "type" : "object"
          },
          "Installments" : {
+            "additionalProperties" : false,
             "properties" : {
                "value" : {
-                  "description" : "Defines the number of installments. Its value needs to be greater than zero.\n\nUsually, the maximum allowed number of installments is capped. For example, it may not be possible to split a payment in more than 24 installments. The acquirer sets this upper limit, so its value may vary.",
+                  "description" : "Defines the number of installments.\nUsually, the maximum allowed number of installments is capped. For example, it may not be possible to split a payment in more than 24 installments. The acquirer sets this upper limit, so its value may vary.\nThis value can be zero for Installments processed in Mexico.",
                   "format" : "int32",
                   "type" : "integer"
                }
@@ -3377,6 +3389,7 @@
             "type" : "object"
          },
          "Mandate" : {
+            "additionalProperties" : false,
             "properties" : {
                "amount" : {
                   "description" : "The billing amount (in minor units) of the recurring transactions.",
@@ -3401,6 +3414,10 @@
                },
                "billingDay" : {
                   "description" : "The number of the day, on which the recurring debit can happen. Should be within the same calendar month as the mandate recurring date.\n\nPossible values: 1-31 based on the `frequency`.",
+                  "type" : "string"
+               },
+               "count" : {
+                  "description" : "The number of transactions that can be performed within the given frequency.",
                   "type" : "string"
                },
                "endsAt" : {
@@ -3438,6 +3455,7 @@
             "type" : "object"
          },
          "MerchantDevice" : {
+            "additionalProperties" : false,
             "properties" : {
                "os" : {
                   "description" : "Operating system running on the merchant device.",
@@ -3455,6 +3473,7 @@
             "type" : "object"
          },
          "MerchantRiskIndicator" : {
+            "additionalProperties" : false,
             "properties" : {
                "addressMatch" : {
                   "description" : "Whether the chosen delivery address is identical to the billing address.",
@@ -3513,6 +3532,7 @@
             "type" : "object"
          },
          "ModificationResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -3535,7 +3555,8 @@
                      "[adjustAuthorisation-received]",
                      "[donation-received]",
                      "[technical-cancel-received]",
-                     "[voidPendingRefund-received]"
+                     "[voidPendingRefund-received]",
+                     "Authorised"
                   ],
                   "type" : "string"
                }
@@ -3547,13 +3568,16 @@
             "type" : "object"
          },
          "Name" : {
+            "additionalProperties" : false,
             "properties" : {
                "firstName" : {
                   "description" : "The first name.",
+                  "maxLength" : 80,
                   "type" : "string"
                },
                "lastName" : {
                   "description" : "The last name.",
+                  "maxLength" : 80,
                   "type" : "string"
                }
             },
@@ -3564,6 +3588,7 @@
             "type" : "object"
          },
          "PaymentRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountInfo" : {
                   "x-addedInVersion" : "40",
@@ -3823,7 +3848,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using either Adyen for Platforms for [marketplaces](https://docs.adyen.com/marketplaces/split-payments) or [platforms]((https://docs.adyen.com/platforms/split-payments), or standalone [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -3831,7 +3856,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "Required for Adyen for Platforms integrations if you are a platform model. This is your [reference](https://docs.adyen.com/api-explorer/Management/3/post/merchants/(merchantId)/stores#request-reference) (on [balance platform](https://docs.adyen.com/platforms)) or the [storeReference](https://docs.adyen.com/api-explorer/Account/latest/post/updateAccountHolder#request-accountHolderDetails-storeDetails-storeReference) (in the [classic integration](https://docs.adyen.com/classic-platforms/processing-payments/route-payment-to-store/#route-a-payment-to-a-store)) for the ecommerce or point-of-sale store that is processing the payment.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -3873,6 +3898,7 @@
             "type" : "object"
          },
          "PaymentRequest3d" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountInfo" : {
                   "x-addedInVersion" : "40",
@@ -4109,7 +4135,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using either Adyen for Platforms for [marketplaces](https://docs.adyen.com/marketplaces/split-payments) or [platforms]((https://docs.adyen.com/platforms/split-payments), or standalone [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -4117,7 +4143,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "Required for Adyen for Platforms integrations if you are a platform model. This is your [reference](https://docs.adyen.com/api-explorer/Management/3/post/merchants/(merchantId)/stores#request-reference) (on [balance platform](https://docs.adyen.com/platforms)) or the [storeReference](https://docs.adyen.com/api-explorer/Account/latest/post/updateAccountHolder#request-accountHolderDetails-storeDetails-storeReference) (in the [classic integration](https://docs.adyen.com/classic-platforms/processing-payments/route-payment-to-store/#route-a-payment-to-a-store)) for the ecommerce or point-of-sale store that is processing the payment.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -4159,6 +4185,7 @@
             "type" : "object"
          },
          "PaymentRequest3ds2" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountInfo" : {
                   "x-addedInVersion" : "40",
@@ -4387,7 +4414,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the payment should be split when using [Adyen for Platforms](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information) or [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
+                  "description" : "An array of objects specifying how the payment should be split when using either Adyen for Platforms for [marketplaces](https://docs.adyen.com/marketplaces/split-payments) or [platforms]((https://docs.adyen.com/platforms/split-payments), or standalone [Issuing](https://docs.adyen.com/issuing/add-manage-funds#split).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -4395,7 +4422,7 @@
                },
                "store" : {
                   "x-addedInVersion" : "23",
-                  "description" : "The ecommerce or point-of-sale store that is processing the payment. Used in [partner model integrations](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#route-payments) for Adyen for Platforms.",
+                  "description" : "Required for Adyen for Platforms integrations if you are a platform model. This is your [reference](https://docs.adyen.com/api-explorer/Management/3/post/merchants/(merchantId)/stores#request-reference) (on [balance platform](https://docs.adyen.com/platforms)) or the [storeReference](https://docs.adyen.com/api-explorer/Account/latest/post/updateAccountHolder#request-accountHolderDetails-storeDetails-storeReference) (in the [classic integration](https://docs.adyen.com/classic-platforms/processing-payments/route-payment-to-store/#route-a-payment-to-a-store)) for the ecommerce or point-of-sale store that is processing the payment.",
                   "maxLength" : 16,
                   "minLength" : 1,
                   "type" : "string"
@@ -4411,7 +4438,7 @@
                   "$ref" : "#/components/schemas/ThreeDS2RequestData"
                },
                "threeDS2Result" : {
-                  "description" : "Thre ThreeDS2Result that was returned in the final CRes.",
+                  "description" : "The ThreeDS2Result that was returned in the final CRes.",
                   "$ref" : "#/components/schemas/ThreeDS2Result"
                },
                "threeDS2Token" : {
@@ -4445,6 +4472,7 @@
             "type" : "object"
          },
          "PaymentResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -4462,6 +4490,9 @@
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataCommon"
+                     },
+                     {
+                        "$ref" : "#/components/schemas/ResponseAdditionalDataDomesticError"
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataInstallments"
@@ -4517,7 +4548,7 @@
                   "type" : "string"
                },
                "resultCode" : {
-                  "description" : "The result of the payment. For more information, see [Result codes](https://docs.adyen.com/online-payments/payment-result-codes).\n\nPossible values:\n\n* **AuthenticationFinished** – The payment has been successfully authenticated with 3D Secure 2. Returned for 3D Secure 2 authentication-only transactions.\n* **AuthenticationNotRequired** – The transaction does not require 3D Secure authentication. Returned for [standalone authentication-only integrations](https://docs.adyen.com/online-payments/3d-secure/other-3ds-flows/authentication-only).\n* **Authorised** – The payment was successfully authorised. This state serves as an indicator to proceed with the delivery of goods and services. This is a final state.\n* **Cancelled** – Indicates the payment has been cancelled (either by the shopper or the merchant) before processing was completed. This is a final state.\n* **ChallengeShopper** – The issuer requires further shopper interaction before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Error** – There was an error when the payment was being processed. The reason is given in the `refusalReason` field. This is a final state.\n* **IdentifyShopper** – The issuer requires the shopper's device fingerprint before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Pending** – Indicates that it is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.\n* **PresentToShopper** – Indicates that the response contains additional information that you need to present to a shopper, so that they can use it to complete a payment.\n* **Received** – Indicates the payment has successfully been received by Adyen, and will be processed. This is the initial state for all payments.\n* **RedirectShopper** – Indicates the shopper should be redirected to an external web page or app to complete the authorisation.\n* **Refused** – Indicates the payment was refused. The reason is given in the `refusalReason` field. This is a final state.",
+                  "description" : "The result of the payment. For more information, see [Result codes](https://docs.adyen.com/online-payments/payment-result-codes).\n\nPossible values:\n\n* **AuthenticationFinished** – The payment has been successfully authenticated with 3D Secure 2. Returned for 3D Secure 2 authentication-only transactions.\n* **AuthenticationNotRequired** – The transaction does not require 3D Secure authentication. Returned for [standalone authentication-only integrations](https://docs.adyen.com/online-payments/3d-secure/other-3ds-flows/authentication-only).\n* **Authorised** – The payment was successfully authorised. This state serves as an indicator to proceed with the delivery of goods and services. This is a final state.\n* **Cancelled** – Indicates the payment has been cancelled (either by the shopper or the merchant) before processing was completed. This is a final state.\n* **ChallengeShopper** – The issuer requires further shopper interaction before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Error** – There was an error when the payment was being processed. The reason is given in the `refusalReason` field. This is a final state.\n* **IdentifyShopper** – The issuer requires the shopper's device fingerprint before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **PartiallyAuthorised** – The payment has been authorised for a partial amount.\nThis happens for card payments when the merchant supports Partial Authorisations and the cardholder has insufficient funds.\n* **Pending** – Indicates that it is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.\n* **PresentToShopper** – Indicates that the response contains additional information that you need to present to a shopper, so that they can use it to complete a payment.\n* **Received** – Indicates the payment has successfully been received by Adyen, and will be processed. This is the initial state for all payments.\n* **RedirectShopper** – Indicates the shopper should be redirected to an external web page or app to complete the authorisation.\n* **Refused** – Indicates the payment was refused. The reason is given in the `refusalReason` field. This is a final state.",
                   "enum" : [
                      "AuthenticationFinished",
                      "AuthenticationNotRequired",
@@ -4526,6 +4557,7 @@
                      "ChallengeShopper",
                      "Error",
                      "IdentifyShopper",
+                     "PartiallyAuthorised",
                      "Pending",
                      "PresentToShopper",
                      "Received",
@@ -4539,6 +4571,7 @@
             "type" : "object"
          },
          "Recurring" : {
+            "additionalProperties" : false,
             "properties" : {
                "contract" : {
                   "description" : "The type of recurring contract to be used.\nPossible values:\n* `ONECLICK` – Payment details can be used to initiate a one-click payment, where the shopper enters the [card security code (CVC/CVV)](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-security-code-cvc-cvv-cid).\n* `RECURRING` – Payment details can be used without the card security code to initiate [card-not-present transactions](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-not-present-cnp).\n* `ONECLICK,RECURRING` – Payment details can be used regardless of whether the shopper is on your site or not.\n* `PAYOUT` – Payment details can be used to [make a payout](https://docs.adyen.com/online-payments/online-payouts).",
@@ -4569,7 +4602,9 @@
                   "description" : "The name of the token service.",
                   "enum" : [
                      "VISATOKENSERVICE",
-                     "MCTOKENSERVICE"
+                     "MCTOKENSERVICE",
+                     "AMEXTOKENSERVICE",
+                     "TOKEN_SHARING"
                   ],
                   "type" : "string"
                }
@@ -4577,6 +4612,7 @@
             "type" : "object"
          },
          "RefundRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -4663,7 +4699,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For more information, see how to split payments for [platforms](https://docs.adyen.com/platforms/automatic-split-configuration/).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -4688,6 +4724,7 @@
             "type" : "object"
          },
          "ResponseAdditionalData3DSecure" : {
+            "additionalProperties" : false,
             "properties" : {
                "cardHolderInfo" : {
                   "description" : "Information provided by the issuer to the cardholder. If this field is present, you need to display this information to the cardholder. ",
@@ -4713,6 +4750,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataBillingAddress" : {
+            "additionalProperties" : false,
             "properties" : {
                "billingAddress.city" : {
                   "description" : "The billing address city passed in the payment request.",
@@ -4742,6 +4780,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataCard" : {
+            "additionalProperties" : false,
             "properties" : {
                "cardBin" : {
                   "description" : "The first six digits of the card number.\n\nThis is the [Bank Identification Number (BIN)](https://docs.adyen.com/get-started-with-adyen/payment-glossary#bank-identification-number-bin) for card numbers with a six-digit BIN.\n\nExample: 521234",
@@ -4767,6 +4806,23 @@
                   "description" : "The card payment method used for the transaction.\n\nExample: amex",
                   "type" : "string"
                },
+               "cardProductId" : {
+                  "description" : "The Card Product ID represents the type of card following card scheme product definitions and can be returned for Adyen Acquiring service level payments.\n\nPossible values Visa:\n* **A** - Visa Traditional\n* **B** - Visa Traditional Rewards\n* **C** - Visa Signature\n* **D** - Visa Signature Preferred\n* **F** - Visa Classic\n\nPossible values Mastercard:\n* **MCC** - Mastercard Card\n* **MCE** - Mastercard Electronic Card\n* **MCF** - Mastercard Corporate Fleet Card\n* **MCG** - Gold Mastercard Card\n* **MCH** - Mastercard Premium Charge\n* **MCI** - Mastercard Select Debit\n",
+                  "enum" : [
+                     "A",
+                     "B",
+                     "C",
+                     "D",
+                     "F",
+                     "MCC",
+                     "MCE",
+                     "MCF",
+                     "MCG",
+                     "MCH",
+                     "MCI"
+                  ],
+                  "type" : "string"
+               },
                "cardSummary" : {
                   "description" : "The last four digits of a card number.\n\n> Returned only in case of a card payment.",
                   "type" : "string"
@@ -4779,6 +4835,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataCommon" : {
+            "additionalProperties" : false,
             "properties" : {
                "acquirerAccountCode" : {
                   "description" : "The name of the Adyen acquirer account.\n\nExample: PayPalSandbox_TestAcquirer\n\n> Only relevant for PayPal transactions.",
@@ -5041,7 +5098,22 @@
             },
             "type" : "object"
          },
+         "ResponseAdditionalDataDomesticError" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "domesticRefusalReasonRaw" : {
+                  "description" : "The reason the transaction was declined, given by the local issuer. \nCurrently available for merchants in Japan.",
+                  "type" : "string"
+               },
+               "domesticShopperAdvice" : {
+                  "description" : "The action the shopper should take, in a local language. \nCurrently available in Japanese, for merchants in Japan.",
+                  "type" : "string"
+               }
+            },
+            "type" : "object"
+         },
          "ResponseAdditionalDataInstallments" : {
+            "additionalProperties" : false,
             "properties" : {
                "installmentPaymentData.installmentType" : {
                   "description" : "Type of installment. The value of `installmentType` should be **IssuerFinanced**.",
@@ -5095,6 +5167,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataNetworkTokens" : {
+            "additionalProperties" : false,
             "properties" : {
                "networkToken.available" : {
                   "description" : "Indicates whether a network token is available for the specified card.",
@@ -5112,6 +5185,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataOpi" : {
+            "additionalProperties" : false,
             "properties" : {
                "opi.transToken" : {
                   "description" : "Returned in the response if you included `opi.includeTransToken: true` in an ecommerce payment request. This contains an Oracle Payment Interface token that you can store in your Oracle Opera database to identify tokenized ecommerce transactions. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).",
@@ -5121,6 +5195,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataSepa" : {
+            "additionalProperties" : false,
             "properties" : {
                "sepadirectdebit.dateOfSignature" : {
                   "description" : "The transaction signature date.\n\nFormat: yyyy-MM-dd",
@@ -5138,6 +5213,7 @@
             "type" : "object"
          },
          "SDKEphemPubKey" : {
+            "additionalProperties" : false,
             "properties" : {
                "crv" : {
                   "description" : "The `crv` value as received from the 3D Secure 2 SDK.",
@@ -5159,6 +5235,7 @@
             "type" : "object"
          },
          "ServiceError" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "x-addedInVersion" : "46",
@@ -5193,6 +5270,7 @@
             "type" : "object"
          },
          "ShopperInteractionDevice" : {
+            "additionalProperties" : false,
             "properties" : {
                "locale" : {
                   "description" : "Locale on the shopper interaction device.",
@@ -5210,56 +5288,62 @@
             "type" : "object"
          },
          "Split" : {
+            "additionalProperties" : false,
             "properties" : {
                "account" : {
-                  "description" : "Unique identifier of the account where the split amount should be sent. This is required if `type` is **MarketPlace** or **BalanceAccount**.\n\n",
+                  "description" : "The unique identifier of the account to which the split amount is booked. Required if `type` is **MarketPlace** or **BalanceAccount**.\n\n* [Classic Platforms integration](https://docs.adyen.com/classic-platforms): The [`accountCode`](https://docs.adyen.com/api-explorer/Account/latest/post/updateAccount#request-accountCode) of the account to which the split amount is booked.\n* [Balance Platform](https://docs.adyen.com/adyen-for-platforms-model): The [`balanceAccountId`](https://docs.adyen.com/api-explorer/balanceplatform/latest/get/balanceAccounts/_id_#path-id) of the account to which the split amount is booked.",
                   "type" : "string"
                },
                "amount" : {
-                  "description" : "The amount of this split.",
+                  "description" : "The amount of the split item.\n\n* Required for all split types in the [Classic Platforms integration](https://docs.adyen.com/classic-platforms).\n* Required if `type` is **BalanceAccount**, **Commission**, **Default**, or **VAT** in your [Balance Platform](https://docs.adyen.com/adyen-for-platforms-model) integration.",
                   "$ref" : "#/components/schemas/SplitAmount"
                },
                "description" : {
-                  "description" : "A description of this split.",
+                  "description" : "Your description for the split item.",
                   "type" : "string"
                },
                "reference" : {
-                  "description" : "Your reference for the split, which you can use to link the split to other operations such as captures and refunds.\n\nThis is required if `type` is **MarketPlace** or **BalanceAccount**. For the other types, we also recommend sending a reference so you can reconcile the split and the associated payment in the transaction overview and in the reports. If the reference is not provided, the split is reported as part of the aggregated [TransferBalance record type](https://docs.adyen.com/reporting/marketpay-payments-accounting-report) in Adyen for Platforms.",
+                  "description" : "Your unique reference for the part of the payment booked to the specified `account`.\n\nThis is required if `type` is **MarketPlace** ([Classic Platforms integration](https://docs.adyen.com/classic-platforms)) or **BalanceAccount** ([Balance Platform](https://docs.adyen.com/adyen-for-platforms-model)).\n\nFor the other types, we also recommend providing a **unique** reference so you can reconcile the split and the associated payment in the transaction overview and in the reports.",
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of split.\nPossible values: **Default**, **PaymentFee**, **VAT**, **Commission**, **MarketPlace**, **BalanceAccount**, **Remainder**, **Surcharge**, **Tip**.",
+                  "description" : "The part of the payment you want to book to the specified `account`.\n\nPossible values for the [Balance Platform](https://docs.adyen.com/adyen-for-platforms-model):\n* **BalanceAccount**: books part of the payment (specified in `amount`) to the specified `account`.\n* Transaction fees types that you can book to the specified `account`:\n   * **AcquiringFees**: the aggregated amount of the interchange and scheme fees.\n   * **PaymentFee**: the aggregated amount of all transaction fees.\n   * **AdyenFees**: the aggregated amount of Adyen's commission and markup fees.\n   * **AdyenCommission**: the transaction fees due to Adyen under [blended rates](https://www.adyen.com/knowledge-hub/interchange-fees-explained).\n   * **AdyenMarkup**: the transaction fees due to Adyen under [Interchange ++ pricing](https://www.adyen.com/knowledge-hub/interchange-fees-explained).\n   * **Interchange**: the fees paid to the issuer for each payment made with the card network.\n   * **SchemeFee**: the fees paid to the card scheme for using their network. \n* **Commission**: your platform's commission on the payment (specified in `amount`), booked to your liable balance account.\n* **Remainder**: the amount left over after a currency conversion, booked to the specified `account`.\n* **TopUp**: allows you and your users to top up balance accounts using direct debit, card payments, or other payment methods.\n* **VAT**: the value-added tax charged on the payment, booked to your platforms liable balance account.\n* **Commission**: your platform's commission (specified in `amount`) on the payment, booked to your liable balance account.\n* **Default**: in very specific use cases, allows you to book the specified `amount` to the specified `account`. For more information, contact Adyen support.\n\nPossible values for the [Classic Platforms integration](https://docs.adyen.com/classic-platforms): **Commission**, **Default**, **MarketPlace**, **PaymentFee**, **VAT**.",
                   "enum" : [
+                     "AcquiringFees",
+                     "AdyenCommission",
+                     "AdyenFees",
+                     "AdyenMarkup",
                      "BalanceAccount",
                      "Commission",
                      "Default",
+                     "Interchange",
                      "MarketPlace",
                      "PaymentFee",
                      "Remainder",
+                     "SchemeFee",
                      "Surcharge",
                      "Tip",
-                     "VAT",
-                     "Verification"
+                     "VAT"
                   ],
                   "type" : "string"
                }
             },
             "required" : [
-               "amount",
                "type"
             ],
             "type" : "object"
          },
          "SplitAmount" : {
+            "additionalProperties" : false,
             "properties" : {
                "currency" : {
-                  "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).\n\nIf this value is not provided, the currency in which the payment is made will be used.",
+                  "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes). By default, this is the original payment currency.",
                   "maxLength" : 3,
                   "minLength" : 3,
                   "type" : "string"
                },
                "value" : {
-                  "description" : "The amount in [minor units](https://docs.adyen.com/development-resources/currency-codes).",
+                  "description" : "The value of the split amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes).",
                   "format" : "int64",
                   "type" : "integer"
                }
@@ -5270,6 +5354,7 @@
             "type" : "object"
          },
          "TechnicalCancelRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -5352,7 +5437,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For more information, see how to split payments for [platforms](https://docs.adyen.com/platforms/automatic-split-configuration/).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -5376,6 +5461,7 @@
             "type" : "object"
          },
          "ThreeDS2RequestData" : {
+            "additionalProperties" : false,
             "properties" : {
                "acquirerBIN" : {
                   "x-addedInVersion" : "49",
@@ -5424,7 +5510,6 @@
                   "type" : "string"
                },
                "messageVersion" : {
-                  "default" : "2.1.0",
                   "description" : "The `messageVersion` value indicating the 3D Secure 2 protocol version.",
                   "type" : "string"
                },
@@ -5503,6 +5588,7 @@
             "type" : "object"
          },
          "ThreeDS2Result" : {
+            "additionalProperties" : false,
             "properties" : {
                "authenticationValue" : {
                   "description" : "The `authenticationValue` value as defined in the 3D Secure 2 specification.",
@@ -5551,6 +5637,7 @@
             "type" : "object"
          },
          "ThreeDS2ResultRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "merchantAccount" : {
                   "description" : "The merchant account identifier, with which you want to process the transaction.",
@@ -5568,6 +5655,7 @@
             "type" : "object"
          },
          "ThreeDS2ResultResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "threeDS2Result" : {
                   "description" : "The result of the 3D Secure 2 authentication.",
@@ -5577,6 +5665,7 @@
             "type" : "object"
          },
          "ThreeDSecureData" : {
+            "additionalProperties" : false,
             "properties" : {
                "authenticationResponse" : {
                   "description" : "In 3D Secure 1, the authentication response if the shopper was redirected.\n\nIn 3D Secure 2, this is the `transStatus` from the challenge result. If the transaction was frictionless, omit this parameter.",
@@ -5634,6 +5723,7 @@
             "type" : "object"
          },
          "VoidPendingRefundRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -5720,7 +5810,7 @@
                },
                "splits" : {
                   "x-addedInVersion" : "37",
-                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For details, refer to [Providing split information](https://docs.adyen.com/marketplaces-and-platforms/processing-payments#providing-split-information).",
+                  "description" : "An array of objects specifying how the amount should be split between accounts when using Adyen for Platforms. For more information, see how to split payments for [platforms](https://docs.adyen.com/platforms/automatic-split-configuration/).",
                   "items" : {
                      "$ref" : "#/components/schemas/Split"
                   },
@@ -5903,7 +5993,7 @@
                "reference" : "YOUR_REFERENCE",
                "shopperEmail" : "s.hopper@test.com",
                "shopperIP" : "61.294.12.12",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
+               "shopperReference" : "YOUR_SHOPPER_REFERENCE",
                "selectedRecurringDetailReference" : "LATEST",
                "recurring" : {
                   "contract" : "RECURRING"
@@ -5925,7 +6015,7 @@
                "reference" : "YOUR_REFERENCE",
                "shopperEmail" : "s.hopper@test.com",
                "shopperIP" : "61.294.12.12",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
+               "shopperReference" : "YOUR_SHOPPER_REFERENCE",
                "selectedRecurringDetailReference" : "LATEST",
                "recurring" : {
                   "contract" : "ONECLICK"
@@ -5951,7 +6041,7 @@
                "reference" : "YOUR_REFERENCE",
                "shopperEmail" : "s.hopper@test.com",
                "shopperIP" : "61.294.12.12",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
+               "shopperReference" : "YOUR_SHOPPER_REFERENCE",
                "recurring" : {
                   "contract" : "RECURRING"
                },

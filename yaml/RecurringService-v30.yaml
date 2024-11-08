@@ -24,14 +24,10 @@ info:
     \ unique to your company account:\n```\n\nhttps://{PREFIX}-pal-live.adyenpayments.com/pal/servlet/Recurring/v30/disable\n\
     ```\n\nGet your `{PREFIX}` from your live Customer Area under **Developers** >\
     \ **API URLs** > **Prefix**."
-  x-timestamp: '2023-04-11T21:25:16Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
-    url: https://www.adyen.help/hc/en-us/community/topics
-    email: developer-experience@adyen.com
-x-groups:
-- General
+    url: https://github.com/Adyen/adyen-openapi
 tags:
 - name: General
 paths:
@@ -46,7 +42,6 @@ paths:
 
         For more information, refer to [Disable stored details](https://docs.adyen.com/classic-integration/recurring-payments/disable-stored-details/).'
       operationId: post-disable
-      x-groupName: General
       x-sortIndex: 2
       x-methodName: disable
       security:
@@ -110,7 +105,6 @@ paths:
 
         For more information, refer to [Retrieve stored details](https://docs.adyen.com/classic-integration/recurring-payments/retrieve-stored-details/).'
       operationId: post-listRecurringDetails
-      x-groupName: General
       x-sortIndex: 1
       x-methodName: listRecurringDetails
       security:
@@ -170,7 +164,6 @@ paths:
         the upcoming recurring payment. This endpoint is used only for local acquiring
         in India. For more information, refer to [Recurring card payments in India](https://docs.adyen.com/payment-methods/cards/cards-recurring-india).
       operationId: post-notifyShopper
-      x-groupName: General
       x-sortIndex: 4
       x-methodName: notifyShopper
       security:
@@ -238,7 +231,6 @@ paths:
         and `selectedRecurringDetailReference` are mandatory.'
       x-addedInVersion: '4'
       operationId: post-scheduleAccountUpdater
-      x-groupName: General
       x-sortIndex: 3
       x-methodName: scheduleAccountUpdater
       security:
@@ -258,6 +250,11 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                scheduleAccountUpdaterWithCardData:
+                  $ref: '#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithCardData-200'
+                scheduleAccountUpdaterWithTokenData:
+                  $ref: '#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData-200'
               schema:
                 $ref: '#/components/schemas/ScheduleAccountUpdaterResult'
           description: OK - the request has succeeded.
@@ -282,6 +279,9 @@ paths:
         '422':
           content:
             application/json:
+              examples:
+                scheduleAccountUpdaterWithTokenData:
+                  $ref: '#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData-422'
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
@@ -294,6 +294,7 @@ paths:
 components:
   schemas:
     Address:
+      additionalProperties: false
       properties:
         city:
           description: 'The name of the city. Maximum length: 3000 characters.'
@@ -335,6 +336,7 @@ components:
       - country
       type: object
     Amount:
+      additionalProperties: false
       properties:
         currency:
           description: The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
@@ -350,6 +352,7 @@ components:
       - currency
       type: object
     BankAccount:
+      additionalProperties: false
       properties:
         bankAccountNumber:
           description: The bank account number (without separators).
@@ -399,6 +402,7 @@ components:
           type: string
       type: object
     Card:
+      additionalProperties: false
       properties:
         cvc:
           description: "The [card verification code](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-security-code-cvc-cvv-cid)\
@@ -463,6 +467,7 @@ components:
           type: string
       type: object
     DisableRequest:
+      additionalProperties: false
       properties:
         contract:
           x-addedInVersion: '3'
@@ -502,6 +507,7 @@ components:
       - shopperReference
       type: object
     DisableResult:
+      additionalProperties: false
       properties:
         response:
           description: Depending on whether a specific recurring detail was in the
@@ -509,18 +515,22 @@ components:
           type: string
       type: object
     Name:
+      additionalProperties: false
       properties:
         firstName:
           description: The first name.
+          maxLength: 80
           type: string
         lastName:
           description: The last name.
+          maxLength: 80
           type: string
       required:
       - firstName
       - lastName
       type: object
     NotifyShopperRequest:
+      additionalProperties: false
       properties:
         amount:
           description: The amount of the upcoming payment.
@@ -567,6 +577,7 @@ components:
       - reference
       type: object
     NotifyShopperResult:
+      additionalProperties: false
       properties:
         displayedReference:
           description: Reference of Pre-debit notification that is displayed to the
@@ -593,6 +604,7 @@ components:
           type: string
       type: object
     Recurring:
+      additionalProperties: false
       properties:
         contract:
           description: "The type of recurring contract to be used.\nPossible values:\n\
@@ -617,9 +629,12 @@ components:
           enum:
           - VISATOKENSERVICE
           - MCTOKENSERVICE
+          - AMEXTOKENSERVICE
+          - TOKEN_SHARING
           type: string
       type: object
     RecurringDetail:
+      additionalProperties: false
       properties:
         additionalData:
           x-addedInVersion: '5'
@@ -707,6 +722,7 @@ components:
         RecurringDetail:
           $ref: '#/components/schemas/RecurringDetail'
     RecurringDetailsRequest:
+      additionalProperties: false
       properties:
         merchantAccount:
           description: The merchant account identifier you want to process the (transaction)
@@ -733,6 +749,7 @@ components:
       - shopperReference
       type: object
     RecurringDetailsResult:
+      additionalProperties: false
       properties:
         creationDate:
           description: The date when the recurring details were created.
@@ -752,6 +769,7 @@ components:
           type: string
       type: object
     ScheduleAccountUpdaterRequest:
+      additionalProperties: false
       properties:
         additionalData:
           additionalProperties:
@@ -789,6 +807,7 @@ components:
       - reference
       type: object
     ScheduleAccountUpdaterResult:
+      additionalProperties: false
       properties:
         pspReference:
           description: Adyen's 16-character unique reference associated with the transaction.
@@ -805,6 +824,7 @@ components:
       - result
       type: object
     ServiceError:
+      additionalProperties: false
       properties:
         errorCode:
           description: The error code mapped to the error message.
@@ -824,6 +844,7 @@ components:
           type: integer
       type: object
     TokenDetails:
+      additionalProperties: false
       properties:
         tokenData:
           additionalProperties:
@@ -844,7 +865,7 @@ components:
     post-disable-disableARecurringContract:
       summary: Disable a recurring contract
       value:
-        shopperReference: YOUR_UNIQUE_SHOPPER_ID
+        shopperReference: YOUR_SHOPPER_REFERENCE
         recurringDetailReference: '8314442372419167'
         merchantAccount: YOUR_MERCHANT_ACCOUNT
     post-listRecurringDetails-listAllRecurringDetails:
@@ -852,7 +873,7 @@ components:
       value:
         recurring:
           contract: RECURRING
-        shopperReference: YOUR_UNIQUE_SHOPPER_ID
+        shopperReference: YOUR_SHOPPER_REFERENCE
         merchantAccount: YOUR_MERCHANT_ACCOUNT
     post-notifyShopper-notifyShopperOfUpcomingRecurringPayment:
       summary: Request issuer to notify shopper of upcoming recurring payment
@@ -886,10 +907,27 @@ components:
           expiryYear: '2030'
           holderName: Adyen Test
           number: '4111111111111111'
+    post-scheduleAccountUpdater-scheduleAccountUpdaterWithCardData-200:
+      summary: Scheduled Account Updater with card data
+      value:
+        pspReference: QFQTPCQ8HXSKGK82
+        result: Success
     post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData:
       summary: Schedule AccountUpdater with token data
       value:
         merchantAccount: YOUR_MERCHANT_ACCOUNT
         reference: YOUR_REFERENCE
-        shopperReference: YOUR_UNIQUE_SHOPPER_ID
+        shopperReference: YOUR_SHOPPER_REFERENCE
         selectedRecurringDetailReference: '8814232895168272'
+    post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData-200:
+      summary: Scheduled Account Updater with token data
+      value:
+        pspReference: JLCMPCQ8HXSKGK82
+        result: Success
+    post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData-422:
+      summary: Error response for RecurringShopper not found
+      value:
+        status: 422
+        errorCode: '000'
+        message: RecurringShopper not found
+        errorType: validation

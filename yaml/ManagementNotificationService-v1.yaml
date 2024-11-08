@@ -1,6 +1,4 @@
 openapi: 3.1.0
-servers:
-- url: https://management-test.adyen.com/v1
 info:
   version: '1'
   x-publicVersion: true
@@ -16,17 +14,14 @@ info:
 
     See [Webhooks](https://docs.adyen.com/development-resources/webhooks) for more
     information.'
-  x-timestamp: '2023-03-30T18:21:57Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
-    url: https://www.adyen.help/hc/en-us/community/topics
-    email: developer-experience@adyen.com
-x-groups:
-- Merchant account
-- Payment method
-tags: []
-x-staticResponse: response.json
+    url: https://github.com/Adyen/adyen-openapi
+tags:
+- name: Merchant account
+- name: Payment method
+- name: Terminal management
 webhooks:
   merchant.created:
     post:
@@ -36,11 +31,10 @@ webhooks:
       description: A merchant account [was created](https://docs.adyen.com/api-explorer/#/ManagementService/latest/post/merchants).
       x-addedInVersion: '1'
       operationId: post-merchant.created
-      x-groupName: Merchant account
       x-sortIndex: 1
       x-methodName: merchantAccountCreated
       security:
-      - ApiKeyAuth: []
+      - BasicAuth: []
       requestBody:
         content:
           application/json:
@@ -48,14 +42,11 @@ webhooks:
               merchant.created:
                 $ref: '#/components/examples/post-merchant.created-merchant.created'
             schema:
-              $ref: '#/components/schemas/NotificationDataMessage'
+              $ref: '#/components/schemas/MerchantCreatedNotificationRequest'
       responses:
         '200':
           content:
             application/json:
-              examples:
-                merchant.created:
-                  $ref: '#/components/examples/WebhookAck'
               schema:
                 $ref: '#/components/schemas/AccountNotificationResponse'
           description: OK - the request has succeeded.
@@ -64,17 +55,16 @@ webhooks:
       tags:
       - Merchant account
       summary: Merchant account capability updated
-      description: There were changes to verification status and capabilities of a
-        [merchant account](https://docs.adyen.com/api-explorer/#/ManagementService/latest/post/merchants).
+      description: There were changes to the verification status and capabilities
+        of a [merchant account](https://docs.adyen.com/api-explorer/#/ManagementService/latest/post/merchants).
         If the verification fails, this webhook includes the errors and the actions
         that you can take to resolve them.
       x-addedInVersion: '1'
       operationId: post-merchant.updated
-      x-groupName: Merchant account
       x-sortIndex: 2
       x-methodName: merchantAccountCapabilityUpdated
       security:
-      - ApiKeyAuth: []
+      - BasicAuth: []
       requestBody:
         content:
           application/json:
@@ -84,16 +74,11 @@ webhooks:
               merchant-updated-with-errors:
                 $ref: '#/components/examples/post-merchant.updated-merchant-updated-with-errors'
             schema:
-              $ref: '#/components/schemas/NotificationDataMessage-type2'
+              $ref: '#/components/schemas/MerchantUpdatedNotificationRequest'
       responses:
         '200':
           content:
             application/json:
-              examples:
-                merchant-updated-valid:
-                  $ref: '#/components/examples/WebhookAck'
-                merchant-updated-with-errors:
-                  $ref: '#/components/examples/WebhookAck'
               schema:
                 $ref: '#/components/schemas/AccountNotificationResponse'
           description: OK - the request has succeeded.
@@ -106,11 +91,10 @@ webhooks:
         was completed.
       x-addedInVersion: '1'
       operationId: post-paymentMethod.created
-      x-groupName: Payment method
       x-sortIndex: 1
       x-methodName: paymentMethodCreated
       security:
-      - ApiKeyAuth: []
+      - BasicAuth: []
       requestBody:
         content:
           application/json:
@@ -118,20 +102,67 @@ webhooks:
               paymentMethod.created:
                 $ref: '#/components/examples/post-paymentMethod.created-paymentMethod.created'
             schema:
-              $ref: '#/components/schemas/NotificationDataMessage-type3'
+              $ref: '#/components/schemas/PaymentMethodCreatedNotificationRequest'
       responses:
         '200':
           content:
             application/json:
-              examples:
-                paymentMethod.created:
-                  $ref: '#/components/examples/WebhookAck'
               schema:
                 $ref: '#/components/schemas/PaymentMethodNotificationResponse'
+          description: OK - the request has succeeded.
+  terminalBoarding.triggered:
+    post:
+      tags:
+      - Terminal management
+      summary: Result of terminal boarding
+      description: The boarding of a payment terminal succeeded or failed.
+      x-addedInVersion: '1'
+      operationId: post-terminalBoarding.triggered
+      x-sortIndex: 2
+      x-methodName: resultOfTerminalBoarding
+      security:
+      - BasicAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TerminalBoardingNotificationRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerminalBoardingNotificationResponse'
+          description: OK - the request has succeeded.
+  terminalSettings.modified:
+    post:
+      tags:
+      - Terminal management
+      summary: Terminal settings updated
+      description: A request to [update terminal settings](https://docs.adyen.com/api-explorer/Management/latest/patch/terminals/(terminalId)/terminalSettings)
+        was completed.
+      x-addedInVersion: '1'
+      operationId: post-terminalSettings.modified
+      x-sortIndex: 1
+      x-methodName: terminalSettingsUpdated
+      security:
+      - BasicAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TerminalSettingsNotificationRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerminalSettingsNotificationResponse'
           description: OK - the request has succeeded.
 components:
   schemas:
     AccountCapabilityData:
+      additionalProperties: false
       properties:
         allowed:
           description: Indicates whether the capability is allowed. Adyen sets this
@@ -162,6 +193,11 @@ components:
             require additional checks and increased monitoring.Possible values: **notApplicable**,
             **low**, **medium**, **high**.'
           type: string
+        verificationDeadline:
+          description: The verification deadline for the capability that will be disallowed
+            if verification errors are not resolved.
+          format: date-time
+          type: string
         verificationStatus:
           description: 'The status of the verification checks for the capability.
 
@@ -189,6 +225,7 @@ components:
       - requested
       type: object
     AccountCreateNotificationData:
+      additionalProperties: false
       properties:
         capabilities:
           additionalProperties:
@@ -241,13 +278,14 @@ components:
       - capabilities
       type: object
     AccountNotificationResponse:
+      additionalProperties: false
       properties:
         notificationResponse:
-          description: Respond with **HTTP 200 OK** and `[accepted]` in the response
-            body to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).
+          description: Respond with any **2xx** HTTP status code to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).
           type: string
       type: object
     AccountUpdateNotificationData:
+      additionalProperties: false
       properties:
         capabilities:
           additionalProperties:
@@ -296,6 +334,7 @@ components:
       - capabilities
       type: object
     CapabilityProblem:
+      additionalProperties: false
       properties:
         entity:
           description: The ID and the type of entity that has verification errors.
@@ -307,7 +346,14 @@ components:
           type: array
       type: object
     CapabilityProblemEntity:
+      additionalProperties: false
       properties:
+        documents:
+          description: List of document IDs to which the verification errors related
+            to the capabilities correspond to.
+          items:
+            type: string
+          type: array
         id:
           description: The ID of the entity.
           type: string
@@ -328,7 +374,14 @@ components:
           type: string
       type: object
     CapabilityProblemEntity-recursive:
+      additionalProperties: false
       properties:
+        documents:
+          description: List of document IDs to which the verification errors related
+            to the capabilities correspond to.
+          items:
+            type: string
+          type: array
         id:
           description: The ID of the entity.
           type: string
@@ -344,7 +397,62 @@ components:
           type: string
       required: []
       type: object
+    MerchantCreatedNotificationRequest:
+      additionalProperties: false
+      properties:
+        createdAt:
+          description: Timestamp for when the webhook was created.
+          format: date-time
+          type: string
+        data:
+          description: Contains event details.
+          $ref: '#/components/schemas/AccountCreateNotificationData'
+        environment:
+          description: 'The environment from which the webhook originated.
+
+
+            Possible values: **test**, **live**.'
+          type: string
+        type:
+          description: Type of notification.
+          enum:
+          - merchant.created
+          type: string
+      required:
+      - environment
+      - createdAt
+      - data
+      - type
+      type: object
+    MerchantUpdatedNotificationRequest:
+      additionalProperties: false
+      properties:
+        createdAt:
+          description: Timestamp for when the webhook was created.
+          format: date-time
+          type: string
+        data:
+          description: Contains event details.
+          $ref: '#/components/schemas/AccountUpdateNotificationData'
+        environment:
+          description: 'The environment from which the webhook originated.
+
+
+            Possible values: **test**, **live**.'
+          type: string
+        type:
+          description: Type of notification.
+          enum:
+          - merchant.updated
+          type: string
+      required:
+      - environment
+      - createdAt
+      - data
+      - type
+      type: object
     MidServiceNotificationData:
+      additionalProperties: false
       properties:
         allowed:
           description: Indicates whether receiving payments is allowed. This value
@@ -355,10 +463,10 @@ components:
             or disabled (**false**).
           type: boolean
         id:
-          description: The identifier of the resource.
+          description: The unique identifier of the resource.
           type: string
         merchantId:
-          description: The identifier of the merchant account.
+          description: The unique identifier of the merchant account.
           type: string
         reference:
           description: Your reference for the payment method.
@@ -370,7 +478,7 @@ components:
           - FAILURE
           type: string
         storeId:
-          description: The identifier of the [store](https://docs.adyen.com/api-explorer/#/ManagementService/latest/post/merchants/{id}/paymentMethodSettings__reqParam_storeId),
+          description: The unique identifier of the [store](https://docs.adyen.com/api-explorer/#/ManagementService/latest/post/merchants/{id}/paymentMethodSettings__reqParam_storeId),
             if any.
           type: string
         type:
@@ -398,55 +506,8 @@ components:
       - id
       - type
       type: object
-    NotificationDataMessage:
-      properties:
-        createdAt:
-          description: Timestamp for when the webhook was created.
-          format: date-time
-          type: string
-        data:
-          description: Contains event details.
-          $ref: '#/components/schemas/AccountCreateNotificationData'
-        environment:
-          description: 'The environment from which the webhook originated.
-
-
-            Possible values: **test**, **live**.'
-          type: string
-        type:
-          description: Type of notification.
-          type: string
-      required:
-      - type
-      - environment
-      - createdAt
-      - data
-      type: object
-    NotificationDataMessage-type2:
-      properties:
-        createdAt:
-          description: Timestamp for when the webhook was created.
-          format: date-time
-          type: string
-        data:
-          description: Contains event details.
-          $ref: '#/components/schemas/AccountUpdateNotificationData'
-        environment:
-          description: 'The environment from which the webhook originated.
-
-
-            Possible values: **test**, **live**.'
-          type: string
-        type:
-          description: Type of notification.
-          type: string
-      required:
-      - type
-      - environment
-      - createdAt
-      - data
-      type: object
-    NotificationDataMessage-type3:
+    PaymentMethodCreatedNotificationRequest:
+      additionalProperties: false
       properties:
         createdAt:
           description: Timestamp for when the webhook was created.
@@ -463,21 +524,24 @@ components:
           type: string
         type:
           description: Type of notification.
+          enum:
+          - paymentMethod.created
           type: string
       required:
-      - type
       - environment
       - createdAt
       - data
+      - type
       type: object
     PaymentMethodNotificationResponse:
+      additionalProperties: false
       properties:
         notificationResponse:
-          description: Respond with **HTTP 200 OK** and `[accepted]` in the response
-            body to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).
+          description: Respond with any **2xx** HTTP status code to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).
           type: string
       type: object
     RemediatingAction:
+      additionalProperties: false
       properties:
         code:
           description: The remediating action code.
@@ -486,7 +550,125 @@ components:
           description: A description of how you can resolve the verification error.
           type: string
       type: object
+    TerminalBoardingData:
+      additionalProperties: false
+      properties:
+        companyId:
+          description: The unique identifier of the company account.
+          type: string
+        merchantId:
+          description: The unique identifier of the merchant account.
+          type: string
+        storeId:
+          description: The unique identifier of the store.
+          type: string
+        uniqueTerminalId:
+          description: The unique identifier of the terminal.
+          type: string
+      required:
+      - uniqueTerminalId
+      - companyId
+      type: object
+    TerminalBoardingNotificationRequest:
+      additionalProperties: false
+      properties:
+        createdAt:
+          description: Timestamp for when the webhook was created.
+          format: date-time
+          type: string
+        data:
+          description: Contains event details.
+          $ref: '#/components/schemas/TerminalBoardingData'
+        environment:
+          description: 'The environment from which the webhook originated.
+
+
+            Possible values: **test**, **live**.'
+          type: string
+        type:
+          description: Type of notification.
+          enum:
+          - terminalBoarding.triggered
+          type: string
+      required:
+      - environment
+      - createdAt
+      - data
+      - type
+      type: object
+    TerminalBoardingNotificationResponse:
+      additionalProperties: false
+      properties:
+        notificationResponse:
+          description: Respond with any **2xx** HTTP status code to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).
+          type: string
+      type: object
+    TerminalSettingsData:
+      additionalProperties: false
+      properties:
+        companyId:
+          description: The unique identifier of the company account.
+          type: string
+        merchantId:
+          description: The unique identifier of the merchant account.
+          type: string
+        storeId:
+          description: The unique identifier of the store.
+          type: string
+        terminalId:
+          description: The unique identifier of the terminal.
+          type: string
+        updateSource:
+          description: Indicates whether the terminal settings were updated using
+            the Customer Area or the Management API.
+          enum:
+          - Customer Area
+          - Management Api
+          type: string
+        user:
+          description: The user that updated the terminal settings. Can be Adyen or
+            your API credential username.
+          type: string
+      required:
+      - user
+      - updateSource
+      type: object
+    TerminalSettingsNotificationRequest:
+      additionalProperties: false
+      properties:
+        createdAt:
+          description: Timestamp for when the webhook was created.
+          format: date-time
+          type: string
+        data:
+          description: Contains event details.
+          $ref: '#/components/schemas/TerminalSettingsData'
+        environment:
+          description: 'The environment from which the webhook originated.
+
+
+            Possible values: **test**, **live**.'
+          type: string
+        type:
+          description: Type of notification.
+          enum:
+          - terminalSettings.modified
+          type: string
+      required:
+      - environment
+      - createdAt
+      - data
+      - type
+      type: object
+    TerminalSettingsNotificationResponse:
+      additionalProperties: false
+      properties:
+        notificationResponse:
+          description: Respond with any **2xx** HTTP status code to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).
+          type: string
+      type: object
     VerificationError:
+      additionalProperties: false
       properties:
         code:
           description: The verification error code.
@@ -516,6 +698,7 @@ components:
           type: string
       type: object
     VerificationError-recursive:
+      additionalProperties: false
       properties:
         code:
           description: The verification error code.
@@ -541,17 +724,10 @@ components:
       required: []
       type: object
   securitySchemes:
-    ApiKeyAuth:
-      in: header
-      name: X-API-Key
-      type: apiKey
     BasicAuth:
       scheme: basic
       type: http
   examples:
-    WebhookAck:
-      summary: Acknowledge Webhook
-      value: '[accepted]'
     post-merchant.created-merchant.created:
       summary: Merchant account created
       description: Example webhook when a merchant account was created

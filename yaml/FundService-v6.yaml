@@ -6,35 +6,31 @@ info:
   x-publicVersion: true
   title: Fund API
   description: "This API is used for the classic integration. If you are just starting\
-    \ your implementation, refer to our [new integration guide](https://docs.adyen.com/marketplaces-and-platforms)\
+    \ your implementation, refer to our [new integration guide](https://docs.adyen.com/adyen-for-platforms-model)\
     \ instead.\n\nThe Fund API provides endpoints for managing the funds in the accounts\
     \ on your platform. These management operations include, for example, the transfer\
     \ of funds from one account to another, the payout of funds to an account holder,\
     \ and the retrieval of balances in an account.\n\nFor more information, refer\
-    \ to our [documentation](https://docs.adyen.com/marketplaces-and-platforms/classic/).\n\
-    ## Authentication\nYour Adyen contact will provide your API credential and an\
-    \ API key. To connect to the API, add an `X-API-Key` header with the API key as\
-    \ the value, for example:\n\n ```\ncurl\n-H \"Content-Type: application/json\"\
-    \ \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n\nAlternatively, you can use\
-    \ the username and password to connect to the API using basic authentication.\
-    \ For example:\n\n```\ncurl\n-U \"ws@MarketPlace.YOUR_PLATFORM_ACCOUNT\":\"YOUR_WS_PASSWORD\"\
-    \ \\\n-H \"Content-Type: application/json\" \\\n...\n```\nWhen going live, you\
-    \ need to generate new web service user credentials to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\
+    \ to our [documentation](https://docs.adyen.com/classic-platforms).\n## Authentication\n\
+    Your Adyen contact will provide your API credential and an API key. To connect\
+    \ to the API, add an `X-API-Key` header with the API key as the value, for example:\n\
+    \n ```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\"\
+    \ \\\n...\n```\n\nAlternatively, you can use the username and password to connect\
+    \ to the API using basic authentication. For example:\n\n```\ncurl\n-U \"ws@MarketPlace.YOUR_PLATFORM_ACCOUNT\"\
+    :\"YOUR_WS_PASSWORD\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\n\
+    When going live, you need to generate new web service user credentials to access\
+    \ the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\
     \n## Versioning\nThe Fund API supports [versioning](https://docs.adyen.com/development-resources/versioning)\
     \ using a version suffix in the endpoint URL. This suffix has the following format:\
     \ \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://cal-test.adyen.com/cal/services/Fund/v6/accountHolderBalance\n\
     ```"
-  x-timestamp: '2023-02-20T18:23:38Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
-    url: https://www.adyen.help/hc/en-us/community/topics
-    email: developer-experience@adyen.com
-x-groups:
-- General
-- Migration
+    url: https://github.com/Adyen/adyen-openapi
 tags:
 - name: General
+- name: Migration
 paths:
   /accountHolderBalance:
     post:
@@ -45,7 +41,6 @@ paths:
         balances are organized according by currencies. This mean that an account
         may have multiple balances: one for each currency.'
       operationId: post-accountHolderBalance
-      x-groupName: General
       x-sortIndex: 1
       x-methodName: accountHolderBalance
       security:
@@ -115,7 +110,6 @@ paths:
         Transactions are listed in chronological order, with the most recent transaction
         first.
       operationId: post-accountHolderTransactionList
-      x-groupName: General
       x-sortIndex: 2
       x-methodName: accountHolderTransactionList
       security:
@@ -185,9 +179,8 @@ paths:
         \ specified in the split instructions. Adyen sends the result of the direct\
         \ debit in a [`DIRECT_DEBIT_INITIATED`](https://docs.adyen.com/api-explorer/#/NotificationService/latest/post/DIRECT_DEBIT_INITIATED)\
         \ notification webhook.\n\n To learn more about direct debits, see [Top up\
-        \ accounts](https://docs.adyen.com/marketplaces-and-platforms/classic/top-up-accounts)."
+        \ accounts](https://docs.adyen.com/classic-platforms/top-up-accounts)."
       operationId: post-debitAccountHolder
-      x-groupName: General
       x-sortIndex: 8
       x-methodName: debitAccountHolder
       security:
@@ -256,7 +249,6 @@ paths:
       description: Pays out a specified amount from an account to the bank account
         of account holder.
       operationId: post-payoutAccountHolder
-      x-groupName: General
       x-sortIndex: 3
       x-methodName: payoutAccountHolder
       security:
@@ -322,7 +314,6 @@ paths:
       description: 'Refunds funds transferred from one account to another. Both accounts
         must be in the same platform, but can have different account holders. '
       operationId: post-refundFundsTransfer
-      x-groupName: General
       x-sortIndex: 5
       x-methodName: refundFundsTransfer
       security:
@@ -392,7 +383,6 @@ paths:
         accounts remain in the accounts to which they were sent as designated by the
         original payment's split details.
       operationId: post-refundNotPaidOutTransfers
-      x-groupName: General
       x-sortIndex: 7
       x-methodName: refundNotPaidOutTransfers
       security:
@@ -463,7 +453,6 @@ paths:
         A series of benefactor/beneficiaries may not exceed four beneficiaries and
         may not have a cycle in it.
       operationId: post-setupBeneficiary
-      x-groupName: General
       x-sortIndex: 6
       x-methodName: setupBeneficiary
       security:
@@ -531,7 +520,6 @@ paths:
         transfer must include a transfer code, which should be determined by the platform,
         in compliance with local regulations.
       operationId: post-transferFunds
-      x-groupName: General
       x-sortIndex: 4
       x-methodName: transferFunds
       security:
@@ -592,6 +580,7 @@ paths:
 components:
   schemas:
     AccountDetailBalance:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of the account that holds the balance.
@@ -601,6 +590,7 @@ components:
           $ref: '#/components/schemas/DetailBalance'
       type: object
     AccountHolderBalanceRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the Account Holder of which to retrieve the balance.
@@ -609,6 +599,7 @@ components:
       - accountHolderCode
       type: object
     AccountHolderBalanceResponse:
+      additionalProperties: false
       properties:
         balancePerAccount:
           description: A list of each account and their balances.
@@ -634,6 +625,7 @@ components:
           $ref: '#/components/schemas/DetailBalance'
       type: object
     AccountHolderTransactionListRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the account holder that owns the account(s) of
@@ -697,6 +689,7 @@ components:
           items:
             enum:
             - BalanceNotPaidOutTransfer
+            - BalancePlatformFundTransfer
             - BalancePlatformSweep
             - BalancePlatformSweepReturned
             - Chargeback
@@ -720,15 +713,19 @@ components:
             - DebitedReversed
             - DepositCorrectionCredited
             - DepositCorrectionDebited
+            - DepositCorrectionReceived
             - Fee
+            - FeeReceived
             - FundTransfer
             - FundTransferReversed
             - InvoiceDeductionCredited
             - InvoiceDeductionDebited
+            - InvoiceDeductionReceived
             - ManualCorrected
             - ManualCorrectionCredited
             - ManualCorrectionDebited
             - MerchantPayin
+            - MerchantPayinReceived
             - MerchantPayinReversed
             - Payout
             - PayoutReversed
@@ -747,6 +744,7 @@ components:
       - accountHolderCode
       type: object
     AccountHolderTransactionListResponse:
+      additionalProperties: false
       properties:
         accountTransactionLists:
           description: A list of the transactions.
@@ -769,6 +767,7 @@ components:
           type: string
       type: object
     AccountTransactionList:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of the account.
@@ -783,6 +782,7 @@ components:
           type: array
       type: object
     Amount:
+      additionalProperties: false
       properties:
         currency:
           description: The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
@@ -798,11 +798,12 @@ components:
       - currency
       type: object
     BankAccountDetail:
+      additionalProperties: false
       properties:
         accountNumber:
           description: 'The bank account number (without separators).
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         accountType:
@@ -813,7 +814,7 @@ components:
             The permitted values are: `checking`, `savings`.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         bankAccountName:
@@ -850,14 +851,14 @@ components:
         bankBicSwift:
           description: 'The bank identifier code.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         bankCity:
           description: 'The city in which the bank branch is located.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         bankCode:
@@ -865,7 +866,7 @@ components:
             account is registered.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         bankName:
@@ -873,7 +874,7 @@ components:
             is held.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         branchCode:
@@ -887,14 +888,14 @@ components:
 
             * Germany - Bankleitzahl
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         checkCode:
           description: 'The check code of the bank account.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         countryCode:
@@ -903,7 +904,7 @@ components:
             >The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. ''NL'').
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         currencyCode:
@@ -919,13 +920,13 @@ components:
             >The IBAN standard is defined in ISO-13616.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerCity:
           description: 'The city of residence of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerCountryCode:
@@ -935,7 +936,7 @@ components:
             >The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. ''NL'').
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerDateOfBirth:
@@ -948,13 +949,13 @@ components:
           description: 'The house name or number of the residence of the bank account
             owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerName:
           description: 'The name of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerNationality:
@@ -964,25 +965,25 @@ components:
             >The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. ''NL'').
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerPostalCode:
           description: 'The postal code of the residence of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerState:
           description: 'The state of residence of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerStreet:
           description: 'The street name of the residence of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         primaryAccount:
@@ -992,7 +993,7 @@ components:
           description: 'The tax ID number.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         urlForVerification:
@@ -1001,11 +1002,12 @@ components:
             This may be generated on bank account creation.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
       type: object
     DebitAccountHolderRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the account holder.
@@ -1042,6 +1044,7 @@ components:
       - merchantAccount
       type: object
     DebitAccountHolderResponse:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the account holder.
@@ -1072,6 +1075,7 @@ components:
           type: string
       type: object
     DetailBalance:
+      additionalProperties: false
       properties:
         balance:
           description: The list of balances held by the account.
@@ -1091,6 +1095,7 @@ components:
           type: array
       type: object
     ErrorFieldType:
+      additionalProperties: false
       properties:
         errorCode:
           description: The validation error code.
@@ -1104,6 +1109,7 @@ components:
           $ref: '#/components/schemas/FieldType'
       type: object
     FieldType:
+      additionalProperties: false
       properties:
         field:
           description: The full name of the property.
@@ -1193,6 +1199,7 @@ components:
           - legalBusinessName
           - legalEntity
           - legalEntityType
+          - linkedViasVirtualAccount
           - logo
           - merchantAccount
           - merchantCategoryCode
@@ -1212,6 +1219,7 @@ components:
           - ownerStreet
           - passport
           - passportNumber
+          - payoutMethod
           - payoutMethodCode
           - payoutSchedule
           - pciSelfAssessment
@@ -1279,6 +1287,7 @@ components:
           type: string
       type: object
     PayoutAccountHolderRequest:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of the account from which the payout is to be made.
@@ -1340,6 +1349,7 @@ components:
       - accountCode
       type: object
     PayoutAccountHolderResponse:
+      additionalProperties: false
       properties:
         bankAccountUUID:
           description: The unique ID of the Bank Account to which the payout was made.
@@ -1375,6 +1385,7 @@ components:
           type: string
       type: object
     RefundFundsTransferRequest:
+      additionalProperties: false
       properties:
         amount:
           description: The amount to be transferred.
@@ -1391,6 +1402,7 @@ components:
       - amount
       type: object
     RefundFundsTransferResponse:
+      additionalProperties: false
       properties:
         invalidFields:
           x-addedInVersion: '5'
@@ -1418,6 +1430,7 @@ components:
           type: string
       type: object
     RefundNotPaidOutTransfersRequest:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of the account from which to perform the refund(s).
@@ -1431,6 +1444,7 @@ components:
       - accountCode
       type: object
     RefundNotPaidOutTransfersResponse:
+      additionalProperties: false
       properties:
         invalidFields:
           x-addedInVersion: '5'
@@ -1448,6 +1462,7 @@ components:
           type: string
       type: object
     ServiceError:
+      additionalProperties: false
       properties:
         errorCode:
           description: The error code mapped to the error message.
@@ -1467,6 +1482,7 @@ components:
           type: integer
       type: object
     SetupBeneficiaryRequest:
+      additionalProperties: false
       properties:
         destinationAccountCode:
           description: The destination account code.
@@ -1483,6 +1499,7 @@ components:
       - destinationAccountCode
       type: object
     SetupBeneficiaryResponse:
+      additionalProperties: false
       properties:
         invalidFields:
           x-addedInVersion: '5'
@@ -1500,72 +1517,112 @@ components:
           type: string
       type: object
     Split:
+      additionalProperties: false
       properties:
         account:
-          description: 'Unique identifier of the account where the split amount should
-            be sent. This is required if `type` is **MarketPlace** or **BalanceAccount**.
+          description: 'The unique identifier of the account to which the split amount
+            is booked. Required if `type` is **MarketPlace** or **BalanceAccount**.
 
 
-            '
+            * [Classic Platforms integration](https://docs.adyen.com/classic-platforms):
+            The [`accountCode`](https://docs.adyen.com/api-explorer/Account/latest/post/updateAccount#request-accountCode)
+            of the account to which the split amount is booked.
+
+            * [Balance Platform](https://docs.adyen.com/adyen-for-platforms-model):
+            The [`balanceAccountId`](https://docs.adyen.com/api-explorer/balanceplatform/latest/get/balanceAccounts/_id_#path-id)
+            of the account to which the split amount is booked.'
           type: string
         amount:
-          description: The amount of this split.
+          description: 'The amount of the split item.
+
+
+            * Required for all split types in the [Classic Platforms integration](https://docs.adyen.com/classic-platforms).
+
+            * Required if `type` is **BalanceAccount**, **Commission**, **Default**,
+            or **VAT** in your [Balance Platform](https://docs.adyen.com/adyen-for-platforms-model)
+            integration.'
           $ref: '#/components/schemas/SplitAmount'
         description:
-          description: A description of this split.
+          description: Your description for the split item.
           type: string
         reference:
-          description: 'Your reference for the split, which you can use to link the
-            split to other operations such as captures and refunds.
+          description: 'Your unique reference for the part of the payment booked to
+            the specified `account`.
 
 
-            This is required if `type` is **MarketPlace** or **BalanceAccount**. For
-            the other types, we also recommend sending a reference so you can reconcile
-            the split and the associated payment in the transaction overview and in
-            the reports. If the reference is not provided, the split is reported as
-            part of the aggregated [TransferBalance record type](https://docs.adyen.com/reporting/marketpay-payments-accounting-report)
-            in Adyen for Platforms.'
+            This is required if `type` is **MarketPlace** ([Classic Platforms integration](https://docs.adyen.com/classic-platforms))
+            or **BalanceAccount** ([Balance Platform](https://docs.adyen.com/adyen-for-platforms-model)).
+
+
+            For the other types, we also recommend providing a **unique** reference
+            so you can reconcile the split and the associated payment in the transaction
+            overview and in the reports.'
           type: string
         type:
-          description: 'The type of split.
-
-            Possible values: **Default**, **PaymentFee**, **VAT**, **Commission**,
-            **MarketPlace**, **BalanceAccount**, **Remainder**, **Surcharge**, **Tip**.'
+          description: "The part of the payment you want to book to the specified\
+            \ `account`.\n\nPossible values for the [Balance Platform](https://docs.adyen.com/adyen-for-platforms-model):\n\
+            * **BalanceAccount**: books part of the payment (specified in `amount`)\
+            \ to the specified `account`.\n* Transaction fees types that you can book\
+            \ to the specified `account`:\n   * **AcquiringFees**: the aggregated\
+            \ amount of the interchange and scheme fees.\n   * **PaymentFee**: the\
+            \ aggregated amount of all transaction fees.\n   * **AdyenFees**: the\
+            \ aggregated amount of Adyen's commission and markup fees.\n   * **AdyenCommission**:\
+            \ the transaction fees due to Adyen under [blended rates](https://www.adyen.com/knowledge-hub/interchange-fees-explained).\n\
+            \   * **AdyenMarkup**: the transaction fees due to Adyen under [Interchange\
+            \ ++ pricing](https://www.adyen.com/knowledge-hub/interchange-fees-explained).\n\
+            \   * **Interchange**: the fees paid to the issuer for each payment made\
+            \ with the card network.\n   * **SchemeFee**: the fees paid to the card\
+            \ scheme for using their network. \n* **Commission**: your platform's\
+            \ commission on the payment (specified in `amount`), booked to your liable\
+            \ balance account.\n* **Remainder**: the amount left over after a currency\
+            \ conversion, booked to the specified `account`.\n* **TopUp**: allows\
+            \ you and your users to top up balance accounts using direct debit, card\
+            \ payments, or other payment methods.\n* **VAT**: the value-added tax\
+            \ charged on the payment, booked to your platforms liable balance account.\n\
+            * **Commission**: your platform's commission (specified in `amount`) on\
+            \ the payment, booked to your liable balance account.\n* **Default**:\
+            \ in very specific use cases, allows you to book the specified `amount`\
+            \ to the specified `account`. For more information, contact Adyen support.\n\
+            \nPossible values for the [Classic Platforms integration](https://docs.adyen.com/classic-platforms):\
+            \ **Commission**, **Default**, **Marketplace**, **PaymentFee**, **VAT**."
           enum:
+          - AcquiringFees
+          - AdyenCommission
+          - AdyenFees
+          - AdyenMarkup
           - BalanceAccount
           - Commission
           - Default
+          - Interchange
           - MarketPlace
           - PaymentFee
           - Remainder
+          - SchemeFee
           - Surcharge
           - Tip
           - VAT
-          - Verification
           type: string
       required:
-      - amount
       - type
       type: object
     SplitAmount:
+      additionalProperties: false
       properties:
         currency:
-          description: 'The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
-
-
-            If this value is not provided, the currency in which the payment is made
-            will be used.'
+          description: The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
+            By default, this is the original payment currency.
           maxLength: 3
           minLength: 3
           type: string
         value:
-          description: The amount in [minor units](https://docs.adyen.com/development-resources/currency-codes).
+          description: The value of the split amount, in [minor units](https://docs.adyen.com/development-resources/currency-codes).
           format: int64
           type: integer
       required:
       - value
       type: object
     Transaction:
+      additionalProperties: false
       properties:
         amount:
           description: The amount of the transaction.
@@ -1624,6 +1681,7 @@ components:
             `ManualCorrected`.'
           enum:
           - BalanceNotPaidOutTransfer
+          - BalancePlatformFundTransfer
           - BalancePlatformSweep
           - BalancePlatformSweepReturned
           - Chargeback
@@ -1647,15 +1705,19 @@ components:
           - DebitedReversed
           - DepositCorrectionCredited
           - DepositCorrectionDebited
+          - DepositCorrectionReceived
           - Fee
+          - FeeReceived
           - FundTransfer
           - FundTransferReversed
           - InvoiceDeductionCredited
           - InvoiceDeductionDebited
+          - InvoiceDeductionReceived
           - ManualCorrected
           - ManualCorrectionCredited
           - ManualCorrectionDebited
           - MerchantPayin
+          - MerchantPayinReceived
           - MerchantPayinReversed
           - Payout
           - PayoutReversed
@@ -1674,6 +1736,7 @@ components:
           type: string
       type: object
     TransactionListForAccount:
+      additionalProperties: false
       properties:
         accountCode:
           description: The account for which to retrieve the transactions.
@@ -1690,6 +1753,7 @@ components:
       - page
       type: object
     TransferFundsRequest:
+      additionalProperties: false
       properties:
         amount:
           description: The amount to be transferred.
@@ -1723,6 +1787,7 @@ components:
       - amount
       type: object
     TransferFundsResponse:
+      additionalProperties: false
       properties:
         invalidFields:
           x-addedInVersion: '5'

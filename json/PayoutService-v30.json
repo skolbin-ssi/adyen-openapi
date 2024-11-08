@@ -9,29 +9,22 @@
       "version" : "30",
       "x-publicVersion" : true,
       "title" : "Adyen Payout API",
-      "description" : "A set of API endpoints that allow you to store payout details, confirm, or decline a payout.\n\nFor more information, refer to [Online payouts](https://docs.adyen.com/online-payments/online-payouts).\n## Authentication\nTo use the Payout API, you need to have [two API credentials](https://docs.adyen.com/online-payments/online-payouts#payouts-to-bank-accounts-and-wallets): one for storing payout details and submitting payouts, and another one for confirming or declining payouts. If you don't have the required API credentials, contact our [Support Team](https://www.adyen.help/hc/en-us/requests/new).\n\nBoth of these API credentials must be authenticated with [basic authentication](https://docs.adyen.com/development-resources/api-credentials#basic-authentication).The following example shows how to authenticate your request when submitting a payout:\n\n```\ncurl\n-U \"storePayout@Company.YOUR_COMPANY_ACCOUNT\":\"YOUR_BASIC_AUTHENTICATION_PASSWORD\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\n\n## Versioning\nPayments API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://pal-test.adyen.com/pal/servlet/Payout/v30/payout\n```\n\n## Going live\n\nTo authenticate to the live endpoints, you need [API credentials](https://docs.adyen.com/development-resources/api-credentials) from your live Customer Area.\n\nThe live endpoint URLs contain a prefix which is unique to your company account:\n```\n\nhttps://{PREFIX}-pal-live.adyenpayments.com/pal/servlet/Payout/v30/payout\n```\n\nGet your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.",
-      "x-timestamp" : "2023-04-11T21:25:15Z",
+      "description" : "> The **Payout API is deprecated** and no longer supports new integrations. Do one of the following:\n>- If you are building a new integration, use the [Transfers API](https://docs.adyen.com/api-explorer/transfers/latest/overview) instead.\n> - If you are already using the Payout API, reach out to your Adyen contact to learn how to migrate to the Transfers API.\n>\n> With the Transfers API, you can:\n> - Handle multiple payout use cases with a single API.\n> - Use new payout functionalities, such as instant payouts to bank accounts.\n> - Receive webhooks with more details and defined transfer states.\n>\n> For more information about the payout features of the Transfers API, see our [Payouts](https://docs.adyen.com/payouts/payout-service) documentation.\n\n\nA set of API endpoints that allow you to store payout details, confirm, or decline a payout.\n\nFor more information, refer to [Online payouts](https://docs.adyen.com/online-payments/online-payouts).\n## Authentication\nTo use the Payout API, you need to have [two API credentials](https://docs.adyen.com/online-payments/online-payouts#payouts-to-bank-accounts-and-wallets): one for storing payout details and submitting payouts, and another one for confirming or declining payouts. If you don't have the required API credentials, contact our [Support Team](https://www.adyen.help/hc/en-us/requests/new).\n\nIf using an API key, add an `X-API-Key` header with the API key as the value, for example:\n\n ```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n\nAlternatively, you can use the username and password to connect to the API using [basic authentication](https://docs.adyen.com/development-resources/api-credentials#basic-authentication).\n\nThe following example shows how to authenticate your request with basic authentication when submitting a payout:\n\n```\ncurl\n-U \"storePayout@Company.YOUR_COMPANY_ACCOUNT\":\"YOUR_BASIC_AUTHENTICATION_PASSWORD\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\n\n## Versioning\nPayments API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://pal-test.adyen.com/pal/servlet/Payout/v30/payout\n```\n\n## Going live\n\nTo authenticate to the live endpoints, you need [API credentials](https://docs.adyen.com/development-resources/api-credentials) from your live Customer Area.\n\nThe live endpoint URLs contain a prefix which is unique to your company account:\n```\n\nhttps://{PREFIX}-pal-live.adyenpayments.com/pal/servlet/Payout/v30/payout\n```\n\nGet your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
-         "url" : "https://www.adyen.help/hc/en-us/community/topics",
-         "email" : "developer-experience@adyen.com"
+         "url" : "https://github.com/Adyen/adyen-openapi"
       }
    },
-   "x-groups" : [
-      "Initialization",
-      "Reviewing",
-      "Instant payouts"
-   ],
    "tags" : [
       {
          "name" : "Initialization"
       },
       {
-         "name" : "Instant payouts"
+         "name" : "Reviewing"
       },
       {
-         "name" : "Reviewing"
+         "name" : "Instant payouts"
       }
    ],
    "paths" : {
@@ -41,10 +34,9 @@
                "Reviewing"
             ],
             "summary" : "Confirm a payout",
-            "description" : "Confirms a previously submitted payout.\n\nTo cancel a payout, use the `/declineThirdParty` endpoint.",
+            "description" : "> This endpoint is **deprecated** and no longer supports new integrations. Do one of the following:\n>- If you are building a new integration, use the [Transfers API](https://docs.adyen.com/api-explorer/transfers/latest/overview) instead.\n> - If you are already using the Payout API, reach out to your Adyen contact to learn how to migrate to the Transfers API.\n>\n> With the Transfers API, you can:\n> - Handle multiple payout use cases with a single API.\n> - Use new payout functionalities, such as instant payouts to bank accounts.\n> - Receive webhooks with more details and defined transfer states.\n>\n> For more information about the payout features of the Transfers API, see our [Payouts](https://docs.adyen.com/payouts/payout-service) documentation.\n\n\nConfirms a previously submitted payout.\n\nTo cancel a payout, use the `/declineThirdParty` endpoint.",
             "x-addedInVersion" : "10",
             "operationId" : "post-confirmThirdParty",
-            "x-groupName" : "Reviewing",
             "x-sortIndex" : 1,
             "x-methodName" : "confirmThirdParty",
             "security" : [
@@ -151,10 +143,9 @@
                "Reviewing"
             ],
             "summary" : "Cancel a payout",
-            "description" : "Cancels a previously submitted payout.\n\nTo confirm and send a payout, use the `/confirmThirdParty` endpoint.",
+            "description" : "> This endpoint is **deprecated** and no longer supports new integrations. Do one of the following:\n>- If you are building a new integration, use the [Transfers API](https://docs.adyen.com/api-explorer/transfers/latest/overview) instead.\n> - If you are already using the Payout API, reach out to your Adyen contact to learn how to migrate to the Transfers API.\n>\n> With the Transfers API, you can:\n> - Handle multiple payout use cases with a single API.\n> - Use new payout functionalities, such as instant payouts to bank accounts.\n> - Receive webhooks with more details and defined transfer states.\n>\n> For more information about the payout features of the Transfers API, see our [Payouts](https://docs.adyen.com/payouts/payout-service) documentation.\n\n\nCancels a previously submitted payout.\n\nTo confirm and send a payout, use the `/confirmThirdParty` endpoint.",
             "x-addedInVersion" : "10",
             "operationId" : "post-declineThirdParty",
-            "x-groupName" : "Reviewing",
             "x-sortIndex" : 2,
             "x-methodName" : "declineThirdParty",
             "security" : [
@@ -261,10 +252,9 @@
                "Instant payouts"
             ],
             "summary" : "Make an instant card payout",
-            "description" : "With this call, you can pay out to your customers, and funds will be made available within 30 minutes on the cardholder's bank account (this is dependent on whether the issuer supports this functionality). Instant card payouts are only supported for Visa and Mastercard cards.",
+            "description" : "> This endpoint is **deprecated** and no longer supports new integrations. Do one of the following:\n>- If you are building a new integration, use the POST [/transfers](https://docs.adyen.com/api-explorer/transfers/latest/post/transfers) endpoint instead.\n> - If you are already using the Payout API, reach out to your Adyen contact to learn how to migrate to the Transfers API.\n>\n> With the Transfers API, you can:\n> - Handle multiple payout use cases with a single API.\n> - Use new payout functionalities, such as instant payouts to bank accounts.\n> - Receive webhooks with more details and defined transfer states.\n>\n> For more information about the payout features of the Transfers API, see our [Payouts](https://docs.adyen.com/payouts/payout-service) documentation.\n\n\nWith this call, you can pay out to your customers, and funds will be made available within 30 minutes on the cardholder's bank account (this is dependent on whether the issuer supports this functionality). Instant card payouts are only supported for Visa and Mastercard cards.",
             "x-addedInVersion" : "11",
             "operationId" : "post-payout",
-            "x-groupName" : "Instant payouts",
             "x-sortIndex" : 1,
             "x-methodName" : "payout",
             "security" : [
@@ -369,9 +359,8 @@
                "Initialization"
             ],
             "summary" : "Store payout details",
-            "description" : "Stores payment details under the `PAYOUT` recurring contract. These payment details can be used later to submit a payout via the `/submitThirdParty` call.",
+            "description" : "> This endpoint is **deprecated** and no longer supports new integrations. Do one of the following:\n>- If you are building a new integration, use the [Transfers API](https://docs.adyen.com/api-explorer/transfers/latest/overview) instead.\n> - If you are already using the Payout API, reach out to your Adyen contact to learn how to migrate to the Transfers API.\n>\n> With the Transfers API, you can:\n> - Handle multiple payout use cases with a single API.\n> - Use new payout functionalities, such as instant payouts to bank accounts.\n> - Receive webhooks with more details and defined transfer states.\n>\n> For more information about the payout features of the Transfers API, see our [Payouts](https://docs.adyen.com/payouts/payout-service) documentation.\n\n\nStores payment details under the `PAYOUT` recurring contract. These payment details can be used later to submit a payout via the `/submitThirdParty` call.",
             "operationId" : "post-storeDetail",
-            "x-groupName" : "Initialization",
             "x-sortIndex" : 2,
             "x-methodName" : "storeDetail",
             "security" : [
@@ -478,10 +467,9 @@
                "Initialization"
             ],
             "summary" : "Store details and submit a payout",
-            "description" : "Submits a payout and stores its details for subsequent payouts.\n\nThe submitted payout must be confirmed or declined either by a reviewer or via `/confirmThirdParty` or `/declineThirdParty` calls.",
+            "description" : "> This endpoint is **deprecated** and no longer supports new integrations. Do one of the following:\n>- If you are building a new integration, use the POST [/transfers](https://docs.adyen.com/api-explorer/transfers/latest/post/transfers) endpoint instead.\n> - If you are already using the Payout API, reach out to your Adyen contact to learn how to migrate to the Transfers API.\n>\n> With the Transfers API, you can:\n> - Handle multiple payout use cases with a single API.\n> - Use new payout functionalities, such as instant payouts to bank accounts.\n> - Receive webhooks with more details and defined transfer states.\n>\n> For more information about the payout features of the Transfers API, see our [Payouts](https://docs.adyen.com/payouts/payout-service) documentation.\n\n\nSubmits a payout and stores its details for subsequent payouts.\n\nThe submitted payout must be confirmed or declined either by a reviewer or via `/confirmThirdParty` or `/declineThirdParty` calls.",
             "x-addedInVersion" : "10",
             "operationId" : "post-storeDetailAndSubmitThirdParty",
-            "x-groupName" : "Initialization",
             "x-sortIndex" : 1,
             "x-methodName" : "storeDetailAndSubmitThirdParty",
             "security" : [
@@ -595,10 +583,9 @@
                "Initialization"
             ],
             "summary" : "Submit a payout",
-            "description" : "Submits a payout using the previously stored payment details. To store payment details, use the `/storeDetail` API call.\n\nThe submitted payout must be confirmed or declined either by a reviewer or via `/confirmThirdParty` or `/declineThirdParty` calls.",
+            "description" : "> This endpoint is **deprecated** and no longer supports new integrations. Do one of the following:\n>- If you are building a new integration, use the POST [/transfers](https://docs.adyen.com/api-explorer/transfers/latest/post/transfers) endpoint instead.\n> - If you are already using the Payout API, reach out to your Adyen contact to learn how to migrate to the Transfers API.\n>\n> With the Transfers API, you can:\n> - Handle multiple payout use cases with a single API.\n> - Use new payout functionalities, such as instant payouts to bank accounts.\n> - Receive webhooks with more details and defined transfer states.\n>\n> For more information about the payout features of the Transfers API, see our [Payouts](https://docs.adyen.com/payouts/payout-service) documentation.\n\n\nSubmits a payout using the previously stored payment details. To store payment details, use the `/storeDetail` API call.\n\nThe submitted payout must be confirmed or declined either by a reviewer or via `/confirmThirdParty` or `/declineThirdParty` calls.",
             "x-addedInVersion" : "10",
             "operationId" : "post-submitThirdParty",
-            "x-groupName" : "Initialization",
             "x-sortIndex" : 3,
             "x-methodName" : "submitThirdParty",
             "security" : [
@@ -698,6 +685,7 @@
    "components" : {
       "schemas" : {
          "Address" : {
+            "additionalProperties" : false,
             "properties" : {
                "city" : {
                   "description" : "The name of the city. Maximum length: 3000 characters.",
@@ -737,6 +725,7 @@
             "type" : "object"
          },
          "Amount" : {
+            "additionalProperties" : false,
             "properties" : {
                "currency" : {
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).",
@@ -757,6 +746,7 @@
             "type" : "object"
          },
          "BankAccount" : {
+            "additionalProperties" : false,
             "properties" : {
                "bankAccountNumber" : {
                   "description" : "The bank account number (without separators).",
@@ -800,6 +790,7 @@
             "type" : "object"
          },
          "Card" : {
+            "additionalProperties" : false,
             "properties" : {
                "cvc" : {
                   "description" : "The [card verification code](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-security-code-cvc-cvv-cid) (1-20 characters). Depending on the card brand, it is known also as:\n* CVV2/CVC2 – length: 3 digits\n* CID – length: 4 digits\n> If you are using [Client-Side Encryption](https://docs.adyen.com/classic-integration/cse-integration-ecommerce), the CVC code is present in the encrypted data. You must never post the card details to the server.\n> This field must be always present in a [one-click payment request](https://docs.adyen.com/classic-integration/recurring-payments).\n> When this value is returned in a response, it is always empty because it is not stored.",
@@ -853,6 +844,7 @@
             "type" : "object"
          },
          "FraudCheckResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountScore" : {
                   "description" : "The fraud score generated by the risk check.",
@@ -884,6 +876,7 @@
             }
          },
          "FraudResult" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountScore" : {
                   "description" : "The total fraud score generated by the risk checks.",
@@ -904,6 +897,7 @@
             "type" : "object"
          },
          "FundSource" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -936,6 +930,7 @@
             "type" : "object"
          },
          "ModifyRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -960,6 +955,7 @@
             "type" : "object"
          },
          "ModifyResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -984,13 +980,16 @@
             "type" : "object"
          },
          "Name" : {
+            "additionalProperties" : false,
             "properties" : {
                "firstName" : {
                   "description" : "The first name.",
+                  "maxLength" : 80,
                   "type" : "string"
                },
                "lastName" : {
                   "description" : "The last name.",
+                  "maxLength" : 80,
                   "type" : "string"
                }
             },
@@ -1001,6 +1000,7 @@
             "type" : "object"
          },
          "PayoutRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "amount" : {
                   "description" : "The amount information for the transaction (in [minor units](https://docs.adyen.com/development-resources/currency-codes)). For [BIN or card verification](https://docs.adyen.com/payment-methods/cards/bin-data-and-card-verification) requests, set amount to 0 (zero).",
@@ -1078,6 +1078,7 @@
             "type" : "object"
          },
          "PayoutResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -1095,6 +1096,9 @@
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataCommon"
+                     },
+                     {
+                        "$ref" : "#/components/schemas/ResponseAdditionalDataDomesticError"
                      },
                      {
                         "$ref" : "#/components/schemas/ResponseAdditionalDataInstallments"
@@ -1150,7 +1154,7 @@
                   "type" : "string"
                },
                "resultCode" : {
-                  "description" : "The result of the payment. For more information, see [Result codes](https://docs.adyen.com/online-payments/payment-result-codes).\n\nPossible values:\n\n* **AuthenticationFinished** – The payment has been successfully authenticated with 3D Secure 2. Returned for 3D Secure 2 authentication-only transactions.\n* **AuthenticationNotRequired** – The transaction does not require 3D Secure authentication. Returned for [standalone authentication-only integrations](https://docs.adyen.com/online-payments/3d-secure/other-3ds-flows/authentication-only).\n* **Authorised** – The payment was successfully authorised. This state serves as an indicator to proceed with the delivery of goods and services. This is a final state.\n* **Cancelled** – Indicates the payment has been cancelled (either by the shopper or the merchant) before processing was completed. This is a final state.\n* **ChallengeShopper** – The issuer requires further shopper interaction before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Error** – There was an error when the payment was being processed. The reason is given in the `refusalReason` field. This is a final state.\n* **IdentifyShopper** – The issuer requires the shopper's device fingerprint before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Pending** – Indicates that it is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.\n* **PresentToShopper** – Indicates that the response contains additional information that you need to present to a shopper, so that they can use it to complete a payment.\n* **Received** – Indicates the payment has successfully been received by Adyen, and will be processed. This is the initial state for all payments.\n* **RedirectShopper** – Indicates the shopper should be redirected to an external web page or app to complete the authorisation.\n* **Refused** – Indicates the payment was refused. The reason is given in the `refusalReason` field. This is a final state.",
+                  "description" : "The result of the payment. For more information, see [Result codes](https://docs.adyen.com/online-payments/payment-result-codes).\n\nPossible values:\n\n* **AuthenticationFinished** – The payment has been successfully authenticated with 3D Secure 2. Returned for 3D Secure 2 authentication-only transactions.\n* **AuthenticationNotRequired** – The transaction does not require 3D Secure authentication. Returned for [standalone authentication-only integrations](https://docs.adyen.com/online-payments/3d-secure/other-3ds-flows/authentication-only).\n* **Authorised** – The payment was successfully authorised. This state serves as an indicator to proceed with the delivery of goods and services. This is a final state.\n* **Cancelled** – Indicates the payment has been cancelled (either by the shopper or the merchant) before processing was completed. This is a final state.\n* **ChallengeShopper** – The issuer requires further shopper interaction before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **Error** – There was an error when the payment was being processed. The reason is given in the `refusalReason` field. This is a final state.\n* **IdentifyShopper** – The issuer requires the shopper's device fingerprint before the payment can be authenticated. Returned for 3D Secure 2 transactions.\n* **PartiallyAuthorised** – The payment has been authorised for a partial amount.\nThis happens for card payments when the merchant supports Partial Authorisations and the cardholder has insufficient funds.\n* **Pending** – Indicates that it is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.\n* **PresentToShopper** – Indicates that the response contains additional information that you need to present to a shopper, so that they can use it to complete a payment.\n* **Received** – Indicates the payment has successfully been received by Adyen, and will be processed. This is the initial state for all payments.\n* **RedirectShopper** – Indicates the shopper should be redirected to an external web page or app to complete the authorisation.\n* **Refused** – Indicates the payment was refused. The reason is given in the `refusalReason` field. This is a final state.",
                   "enum" : [
                      "AuthenticationFinished",
                      "AuthenticationNotRequired",
@@ -1159,6 +1163,7 @@
                      "ChallengeShopper",
                      "Error",
                      "IdentifyShopper",
+                     "PartiallyAuthorised",
                      "Pending",
                      "PresentToShopper",
                      "Received",
@@ -1172,6 +1177,7 @@
             "type" : "object"
          },
          "Recurring" : {
+            "additionalProperties" : false,
             "properties" : {
                "contract" : {
                   "description" : "The type of recurring contract to be used.\nPossible values:\n* `ONECLICK` – Payment details can be used to initiate a one-click payment, where the shopper enters the [card security code (CVC/CVV)](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-security-code-cvc-cvv-cid).\n* `RECURRING` – Payment details can be used without the card security code to initiate [card-not-present transactions](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-not-present-cnp).\n* `ONECLICK,RECURRING` – Payment details can be used regardless of whether the shopper is on your site or not.\n* `PAYOUT` – Payment details can be used to [make a payout](https://docs.adyen.com/online-payments/online-payouts).",
@@ -1191,7 +1197,9 @@
                   "description" : "The name of the token service.",
                   "enum" : [
                      "VISATOKENSERVICE",
-                     "MCTOKENSERVICE"
+                     "MCTOKENSERVICE",
+                     "AMEXTOKENSERVICE",
+                     "TOKEN_SHARING"
                   ],
                   "type" : "string"
                }
@@ -1199,6 +1207,7 @@
             "type" : "object"
          },
          "ResponseAdditionalData3DSecure" : {
+            "additionalProperties" : false,
             "properties" : {
                "cardHolderInfo" : {
                   "description" : "Information provided by the issuer to the cardholder. If this field is present, you need to display this information to the cardholder. ",
@@ -1224,6 +1233,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataBillingAddress" : {
+            "additionalProperties" : false,
             "properties" : {
                "billingAddress.city" : {
                   "description" : "The billing address city passed in the payment request.",
@@ -1253,6 +1263,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataCard" : {
+            "additionalProperties" : false,
             "properties" : {
                "cardBin" : {
                   "description" : "The first six digits of the card number.\n\nThis is the [Bank Identification Number (BIN)](https://docs.adyen.com/get-started-with-adyen/payment-glossary#bank-identification-number-bin) for card numbers with a six-digit BIN.\n\nExample: 521234",
@@ -1290,6 +1301,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataCommon" : {
+            "additionalProperties" : false,
             "properties" : {
                "acquirerAccountCode" : {
                   "description" : "The name of the Adyen acquirer account.\n\nExample: PayPalSandbox_TestAcquirer\n\n> Only relevant for PayPal transactions.",
@@ -1532,7 +1544,22 @@
             },
             "type" : "object"
          },
+         "ResponseAdditionalDataDomesticError" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "domesticRefusalReasonRaw" : {
+                  "description" : "The reason the transaction was declined, given by the local issuer. \nCurrently available for merchants in Japan.",
+                  "type" : "string"
+               },
+               "domesticShopperAdvice" : {
+                  "description" : "The action the shopper should take, in a local language. \nCurrently available in Japanese, for merchants in Japan.",
+                  "type" : "string"
+               }
+            },
+            "type" : "object"
+         },
          "ResponseAdditionalDataInstallments" : {
+            "additionalProperties" : false,
             "properties" : {
                "installmentPaymentData.installmentType" : {
                   "description" : "Type of installment. The value of `installmentType` should be **IssuerFinanced**.",
@@ -1586,6 +1613,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataNetworkTokens" : {
+            "additionalProperties" : false,
             "properties" : {
                "networkToken.available" : {
                   "description" : "Indicates whether a network token is available for the specified card.",
@@ -1603,6 +1631,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataOpi" : {
+            "additionalProperties" : false,
             "properties" : {
                "opi.transToken" : {
                   "description" : "Returned in the response if you included `opi.includeTransToken: true` in an ecommerce payment request. This contains an Oracle Payment Interface token that you can store in your Oracle Opera database to identify tokenized ecommerce transactions. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).",
@@ -1612,6 +1641,7 @@
             "type" : "object"
          },
          "ResponseAdditionalDataSepa" : {
+            "additionalProperties" : false,
             "properties" : {
                "sepadirectdebit.dateOfSignature" : {
                   "description" : "The transaction signature date.\n\nFormat: yyyy-MM-dd",
@@ -1629,6 +1659,7 @@
             "type" : "object"
          },
          "ServiceError" : {
+            "additionalProperties" : false,
             "properties" : {
                "errorCode" : {
                   "description" : "The error code mapped to the error message.",
@@ -1655,6 +1686,7 @@
             "type" : "object"
          },
          "StoreDetailAndSubmitRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -1761,6 +1793,7 @@
             "type" : "object"
          },
          "StoreDetailAndSubmitResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -1789,6 +1822,7 @@
             "type" : "object"
          },
          "StoreDetailRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -1880,6 +1914,7 @@
             "type" : "object"
          },
          "StoreDetailResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -1909,6 +1944,7 @@
             "type" : "object"
          },
          "SubmitRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -1998,6 +2034,7 @@
             "type" : "object"
          },
          "SubmitResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -2104,9 +2141,7 @@
                "shopperName" : {
                   "firstName" : "John",
                   "lastName" : "Smith"
-               },
-               "dateOfBirth" : "1990-01-01",
-               "nationality" : "NL"
+               }
             }
          },
          "post-payout-payout-p2p" : {
@@ -2159,10 +2194,7 @@
                "shopperName" : {
                   "firstName" : "John",
                   "lastName" : "Smith"
-               },
-               "shopperStatement" : "Payer Name",
-               "dateOfBirth" : "1990-01-01",
-               "nationality" : "NL"
+               }
             }
          },
          "post-storeDetail-storeDetail" : {
@@ -2186,7 +2218,6 @@
                "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "shopperName" : {
                   "firstName" : "Adyen",
-                  "gender" : "MALE",
                   "lastName" : "Test"
                },
                "dateOfBirth" : "1990-01-01",
@@ -2223,18 +2254,16 @@
                   "currency" : "EUR"
                },
                "bank" : {
-                  "bankName" : "Wirecard",
+                  "bankName" : "Commerzbank",
                   "iban" : "DE87123456781234567890",
                   "countryCode" : "DE",
                   "ownerName" : "Simon Hopper"
                },
-               "reference" : "Your Reference Here",
+               "reference" : "Your Reference",
                "shopperEmail" : "s.hopper@test.com",
-               "shopperIP" : "61.294.12.12",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
+               "shopperReference" : "YOUR_SHOPPER_REFERENCE",
                "shopperName" : {
                   "firstName" : "Adyen",
-                  "gender" : "MALE",
                   "lastName" : "Test"
                },
                "dateOfBirth" : "1990-01-01",
@@ -2257,7 +2286,6 @@
                },
                "shopperName" : {
                   "firstName" : "Test",
-                  "gender" : "FEMALE",
                   "lastName" : "Test2"
                },
                "dateOfBirth" : "1982-07-17",
@@ -2269,7 +2297,7 @@
                },
                "reference" : "Test Payout",
                "shopperEmail" : "test@company.com",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID"
+               "shopperReference" : "YOUR_SHOPPER_REFERENCE"
             }
          },
          "post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-PayPal" : {
@@ -2288,7 +2316,6 @@
                },
                "shopperName" : {
                   "firstName" : "Test",
-                  "gender" : "FEMALE",
                   "lastName" : "Test2"
                },
                "dateOfBirth" : "1982-07-17",
@@ -2317,7 +2344,6 @@
                },
                "shopperName" : {
                   "firstName" : "Test",
-                  "gender" : "MALE",
                   "lastName" : "Test2"
                },
                "dateOfBirth" : "1982-07-17",
@@ -2329,8 +2355,7 @@
                },
                "reference" : "Test Payout",
                "shopperEmail" : "test@company.com",
-               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
-               "shopperIP" : "61.294.12.12"
+               "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID"
             }
          },
          "post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Skrill" : {
@@ -2348,7 +2373,6 @@
                },
                "shopperName" : {
                   "firstName" : "Test",
-                  "gender" : "FEMALE",
                   "lastName" : "Test2"
                },
                "dateOfBirth" : "1982-07-17",
@@ -2380,7 +2404,6 @@
                "shopperReference" : "YOUR_UNIQUE_SHOPPER_ID",
                "shopperName" : {
                   "firstName" : "Adyen",
-                  "gender" : "MALE",
                   "lastName" : "Test"
                },
                "dateOfBirth" : "1990-01-01",

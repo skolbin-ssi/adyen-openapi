@@ -6,14 +6,10 @@ info:
   x-publicVersion: true
   title: Adyen Stored Value API
   description: A set of API endpoints to manage stored value products.
-  x-timestamp: '2023-04-11T19:24:00Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
-    url: https://www.adyen.help/hc/en-us/community/topics
-    email: developer-experience@adyen.com
-x-groups:
-- General
+    url: https://github.com/Adyen/adyen-openapi
 tags:
 - name: General
 paths:
@@ -25,7 +21,6 @@ paths:
       description: Changes the status of the provided payment method to the specified
         status.
       operationId: post-changeStatus
-      x-groupName: General
       x-sortIndex: 0
       x-methodName: changeStatus
       security:
@@ -74,7 +69,6 @@ paths:
       summary: Checks the balance.
       description: Checks the balance of the provided payment method.
       operationId: post-checkBalance
-      x-groupName: General
       x-sortIndex: 0
       x-methodName: checkBalance
       security:
@@ -123,7 +117,6 @@ paths:
       summary: Issues a new card.
       description: Issues a new card of the given payment method.
       operationId: post-issue
-      x-groupName: General
       x-sortIndex: 0
       x-methodName: issue
       security:
@@ -172,7 +165,6 @@ paths:
       summary: Loads the payment method.
       description: Loads the payment method with the specified funds.
       operationId: post-load
-      x-groupName: General
       x-sortIndex: 0
       x-methodName: load
       security:
@@ -222,7 +214,6 @@ paths:
       description: Increases the balance of the paymentmethod by the full amount left
         on the source paymentmethod
       operationId: post-mergeBalance
-      x-groupName: General
       x-sortIndex: 0
       x-methodName: mergeBalance
       security:
@@ -271,7 +262,6 @@ paths:
       summary: Voids a transaction.
       description: Voids the referenced stored value transaction.
       operationId: post-voidTransaction
-      x-groupName: General
       x-sortIndex: 0
       x-methodName: voidTransaction
       security:

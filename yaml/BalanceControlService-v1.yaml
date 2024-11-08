@@ -50,14 +50,10 @@ info:
     ```
 
     '
-  x-timestamp: '2023-02-20T18:23:08Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
-    url: https://www.adyen.help/hc/en-us/community/topics
-    email: developer-experience@adyen.com
-x-groups:
-- General
+    url: https://github.com/Adyen/adyen-openapi
 tags:
 - name: General
 paths:
@@ -87,7 +83,6 @@ paths:
 
         '
       operationId: post-balanceTransfer
-      x-groupName: General
       x-sortIndex: 0
       x-methodName: balanceTransfer
       security:
@@ -114,6 +109,7 @@ paths:
 components:
   schemas:
     Amount:
+      additionalProperties: false
       properties:
         currency:
           description: The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
@@ -129,6 +125,7 @@ components:
       - currency
       type: object
     BalanceTransferRequest:
+      additionalProperties: false
       properties:
         amount:
           description: The amount of the transfer in [minor units](https://docs.adyen.com/development-resources/currency-codes).
@@ -172,6 +169,7 @@ components:
       - type
       type: object
     BalanceTransferResponse:
+      additionalProperties: false
       properties:
         amount:
           description: The amount of the transfer in [minor units](https://docs.adyen.com/development-resources/currency-codes).

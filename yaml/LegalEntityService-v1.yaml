@@ -6,41 +6,34 @@ info:
   x-publicVersion: true
   title: Legal Entity Management API
   description: "The Legal Entity Management API enables you to manage legal entities\
-    \ that contain information required for verification. \n## Authentication\nTo\
-    \ connect to the Legal Entity Management API, you must use the basic authentication\
-    \ credentials of your web service user. If you don't have one, contact the [Adyen\
-    \ Support Team](https://www.adyen.help/hc/en-us/requests/new). Use the web service\
-    \ user credentials to authenticate your request, for example:\n\n```\ncurl\n-U\
-    \ \"ws_123456@Scope.BalancePlatform_YourBalancePlatform\":\"YourWsPassword\" \\\
-    \n-H \"Content-Type: application/json\" \\\n...\n```\nNote that when going live,\
-    \ you need to generate new web service user credentials to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\
-    \n## Versioning\nThe Legal Entity Management API supports versioning of its endpoints\
-    \ through a version suffix in the endpoint URL. This suffix has the following\
-    \ format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://kyc-test.adyen.com/lem/v1/legalEntities\n\
-    ```\n## Going live\nWhen going live, your Adyen contact will provide your API\
-    \ credential for the live environment. You can then use the username and password\
-    \ to send requests to `https://kyc-live.adyen.com/lem/v1`.\n\n"
-  x-timestamp: '2023-04-25T13:21:58Z'
+    \ that contain information required for verification. \n## Authentication\nEach\
+    \ request to the Legal Entity Management API must be signed with an API key. Generate\
+    \ an API key in your Customer Area if you have a [platform setup](https://docs.adyen.com/platforms/manage-access/api-credentials-web-service/#generate-api-key)\
+    \ or [marketplace setup](https://docs.adyen.com/marketplaces/manage-access/api-credentials-web-service/#generate-api-key).\n\
+    \n If you have an Adyen Issuing integration, [generate an API key](https://docs.adyen.com/issuing/manage-access/api-credentials-web-service/#generate-api-key)\
+    \ in your Balance Platform Customer Area.\n\nTo connect to the API, add an `X-API-Key`\
+    \ header with the API key as the value. For example:\n\n```\ncurl\n-H \"X-API-Key:\
+    \ YOUR_API_KEY\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\n## Versioning\n\
+    The Legal Entity Management API supports [versioning](https://docs.adyen.com/development-resources/versioning)\
+    \ using a version suffix in the endpoint URL. This suffix has the following format:\
+    \ \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://kyc-test.adyen.com/lem/v1/legalEntities\n\
+    ```\n## Going live\nWhen going live, generate an API key in your [live Customer\
+    \ Area](https://ca-live.adyen.com/ca/) if you have an Adyen for Platforms integration\
+    \ or [live Balance Platform Customer Area](https://balanceplatform-live.adyen.com/balanceplatform/)\
+    \ if you have an Adyen Issuing integration.You can then use the API key to send\
+    \ requests to `https://kyc-live.adyen.com/lem/v1`.\n\n"
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
-    url: https://www.adyen.help/hc/en-us/community/topics
-    email: developer-experience@adyen.com
-x-groups:
-- Legal entities
-- Transfer instruments
-- Business lines
-- Documents
-- Terms of Service
-- Hosted Onboarding
-- PCI questionnaires
+    url: https://github.com/Adyen/adyen-openapi
 tags:
 - name: Legal entities
-- name: Hosted Onboarding
+- name: Transfer instruments
 - name: Business lines
 - name: Documents
 - name: Terms of Service
-- name: Transfer instruments
+- name: Tax eDelivery consent
+- name: Hosted Onboarding
 - name: PCI questionnaires
 paths:
   /businessLines:
@@ -52,10 +45,9 @@ paths:
         \ about your user's line of business, including their industry and their source\
         \ of funds. Adyen uses this information to verify your users as required by\
         \ payment industry regulations. Adyen informs you of the verification results\
-        \ through webhooks or API responses."
+        \ through webhooks or API responses.\n\n"
       x-addedInVersion: '1'
       operationId: post-businessLines
-      x-groupName: Business lines
       x-sortIndex: 12
       x-methodName: createBusinessLine
       security:
@@ -124,7 +116,6 @@ paths:
         \ The business line is removed from all linked merchant accounts."
       x-addedInVersion: '1'
       operationId: delete-businessLines-id
-      x-groupName: Business lines
       x-sortIndex: 14
       x-methodName: deleteBusinessLine
       security:
@@ -139,8 +130,8 @@ paths:
           type: string
       responses:
         '204':
-          description: No Content - the request has been successfully processed, but
-            there is no additional content.
+          description: 'No Content - look at the actual response code for the status
+            of the request. '
         '400':
           content:
             application/json:
@@ -178,7 +169,6 @@ paths:
       description: Returns the detail of a business line.
       x-addedInVersion: '1'
       operationId: get-businessLines-id
-      x-groupName: Business lines
       x-sortIndex: 13
       x-methodName: getBusinessLine
       security:
@@ -240,10 +230,10 @@ paths:
         \ information from the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities)\
         \ to run automated verification checks. If these checks fail, you will be\
         \ notified to provide additional documents.\n\n You should only upload documents\
-        \ when Adyen requests additional information for the legal entity. "
+        \ when Adyen requests additional information for the legal entity.\n\n >You\
+        \ can upload a maximum of 15 pages for photo IDs."
       x-addedInVersion: '1'
       operationId: post-documents
-      x-groupName: Documents
       x-sortIndex: 4
       x-methodName: uploadDocumentForVerificationChecks
       security:
@@ -257,6 +247,15 @@ paths:
                 $ref: '#/components/examples/post-documents-uploadDocument'
             schema:
               $ref: '#/components/schemas/Document'
+      parameters:
+      - description: Use a suberror code as your requested verification code. You
+          can include one code at a time in your request header. Requested verification
+          codes can only be used in your test environment.
+        example: '1_3008'
+        name: x-requested-verification-code
+        in: header
+        schema:
+          type: string
       responses:
         '200':
           content:
@@ -305,7 +304,6 @@ paths:
       description: Deletes a document.
       x-addedInVersion: '1'
       operationId: delete-documents-id
-      x-groupName: Documents
       x-sortIndex: 7
       x-methodName: deleteDocument
       security:
@@ -319,12 +317,9 @@ paths:
         schema:
           type: string
       responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VoidResponse'
-          description: OK - the request has succeeded.
+        '204':
+          description: 'No Content - look at the actual response code for the status
+            of the request. '
         '400':
           content:
             application/json:
@@ -362,7 +357,6 @@ paths:
       description: Returns a document.
       x-addedInVersion: '1'
       operationId: get-documents-id
-      x-groupName: Documents
       x-sortIndex: 5
       x-methodName: getDocument
       security:
@@ -375,6 +369,12 @@ paths:
         required: true
         schema:
           type: string
+      - description: Do not load document content while fetching the document.
+        name: skipContent
+        in: query
+        required: false
+        schema:
+          type: boolean
       responses:
         '200':
           content:
@@ -419,10 +419,10 @@ paths:
       tags:
       - Documents
       summary: Update a document
-      description: Updates a document.
+      description: "Updates a document.\n\n >You can upload a maximum of 15 pages\
+        \ for photo IDs."
       x-addedInVersion: '1'
       operationId: patch-documents-id
-      x-groupName: Documents
       x-sortIndex: 6
       x-methodName: updateDocument
       security:
@@ -441,6 +441,14 @@ paths:
         name: id
         in: path
         required: true
+        schema:
+          type: string
+      - description: Use the requested verification code 0_0001 to resolve any suberrors
+          associated with the document. Requested verification codes can only be used
+          in your test environment.
+        example: '0_0001'
+        name: x-requested-verification-code
+        in: header
         schema:
           type: string
       responses:
@@ -495,7 +503,6 @@ paths:
         \ or API responses. \n\n"
       x-addedInVersion: '1'
       operationId: post-legalEntities
-      x-groupName: Legal entities
       x-sortIndex: 1
       x-methodName: createLegalEntity
       security:
@@ -515,6 +522,15 @@ paths:
                 $ref: '#/components/examples/post-legalEntities-createLegalEntityOrganizationUS'
             schema:
               $ref: '#/components/schemas/LegalEntityInfoRequiredType'
+      parameters:
+      - description: Use a suberror code as your requested verification code. You
+          can include one code at a time in your request header. Requested verification
+          codes can only be used in your test environment.
+        example: '1_3004'
+        name: x-requested-verification-code
+        in: header
+        schema:
+          type: string
       responses:
         '200':
           content:
@@ -569,7 +585,6 @@ paths:
       description: Returns a legal entity.
       x-addedInVersion: '1'
       operationId: get-legalEntities-id
-      x-groupName: Legal entities
       x-sortIndex: 2
       x-methodName: getLegalEntity
       security:
@@ -633,7 +648,6 @@ paths:
         \ with the remaining 2 entries."
       x-addedInVersion: '1'
       operationId: patch-legalEntities-id
-      x-groupName: Legal entities
       x-sortIndex: 3
       x-methodName: updateLegalEntity
       security:
@@ -654,6 +668,14 @@ paths:
         name: id
         in: path
         required: true
+        schema:
+          type: string
+      - description: Use the requested verification code 0_0001 to resolve any suberrors
+          associated with the legal entity. Requested verification codes can only
+          be used in your test environment.
+        example: '0_0001'
+        name: x-requested-verification-code
+        in: header
         schema:
           type: string
       responses:
@@ -706,7 +728,6 @@ paths:
       description: Returns the business lines owned by a legal entity.
       x-addedInVersion: '1'
       operationId: get-legalEntities-id-businessLines
-      x-groupName: Legal entities
       x-sortIndex: 4
       x-methodName: getAllBusinessLinesUnderLegalEntity
       security:
@@ -759,16 +780,77 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
+  /legalEntities/{id}/checkTaxElectronicDeliveryConsent:
+    post:
+      tags:
+      - Tax eDelivery consent
+      summary: Check the status of consent for electronic delivery of tax forms
+      description: Returns the consent status for electronic delivery of tax forms.
+      x-addedInVersion: '1'
+      operationId: post-legalEntities-id-checkTaxElectronicDeliveryConsent
+      x-sortIndex: 2
+      x-methodName: checkStatusOfConsentForElectronicDeliveryOfTaxForms
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      parameters:
+      - description: The unique identifier of the legal entity. For sole proprietorships,
+          this is the individual legal entity ID of the owner. For organizations,
+          this is the ID of the organization.
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckTaxElectronicDeliveryConsentResponse'
+          description: OK - the request has succeeded.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
   /legalEntities/{id}/onboardingLinks:
     post:
       tags:
       - Hosted Onboarding
       summary: Get a link to an Adyen-hosted onboarding page
-      description: Returns a link to an Adyen-hosted onboarding page where you need
+      description: 'Returns a link to an Adyen-hosted onboarding page where you need
         to redirect your user.
+
+
+        '
       x-addedInVersion: '1'
       operationId: post-legalEntities-id-onboardingLinks
-      x-groupName: Hosted Onboarding
       x-sortIndex: 1
       x-methodName: getLinkToAdyenhostedOnboardingPage
       security:
@@ -837,7 +919,6 @@ paths:
       description: Get a list of signed PCI questionnaires.
       x-addedInVersion: '1'
       operationId: get-legalEntities-id-pciQuestionnaires
-      x-groupName: PCI questionnaires
       x-sortIndex: 3
       x-methodName: getPciQuestionnaireDetails
       security:
@@ -896,12 +977,9 @@ paths:
       tags:
       - PCI questionnaires
       summary: Generate PCI questionnaire
-      description: Generates the required PCI questionnaire based on the user's [salesChannel](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businessLines__reqParam_salesChannels).
-        If multiple questionnaires are required, this request creates a single consodilated
-        document to be signed.
+      description: Generates the required PCI questionnaires based on the user's [salesChannel](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businessLines__reqParam_salesChannels).
       x-addedInVersion: '1'
       operationId: post-legalEntities-id-pciQuestionnaires-generatePciTemplates
-      x-groupName: PCI questionnaires
       x-sortIndex: 1
       x-methodName: generatePciQuestionnaire
       security:
@@ -916,7 +994,8 @@ paths:
             schema:
               $ref: '#/components/schemas/GeneratePciDescriptionRequest'
       parameters:
-      - description: The legal entity ID of the individual who will sign the PCI questionnaire.
+      - description: The unique identifier of the legal entity to get PCI questionnaire
+          information.
         name: id
         in: path
         required: true
@@ -970,7 +1049,6 @@ paths:
       description: Signs the required PCI questionnaire.
       x-addedInVersion: '1'
       operationId: post-legalEntities-id-pciQuestionnaires-signPciTemplates
-      x-groupName: PCI questionnaires
       x-sortIndex: 2
       x-methodName: signPciQuestionnaire
       security:
@@ -985,7 +1063,8 @@ paths:
             schema:
               $ref: '#/components/schemas/PciSigningRequest'
       parameters:
-      - description: The legal entity ID of the individual who signed the PCI questionnaire.
+      - description: The legal entity ID of the user that has a contractual relationship
+          with your platform.
         name: id
         in: path
         required: true
@@ -1039,7 +1118,6 @@ paths:
       description: Returns the signed PCI questionnaire.
       x-addedInVersion: '1'
       operationId: get-legalEntities-id-pciQuestionnaires-pciid
-      x-groupName: PCI questionnaires
       x-sortIndex: 4
       x-methodName: getPciQuestionnaire
       security:
@@ -1098,6 +1176,67 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
+  /legalEntities/{id}/setTaxElectronicDeliveryConsent:
+    post:
+      tags:
+      - Tax eDelivery consent
+      summary: Set the consent status for electronic delivery of tax forms
+      description: Set the consent status for electronic delivery of tax forms.
+      x-addedInVersion: '1'
+      operationId: post-legalEntities-id-setTaxElectronicDeliveryConsent
+      x-sortIndex: 1
+      x-methodName: setConsentStatusForElectronicDeliveryOfTaxForms
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetTaxElectronicDeliveryConsentRequest'
+      parameters:
+      - description: The unique identifier of the legal entity. For sole proprietorships,
+          this is the individual legal entity ID of the owner. For organizations,
+          this is the ID of the organization.
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'No Content - look at the actual response code for the status
+            of the request. '
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
   /legalEntities/{id}/termsOfService:
     post:
       tags:
@@ -1106,7 +1245,6 @@ paths:
       description: Returns the Terms of Service document for a legal entity.
       x-addedInVersion: '1'
       operationId: post-legalEntities-id-termsOfService
-      x-groupName: Terms of Service
       x-sortIndex: 1
       x-methodName: getTermsOfServiceDocument
       security:
@@ -1121,7 +1259,9 @@ paths:
             schema:
               $ref: '#/components/schemas/GetTermsOfServiceDocumentRequest'
       parameters:
-      - description: The unique identifier of the legal entity.
+      - description: The unique identifier of the legal entity. For sole proprietorships,
+          this is the individual legal entity ID of the owner. For organizations,
+          this is the ID of the organization.
         name: id
         in: path
         required: true
@@ -1175,7 +1315,6 @@ paths:
       description: Accepts Terms of Service.
       x-addedInVersion: '1'
       operationId: patch-legalEntities-id-termsOfService-termsofservicedocumentid
-      x-groupName: Terms of Service
       x-sortIndex: 2
       x-methodName: acceptTermsOfService
       security:
@@ -1184,10 +1323,26 @@ paths:
       requestBody:
         content:
           application/json:
+            examples:
+              updateTermsofService:
+                $ref: '#/components/examples/patch-legalEntities-id-termsOfService-termsofservicedocumentid-updateTermsofService'
             schema:
               $ref: '#/components/schemas/AcceptTermsOfServiceRequest'
       parameters:
-      - description: The unique identifier of the legal entity.
+      - description: 'The unique identifier of the legal entity.
+
+
+          For sole proprietorships, this is the individual legal entity ID of the
+          owner.
+
+
+          For organizations, this is the ID of the organization.
+
+
+          For legal representatives of individuals, this is the ID of the individual.
+
+
+          '
         name: id
         in: path
         required: true
@@ -1203,6 +1358,9 @@ paths:
         '200':
           content:
             application/json:
+              examples:
+                updateTermsofService:
+                  $ref: '#/components/examples/patch-legalEntities-id-termsOfService-termsofservicedocumentid-updateTermsofService-200'
               schema:
                 $ref: '#/components/schemas/AcceptTermsOfServiceResponse'
           description: OK - the request has succeeded.
@@ -1244,14 +1402,15 @@ paths:
       description: Returns Terms of Service information for a legal entity.
       x-addedInVersion: '1'
       operationId: get-legalEntities-id-termsOfServiceAcceptanceInfos
-      x-groupName: Terms of Service
       x-sortIndex: 3
       x-methodName: getTermsOfServiceInformationForLegalEntity
       security:
       - BasicAuth: []
       - ApiKeyAuth: []
       parameters:
-      - description: The unique identifier of the legal entity.
+      - description: The unique identifier of the legal entity. For sole proprietorships,
+          this is the individual legal entity ID of the owner. For organizations,
+          this is the ID of the organization.
         name: id
         in: path
         required: true
@@ -1297,15 +1456,80 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
+  /legalEntities/{id}/termsOfServiceStatus:
+    get:
+      tags:
+      - Terms of Service
+      summary: Get Terms of Service status
+      description: Returns the required types of Terms of Service that need to be
+        accepted by a legal entity.
+      x-addedInVersion: '1'
+      operationId: get-legalEntities-id-termsOfServiceStatus
+      x-sortIndex: 4
+      x-methodName: getTermsOfServiceStatus
+      security:
+      - BasicAuth: []
+      - ApiKeyAuth: []
+      parameters:
+      - description: The unique identifier of the legal entity. For sole proprietorships,
+          this is the individual legal entity ID of the owner. For organizations,
+          this is the ID of the organization.
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                success:
+                  $ref: '#/components/examples/get-legalEntities-id-termsOfServiceStatus-success-200'
+              schema:
+                $ref: '#/components/schemas/CalculateTermsOfServiceStatusResponse'
+          description: OK - the request has succeeded.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Bad Request - a problem reading or understanding the request.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unauthorized - authentication required.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Forbidden - insufficient permissions to process the request.
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Unprocessable Entity - a request validation error.
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceError'
+          description: Internal Server Error - the server could not process the request.
   /themes:
     get:
       tags:
       - Hosted Onboarding
       summary: Get a list of hosted onboarding page themes
-      description: Returns a list of hosted onboarding page themes.
+      description: 'Returns a list of hosted onboarding page themes.
+
+
+        '
       x-addedInVersion: '1'
       operationId: get-themes
-      x-groupName: Hosted Onboarding
       x-sortIndex: 2
       x-methodName: listHostedOnboardingPageThemes
       security:
@@ -1359,7 +1583,6 @@ paths:
       description: Returns the details of the theme identified in the path.
       x-addedInVersion: '1'
       operationId: get-themes-id
-      x-groupName: Hosted Onboarding
       x-sortIndex: 4
       x-methodName: getOnboardingLinkTheme
       security:
@@ -1426,7 +1649,6 @@ paths:
         \ as payouts)."
       x-addedInVersion: '1'
       operationId: post-transferInstruments
-      x-groupName: Transfer instruments
       x-sortIndex: 8
       x-methodName: createTransferInstrument
       security:
@@ -1442,6 +1664,15 @@ paths:
                 $ref: '#/components/examples/post-transferInstruments-createTransferInstrumentUSD'
             schema:
               $ref: '#/components/schemas/TransferInstrumentInfo'
+      parameters:
+      - description: Use a suberror code as your requested verification code. You
+          can include one code at a time in your request header. Requested verification
+          codes can only be used in your test environment.
+        example: '1_7002'
+        name: x-requested-verification-code
+        in: header
+        schema:
+          type: string
       responses:
         '200':
           content:
@@ -1492,7 +1723,6 @@ paths:
       description: Deletes a transfer instrument.
       x-addedInVersion: '1'
       operationId: delete-transferInstruments-id
-      x-groupName: Transfer instruments
       x-sortIndex: 11
       x-methodName: deleteTransferInstrument
       security:
@@ -1507,8 +1737,8 @@ paths:
           type: string
       responses:
         '204':
-          description: No Content - the request has been successfully processed, but
-            there is no additional content.
+          description: 'No Content - look at the actual response code for the status
+            of the request. '
         '400':
           content:
             application/json:
@@ -1546,7 +1776,6 @@ paths:
       description: Returns the details of a transfer instrument.
       x-addedInVersion: '1'
       operationId: get-transferInstruments-id
-      x-groupName: Transfer instruments
       x-sortIndex: 9
       x-methodName: getTransferInstrument
       security:
@@ -1606,7 +1835,6 @@ paths:
       description: Updates a transfer instrument.
       x-addedInVersion: '1'
       operationId: patch-transferInstruments-id
-      x-groupName: Transfer instruments
       x-sortIndex: 10
       x-methodName: updateTransferInstrument
       security:
@@ -1615,6 +1843,9 @@ paths:
       requestBody:
         content:
           application/json:
+            examples:
+              updateTransferInstrument:
+                $ref: '#/components/examples/patch-transferInstruments-id-updateTransferInstrument'
             schema:
               $ref: '#/components/schemas/TransferInstrumentInfo'
       parameters:
@@ -1624,10 +1855,21 @@ paths:
         required: true
         schema:
           type: string
+      - description: Use the requested verification code 0_0001 to resolve any suberrors
+          associated with the transfer instrument. Requested verification codes can
+          only be used in your test environment.
+        example: '0_0001'
+        name: x-requested-verification-code
+        in: header
+        schema:
+          type: string
       responses:
         '200':
           content:
             application/json:
+              examples:
+                updateTransferInstrument:
+                  $ref: '#/components/examples/patch-transferInstruments-id-updateTransferInstrument-200'
               schema:
                 $ref: '#/components/schemas/TransferInstrument'
           description: OK - the request has succeeded.
@@ -1664,15 +1906,34 @@ paths:
 components:
   schemas:
     AcceptTermsOfServiceRequest:
+      additionalProperties: false
       properties:
         acceptedBy:
-          description: The unique identifier of the user accepting the Terms of Service.
+          description: 'The legal entity ID of the user accepting the Terms of Service.
+
+
+            For organizations, this must be the individual legal entity ID of an authorized
+            signatory for the organization.
+
+
+            For sole proprietorships, this must be the individual legal entity ID
+            of the owner.
+
+
+            For individuals, this must be the individual legal entity id of either
+            the individual, parent, or guardian.
+
+
+            '
           type: string
         ipAddress:
           description: The IP address of the user accepting the Terms of Service.
           type: string
+      required:
+      - acceptedBy
       type: object
     AcceptTermsOfServiceResponse:
+      additionalProperties: false
       properties:
         acceptedBy:
           description: The unique identifier of the user that accepted the Terms of
@@ -1685,26 +1946,53 @@ components:
           description: The IP address of the user that accepted the Terms of Service.
           type: string
         language:
-          description: The language used for the Terms of Service document, specified
-            by the two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
-            language code. For example, **nl** for Dutch.
+          description: 'The language used for the Terms of Service document, specified
+            by the two-letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+            language code. Possible value: **en** for English.'
           type: string
         termsOfServiceDocumentId:
           description: The unique identifier of the Terms of Service document.
           type: string
         type:
-          description: The type of Terms of Service.
+          description: 'The type of Terms of Service.
+
+
+            Possible values:
+
+            *  **adyenForPlatformsManage**
+
+            *  **adyenIssuing**
+
+            *  **adyenForPlatformsAdvanced**
+
+            *  **adyenCapital**
+
+            *  **adyenAccount**
+
+            *  **adyenCard**
+
+            *  **adyenFranchisee**
+
+            *  **adyenPccr**
+
+            *  **adyenChargeCard**
+
+
+            '
           enum:
           - adyenAccount
           - adyenCapital
           - adyenCard
+          - adyenChargeCard
           - adyenForPlatformsAdvanced
           - adyenForPlatformsManage
           - adyenFranchisee
           - adyenIssuing
+          - adyenPccr
           type: string
       type: object
     Address:
+      additionalProperties: false
       properties:
         city:
           description: 'The name of the city. Required if `stateOrProvince` is provided.
@@ -1721,9 +2009,12 @@ components:
             provided.
           type: string
         stateOrProvince:
-          description: "The two-letter ISO 3166-2 state or province code. For example,\
-            \ **CA** in the US. \n\nIf you specify the state or province, you must\
-            \ also send `city`, `postalCode`, and `street`."
+          description: 'The two-letter ISO 3166-2 state or province code. For example,
+            **CA** in the US.
+
+
+            If you specify the state or province, you must also send `city`, `postalCode`,
+            and `street`.'
           type: string
         street:
           description: The name of the street, and the house or building number. Required
@@ -1736,6 +2027,7 @@ components:
       - country
       type: object
     Amount:
+      additionalProperties: false
       properties:
         currency:
           description: The type of currency. Must be EUR (or EUR equivalent)
@@ -1746,6 +2038,7 @@ components:
           type: integer
       type: object
     Attachment:
+      additionalProperties: false
       properties:
         content:
           description: The document in Base64-encoded string format.
@@ -1776,6 +2069,7 @@ components:
       - content
       type: object
     BankAccountInfo:
+      additionalProperties: false
       properties:
         accountNumber:
           description: "The bank account number (without separators).\n\n When this\
@@ -1819,28 +2113,44 @@ components:
           description: The international bank account number as defined in the [ISO-13616](https://www.iso.org/standard/81090.html)
             standard.
           type: string
+        trustedSource:
+          description: Identifies if the bank account was created through [instant
+            bank verification](https://docs.adyen.com/release-notes/platforms-and-financial-products#releaseNote=2023-05-08-hosted-onboarding).
+          readOnly: true
+          type: boolean
       required:
       - currencyCode
       type: object
     BirthData:
+      additionalProperties: false
       properties:
         dateOfBirth:
           description: The individual's date of birth, in YYYY-MM-DD format.
           type: string
       type: object
     BusinessLine:
+      additionalProperties: false
       properties:
         capability:
-          description: The capability for which you are creating the business line.
-            For example, **receivePayments**.
+          description: 'The capability for which you are creating the business line.
+
+
+            Possible values: **receivePayments**, **receiveFromPlatformPayments**,
+            **issueBankAccount**'
+          enum:
+          - receivePayments
+          - receiveFromPlatformPayments
+          - issueBankAccount
           type: string
         id:
           description: The unique identifier of the business line.
           readOnly: true
           type: string
         industryCode:
-          description: A code that represents the industry of the legal entity. For
-            example, **4431A** for computer software stores.
+          description: A code that represents the industry of the legal entity for
+            [marketplaces](https://docs.adyen.com/marketplaces/verification-requirements/reference-additional-products/#list-industry-codes)
+            or [platforms](https://docs.adyen.com/platforms/verification-requirements/reference-additional-products/#list-industry-codes).
+            For example, **4431A** for computer software stores.
           type: string
         legalEntityId:
           description: Unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id)
@@ -1879,14 +2189,24 @@ components:
       - id
       type: object
     BusinessLineInfo:
+      additionalProperties: false
       properties:
         capability:
-          description: The capability for which you are creating the business line.
-            For example, **receivePayments**.
+          description: 'The capability for which you are creating the business line.
+
+
+            Possible values: **receivePayments**, **receiveFromPlatformPayments**,
+            **issueBankAccount**'
+          enum:
+          - receivePayments
+          - receiveFromPlatformPayments
+          - issueBankAccount
           type: string
         industryCode:
-          description: A code that represents the industry of the legal entity. For
-            example, **4431A** for computer software stores.
+          description: A code that represents the industry of the legal entity for
+            [marketplaces](https://docs.adyen.com/marketplaces/verification-requirements/reference-additional-products/#list-industry-codes)
+            or [platforms](https://docs.adyen.com/platforms/verification-requirements/reference-additional-products/#list-industry-codes).
+            For example, **4431A** for computer software stores.
           type: string
         legalEntityId:
           description: Unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id)
@@ -1924,6 +2244,7 @@ components:
       - legalEntityId
       type: object
     BusinessLines:
+      additionalProperties: false
       properties:
         businessLines:
           description: List of business lines.
@@ -1933,7 +2254,28 @@ components:
       required:
       - businessLines
       type: object
+    CalculateTermsOfServiceStatusResponse:
+      additionalProperties: false
+      properties:
+        termsOfServiceTypes:
+          description: The type of Terms of Service that the legal entity needs to
+            accept. If empty, no Terms of Service needs to be accepted.
+          items:
+            enum:
+            - adyenAccount
+            - adyenCapital
+            - adyenCard
+            - adyenChargeCard
+            - adyenForPlatformsAdvanced
+            - adyenForPlatformsManage
+            - adyenFranchisee
+            - adyenIssuing
+            - adyenPccr
+            type: string
+          type: array
+      type: object
     CapabilityProblem:
+      additionalProperties: false
       properties:
         entity:
           $ref: '#/components/schemas/CapabilityProblemEntity'
@@ -1943,6 +2285,7 @@ components:
           type: array
       type: object
     CapabilityProblemEntity:
+      additionalProperties: false
       properties:
         documents:
           description: List of document IDs corresponding to the verification errors
@@ -1959,9 +2302,11 @@ components:
           - BankAccount
           - Document
           - LegalEntity
+          - product
           type: string
       type: object
     CapabilityProblemEntity-recursive:
+      additionalProperties: false
       properties:
         documents:
           description: List of document IDs corresponding to the verification errors
@@ -1976,10 +2321,12 @@ components:
           - BankAccount
           - Document
           - LegalEntity
+          - product
           type: string
       required: []
       type: object
     CapabilitySettings:
+      additionalProperties: false
       properties:
         amountPerIndustry:
           additionalProperties:
@@ -2009,7 +2356,15 @@ components:
           description: The maximum amount a card holder can withdraw per day.
           $ref: '#/components/schemas/Amount'
       type: object
+    CheckTaxElectronicDeliveryConsentResponse:
+      additionalProperties: false
+      properties:
+        US1099k:
+          description: Consent to electronically deliver tax form US1099-K.
+          type: boolean
+      type: object
     Document:
+      additionalProperties: false
       properties:
         attachment:
           deprecated: true
@@ -2066,16 +2421,19 @@ components:
           description: Contains information about the resource that owns the document.
           $ref: '#/components/schemas/OwnerEntity'
         type:
-          description: "Type of document, used when providing an ID number or uploading\
-            \ a document. The possible values depend on the legal entity type.\n\n\
-            When providing ID numbers:\n* For **individual**, the `type` values can\
-            \ be **driversLicense**, **identityCard**, **nationalIdNumber**, or **passport**.\n\
-            \nWhen uploading documents:\n* For **organization**, the `type` values\
-            \ can be **proofOfAddress**, **registrationDocument**, **taxDocument**,\
-            \ **proofOfOwnership**, or **proofOfIndustry**. \n\n* For **individual**,\
-            \ the `type` values can be **identityCard**, **driversLicense**, **proofOfNationalIdNumber**,\
-            \ **proofOfResidency**, or **proofOfIndustry**.\n\n* Use **bankStatement**\
-            \ to upload documents for a [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments__resParam_id)."
+          description: 'Type of document, used when providing an ID number or uploading
+            a document. The possible values depend on the legal entity type.
+
+
+            * For **organization**, the `type` values can be **proofOfAddress**, **registrationDocument**,
+            **taxDocument**, **proofOfOwnership**, or **proofOfIndustry**.
+
+
+            * For **individual**, the `type` values can be **identityCard**, **driversLicense**,
+            **proofOfNationalIdNumber**, **proofOfResidency**, or **proofOfIndustry**.
+
+
+            * Use **bankStatement** to upload documents for a [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments__resParam_id).'
           enum:
           - bankStatement
           - driversLicense
@@ -2090,19 +2448,47 @@ components:
           - proofOfIndustry
           type: string
       required:
-      - type
       - description
-      - owner
-      - attachments
+      - type
       type: object
     EntityReference:
+      additionalProperties: false
       properties:
         id:
           description: The unique identifier of the resource.
           type: string
       type: object
     GeneratePciDescriptionRequest:
+      additionalProperties: false
       properties:
+        additionalSalesChannels:
+          description: 'An array of additional sales channels to generate PCI questionnaires.
+            Include the relevant sales channels if you need your user to sign PCI
+            questionnaires. Not required if you [create stores](https://docs.adyen.com/platforms)
+            and [add payment methods](https://docs.adyen.com/adyen-for-platforms-model)
+            before you generate the questionnaires.
+
+
+            Possible values:
+
+            *  **eCommerce**
+
+            *  **pos**
+
+            *  **ecomMoto**
+
+            *  **posMoto**
+
+
+            '
+          items:
+            enum:
+            - eCommerce
+            - ecomMoto
+            - pos
+            - posMoto
+            type: string
+          type: array
         language:
           description: Sets the language of the PCI questionnaire. Its value is a
             two-character [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) language
@@ -2110,6 +2496,7 @@ components:
           type: string
       type: object
     GeneratePciDescriptionResponse:
+      additionalProperties: false
       properties:
         content:
           description: The generated questionnaires in a base64 encoded format.
@@ -2126,6 +2513,7 @@ components:
           type: array
       type: object
     GetPciQuestionnaireInfosResponse:
+      additionalProperties: false
       properties:
         data:
           description: Information about the signed PCI questionnaires.
@@ -2134,6 +2522,7 @@ components:
           type: array
       type: object
     GetPciQuestionnaireResponse:
+      additionalProperties: false
       properties:
         content:
           description: The generated questionnaire in a base64 encoded format.
@@ -2154,6 +2543,7 @@ components:
           type: string
       type: object
     GetTermsOfServiceAcceptanceInfosResponse:
+      additionalProperties: false
       properties:
         data:
           description: The Terms of Service acceptance information.
@@ -2162,25 +2552,60 @@ components:
           type: array
       type: object
     GetTermsOfServiceDocumentRequest:
+      additionalProperties: false
       properties:
         language:
-          description: The language to be used for the Terms of Service document,
-            specified by the two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
-            language code. For example, **nl** for Dutch.
+          description: 'The language to be used for the Terms of Service document,
+            specified by the two-letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+            language code. Possible value: **en** for English.'
+          type: string
+        termsOfServiceDocumentFormat:
+          description: 'The requested format for the Terms of Service document. Default
+            value: JSON. Possible values: **JSON**, **PDF**, or **TXT**.'
           type: string
         type:
-          description: The type of Terms of Service.
+          description: 'The type of Terms of Service.
+
+
+            Possible values:
+
+            *  **adyenForPlatformsManage**
+
+            *  **adyenIssuing**
+
+            *  **adyenForPlatformsAdvanced**
+
+            *  **adyenCapital**
+
+            *  **adyenAccount**
+
+            *  **adyenCard**
+
+            *  **adyenFranchisee**
+
+            *  **adyenPccr**
+
+            *  **adyenChargeCard**
+
+
+            '
           enum:
           - adyenAccount
           - adyenCapital
           - adyenCard
+          - adyenChargeCard
           - adyenForPlatformsAdvanced
           - adyenForPlatformsManage
           - adyenFranchisee
           - adyenIssuing
+          - adyenPccr
           type: string
+      required:
+      - type
+      - language
       type: object
     GetTermsOfServiceDocumentResponse:
+      additionalProperties: false
       properties:
         document:
           description: The Terms of Service document in Base64-encoded format.
@@ -2190,33 +2615,61 @@ components:
           description: The unique identifier of the legal entity.
           type: string
         language:
-          description: The language used for the Terms of Service document, specified
-            by the two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
-            language code. For example, **nl** for Dutch.
+          description: 'The language used for the Terms of Service document, specified
+            by the two-letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+            language code. Possible value: **en** for English.'
+          type: string
+        termsOfServiceDocumentFormat:
+          description: The format of the Terms of Service document.
           type: string
         termsOfServiceDocumentId:
           description: The unique identifier of the Terms of Service document.
           type: string
         type:
-          description: The type of Terms of Service.
+          description: 'The type of Terms of Service.
+
+
+            Possible values:
+
+            *  **adyenForPlatformsManage**
+
+            *  **adyenIssuing**
+
+            *  **adyenForPlatformsAdvanced**
+
+            *  **adyenCapital**
+
+            *  **adyenAccount**
+
+            *  **adyenCard**
+
+            *  **adyenFranchisee**
+
+            *  **adyenPccr**
+
+            *  **adyenChargeCard**
+
+
+            '
           enum:
           - adyenAccount
           - adyenCapital
           - adyenCard
+          - adyenChargeCard
           - adyenForPlatformsAdvanced
           - adyenForPlatformsManage
           - adyenFranchisee
           - adyenIssuing
+          - adyenPccr
           type: string
       type: object
     IdentificationData:
+      additionalProperties: false
       properties:
         cardNumber:
           description: The card number of the document that was issued (AU only).
           type: string
         expiryDate:
-          deprecated: true
-          x-deprecatedInVersion: '1'
           description: The expiry date of the document, in YYYY-MM-DD format.
           type: string
         issuerCountry:
@@ -2237,33 +2690,16 @@ components:
           description: The number in the document.
           type: string
         type:
-          description: "Type of document, used when providing an ID number or uploading\
-            \ a document. The possible values depend on the legal entity type.\n\n\
-            When providing ID numbers:\n* For **individual**, the `type` values can\
-            \ be **driversLicense**, **identityCard**, **nationalIdNumber**, or **passport**.\n\
-            \nWhen uploading documents:\n* For **organization**, the `type` values\
-            \ can be **proofOfAddress**, **registrationDocument**, **taxDocument**,\
-            \ **proofOfOwnership**, or **proofOfIndustry**. \n\n* For **individual**,\
-            \ the `type` values can be **identityCard**, **driversLicense**, **proofOfNationalIdNumber**,\
-            \ **proofOfResidency**, or **proofOfIndustry**.\n\n* Use **bankStatement**\
-            \ to upload documents for a [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments__resParam_id)."
+          description: Type of identity data. For individuals, the `type` value is
+            **nationalIdNumber**.
           enum:
-          - bankStatement
-          - driversLicense
-          - identityCard
           - nationalIdNumber
-          - passport
-          - proofOfAddress
-          - proofOfNationalIdNumber
-          - proofOfResidency
-          - registrationDocument
-          - taxDocument
-          - proofOfIndustry
           type: string
       required:
       - type
       type: object
     Individual:
+      additionalProperties: false
       properties:
         birthData:
           description: The individual's birth information.
@@ -2296,6 +2732,7 @@ components:
       - residentialAddress
       type: object
     LegalEntity:
+      additionalProperties: false
       properties:
         capabilities:
           additionalProperties:
@@ -2342,6 +2779,9 @@ components:
             $ref: '#/components/schemas/TransferInstrumentReference'
           readOnly: true
           type: array
+        trust:
+          description: Information about the trust. Required if `type` is **trust**.
+          $ref: '#/components/schemas/Trust'
         type:
           description: "The type of legal entity.\n\n Possible values: **individual**\
             \ or **organization**"
@@ -2349,10 +2789,15 @@ components:
           - individual
           - organization
           type: string
+        verificationPlan:
+          description: A key-value pair that specifies the verification process for
+            a legal entity. Set to **upfront** for upfront verification for [marketplaces](https://docs.adyen.com/marketplaces/verification-overview/verification-types/#upfront-verification).
+          type: string
       required:
       - id
       type: object
     LegalEntityAssociation:
+      additionalProperties: false
       properties:
         associatorId:
           description: The unique identifier of another legal entity with which the
@@ -2362,8 +2807,10 @@ components:
           readOnly: true
           type: string
         entityType:
-          description: "The legal entity type of associated legal entity. \n\nFor\
-            \ example, **organization**, **soleProprietorship** or **individual**. "
+          description: 'The legal entity type of associated legal entity.
+
+
+            For example, **organization**, **soleProprietorship** or **individual**.'
           readOnly: true
           type: string
         jobTitle:
@@ -2384,25 +2831,62 @@ components:
             - For **soleProprietorship**, `name`.'
           readOnly: true
           type: string
+        relationship:
+          description: 'The individual''s relationship to a legal representative if
+            the `type` is **legalRepresentative**. Possible values: **parent**, **guardian**.'
+          type: string
+        settlorExemptionReason:
+          description: 'Defines the Kyc Exemption Reason for a Settlor associated
+            with a trust.
+
+
+            For example, **professionalServiceProvider**, **deceased**, or **contributionBelowThreshold**.'
+          items:
+            type: string
+          readOnly: true
+          type: array
         type:
-          description: "Defines the relationship of the legal entity to the current\
-            \ legal entity. \n\nPossible values for organizations: **uboThroughOwnership**,\
-            \ **uboThroughControl**, **signatory**, or **ultimateParentCompany**.\
-            \ \n\nPossible values for sole proprietorships: **soleProprietorship**. "
+          description: 'Defines the relationship of the legal entity to the current
+            legal entity.
+
+
+            Possible value for individuals: **legalRepresentative**.
+
+
+            Possible values for organizations: **uboThroughOwnership**, **uboThroughControl**,
+            **director**, **signatory**, or **ultimateParentCompany**.
+
+
+            Possible values for sole proprietorships: **soleProprietorship**.
+
+
+            Possible value for trusts: **trust**.
+
+
+            Possible values for trust members: **definedBeneficiary**, **protector**,
+            **secondaryTrustee**, **settlor**, **uboThroughControl**, or **uboThroughOwnership**.'
           enum:
+          - definedBeneficiary
+          - director
+          - protector
+          - secondaryTrustee
+          - settlor
           - signatory
+          - trust
           - uboThroughControl
           - uboThroughOwnership
+          - undefinedBeneficiary
           type: string
       required:
       - legalEntityId
       - type
       type: object
     LegalEntityCapability:
+      additionalProperties: false
       properties:
         allowed:
-          description: 'Indicates whether the capability is allowed. Adyen sets this
-            to **true** if the verification is successful '
+          description: Indicates whether the capability is allowed. Adyen sets this
+            to **true** if the verification is successful.
           readOnly: true
           type: boolean
         allowedLevel:
@@ -2418,7 +2902,7 @@ components:
           readOnly: true
           type: string
         allowedSettings:
-          description: The settings that were allowed for the Legal Entity.
+          description: The settings that are allowed for the legal entity.
           readOnly: true
           $ref: '#/components/schemas/CapabilitySettings'
         problems:
@@ -2429,8 +2913,9 @@ components:
           readOnly: true
           type: array
         requested:
-          description: 'Indicates whether the capability is requested. To check whether
-            the Legal Entity is permitted to use the capability, '
+          description: Indicates whether the capability is requested. To check whether
+            the legal entity is permitted to use the capability, refer to the `allowed`
+            field.
           readOnly: true
           type: boolean
         requestedLevel:
@@ -2449,16 +2934,9 @@ components:
           readOnly: true
           type: string
         requestedSettings:
-          description: The settings that are requested for the Legal Entity.
+          description: The settings that are requested for the legal entity.
           readOnly: true
           $ref: '#/components/schemas/CapabilitySettings'
-        transferInstruments:
-          description: Capability status for transfer instruments associated with
-            legal entity
-          items:
-            $ref: '#/components/schemas/SupportingEntityCapability'
-          readOnly: true
-          type: array
         verificationStatus:
           description: 'The status of the verification checks for the capability.
 
@@ -2484,6 +2962,7 @@ components:
           type: string
       type: object
     LegalEntityInfo:
+      additionalProperties: false
       properties:
         capabilities:
           additionalProperties:
@@ -2512,15 +2991,23 @@ components:
           description: Your reference for the legal entity, maximum 150 characters.
           maxLength: 150
           type: string
+        trust:
+          description: Information about the trust. Required if `type` is **trust**.
+          $ref: '#/components/schemas/Trust'
         type:
           description: "The type of legal entity.\n\n Possible values: **individual**\
             \ or **organization**"
           enum:
           - individual
           - organization
+          type: string
+        verificationPlan:
+          description: A key-value pair that specifies the verification process for
+            a legal entity. Set to **upfront** for upfront verification for [marketplaces](https://docs.adyen.com/marketplaces/verification-overview/verification-types/#upfront-verification).
           type: string
       type: object
     LegalEntityInfoRequiredType:
+      additionalProperties: false
       properties:
         capabilities:
           additionalProperties:
@@ -2549,32 +3036,41 @@ components:
           description: Your reference for the legal entity, maximum 150 characters.
           maxLength: 150
           type: string
+        trust:
+          description: Information about the trust. Required if `type` is **trust**.
+          $ref: '#/components/schemas/Trust'
         type:
           description: "The type of legal entity.\n\n Possible values: **individual**\
             \ or **organization**"
           enum:
           - individual
           - organization
+          type: string
+        verificationPlan:
+          description: A key-value pair that specifies the verification process for
+            a legal entity. Set to **upfront** for upfront verification for [marketplaces](https://docs.adyen.com/marketplaces/verification-overview/verification-types/#upfront-verification).
           type: string
       required:
       - type
       type: object
     Name:
+      additionalProperties: false
       properties:
         firstName:
-          description: The individual's first name.
+          description: The individual's first name. Must not be blank.
           type: string
         infix:
           description: The infix in the individual's name, if any.
           type: string
         lastName:
-          description: The individual's last name.
+          description: The individual's last name. Must not be blank.
           type: string
       required:
       - firstName
       - lastName
       type: object
     OnboardingLink:
+      additionalProperties: false
       properties:
         url:
           description: 'The URL of the hosted onboarding page where you need to redirect
@@ -2585,12 +3081,14 @@ components:
           type: string
       type: object
     OnboardingLinkInfo:
+      additionalProperties: false
       properties:
         locale:
           description: "The language that will be used for the page, specified by\
             \ a combination of two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)\
             \ language and [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)\
-            \ country codes. See [possible values](https://docs.adyen.com/marketplaces-and-platforms/collect-verification-details/hosted#supported-languages).\
+            \ country codes. See possible valuesfor [marketplaces](https://docs.adyen.com/marketplaces/onboard-users/hosted#supported-languages)\
+            \ or [platforms](https://docs.adyen.com/platforms/onboard-users/hosted#supported-languages).\
             \ \n\nIf not specified in the request or if the language is not supported,\
             \ the page uses the browser language. If the browser language is not supported,\
             \ the page uses **en-US** by default."
@@ -2600,30 +3098,140 @@ components:
             onboarding.
           type: string
         settings:
-          additionalProperties:
-            type: boolean
-          description: 'Boolean key-value pairs indicating the settings for the hosted
-            onboarding page. The keys are the settings. By default, the values are
-            set to **true**. Set to **false** to not allow the action.
-
-
-            Possible keys:
-
-
-            - **changeLegalEntityType**: The user can change their legal entity type.
-
-
-            - **editPrefilledCountry**: The user can change the country of their legal
-            entity''s address, for example the registered address of an organization.
-
-
-            '
-          type: object
+          description: Key-value pairs indicating the settings for the hosted onboarding
+            page. The key represents a specific setting.
+          $ref: '#/components/schemas/OnboardingLinkSettings'
         themeId:
           description: The unique identifier of the hosted onboarding theme.
           type: string
       type: object
+    OnboardingLinkSettings:
+      additionalProperties: false
+      properties:
+        acceptedCountries:
+          description: 'The list of countries the user can choose from in hosted onboarding
+            when `editPrefilledCountry` is allowed.
+
+
+            The value must be in the two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+            country code format.
+
+
+            The array is empty by default, allowing all [countries and regions supported
+            by hosted onboarding](https://docs.adyen.com/platforms/onboard-users/#hosted-onboarding).'
+          items:
+            type: string
+          type: array
+        allowBankAccountFormatSelection:
+          description: 'Default value: **false**
+
+
+            Indicates if the user can select the format for their payout account (if
+            applicable).'
+          type: boolean
+        allowIntraRegionCrossBorderPayout:
+          description: 'Default value: **false**
+
+
+            Indicates if the user can select a payout account in a different EU/EEA
+            location (including Switzerland and the UK) than the location of their
+            legal entity.'
+          type: boolean
+        changeLegalEntityType:
+          description: 'Default value: **true**
+
+
+            Indicates if the user can change their legal entity type.'
+          type: boolean
+        editPrefilledCountry:
+          description: 'Default value: **true**
+
+
+            Indicates if the user can change the country of their legal entity''s
+            address, for example the registered address of an organization.'
+          type: boolean
+        hideOnboardingIntroductionIndividual:
+          description: 'Default value: **true**
+
+
+            Indicates whether the introduction screen is hidden for the user of the
+            individual legal entity type.
+
+            The introduction screen provides brief instructions for the subsequent
+            steps in the hosted onboarding process.'
+          type: boolean
+        hideOnboardingIntroductionOrganization:
+          description: 'Default value: **true**
+
+
+            Indicates whether the introduction screen is hidden for the user of the
+            organization legal entity type.
+
+            The introduction screen provides brief instructions for the subsequent
+            steps in the hosted onboarding process.'
+          type: boolean
+        hideOnboardingIntroductionSoleProprietor:
+          description: 'Default value: **true**
+
+
+            Indicates whether the introduction screen is hidden for the user of the
+            sole proprietorship legal entity type.
+
+            The introduction screen provides brief instructions for the subsequent
+            steps in the hosted onboarding process.'
+          type: boolean
+        hideOnboardingIntroductionTrust:
+          description: 'Default value: **true**
+
+
+            Indicates whether the introduction screen is hidden for the user of the
+            trust legal entity type.
+
+            The introduction screen provides brief instructions for the subsequent
+            steps in the hosted onboarding process.'
+          type: boolean
+        instantBankVerification:
+          description: 'Default value: **true**
+
+
+            Indicates if the user can initiate the verification process through open
+            banking providers, like Plaid or Tink.'
+          type: boolean
+        requirePciSignEcomMoto:
+          description: 'Default value: **false**
+
+
+            Indicates if the user is required to sign a PCI questionnaires for the
+            **ecomMoto** sales channel type.'
+          type: boolean
+        requirePciSignEcommerce:
+          description: 'Default value: **false**
+
+
+            Indicates if the user is required to sign a PCI questionnaires for the
+            **eCommerce** sales channel type.'
+          type: boolean
+        requirePciSignPos:
+          description: 'Default value: **false**
+
+
+            Indicates if the user is required to sign a PCI questionnaires for the
+            **pos** sales channel type.'
+          type: boolean
+        requirePciSignPosMoto:
+          description: 'Default value: **false**
+
+
+            Indicates if the user is required to sign a PCI questionnaires for the
+            **posMoto** sales channel type.'
+          type: boolean
+        transferInstrumentLimit:
+          description: The maximum number of transfer instruments the user can create.
+          format: int32
+          type: integer
+      type: object
     OnboardingTheme:
+      additionalProperties: false
       properties:
         createdAt:
           description: The creation date of the theme.
@@ -2650,6 +3258,7 @@ components:
       - createdAt
       type: object
     OnboardingThemes:
+      additionalProperties: false
       properties:
         next:
           description: The next page. Only present if there is a next page.
@@ -2666,6 +3275,7 @@ components:
       - themes
       type: object
     Organization:
+      additionalProperties: false
       properties:
         description:
           description: Your description for the organization.
@@ -2718,9 +3328,11 @@ components:
           - belowTaxThreshold
           type: string
         type:
-          description: "Type of organization. \n\nPossible values: **associationIncorporated**,\
-            \ **governmentalOrganization**, **listedPublicCompany**, **nonProfit**,\
-            \ **partnershipIncorporated**, **privateCompany**."
+          description: 'Type of organization.
+
+
+            Possible values: **associationIncorporated**, **governmentalOrganization**,
+            **listedPublicCompany**, **nonProfit**, **partnershipIncorporated**, **privateCompany**.'
           enum:
           - associationIncorporated
           - governmentalOrganization
@@ -2739,6 +3351,7 @@ components:
       - registeredAddress
       type: object
     OwnerEntity:
+      additionalProperties: false
       properties:
         id:
           description: Unique identifier of the resource that owns the document. For
@@ -2758,6 +3371,7 @@ components:
       - type
       type: object
     PciDocumentInfo:
+      additionalProperties: false
       properties:
         createdAt:
           description: The date the questionnaire was created, in ISO 8601 extended
@@ -2774,6 +3388,7 @@ components:
           type: string
       type: object
     PciSigningRequest:
+      additionalProperties: false
       properties:
         pciTemplateReferences:
           description: The array of Adyen-generated unique identifiers for the questionnaires.
@@ -2789,6 +3404,7 @@ components:
       - pciTemplateReferences
       type: object
     PciSigningResponse:
+      additionalProperties: false
       properties:
         pciQuestionnaireIds:
           description: The unique identifiers of the signed PCI documents.
@@ -2801,6 +3417,7 @@ components:
           type: string
       type: object
     PhoneNumber:
+      additionalProperties: false
       properties:
         countryCode:
           description: The two-letter [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
@@ -2818,6 +3435,7 @@ components:
       - number
       type: object
     RemediatingAction:
+      additionalProperties: false
       properties:
         code:
           type: string
@@ -2825,6 +3443,7 @@ components:
           type: string
       type: object
     ServiceError:
+      additionalProperties: false
       properties:
         errorCode:
           description: The error code mapped to the error message.
@@ -2843,7 +3462,15 @@ components:
           format: int32
           type: integer
       type: object
+    SetTaxElectronicDeliveryConsentRequest:
+      additionalProperties: false
+      properties:
+        US1099k:
+          description: Consent to electronically deliver tax form US1099-K.
+          type: boolean
+      type: object
     SourceOfFunds:
+      additionalProperties: false
       properties:
         acquiringBusinessLineId:
           description: The unique identifier of the business line that will be the
@@ -2867,6 +3494,7 @@ components:
           type: string
       type: object
     StockData:
+      additionalProperties: false
       properties:
         marketIdentifier:
           description: The four-digit [Market Identifier Code](https://en.wikipedia.org/wiki/Market_Identifier_Code)
@@ -2880,53 +3508,8 @@ components:
           description: The stock ticker symbol.
           type: string
       type: object
-    SupportingEntityCapability:
-      properties:
-        allowed:
-          description: 'Indicates whether the supporting entity capability is allowed.
-
-
-            If a supporting entity is allowed but its parent legal entity is not,
-            it means there are other supporting entities that failed validation.
-
-
-            **The allowed supporting entity can still be used**'
-          readOnly: true
-          type: boolean
-        id:
-          description: 'Supporting entity reference '
-          readOnly: true
-          type: string
-        requested:
-          description: 'Indicates whether the supporting entity capability is requested. '
-          readOnly: true
-          type: boolean
-        verificationStatus:
-          description: 'The status of the verification checks for the supporting entity
-            capability.
-
-
-            Possible values:
-
-
-            * **pending**: Adyen is running the verification.
-
-
-            * **invalid**: The verification failed. Check if the `errors` array contains
-            more information.
-
-
-            * **valid**: The verification has been successfully completed.
-
-
-            * **rejected**: Adyen has verified the information, but found reasons
-            to not allow the capability.
-
-            '
-          readOnly: true
-          type: string
-      type: object
     TermsOfServiceAcceptanceInfo:
+      additionalProperties: false
       properties:
         acceptedBy:
           description: The unique identifier of the user that accepted the Terms of
@@ -2944,18 +3527,45 @@ components:
           description: An Adyen-generated reference for the accepted Terms of Service.
           type: string
         type:
-          description: The type of Terms of Service.
+          description: 'The type of Terms of Service.
+
+
+            Possible values:
+
+            *  **adyenForPlatformsManage**
+
+            *  **adyenIssuing**
+
+            *  **adyenForPlatformsAdvanced**
+
+            *  **adyenCapital**
+
+            *  **adyenAccount**
+
+            *  **adyenCard**
+
+            *  **adyenFranchisee**
+
+            *  **adyenPccr**
+
+            *  **adyenChargeCard**
+
+
+            '
           enum:
           - adyenAccount
           - adyenCapital
           - adyenCard
+          - adyenChargeCard
           - adyenForPlatformsAdvanced
           - adyenForPlatformsManage
           - adyenFranchisee
           - adyenIssuing
+          - adyenPccr
           type: string
       type: object
     TransferInstrument:
+      additionalProperties: false
       properties:
         bankAccount:
           description: Contains information about the legal entity's bank account.
@@ -2991,6 +3601,7 @@ components:
       - id
       type: object
     TransferInstrumentInfo:
+      additionalProperties: false
       properties:
         bankAccount:
           description: Contains information about the legal entity's bank account.
@@ -3014,6 +3625,7 @@ components:
       - bankAccount
       type: object
     TransferInstrumentReference:
+      additionalProperties: false
       properties:
         accountIdentifier:
           description: The masked IBAN or bank account number.
@@ -3022,17 +3634,90 @@ components:
           description: The unique identifier of the resource.
           type: string
         realLastFour:
-          description: Four last digits of the bank account number.
+          description: Four last digits of the bank account number. If the transfer
+            instrument is created using [instant bank account verification](https://docs.adyen.com/release-notes/platforms-and-financial-products#releaseNote=2023-05-08-hosted-onboarding),
+            and it is a virtual bank account, these digits may be different from the
+            last four digits of the masked account number.
           type: string
         trustedSource:
-          description: Identifies if the TI was created from a trusted source.
+          description: Identifies if the bank account was created through [instant
+            bank verification](https://docs.adyen.com/release-notes/platforms-and-financial-products#releaseNote=2023-05-08-hosted-onboarding).
           readOnly: true
           type: boolean
       required:
       - id
       - accountIdentifier
       type: object
+    Trust:
+      additionalProperties: false
+      properties:
+        countryOfGoverningLaw:
+          description: The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+            country code of the governing country.
+          type: string
+        doingBusinessAs:
+          description: The registered name, if different from the `name`.
+          type: string
+        name:
+          description: The legal name.
+          type: string
+        principalPlaceOfBusiness:
+          description: The business address. Required if the principal place of business
+            is different from the `registeredAddress`.
+          $ref: '#/components/schemas/Address'
+        registeredAddress:
+          description: The address registered at the registrar, such as the Chamber
+            of Commerce.
+          $ref: '#/components/schemas/Address'
+        registrationNumber:
+          description: The registration number.
+          type: string
+        type:
+          description: 'Type of trust.
+
+
+            Possible values for Australian trusts: **cashManagementTrust**, **corporateUnitTrust**,
+            **deceasedEstate**, **discretionaryInvestmentTrust**, **discretionaryServicesManagementTrust**,
+            **discretionaryTradingTrust**, **firstHomeSaverAccountsTrust**, **fixedTrust**,
+            **fixedUnitTrust**, **hybridTrust**, **listedPublicUnitTrust**, **otherTrust**,
+            **pooledSuperannuationTrust**, **publicTradingTrust**, **unlistedPublicUnitTrust**.'
+          enum:
+          - cashManagementTrust
+          - corporateUnitTrust
+          - deceasedEstate
+          - discretionaryInvestmentTrust
+          - discretionaryServicesManagementTrust
+          - discretionaryTradingTrust
+          - firstHomeSaverAccountsTrust
+          - fixedTrust
+          - fixedUnitTrust
+          - hybridTrust
+          - listedPublicUnitTrust
+          - otherTrust
+          - pooledSuperannuationTrust
+          - publicTradingTrust
+          - unlistedPublicUnitTrust
+          type: string
+        vatAbsenceReason:
+          description: 'The reason for not providing a VAT number.
+
+
+            Possible values: **industryExemption**, **belowTaxThreshold**.'
+          enum:
+          - industryExemption
+          - belowTaxThreshold
+          type: string
+        vatNumber:
+          description: The VAT number.
+          type: string
+      required:
+      - name
+      - countryOfGoverningLaw
+      - registeredAddress
+      - type
+      type: object
     VerificationError:
+      additionalProperties: false
       properties:
         capabilities:
           description: Contains key-value pairs that specify the actions that the
@@ -3062,6 +3747,7 @@ components:
             - issueCard
             - issueCardCommercial
             - issueCardConsumer
+            - issueCreditLimit
             - localAcceptance
             - payout
             - payoutToTransferInstrument
@@ -3112,14 +3798,33 @@ components:
             $ref: '#/components/schemas/VerificationError-recursive'
           type: array
         type:
-          description: The type of error.
+          description: 'The type of error.
+
+
+            Possible values:
+
+            *  **invalidInput**
+
+            *  **dataMissing**
+
+            *  **pendingStatus**
+
+            *  **rejected**
+
+            *  **dataReview**
+
+
+            '
           enum:
           - dataMissing
+          - dataReview
           - invalidInput
           - pendingStatus
+          - rejected
           type: string
       type: object
     VerificationError-recursive:
+      additionalProperties: false
       properties:
         capabilities:
           description: Contains key-value pairs that specify the actions that the
@@ -3149,6 +3854,7 @@ components:
             - issueCard
             - issueCardCommercial
             - issueCardConsumer
+            - issueCreditLimit
             - localAcceptance
             - payout
             - payoutToTransferInstrument
@@ -3187,11 +3893,29 @@ components:
           description: The general error message.
           type: string
         type:
-          description: The type of error.
+          description: 'The type of error.
+
+
+            Possible values:
+
+            *  **invalidInput**
+
+            *  **dataMissing**
+
+            *  **pendingStatus**
+
+            *  **rejected**
+
+            *  **dataReview**
+
+
+            '
           enum:
           - dataMissing
+          - dataReview
           - invalidInput
           - pendingStatus
+          - rejected
           type: string
         remediatingActions:
           description: An object containing possible solutions to fix a verification
@@ -3201,11 +3925,8 @@ components:
           type: array
       required: []
       type: object
-    Void:
-      type: object
-    VoidResponse:
-      type: object
     WebData:
+      additionalProperties: false
       properties:
         webAddress:
           description: The URL of the website or the app store URL.
@@ -3216,12 +3937,14 @@ components:
           type: string
       type: object
     WebDataExemption:
+      additionalProperties: false
       properties:
         reason:
           description: 'The reason why the web data was not provided. Possible value:
             **noOnlinePresence**.'
           enum:
           - noOnlinePresence
+          - notCollectedDuringOnboarding
           type: string
       type: object
   securitySchemes:
@@ -3239,7 +3962,7 @@ components:
       value:
         capability: issueBankAccount
         industryCode: '4531'
-        legalEntityId: YOUR_LEGAL_ENTITY
+        legalEntityId: LE00000000000000000000001
         sourceOfFunds:
           adyenProcessedFunds: false
           description: Funds from my flower shop business
@@ -3257,7 +3980,7 @@ components:
         description: Registration doc for Example Company
         fileName: Registration doc for Example Company
         owner:
-          id: YOUR_LEGAL_ENTITY
+          id: LE00000000000000000000001
           type: legalEntity
         id: SE322JV223222F5GV2N9L8GDK
     get-legalEntities-id-businessLines-success-200:
@@ -3268,7 +3991,7 @@ components:
         businessLines:
         - capability: issueBankAccount
           industryCode: '4531'
-          legalEntityId: YOUR_LEGAL_ENTITY
+          legalEntityId: LE00000000000000000000001
           sourceOfFunds:
             adyenProcessedFunds: false
             description: Funds from my flower shop business
@@ -3278,7 +4001,7 @@ components:
           id: SE322JV223222F5GVGMLNB83F
         - capability: receivePayments
           industryCode: 339E
-          legalEntityId: YOUR_LEGAL_ENTITY
+          legalEntityId: LE00000000000000000000001
           salesChannels:
           - eCommerce
           - ecomMoto
@@ -3289,7 +4012,7 @@ components:
       summary: Details of a PCI questionnaire
       description: Example response when getting the details of a PCI questionnaire
       value:
-        content: JVBERi0xLjUKJdDUxdgKMTAg.....
+        content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==
         createdAt: '2023-03-02T17:54:19.538365Z'
         id: PCID422GZ22322565HHMH48CW63CPH
         validUntil: '2024-03-01T17:54:19.538365Z'
@@ -3343,18 +4066,24 @@ components:
             street: Simon Carmiggeltstraat 6 - 50
             street2: '274'
         type: individual
-        id: YOUR_LEGAL_ENTITY
+        id: LE00000000000000000000001
     get-legalEntities-id-termsOfServiceAcceptanceInfos-success-200:
       summary: Terms of Service information for a legal entity
       description: Example response when getting Terms of Service information for
         a legal entity
       value:
         data:
-        - acceptedBy: YOUR_LEGAL_ENTITY_2
-          acceptedFor: YOUR_LEGAL_ENTITY_1
+        - acceptedBy: LE00000000000000000000002
+          acceptedFor: LE00000000000000000000001
           createdAt: '2022-12-05T13:36:58.212253Z'
           id: TOSA000AB00000000B2AAAB2BA0AA0
           type: adyenIssuing
+    get-legalEntities-id-termsOfServiceStatus-success-200:
+      summary: Terms of Service status for a legal entity
+      description: Example response when getting the type of Terms of Service
+      value:
+        termsOfServiceTypes:
+        - adyenIssuing
     get-themes-id-success-200:
       summary: Details of a page theme
       description: Example response when getting the details of a page theme
@@ -3410,7 +4139,7 @@ components:
           countryCode: NL
           currencyCode: EUR
           iban: NL62ABNA0000000123
-        legalEntityId: YOUR_LEGAL_ENTITY
+        legalEntityId: LE00000000000000000000001
         type: bankAccount
         id: SE322JV223222F5GNXSR89TMW
     patch-documents-id-updateDocument:
@@ -3429,7 +4158,7 @@ components:
         description: Proof of industry for Example Company
         fileName: Proof of industry for Example Company
         owner:
-          id: YOUR_LEGAL_ENTITY
+          id: LE00000000000000000000001
           type: legalEntity
         id: SE322JV223222F5GV2N9L8GDK
     patch-legalEntities-id-changeLegalEntityType:
@@ -3448,24 +4177,38 @@ components:
           residentialAddress:
             country: US
         type: individual
-        id: YOUR_LEGAL_ENTITY
+        id: LE00000000000000000000001
+    patch-legalEntities-id-termsOfService-termsofservicedocumentid-updateTermsofService:
+      summary: Accept the Terms of Service document
+      description: Example request for accepting the Terms of Service document
+      value:
+        acceptedBy: LE00000000000000000000002
+    patch-legalEntities-id-termsOfService-termsofservicedocumentid-updateTermsofService-200:
+      summary: Terms of Service document accepted
+      description: Example response when accepting a Terms of Service document
+      value:
+        acceptedBy: LE00000000000000000000002
+        id: TOSA000AB00000000B2AAAB2BA0AA0
+        language: en
+        termsOfServiceDocumentId: abc123
+        type: adyenIssuing
     patch-legalEntities-id-updateLegalEntityOrganization:
       summary: Add entity associations to an organization
       description: Example request adding entity associations to a legal entity
       value:
         entityAssociations:
         - jobTitle: CEO
-          legalEntityId: YOUR_LEGAL_ENTITY_1
+          legalEntityId: LE00000000000000000000001
           type: uboThroughControl
     patch-legalEntities-id-updateLegalEntityOrganization-200:
       summary: Entity associations added
       description: Example response for adding an entity association to an organization
       value:
         entityAssociations:
-        - associatorId: YOUR_LEGAL_ENTITY_2
+        - associatorId: LE00000000000000000000002
           entityType: individual
           jobTitle: CEO
-          legalEntityId: YOUR_LEGAL_ENTITY_1
+          legalEntityId: LE00000000000000000000001
           name: Simone Hopper
           type: uboThroughControl
         organization:
@@ -3491,7 +4234,27 @@ components:
           taxExempt: false
           type: listedPublicCompany
         type: organization
-        id: YOUR_LEGAL_ENTITY_2
+        id: LE00000000000000000000002
+    patch-transferInstruments-id-updateTransferInstrument:
+      summary: Update a transfer instrument
+      description: Example request for updating a transfer instrument
+      value:
+        bankAccount:
+          currencyCode: EUR
+          iban: NL02ABNA0123456789
+        legalEntityId: LE00000000000000000000001
+        type: bankAccount
+    patch-transferInstruments-id-updateTransferInstrument-200:
+      summary: Transfer instrument updated
+      description: Example response for updating a transfer instrument
+      value:
+        bankAccount:
+          countryCode: NL
+          currencyCode: EUR
+          iban: NL02ABNA0123456789
+        legalEntityId: LE00000000000000000000001
+        type: bankAccount
+        id: SE576BH223222F5GJVKHH6BDT
     post-businessLines-createBusinessLines-businessAccounts:
       summary: Create a business line for a business account
       description: Example request for creating a business line for a business account
@@ -3500,7 +4263,7 @@ components:
         industryCode: '4531'
         webData:
         - webAddress: https://www.adyen.com
-        legalEntityId: YOUR_LEGAL_ENTITY
+        legalEntityId: LE00000000000000000000001
         sourceOfFunds:
           type: business
           adyenProcessedFunds: false
@@ -3510,7 +4273,7 @@ components:
       value:
         capability: issueBankAccount
         industryCode: '4531'
-        legalEntityId: YOUR_LEGAL_ENTITY
+        legalEntityId: LE00000000000000000000001
         sourceOfFunds:
           adyenProcessedFunds: false
           description: Funds from my flower shop business
@@ -3527,7 +4290,7 @@ components:
         - eCommerce
         - ecomMoto
         industryCode: 339E
-        legalEntityId: YOUR_LEGAL_ENTITY
+        legalEntityId: LE00000000000000000000001
         webData:
         - webAddress: https://yoururl.com
     post-businessLines-createBusinessLines-receive-200:
@@ -3535,7 +4298,7 @@ components:
       value:
         capability: receivePayments
         industryCode: 339E
-        legalEntityId: YOUR_LEGAL_ENTITY
+        legalEntityId: LE00000000000000000000001
         salesChannels:
         - eCommerce
         - ecomMoto
@@ -3551,7 +4314,7 @@ components:
         - content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==
         description: Registration doc for Example Company
         owner:
-          id: YOUR_LEGAL_ENTITY
+          id: LE00000000000000000000001
           type: legalEntity
     post-documents-uploadDocument-200:
       summary: Document uploaded
@@ -3563,7 +4326,7 @@ components:
         description: Registration doc for Example Company
         fileName: Registration doc for Example Company
         owner:
-          id: YOUR_LEGAL_ENTITY
+          id: LE00000000000000000000001
           type: legalEntity
         id: SE322JV223222F5GV2N9L8GDK
     post-legalEntities-createLegalEntityIndividualNL:
@@ -3602,7 +4365,7 @@ components:
             postalCode: 1011DJ
             street: Simon Carmiggeltstraat 6 - 50
         type: individual
-        id: YOUR_LEGAL_ENTITY
+        id: LE00000000000000000000001
     post-legalEntities-createLegalEntityIndividualUS:
       summary: Create a legal entity for an individual residing in the US
       description: Example request for creating a legal entity for an individual residing
@@ -3649,7 +4412,7 @@ components:
             street: 71 5th Avenue
             street2: 11th floor
         type: individual
-        id: YOUR_LEGAL_ENTITY
+        id: LE00000000000000000000001
     post-legalEntities-createLegalEntityOrganizationNL:
       summary: Create a legal entity for a Dutch organization
       description: Example request for creating a legal entity for an organization
@@ -3669,7 +4432,7 @@ components:
           email: organization@example.com
         entityAssociations:
         - jobTitle: CEO
-          legalEntityId: YOUR_LEGAL_ENTITY_1
+          legalEntityId: LE00000000000000000000001
           type: signatory
     post-legalEntities-createLegalEntityOrganizationNL-200:
       summary: Organization legal entity created
@@ -3677,10 +4440,10 @@ components:
         operating in the Netherlands
       value:
         entityAssociations:
-        - associatorId: YOUR_LEGAL_ENTITY_2
+        - associatorId: LE00000000000000000000002
           entityType: individual
           jobTitle: CEO
-          legalEntityId: YOUR_LEGAL_ENTITY_1
+          legalEntityId: LE00000000000000000000001
           name: Simone Hopper
           type: signatory
         organization:
@@ -3695,7 +4458,7 @@ components:
           registrationNumber: '34179503'
           type: privateCompany
         type: organization
-        id: YOUR_LEGAL_ENTITY_2
+        id: LE00000000000000000000002
     post-legalEntities-createLegalEntityOrganizationUS:
       summary: Create a legal entity for an organization in the US
       description: Example request for creating a legal entity for an organization
@@ -3731,11 +4494,12 @@ components:
           taxExempt: false
           type: privateCompany
         type: organization
-        id: YOUR_LEGAL_ENTITY
+        id: LE00000000000000000000001
     post-legalEntities-id-onboardingLinks-createOnboardingLink:
       summary: Create a hosted onboarding link
       description: Example request for creating a hosted onboarding link
       value:
+        themeId: YOUR_THEME_ID
         redirectUrl: https://your.redirect-url.com/
         locale: nl-NL
     post-legalEntities-id-onboardingLinks-createOnboardingLink-200:
@@ -3744,22 +4508,22 @@ components:
       value:
         url: https://balanceplatform-test.adyen.com/balanceplatform/uo/form/xtl-...?signature=..&cd=..&redirectUrl=https%3A%2F%2Fyour.redirect-url.com%2F&expiry=1667226404807&locale=nl-NL
     post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire:
-      summary: Generate the PCI questionnaire
-      description: Example request for generating the PCI questionnaire in French
+      summary: Generate PCI questionnaires
+      description: Example request for generating PCI questionnaires in French
       value:
         language: fr
     post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire-200:
-      summary: PCI questionnaire returned
-      description: Example response for getting a PCI questionnaire
+      summary: PCI questionnaires returned
+      description: Example response for getting PCI questionnaires
       value:
-        content: l345JKNFj345FJLG3lk...
+        content: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==
         language: fr
         pciTemplateReferences:
         - PCIT-T7KC6VGL
         - PCIT-PKB6DKS4
     post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire:
-      summary: Sign the PCI questionnaires
-      description: Example request for signing the PCI questionnaires
+      summary: Sign PCI questionnaires
+      description: Example request for signing PCI questionnaires
       value:
         signedBy: LE00000000000000000000002
         pciTemplateReferences:
@@ -3782,16 +4546,17 @@ components:
       summary: Terms of Service document returned
       description: Example response for getting a Terms of Service document
       value:
-        id: YOUR_LEGAL_ENTITY
+        id: LE00000000000000000000001
         type: adyenIssuing
         language: en
         document: JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==
         termsOfServiceDocumentId: abc123
+        termsOfServiceDocumentFormat: JSON
     post-transferInstruments-createTransferInstrumentEUR:
       summary: Add a EUR bank account
       description: Example request for creating a transfer instrument for EUR
       value:
-        legalEntityId: YOUR_LEGAL_ENTITY
+        legalEntityId: LE00000000000000000000001
         type: bankAccount
         bankAccount:
           countryCode: NL
@@ -3806,14 +4571,15 @@ components:
           countryCode: NL
           currencyCode: EUR
           iban: NL62ABNA0000000123
-        legalEntityId: YOUR_LEGAL_ENTITY
+          trustedSource: false
+        legalEntityId: LE00000000000000000000001
         type: bankAccount
         id: SE576BH223222F5GJVKHH6BDT
     post-transferInstruments-createTransferInstrumentUSD:
       summary: Add a USD bank account
       description: Example request for creating a transfer instrument for USD
       value:
-        legalEntityId: YOUR_LEGAL_ENTITY
+        legalEntityId: LE00000000000000000000001
         type: bankAccount
         bankAccount:
           countryCode: US
@@ -3832,6 +4598,7 @@ components:
           branchCode: '121202211'
           countryCode: US
           currencyCode: USD
-        legalEntityId: YOUR_LEGAL_ENTITY
+          trustedSource: false
+        legalEntityId: LE00000000000000000000001
         type: bankAccount
         id: SE322JV223222F5GJVKHH8DTC

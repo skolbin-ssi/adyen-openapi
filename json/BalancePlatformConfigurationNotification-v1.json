@@ -1,32 +1,30 @@
 {
    "openapi" : "3.1.0",
-   "servers" : [
-      {
-         "url" : "https://balanceplatform-api-test.adyen.com/bcl/v1"
-      }
-   ],
    "info" : {
       "version" : "1",
       "x-publicVersion" : true,
       "title" : "Configuration webhooks",
-      "description" : "Adyen sends notifications through webhooks to inform your system about events that occur in your platform. These events include, for example, when an account holder's capabilities are updated, or when a sweep configuration is created or updated. \nWhen an event occurs, Adyen makes an HTTP POST request to a URL on your server and includes the details of the event in the request body.\n\nYou can use these webhooks to build your implementation. For example, you can use this information to update internal statuses when the status of a capability is changed.",
-      "x-timestamp" : "2023-04-26T16:26:46Z",
+      "description" : "Adyen sends webhooks to inform your system about events that occur in your platform. These events include, for example, when an account holder's capabilities are updated, or when a sweep configuration is created or updated. \nWhen an event occurs, Adyen makes an HTTP POST request to a URL on your server and includes the details of the event in the request body.\n\nYou can use these webhooks to build your implementation. For example, you can use this information to update internal statuses when the status of a capability is changed.",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
-         "url" : "https://www.adyen.help/hc/en-us/community/topics",
-         "email" : "developer-experience@adyen.com"
+         "url" : "https://github.com/Adyen/adyen-openapi"
       }
    },
-   "x-groups" : [
-      "Account holder",
-      "Balance account",
-      "Payment instrument",
-      "Card order"
-   ],
    "tags" : [
-      ],
-   "x-staticResponse" : "response.json",
+      {
+         "name" : "Account holder"
+      },
+      {
+         "name" : "Balance account"
+      },
+      {
+         "name" : "Payment instrument"
+      },
+      {
+         "name" : "Card order"
+      }
+   ],
    "webhooks" : {
       "balancePlatform.accountHolder.created" : {
          "post" : {
@@ -36,12 +34,11 @@
             "summary" : "Account holder created",
             "description" : "Adyen sends this webhook when you successfully [create an account holder](https://docs.adyen.com/api-explorer/balanceplatform/latest/post/accountHolders).",
             "operationId" : "post-balancePlatform.accountHolder.created",
-            "x-groupName" : "Account holder",
             "x-sortIndex" : 1,
             "x-methodName" : "accountHolderCreated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -51,6 +48,9 @@
                      "examples" : {
                         "balancePlatform-accountHolder-created" : {
                            "$ref" : "#/components/examples/post-balancePlatform.accountHolder.created-balancePlatform-accountHolder-created"
+                        },
+                        "balancePlatform-accountHolder-created-lem-v3" : {
+                           "$ref" : "#/components/examples/post-balancePlatform.accountHolder.created-balancePlatform-accountHolder-created-lem-v3"
                         }
                      },
                      "schema" : {
@@ -63,11 +63,6 @@
                "200" : {
                   "content" : {
                      "application/json" : {
-                        "examples" : {
-                           "balancePlatform-accountHolder-created" : {
-                              "$ref" : "#/components/examples/WebhookAck"
-                           }
-                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/BalancePlatformNotificationResponse"
                         }
@@ -86,12 +81,11 @@
             "summary" : "Account holder updated",
             "description" : "Adyen sends this webhook when you successfully [update an account holder](https://docs.adyen.com/api-explorer/balanceplatform/latest/patch/accountHolders/_id_).",
             "operationId" : "post-balancePlatform.accountHolder.updated",
-            "x-groupName" : "Account holder",
             "x-sortIndex" : 2,
             "x-methodName" : "accountHolderUpdated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -101,6 +95,9 @@
                      "examples" : {
                         "balancePlatform-accountHolder-updated" : {
                            "$ref" : "#/components/examples/post-balancePlatform.accountHolder.updated-balancePlatform-accountHolder-updated"
+                        },
+                        "balancePlatform-accountHolder-updated-lem-v3" : {
+                           "$ref" : "#/components/examples/post-balancePlatform.accountHolder.updated-balancePlatform-accountHolder-updated-lem-v3"
                         }
                      },
                      "schema" : {
@@ -113,11 +110,6 @@
                "200" : {
                   "content" : {
                      "application/json" : {
-                        "examples" : {
-                           "balancePlatform-accountHolder-updated" : {
-                              "$ref" : "#/components/examples/WebhookAck"
-                           }
-                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/BalancePlatformNotificationResponse"
                         }
@@ -136,12 +128,11 @@
             "summary" : "Balance account created",
             "description" : "Adyen sends this webhook when you successfully [create a balance account](https://docs.adyen.com/api-explorer/balanceplatform/latest/post/balanceAccounts).",
             "operationId" : "post-balancePlatform.balanceAccount.created",
-            "x-groupName" : "Balance account",
             "x-sortIndex" : 1,
             "x-methodName" : "balanceAccountCreated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -163,11 +154,6 @@
                "200" : {
                   "content" : {
                      "application/json" : {
-                        "examples" : {
-                           "balancePlatform-balanceAccount-created" : {
-                              "$ref" : "#/components/examples/WebhookAck"
-                           }
-                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/BalancePlatformNotificationResponse"
                         }
@@ -186,12 +172,11 @@
             "summary" : "Balance account updated",
             "description" : "Adyen sends this webhook when you successfully [update a balance account](https://docs.adyen.com/api-explorer/balanceplatform/latest/patch/balanceAccounts/_id_).",
             "operationId" : "post-balancePlatform.balanceAccount.updated",
-            "x-groupName" : "Balance account",
             "x-sortIndex" : 2,
             "x-methodName" : "balanceAccountUpdated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -213,11 +198,6 @@
                "200" : {
                   "content" : {
                      "application/json" : {
-                        "examples" : {
-                           "balancePlatform-balanceAccount-updated" : {
-                              "$ref" : "#/components/examples/WebhookAck"
-                           }
-                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/BalancePlatformNotificationResponse"
                         }
@@ -236,12 +216,11 @@
             "summary" : "Sweep created",
             "description" : "Adyen sends this webhook when you successfully [create a sweep](https://docs.adyen.com/api-explorer/balanceplatform/latest/post/balanceAccounts/_balanceAccountId_/sweeps).",
             "operationId" : "post-balancePlatform.balanceAccountSweep.created",
-            "x-groupName" : "Balance account",
             "x-sortIndex" : 3,
             "x-methodName" : "sweepCreated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -263,11 +242,6 @@
                "200" : {
                   "content" : {
                      "application/json" : {
-                        "examples" : {
-                           "balancePlatform-sweep-created" : {
-                              "$ref" : "#/components/examples/WebhookAck"
-                           }
-                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/BalancePlatformNotificationResponse"
                         }
@@ -286,12 +260,11 @@
             "summary" : "Sweep deleted",
             "description" : "Adyen sends this webhook when you successfully [delete a sweep](https://docs.adyen.com/api-explorer/balanceplatform/latest/delete/balanceAccounts/_balanceAccountId_/sweeps/_sweepId_).",
             "operationId" : "post-balancePlatform.balanceAccountSweep.deleted",
-            "x-groupName" : "Balance account",
             "x-sortIndex" : 5,
             "x-methodName" : "sweepDeleted",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -313,11 +286,6 @@
                "200" : {
                   "content" : {
                      "application/json" : {
-                        "examples" : {
-                           "balancePlatform-sweep-deleted" : {
-                              "$ref" : "#/components/examples/WebhookAck"
-                           }
-                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/BalancePlatformNotificationResponse"
                         }
@@ -336,12 +304,11 @@
             "summary" : "Sweep updated",
             "description" : "Adyen sends this webhook when you successfully [update a sweep](https://docs.adyen.com/api-explorer/balanceplatform/latest/patch/balanceAccounts/_balanceAccountId_/sweeps/_sweepId_).",
             "operationId" : "post-balancePlatform.balanceAccountSweep.updated",
-            "x-groupName" : "Balance account",
             "x-sortIndex" : 4,
             "x-methodName" : "sweepUpdated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -363,11 +330,6 @@
                "200" : {
                   "content" : {
                      "application/json" : {
-                        "examples" : {
-                           "balancePlatform-sweep-updated" : {
-                              "$ref" : "#/components/examples/WebhookAck"
-                           }
-                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/BalancePlatformNotificationResponse"
                         }
@@ -386,12 +348,11 @@
             "summary" : "Card order created",
             "description" : "Adyen sends this webhook to indicate a successful creation of a card order after you create a [payment instrument](https://docs.adyen.com/api-explorer/balanceplatform/latest/post/paymentInstruments) of `type` **card** and `formFactor` **physical**.",
             "operationId" : "post-balancePlatform.cardorder.created",
-            "x-groupName" : "Card order",
             "x-sortIndex" : 1,
             "x-methodName" : "cardOrderCreated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -426,12 +387,11 @@
             "summary" : "Card order updated",
             "description" : "Adyen sends this webhook when there is an update in card order status.",
             "operationId" : "post-balancePlatform.cardorder.updated",
-            "x-groupName" : "Card order",
             "x-sortIndex" : 2,
             "x-methodName" : "cardOrderUpdated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -464,14 +424,13 @@
                "Payment instrument"
             ],
             "summary" : "Payment instrument created",
-            "description" : "Adyen sends this webhook when you successfully [create a payment instrument](https://docs.adyen.com/api-explorer/balanceplatform/latest/post/paymentInstruments). \n>The notification does not include the card number when creating virtual cards. You can only get the card number in the response of the POST [/paymentInstruments](https://docs.adyen.com/api-explorer/balanceplatform/latest/post/paymentInstruments#responses-200-card-number) request.",
+            "description" : "Adyen sends this webhook when you successfully [create a payment instrument](https://docs.adyen.com/api-explorer/balanceplatform/latest/post/paymentInstruments). \n>The webhook does not include the card number when creating virtual cards. You can only get the card number in the response of the POST [/paymentInstruments](https://docs.adyen.com/api-explorer/balanceplatform/latest/post/paymentInstruments#responses-200-card-number) request.",
             "operationId" : "post-balancePlatform.paymentInstrument.created",
-            "x-groupName" : "Payment instrument",
             "x-sortIndex" : 1,
             "x-methodName" : "paymentInstrumentCreated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -493,11 +452,6 @@
                "200" : {
                   "content" : {
                      "application/json" : {
-                        "examples" : {
-                           "balancePlatform-paymentInstrument-created" : {
-                              "$ref" : "#/components/examples/WebhookAck"
-                           }
-                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/BalancePlatformNotificationResponse"
                         }
@@ -516,12 +470,11 @@
             "summary" : "Payment instrument updated",
             "description" : "Adyen sends this webhook when you successfully [update a payment instrument](https://docs.adyen.com/api-explorer/balanceplatform/latest/patch/paymentInstruments/_id_). ",
             "operationId" : "post-balancePlatform.paymentInstrument.updated",
-            "x-groupName" : "Payment instrument",
             "x-sortIndex" : 2,
             "x-methodName" : "paymentInstrumentUpdated",
             "security" : [
                {
-                  "ApiKeyAuth" : [
+                  "BasicAuth" : [
                      ]
                }
             ],
@@ -543,11 +496,6 @@
                "200" : {
                   "content" : {
                      "application/json" : {
-                        "examples" : {
-                           "balancePlatform-paymentInstrument-updated" : {
-                              "$ref" : "#/components/examples/WebhookAck"
-                           }
-                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/BalancePlatformNotificationResponse"
                         }
@@ -562,6 +510,7 @@
    "components" : {
       "schemas" : {
          "AccountHolder" : {
+            "additionalProperties" : false,
             "properties" : {
                "balancePlatform" : {
                   "description" : "The unique identifier of the [balance platform](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/get/balancePlatforms/{id}__queryParam_id) to which the account holder belongs. Required in the request if your API credentials can be used for multiple balance platforms.",
@@ -580,7 +529,7 @@
                   "$ref" : "#/components/schemas/ContactDetails"
                },
                "description" : {
-                  "description" : "Your description for the account holder, maximum 300 characters.",
+                  "description" : "Your description for the account holder.",
                   "maxLength" : 300,
                   "type" : "string"
                },
@@ -592,12 +541,23 @@
                   "description" : "The unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/legalentity/latest/post/legalEntities#responses-200-id) associated with the account holder. Adyen performs a verification process against the legal entity of the account holder.",
                   "type" : "string"
                },
+               "metadata" : {
+                  "additionalProperties" : {
+                     "type" : "string"
+                  },
+                  "description" : "A set of key and value pairs for general use.\nThe keys do not have specific names and may be used for storing miscellaneous data as desired.\n> Note that during an update of metadata, the omission of existing key-value pairs will result in the deletion of those key-value pairs.",
+                  "type" : "object"
+               },
+               "migratedAccountHolderCode" : {
+                  "description" : "The unique identifier of the migrated account holder in the classic integration.",
+                  "type" : "string"
+               },
                "primaryBalanceAccount" : {
                   "description" : "The ID of the account holder's primary balance account. By default, this is set to the first balance account that you create for the account holder. To assign a different balance account, send a PATCH request.",
                   "type" : "string"
                },
                "reference" : {
-                  "description" : "Your reference for the account holder, maximum 150 characters.",
+                  "description" : "Your reference for the account holder.",
                   "maxLength" : 150,
                   "type" : "string"
                },
@@ -614,6 +574,13 @@
                "timeZone" : {
                   "description" : "The time zone of the account holder. For example, **Europe/Amsterdam**.\nDefaults to the time zone of the balance platform if no time zone is set. For possible values, see the [list of time zone codes](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).",
                   "type" : "string"
+               },
+               "verificationDeadlines" : {
+                  "description" : "List of verification deadlines and the capabilities that will be disallowed if verification errors are not resolved.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/VerificationDeadline"
+                  },
+                  "type" : "array"
                }
             },
             "required" : [
@@ -623,6 +590,7 @@
             "type" : "object"
          },
          "AccountHolderCapability" : {
+            "additionalProperties" : false,
             "properties" : {
                "allowed" : {
                   "description" : "Indicates whether the capability is allowed. Adyen sets this to **true** if the verification is successful and the account holder is permitted to use the capability.",
@@ -640,7 +608,7 @@
                },
                "allowedSettings" : {
                   "description" : "A JSON object containing the settings that are allowed for the account holder.",
-                  "$ref" : "#/components/schemas/JSONObject"
+                  "$ref" : "#/components/schemas/CapabilitySettings"
                },
                "enabled" : {
                   "description" : "Indicates whether the capability is enabled. If **false**, the capability is temporarily disabled for the account holder.",
@@ -669,7 +637,7 @@
                },
                "requestedSettings" : {
                   "description" : "A JSON object containing the settings that were requested for the account holder.",
-                  "$ref" : "#/components/schemas/JSONObject"
+                  "$ref" : "#/components/schemas/CapabilitySettings"
                },
                "transferInstruments" : {
                   "description" : "Contains the status of the transfer instruments associated with this capability. ",
@@ -692,6 +660,7 @@
             "type" : "object"
          },
          "AccountHolderNotificationData" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountHolder" : {
                   "description" : "Contains information about the account holder resource that triggered the event.",
@@ -705,6 +674,7 @@
             "type" : "object"
          },
          "AccountHolderNotificationRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "data" : {
                   "description" : "Contains event details.",
@@ -715,7 +685,7 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "Type of notification.",
+                  "description" : "Type of webhook.",
                   "enum" : [
                      "balancePlatform.accountHolder.updated",
                      "balancePlatform.accountHolder.created"
@@ -731,6 +701,7 @@
             "type" : "object"
          },
          "AccountSupportingEntityCapability" : {
+            "additionalProperties" : false,
             "properties" : {
                "allowed" : {
                   "description" : "Indicates whether the supporting entity capability is allowed. Adyen sets this to **true** if the verification is successful and the account holder is permitted to use the capability.",
@@ -782,6 +753,7 @@
             "type" : "object"
          },
          "Address" : {
+            "additionalProperties" : false,
             "properties" : {
                "city" : {
                   "description" : "The name of the city. Maximum length: 3000 characters.",
@@ -821,6 +793,7 @@
             "type" : "object"
          },
          "Amount" : {
+            "additionalProperties" : false,
             "properties" : {
                "currency" : {
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).",
@@ -841,6 +814,7 @@
             "type" : "object"
          },
          "Authentication" : {
+            "additionalProperties" : false,
             "properties" : {
                "email" : {
                   "description" : "The email address where the one-time password (OTP) is sent.",
@@ -860,14 +834,15 @@
             "type" : "object"
          },
          "Balance" : {
+            "additionalProperties" : false,
             "properties" : {
                "available" : {
-                  "description" : "The remaining amount available for spending.",
+                  "description" : "The current balance minus any reserved balance.",
                   "format" : "int64",
                   "type" : "integer"
                },
                "balance" : {
-                  "description" : "The total amount in the balance.",
+                  "description" : "The current balance of funds in the balance account. These are the funds from all transactions with a value date in the past that have not yet been paid out.",
                   "format" : "int64",
                   "type" : "integer"
                },
@@ -875,8 +850,13 @@
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes) of the balance.",
                   "type" : "string"
                },
+               "pending" : {
+                  "description" : "The amount of funds that Adyen has processed for this account, but will be settled in a future date.\n\nFor more information, see how to settle funds for users in your [platform](https://docs.adyen.com/platforms/settle-funds) and [marketplace](https://docs.adyen.com/marketplaces/settle-funds).",
+                  "format" : "int64",
+                  "type" : "integer"
+               },
                "reserved" : {
-                  "description" : "The amount reserved for payments that have been authorised, but have not been captured yet.",
+                  "description" : "The amount reserved for payments that have been [authorised](https://docs.adyen.com/issuing/payment-stages/#authorised), but not yet [captured](https://docs.adyen.com/issuing/payment-stages/#captured) by the merchant.\n\nApplies only to [Adyen-issued cards](https://docs.adyen.com/issuing).",
                   "format" : "int64",
                   "type" : "integer"
                }
@@ -890,6 +870,7 @@
             "type" : "object"
          },
          "BalanceAccount" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountHolderId" : {
                   "description" : "The unique identifier of the [account holder](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/accountHolders__resParam_id) associated with the balance account.",
@@ -903,7 +884,7 @@
                   "type" : "array"
                },
                "defaultCurrencyCode" : {
-                  "description" : "The default three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes) of the balance account.\nThe default value is **EUR**.",
+                  "description" : "The default three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes) of the balance account.\nThe default value is **EUR**.\n> After a balance account is created, you cannot change its default currency.",
                   "type" : "string"
                },
                "description" : {
@@ -915,12 +896,27 @@
                   "description" : "The unique identifier of the balance account.",
                   "type" : "string"
                },
+               "metadata" : {
+                  "additionalProperties" : {
+                     "type" : "string"
+                  },
+                  "description" : "A set of key and value pairs for general use.\nThe keys do not have specific names and may be used for storing miscellaneous data as desired.\n> Note that during an update of metadata, the omission of existing key-value pairs will result in the deletion of those key-value pairs.",
+                  "type" : "object"
+               },
+               "migratedAccountCode" : {
+                  "description" : "The unique identifier of the account of the migrated account holder in the classic integration.",
+                  "type" : "string"
+               },
                "paymentInstruments" : {
                   "description" : "List of [payment instruments](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/paymentInstruments) associated with the balance account.",
                   "items" : {
                      "$ref" : "#/components/schemas/PaymentInstrumentReference"
                   },
                   "type" : "array"
+               },
+               "platformPaymentConfiguration" : {
+                  "description" : "Contains key-value pairs to the configure the settlement model in a balance account.",
+                  "$ref" : "#/components/schemas/PlatformPaymentConfiguration"
                },
                "reference" : {
                   "description" : "Your reference for the balance account, maximum 150 characters.",
@@ -937,13 +933,6 @@
                   ],
                   "type" : "string"
                },
-               "sweepConfigurations" : {
-                  "additionalProperties" : {
-                     "$ref" : "#/components/schemas/SweepConfiguration"
-                  },
-                  "description" : "Contains key-value pairs that specify configurations for balance sweeps per currency code. A sweep pulls in or pushes out funds based on a defined schedule, amount, and a source (for pulling funds) or a destination (for pushing funds).\n\nThe key must be a three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes) in uppercase. For example, **EUR**. The value must be an object containing the sweep configuration.",
-                  "type" : "object"
-               },
                "timeZone" : {
                   "description" : "The time zone of the balance account. For example, **Europe/Amsterdam**.\nDefaults to the time zone of the account holder if no time zone is set. For possible values, see the [list of time zone codes](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).",
                   "type" : "string"
@@ -956,6 +945,7 @@
             "type" : "object"
          },
          "BalanceAccountNotificationData" : {
+            "additionalProperties" : false,
             "properties" : {
                "balanceAccount" : {
                   "$ref" : "#/components/schemas/BalanceAccount"
@@ -968,6 +958,7 @@
             "type" : "object"
          },
          "BalanceAccountNotificationRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "data" : {
                   "description" : "Contains event details.",
@@ -978,7 +969,7 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "Type of notification.",
+                  "description" : "Type of webhook.",
                   "enum" : [
                      "balancePlatform.balanceAccount.updated",
                      "balancePlatform.balanceAccount.created"
@@ -994,15 +985,61 @@
             "type" : "object"
          },
          "BalancePlatformNotificationResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "notificationResponse" : {
-                  "description" : "Respond with **HTTP 200 OK** and `[accepted]` in the response body to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).",
+                  "description" : "Respond with any **2xx** HTTP status code to [accept the webhook](https://docs.adyen.com/development-resources/webhooks#accept-notifications).",
                   "type" : "string"
                }
             },
             "type" : "object"
          },
+         "BankAccountDetails" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "accountNumber" : {
+                  "description" : "The bank account number, without separators or whitespace.",
+                  "type" : "string"
+               },
+               "accountType" : {
+                  "default" : "checking",
+                  "description" : "The bank account type.\n\nPossible values: **checking** or **savings**. Defaults to **checking**.",
+                  "type" : "string"
+               },
+               "branchNumber" : {
+                  "description" : "The bank account branch number, without separators or whitespace",
+                  "type" : "string"
+               },
+               "formFactor" : {
+                  "default" : "physical",
+                  "description" : "Business accounts with a `formFactor` value of **physical** are business accounts issued under the central bank of that country. The default value is **physical** for NL, US, and UK business accounts. \n\nAdyen creates a local IBAN for business accounts when the `formFactor` value is set to **virtual**. The local IBANs that are supported are for DE and FR, which reference a physical NL account, with funds being routed through the central bank of NL.",
+                  "type" : "string"
+               },
+               "iban" : {
+                  "description" : "The international bank account number as defined in the [ISO-13616](https://www.iso.org/standard/81090.html) standard.",
+                  "type" : "string"
+               },
+               "routingNumber" : {
+                  "description" : "The [routing number](https://en.wikipedia.org/wiki/ABA_routing_transit_number), without separators or whitespace.",
+                  "type" : "string"
+               },
+               "sortCode" : {
+                  "description" : "The [sort code](https://en.wikipedia.org/wiki/Sort_code), without separators or whitespace.",
+                  "type" : "string"
+               },
+               "type" : {
+                  "default" : "iban",
+                  "description" : "**iban** or **usLocal** or **ukLocal**",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "type"
+            ],
+            "type" : "object"
+         },
          "BulkAddress" : {
+            "additionalProperties" : false,
             "properties" : {
                "city" : {
                   "description" : "The name of the city.",
@@ -1047,9 +1084,124 @@
             "type" : "object"
          },
          "CapabilityProblem" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "entity" : {
+                  "description" : "Contains the type of the entity and the corresponding ID.",
+                  "$ref" : "#/components/schemas/CapabilityProblemEntity"
+               },
+               "verificationErrors" : {
+                  "description" : "Contains information about the verification error.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/VerificationError"
+                  },
+                  "type" : "array"
+               }
+            },
+            "type" : "object"
+         },
+         "CapabilityProblemEntity" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "documents" : {
+                  "description" : "List of document IDs to which the verification errors related to the capabilities correspond to.",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
+               "id" : {
+                  "description" : "The ID of the entity.",
+                  "type" : "string"
+               },
+               "owner" : {
+                  "description" : "Contains details about the owner of the entity that has an error.",
+                  "$ref" : "#/components/schemas/CapabilityProblemEntity-recursive"
+               },
+               "type" : {
+                  "description" : "Type of entity. \n\nPossible values: **LegalEntity**, **BankAccount**, **Document**.",
+                  "enum" : [
+                     "BankAccount",
+                     "Document",
+                     "LegalEntity"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "type" : "object"
+         },
+         "CapabilityProblemEntity-recursive" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "documents" : {
+                  "description" : "List of document IDs to which the verification errors related to the capabilities correspond to.",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
+               "id" : {
+                  "description" : "The ID of the entity.",
+                  "type" : "string"
+               },
+               "type" : {
+                  "description" : "Type of entity. \n\nPossible values: **LegalEntity**, **BankAccount**, **Document**.",
+                  "enum" : [
+                     "BankAccount",
+                     "Document",
+                     "LegalEntity"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               ],
+            "type" : "object"
+         },
+         "CapabilitySettings" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "amountPerIndustry" : {
+                  "additionalProperties" : {
+                     "$ref" : "#/components/schemas/Amount"
+                  },
+                  "description" : "",
+                  "type" : "object"
+               },
+               "authorizedCardUsers" : {
+                  "description" : "",
+                  "type" : "boolean"
+               },
+               "fundingSource" : {
+                  "description" : "",
+                  "items" : {
+                     "enum" : [
+                        "credit",
+                        "debit",
+                        "prepaid"
+                     ],
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
+               "interval" : {
+                  "description" : "",
+                  "enum" : [
+                     "daily",
+                     "monthly",
+                     "weekly"
+                  ],
+                  "type" : "string"
+               },
+               "maxAmount" : {
+                  "description" : "",
+                  "$ref" : "#/components/schemas/Amount"
+               }
+            },
             "type" : "object"
          },
          "Card" : {
+            "additionalProperties" : false,
             "properties" : {
                "authentication" : {
                   "description" : "Contains the card user's password and mobile phone number. This is required when you issue cards that can be used to make online payments within the EEA and the UK, or can be added to digital wallets. Refer to [3D Secure and digital wallets](https://docs.adyen.com/issuing/3d-secure-and-wallets) for more information.",
@@ -1064,7 +1216,7 @@
                   "type" : "string"
                },
                "brandVariant" : {
-                  "description" : "The brand variant of the physical or the virtual card.\n>Contact your Adyen Implementation Manager to get the values that are relevant to your integration. Examples: **visadebit**, **mcprepaid**.",
+                  "description" : "The brand variant of the physical or the virtual card. For example, **visadebit** or **mcprepaid**.\n>Reach out to your Adyen contact to get the values relevant for your integration.",
                   "type" : "string"
                },
                "cardholderName" : {
@@ -1104,6 +1256,10 @@
                "number" : {
                   "description" : "The primary account number (PAN) of the card.\n> The PAN is masked by default and returned only for single-use virtual cards.",
                   "type" : "string"
+               },
+               "threeDSecure" : {
+                  "description" : "Allocates a specific product range for either a physical or a virtual card. Possible values: **fullySupported**, **secureCorporate**.\n>Reach out to your Adyen contact to get the values relevant for your integration.",
+                  "type" : "string"
                }
             },
             "required" : [
@@ -1116,6 +1272,7 @@
             "type" : "object"
          },
          "CardConfiguration" : {
+            "additionalProperties" : false,
             "properties" : {
                "activation" : {
                   "description" : "Overrides the activation label design ID defined in the `configurationProfileId`. The activation label is attached to the card and contains the activation instructions.",
@@ -1181,17 +1338,18 @@
             "type" : "object"
          },
          "CardOrderItem" : {
+            "additionalProperties" : false,
             "properties" : {
                "balancePlatform" : {
                   "description" : "The unique identifier of the balance platform.",
                   "type" : "string"
                },
                "card" : {
-                  "description" : "Card delivery status.",
+                  "description" : "The status of the card delivery.\n\nPossible values: **created**, **rejected**, **processing**, **produced**, **shipped**, **delivered**, **notApplicable**, **unknown**. ",
                   "$ref" : "#/components/schemas/CardOrderItemDeliveryStatus"
                },
-               "cardOrderItemReference" : {
-                  "description" : "The unique identifier of the card order.",
+               "cardOrderItemId" : {
+                  "description" : "The unique identifier of the card order item.",
                   "type" : "string"
                },
                "creationDate" : {
@@ -1203,28 +1361,34 @@
                   "description" : "The ID of the resource.",
                   "type" : "string"
                },
-               "paymentInstrumentReference" : {
-                  "description" : "The unique identifier of the payment instrument related to the card order.",
+               "paymentInstrumentId" : {
+                  "description" : "The unique identifier of the payment instrument related to the card order item.",
                   "type" : "string"
                },
                "pin" : {
-                  "description" : "PIN delivery status.",
+                  "description" : "Contains information about the status of the PIN delivery.",
                   "$ref" : "#/components/schemas/CardOrderItemDeliveryStatus"
                },
                "shippingMethod" : {
-                  "description" : "Shipping method used to deliver the card or the PIN.",
+                  "description" : "The shipping method used to deliver the card or the PIN.",
                   "type" : "string"
                }
             },
             "type" : "object"
          },
          "CardOrderItemDeliveryStatus" : {
+            "additionalProperties" : false,
             "properties" : {
+               "errorMessage" : {
+                  "description" : "An error message.",
+                  "type" : "string"
+               },
                "status" : {
-                  "description" : "Status of the delivery.",
+                  "description" : "The status of the PIN delivery.",
                   "enum" : [
                      "created",
                      "delivered",
+                     "notApplicable",
                      "processing",
                      "produced",
                      "rejected",
@@ -1233,22 +1397,15 @@
                   ],
                   "type" : "string"
                },
-               "statusError" : {
-                  "description" : "Error status, if any.",
-                  "type" : "string"
-               },
-               "statusErrorMessage" : {
-                  "description" : "Error message, if any.",
-                  "type" : "string"
-               },
                "trackingNumber" : {
-                  "description" : "Tracking number of the delivery.",
+                  "description" : "The tracking number of the PIN delivery.",
                   "type" : "string"
                }
             },
             "type" : "object"
          },
          "CardOrderNotificationRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "data" : {
                   "description" : "Contains event details.",
@@ -1259,7 +1416,7 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "Type of notification.",
+                  "description" : "Type of webhook.",
                   "enum" : [
                      "balancePlatform.cardorder.created",
                      "balancePlatform.cardorder.updated"
@@ -1275,6 +1432,7 @@
             "type" : "object"
          },
          "Contact" : {
+            "additionalProperties" : false,
             "properties" : {
                "address" : {
                   "description" : "The address of the contact.",
@@ -1308,6 +1466,8 @@
             "type" : "object"
          },
          "ContactDetails" : {
+            "deprecated" : true,
+            "additionalProperties" : false,
             "properties" : {
                "address" : {
                   "description" : "The address of the account holder.",
@@ -1333,31 +1493,8 @@
             ],
             "type" : "object"
          },
-         "CronSweepSchedule" : {
-            "additionalProperties" : false,
-            "properties" : {
-               "cronExpression" : {
-                  "description" : "A [cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression) that is used to set the sweep schedule. The schedule uses the time zone of the balance account. For example, **30 17 * * MON** schedules a sweep every Monday at 17:30.\n\nThe expression must have five values separated by a single space in the following order:\n\n* Minute: **0-59**\n\n* Hour: **0-23**\n\n* Day of the month: **1-31**\n\n* Month: **1-12** or **JAN-DEC**\n\n* Day of the week: **0-7** (0 and 7 are Sunday) or **MON-SUN**.\n\nThe following non-standard characters are supported: **&ast;**, **L**, **#**, **W** and **/**. See [crontab guru](https://crontab.guru/) for more examples.",
-                  "type" : "string"
-               },
-               "type" : {
-                  "description" : "The schedule type.\n\nPossible values:\n\n* **cron**: push out funds based on a cron expression.\n\n* **daily**: push out funds daily at 07:00 AM CET.\n\n* **weekly**: push out funds every Monday at 07:00 AM CET.\n\n* **monthly**: push out funds every first of the month at 07:00 AM CET.\n\n* **balance**: pull in funds instantly if the balance is less than or equal to the `triggerAmount`. You can only use this for sweeps of `type` **pull** and when the source is a `merchantAccount` or `transferInstrument`.",
-                  "enum" : [
-                     "daily",
-                     "weekly",
-                     "monthly",
-                     "balance",
-                     "cron"
-                  ],
-                  "type" : "string"
-               }
-            },
-            "required" : [
-               "cronExpression"
-            ],
-            "type" : "object"
-         },
          "Expiry" : {
+            "additionalProperties" : false,
             "properties" : {
                "month" : {
                   "description" : "The month in which the card will expire.",
@@ -1392,39 +1529,17 @@
             ],
             "type" : "object"
          },
-         "JSONObject" : {
-            "properties" : {
-               "paths" : {
-                  "items" : {
-                     "$ref" : "#/components/schemas/JSONPath"
-                  },
-                  "type" : "array"
-               },
-               "rootPath" : {
-                  "$ref" : "#/components/schemas/JSONPath"
-               }
-            },
-            "type" : "object"
-         },
-         "JSONPath" : {
-            "properties" : {
-               "content" : {
-                  "items" : {
-                     "type" : "string"
-                  },
-                  "type" : "array"
-               }
-            },
-            "type" : "object"
-         },
          "Name" : {
+            "additionalProperties" : false,
             "properties" : {
                "firstName" : {
                   "description" : "The first name.",
+                  "maxLength" : 80,
                   "type" : "string"
                },
                "lastName" : {
                   "description" : "The last name.",
+                  "maxLength" : 80,
                   "type" : "string"
                }
             },
@@ -1435,21 +1550,26 @@
             "type" : "object"
          },
          "PaymentInstrument" : {
+            "additionalProperties" : false,
             "properties" : {
+               "additionalBankAccountIdentifications" : {
+                  "description" : "Contains optional, additional business account details. Returned when you create a payment instrument with `type` **bankAccount**.",
+                  "items" : {
+                     "oneOf" : [
+                        {
+                           "$ref" : "#/components/schemas/IbanAccountIdentification"
+                        }
+                     ]
+                  },
+                  "type" : "array"
+               },
                "balanceAccountId" : {
                   "description" : "The unique identifier of the [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/v1/post/balanceAccounts__resParam_id) associated with the payment instrument.",
                   "type" : "string"
                },
                "bankAccount" : {
                   "description" : "Contains the business account details. Returned when you create a payment instrument with `type` **bankAccount**.",
-                  "oneOf" : [
-                     {
-                        "$ref" : "#/components/schemas/IbanAccountIdentification"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/USLocalAccountIdentification"
-                     }
-                  ]
+                  "$ref" : "#/components/schemas/BankAccountDetails"
                },
                "card" : {
                   "description" : "Contains information about the card payment instrument. Returned when you create a payment instrument with `type` **card**.",
@@ -1478,36 +1598,6 @@
                   "type" : "string"
                },
                "status" : {
-                  "x-enum" : [
-                     {
-                        "description" : "The payment instrument has been requested. This state is applicable when creating physical cards.",
-                        "value" : "Requested"
-                     },
-                     {
-                        "description" : "The payment instrument is active and can be used to make payments.",
-                        "value" : "Active"
-                     },
-                     {
-                        "description" : "The payment instrument is inactive and cannot be used to make payments.",
-                        "value" : "Inactive"
-                     },
-                     {
-                        "description" : "The payment instrument is temporarily suspended and cannot be used to make payments.",
-                        "value" : "Suspended"
-                     },
-                     {
-                        "description" : "The payment instrument is permanently closed. This action cannot be undone.",
-                        "value" : "Closed"
-                     },
-                     {
-                        "description" : "The payment instrument is suspended. Either because it was stolen or lost.",
-                        "value" : "blocked"
-                     },
-                     {
-                        "description" : "The payment instrument is permanently closed. This action cannot be undone.",
-                        "value" : "discarded"
-                     }
-                  ],
                   "description" : "The status of the payment instrument. If a status is not specified when creating a payment instrument, it is set to **Active** by default. However, there can be exceptions for cards based on the `card.formFactor` and the `issuingCountryCode`. For example, when issuing physical cards in the US, the default status is **Requested**.\n\nPossible values: \n\n * **Active**:  The payment instrument is active and can be used to make payments. \n\n * **Requested**: The payment instrument has been requested. This state is applicable for physical cards. \n\n* **Inactive**: The payment instrument is inactive and cannot be used to make payments. \n\n * **Suspended**: The payment instrument is temporarily suspended and cannot be used to make payments. \n\n * **Closed**: The payment instrument is permanently closed. This action cannot be undone. \n\n* **Stolen** \n\n * **Lost**\n\n ",
                   "enum" : [
                      "Active",
@@ -1540,6 +1630,7 @@
             "type" : "object"
          },
          "PaymentInstrumentNotificationData" : {
+            "additionalProperties" : false,
             "properties" : {
                "balancePlatform" : {
                   "description" : "The unique identifier of the balance platform.",
@@ -1553,6 +1644,7 @@
             "type" : "object"
          },
          "PaymentInstrumentReference" : {
+            "additionalProperties" : false,
             "properties" : {
                "id" : {
                   "description" : "The unique identifier of the payment instrument.",
@@ -1565,6 +1657,7 @@
             "type" : "object"
          },
          "PaymentNotificationRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "data" : {
                   "description" : "Contains event details.",
@@ -1575,7 +1668,7 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "Type of notification.",
+                  "description" : "Type of webhook.",
                   "enum" : [
                      "balancePlatform.paymentInstrument.created",
                      "balancePlatform.paymentInstrument.updated"
@@ -1591,6 +1684,7 @@
             "type" : "object"
          },
          "PersonalData" : {
+            "additionalProperties" : false,
             "properties" : {
                "dateOfBirth" : {
                   "description" : "The date of birth of the person.\nThe date should be in ISO-8601 format yyyy-mm-dd (e.g. 2000-01-31).",
@@ -1610,6 +1704,7 @@
             "type" : "object"
          },
          "Phone" : {
+            "additionalProperties" : false,
             "properties" : {
                "number" : {
                   "description" : "The full phone number provided as a single string. \nFor example, **\"0031 6 11 22 33 44\"**, **\"+316/1122-3344\"**, \n\n or **\"(0031) 611223344\"**.",
@@ -1631,6 +1726,7 @@
             "type" : "object"
          },
          "PhoneNumber" : {
+            "additionalProperties" : false,
             "properties" : {
                "phoneCountryCode" : {
                   "description" : "The two-character ISO-3166-1 alpha-2 country code of the phone number.\nFor example, **US** or **NL**.",
@@ -1653,7 +1749,38 @@
             },
             "type" : "object"
          },
+         "PlatformPaymentConfiguration" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "salesDayClosingTime" : {
+                  "description" : "Specifies at what time a [sales day](https://docs.adyen.com/platforms/settle-funds/sales-day-settlement#sales-day) ends for this account.\n\nPossible values: Time in **\"HH:MM\"** format. **HH** ranges from **00** to **07**. **MM** must be **00**.\n\nDefault value: **\"00:00\"**.",
+                  "format" : "time",
+                  "type" : "string"
+               },
+               "settlementDelayDays" : {
+                  "description" : "Specifies after how many business days the funds in a [settlement batch](https://docs.adyen.com/platforms/settle-funds/sales-day-settlement#settlement-batch) are made available in this balance account.\n\nPossible values: **1** to **10**, or **null**.\n* Setting this value to an integer enables Sales day settlement in this balance account. See how Sales day settlement works in your [marketplace](https://docs.adyen.com/marketplaces/settle-funds/sales-day-settlement) or [platform](https://docs.adyen.com/platforms/settle-funds/sales-day-settlement).\n* Setting this value to **null** enables Pass-through settlement in this balance account. See how Pass-through settlement works in your [marketplace](https://docs.adyen.com/marketplaces/settle-funds/pass-through-settlement) or [platform](https://docs.adyen.com/platforms/settle-funds/pass-through-settlement).\n\nDefault value: **null**.",
+                  "format" : "int32",
+                  "type" : "integer"
+               }
+            },
+            "type" : "object"
+         },
+         "RemediatingAction" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "code" : {
+                  "description" : "The remediating action code.",
+                  "type" : "string"
+               },
+               "message" : {
+                  "description" : "A description of how you can resolve the verification error.",
+                  "type" : "string"
+               }
+            },
+            "type" : "object"
+         },
          "Resource" : {
+            "additionalProperties" : false,
             "properties" : {
                "balancePlatform" : {
                   "description" : "The unique identifier of the balance platform.",
@@ -1671,82 +1798,8 @@
             },
             "type" : "object"
          },
-         "SweepConfiguration" : {
-            "properties" : {
-               "balanceAccountId" : {
-                  "description" : "The unique identifier of the destination or source [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).\n\n You can only use this for periodic sweep schedules such as `schedule.type` **daily** or **monthly**.",
-                  "type" : "string"
-               },
-               "id" : {
-                  "description" : "The unique identifier of the sweep.",
-                  "type" : "string"
-               },
-               "merchantAccount" : {
-                  "description" : "The merchant account that will be the source of funds. You can only use this if you are processing payments with Adyen. This can only be used for sweeps of `type` **pull** and `schedule.type` **balance**.",
-                  "type" : "string"
-               },
-               "schedule" : {
-                  "description" : "The schedule when the `triggerAmount` is evaluated. If the balance meets the threshold, funds are pushed out of or pulled in to the balance account.",
-                  "oneOf" : [
-                     {
-                        "$ref" : "#/components/schemas/CronSweepSchedule"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/SweepSchedule"
-                     }
-                  ]
-               },
-               "status" : {
-                  "x-enum" : [
-                     {
-                        "description" : "The sweep is enabled and funds will be pulled in or pushed out based on the defined configuration",
-                        "value" : "active"
-                     },
-                     {
-                        "description" : "The sweep is disabled and cannot be triggered.",
-                        "value" : "inactive"
-                     }
-                  ],
-                  "description" : "The status of the sweep. If not provided, by default, this is set to **active**.\n\nPossible values: \n\n * **active**:  the sweep is enabled and funds will be pulled in or pushed out based on the defined configuration. \n\n * **inactive**: the sweep is disabled and cannot be triggered. \n\n",
-                  "enum" : [
-                     "active",
-                     "inactive"
-                  ],
-                  "type" : "string"
-               },
-               "sweepAmount" : {
-                  "description" : "The amount that must be pushed out or pulled in. You can configure either `sweepAmount` or `targetAmount`, not both.",
-                  "$ref" : "#/components/schemas/Amount"
-               },
-               "targetAmount" : {
-                  "description" : "The amount that must be available in the balance account after the sweep. You can configure either `sweepAmount` or `targetAmount`, not both.",
-                  "$ref" : "#/components/schemas/Amount"
-               },
-               "transferInstrumentId" : {
-                  "description" : "The unique identifier of the destination or source [transfer instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/transferInstruments__resParam_id).\n\nYou can also use this in combination with a `merchantAccount` and a `type` **pull** to start a direct debit request from the source transfer instrument. To use this feature, reach out to your Adyen contact.",
-                  "type" : "string"
-               },
-               "triggerAmount" : {
-                  "description" : "The threshold amount that triggers the sweep. If not provided, by default, the amount is set to zero. The `triggerAmount` is evaluated according to the specified `schedule.type`.\n\n* For `type` **pull**, if the balance is less than or equal to the `triggerAmount`, funds are pulled in to the balance account.\n\n* For `type` **push**, if the balance is more than or equal to the `triggerAmount`, funds are pushed out of the balance account.",
-                  "$ref" : "#/components/schemas/Amount"
-               },
-               "type" : {
-                  "default" : "push",
-                  "description" : "The direction of sweep, whether pushing out or pulling in funds to the balance account. If not provided, by default, this is set to **push**.\n\nPossible values:\n\n * **push**: _push out funds_ to a destination balance account or transfer instrument.\n\n * **pull**: _pull in funds_ from a source merchant account, transfer instrument, or balance account.",
-                  "enum" : [
-                     "pull",
-                     "push"
-                  ],
-                  "type" : "string"
-               }
-            },
-            "required" : [
-               "id",
-               "schedule"
-            ],
-            "type" : "object"
-         },
          "SweepConfigurationNotificationData" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountId" : {
                   "description" : "The unique identifier of the balance account for which the sweep was configured.",
@@ -1764,6 +1817,7 @@
             "type" : "object"
          },
          "SweepConfigurationNotificationRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "data" : {
                   "description" : "Contains event details.",
@@ -1774,7 +1828,7 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "Type of notification.",
+                  "description" : "Type of webhook.",
                   "enum" : [
                      "balancePlatform.balanceAccountSweep.created",
                      "balancePlatform.balanceAccountSweep.updated",
@@ -1791,9 +1845,10 @@
             "type" : "object"
          },
          "SweepConfigurationV2" : {
+            "additionalProperties" : false,
             "properties" : {
                "counterparty" : {
-                  "description" : "The destination or the source of the funds, depending on the `type`.\n\nEither a `balanceAccountId`, `transferInstrumentId`, or `merchantAccount` is required.",
+                  "description" : "The destination or the source of the funds, depending on the sweep `type`.\n\nEither a `balanceAccountId`, `transferInstrumentId`, or `merchantAccount` is required.",
                   "$ref" : "#/components/schemas/SweepCounterparty"
                },
                "currency" : {
@@ -1811,44 +1866,46 @@
                "reason" : {
                   "description" : "The reason for disabling the sweep.",
                   "enum" : [
+                     "accountHierarchyNotActive",
                      "amountLimitExceeded",
                      "approved",
+                     "balanceAccountTemporarilyBlockedByTransactionRule",
                      "counterpartyAccountBlocked",
                      "counterpartyAccountClosed",
                      "counterpartyAccountNotFound",
                      "counterpartyAddressRequired",
                      "counterpartyBankTimedOut",
                      "counterpartyBankUnavailable",
+                     "declined",
+                     "declinedByTransactionRule",
+                     "directDebitNotSupported",
                      "error",
                      "notEnoughBalance",
+                     "pendingApproval",
+                     "pendingExecution",
                      "refusedByCounterpartyBank",
                      "routeNotFound",
+                     "scaFailed",
+                     "transferInstrumentDoesNotExist",
                      "unknown"
                   ],
                   "type" : "string"
                },
+               "reference" : {
+                  "description" : "Your reference for the sweep configuration.",
+                  "maxLength" : 80,
+                  "type" : "string"
+               },
+               "referenceForBeneficiary" : {
+                  "description" : "The reference sent to or received from the counterparty. Only alphanumeric characters are allowed.",
+                  "maxLength" : 80,
+                  "type" : "string"
+               },
                "schedule" : {
                   "description" : "The schedule when the `triggerAmount` is evaluated. If the balance meets the threshold, funds are pushed out of or pulled in to the balance account.",
-                  "oneOf" : [
-                     {
-                        "$ref" : "#/components/schemas/CronSweepSchedule"
-                     },
-                     {
-                        "$ref" : "#/components/schemas/SweepSchedule"
-                     }
-                  ]
+                  "$ref" : "#/components/schemas/SweepSchedule"
                },
                "status" : {
-                  "x-enum" : [
-                     {
-                        "description" : "The sweep is enabled and funds will be pulled in or pushed out based on the defined configuration",
-                        "value" : "active"
-                     },
-                     {
-                        "description" : "The sweep is disabled and cannot be triggered.",
-                        "value" : "inactive"
-                     }
-                  ],
                   "description" : "The status of the sweep. If not provided, by default, this is set to **active**.\n\nPossible values: \n\n * **active**:  the sweep is enabled and funds will be pulled in or pushed out based on the defined configuration. \n\n * **inactive**: the sweep is disabled and cannot be triggered. \n\n",
                   "enum" : [
                      "active",
@@ -1887,17 +1944,18 @@
             "type" : "object"
          },
          "SweepCounterparty" : {
+            "additionalProperties" : false,
             "properties" : {
                "balanceAccountId" : {
-                  "description" : "The unique identifier of the destination or source [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).\n\n You can only use this for periodic sweep schedules such as `schedule.type` **daily** or **monthly**.",
+                  "description" : "The unique identifier of the destination or source [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).\n\n > If you are updating the counterparty from a transfer instrument to a balance account, set `transferInstrumentId` to **null**.",
                   "type" : "string"
                },
                "merchantAccount" : {
-                  "description" : "The merchant account that will be the source of funds, if you are processing payments with Adyen. You can only use this with sweeps of `type` **pull** and `schedule.type` **balance**.",
+                  "description" : "The merchant account that will be the source of funds.\n\nYou can only use this parameter with sweeps of `type` **pull** and if you are processing payments with Adyen.",
                   "type" : "string"
                },
                "transferInstrumentId" : {
-                  "description" : "The unique identifier of the destination or source [transfer instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/transferInstruments__resParam_id).\n\nYou can also use this in combination with a `merchantAccount` and a `type` **pull** to start a direct debit request from the source transfer instrument. To use this feature, reach out to your Adyen contact.",
+                  "description" : "The unique identifier of the destination or source [transfer instrument](https://docs.adyen.com/api-explorer/legalentity/latest/post/transferInstruments#responses-200-id) depending on the sweep `type`\n\n. To set up automated top-up sweeps to balance accounts in your [marketplace](https://docs.adyen.com/marketplaces/top-up-balance-account/#before-you-begin) or [platform](https://docs.adyen.com/platforms/top-up-balance-account/#before-you-begin), use this parameter in combination with a `merchantAccount` and a sweep `type` of **pull**.\n\nTop-up sweeps start a direct debit request from the source transfer instrument. Contact Adyen Support to enable this feature.> If you are updating the counterparty from a balance account to a transfer instrument, set `balanceAccountId` to **null**.",
                   "type" : "string"
                }
             },
@@ -1906,8 +1964,12 @@
          "SweepSchedule" : {
             "additionalProperties" : false,
             "properties" : {
+               "cronExpression" : {
+                  "description" : "A [cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression) that is used to set the sweep schedule. The schedule uses the time zone of the balance account. \nFor example, **30 17 * * MON** schedules a sweep every Monday at 17:30.\n\nThe expression must have five values separated by a single space in the following order:\n\n* Minute: **0-59**\n\n* Hour: **0-23**\n\n* Day of the month: **1-31**\n\n* Month: **1-12** or **JAN-DEC**\n\n* Day of the week: **0-7** (0 and 7 are Sunday) or **MON-SUN**.\n\nThe following non-standard characters are supported: **&ast;**, **L**, **#**, **W** and **/**. See [crontab guru](https://crontab.guru/) for more examples.\n\nRequired when `type` is **cron**.\n",
+                  "type" : "string"
+               },
                "type" : {
-                  "description" : "The schedule type.\n\nPossible values:\n\n* **cron**: push out funds based on a cron expression.\n\n* **daily**: push out funds daily at 07:00 AM CET.\n\n* **weekly**: push out funds every Monday at 07:00 AM CET.\n\n* **monthly**: push out funds every first of the month at 07:00 AM CET.\n\n* **balance**: pull in funds instantly if the balance is less than or equal to the `triggerAmount`. You can only use this for sweeps of `type` **pull** and when the source is a `merchantAccount` or `transferInstrument`.",
+                  "description" : "The schedule type.\n\nPossible values:\n\n* **cron**: push out funds based on a `cronExpression`.\n\n* **daily**: push out funds daily at 07:00 AM CET.\n\n* **weekly**: push out funds every Monday at 07:00 AM CET.\n\n* **monthly**: push out funds every first of the month at 07:00 AM CET.\n\n* **balance**: execute the sweep instantly if the `triggerAmount` is reached.\n",
                   "enum" : [
                      "daily",
                      "weekly",
@@ -1918,68 +1980,293 @@
                   "type" : "string"
                }
             },
+            "required" : [
+               "type"
+            ],
             "type" : "object"
          },
-         "USLocalAccountIdentification" : {
+         "VerificationDeadline" : {
             "additionalProperties" : false,
             "properties" : {
-               "accountNumber" : {
-                  "description" : "The bank account number, without separators or whitespace.",
-                  "maxLength" : 18,
-                  "minLength" : 2,
-                  "type" : "string"
+               "capabilities" : {
+                  "description" : "The names of the capabilities to be disallowed.",
+                  "items" : {
+                     "enum" : [
+                        "acceptExternalFunding",
+                        "acceptPspFunding",
+                        "acceptTransactionInRestrictedCountries",
+                        "acceptTransactionInRestrictedCountriesCommercial",
+                        "acceptTransactionInRestrictedCountriesConsumer",
+                        "acceptTransactionInRestrictedIndustries",
+                        "acceptTransactionInRestrictedIndustriesCommercial",
+                        "acceptTransactionInRestrictedIndustriesConsumer",
+                        "acquiring",
+                        "atmWithdrawal",
+                        "atmWithdrawalCommercial",
+                        "atmWithdrawalConsumer",
+                        "atmWithdrawalInRestrictedCountries",
+                        "atmWithdrawalInRestrictedCountriesCommercial",
+                        "atmWithdrawalInRestrictedCountriesConsumer",
+                        "authorisedPaymentInstrumentUser",
+                        "getGrantOffers",
+                        "issueBankAccount",
+                        "issueCard",
+                        "issueCardCommercial",
+                        "issueCardConsumer",
+                        "issueCreditLimit",
+                        "localAcceptance",
+                        "payout",
+                        "payoutToTransferInstrument",
+                        "processing",
+                        "receiveFromBalanceAccount",
+                        "receiveFromPlatformPayments",
+                        "receiveFromThirdParty",
+                        "receiveFromTransferInstrument",
+                        "receiveGrants",
+                        "receivePayments",
+                        "sendToBalanceAccount",
+                        "sendToThirdParty",
+                        "sendToTransferInstrument",
+                        "thirdPartyFunding",
+                        "useCard",
+                        "useCardCommercial",
+                        "useCardConsumer",
+                        "useCardInRestrictedCountries",
+                        "useCardInRestrictedCountriesCommercial",
+                        "useCardInRestrictedCountriesConsumer",
+                        "useCardInRestrictedIndustries",
+                        "useCardInRestrictedIndustriesCommercial",
+                        "useCardInRestrictedIndustriesConsumer",
+                        "withdrawFromAtm",
+                        "withdrawFromAtmCommercial",
+                        "withdrawFromAtmConsumer",
+                        "withdrawFromAtmInRestrictedCountries",
+                        "withdrawFromAtmInRestrictedCountriesCommercial",
+                        "withdrawFromAtmInRestrictedCountriesConsumer"
+                     ],
+                     "type" : "string"
+                  },
+                  "type" : "array"
                },
-               "accountType" : {
-                  "default" : "checking",
-                  "description" : "The bank account type.\n\nPossible values: **checking** or **savings**. Defaults to **checking**.",
-                  "enum" : [
-                     "checking",
-                     "savings"
-                  ],
-                  "type" : "string"
+               "entityIds" : {
+                  "description" : "The unique identifiers of the bank account(s) that the deadline applies to",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
                },
-               "routingNumber" : {
-                  "description" : "The 9-digit [routing number](https://en.wikipedia.org/wiki/ABA_routing_transit_number), without separators or whitespace.",
-                  "maxLength" : 9,
-                  "minLength" : 9,
-                  "type" : "string"
-               },
-               "type" : {
-                  "default" : "usLocal",
-                  "description" : "**usLocal**",
-                  "enum" : [
-                     "usLocal"
-                  ],
+               "expiresAt" : {
+                  "description" : "The date that verification is due by before capabilities are disallowed.",
+                  "format" : "date-time",
                   "type" : "string"
                }
             },
             "required" : [
-               "type",
-               "accountNumber",
-               "routingNumber"
+               "expiresAt",
+               "capabilities"
             ],
+            "type" : "object"
+         },
+         "VerificationError" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "capabilities" : {
+                  "description" : "Contains the capabilities that the verification error applies to.",
+                  "items" : {
+                     "enum" : [
+                        "acceptExternalFunding",
+                        "acceptPspFunding",
+                        "acceptTransactionInRestrictedCountries",
+                        "acceptTransactionInRestrictedCountriesCommercial",
+                        "acceptTransactionInRestrictedCountriesConsumer",
+                        "acceptTransactionInRestrictedIndustries",
+                        "acceptTransactionInRestrictedIndustriesCommercial",
+                        "acceptTransactionInRestrictedIndustriesConsumer",
+                        "acquiring",
+                        "atmWithdrawal",
+                        "atmWithdrawalCommercial",
+                        "atmWithdrawalConsumer",
+                        "atmWithdrawalInRestrictedCountries",
+                        "atmWithdrawalInRestrictedCountriesCommercial",
+                        "atmWithdrawalInRestrictedCountriesConsumer",
+                        "authorisedPaymentInstrumentUser",
+                        "getGrantOffers",
+                        "issueBankAccount",
+                        "issueCard",
+                        "issueCardCommercial",
+                        "issueCardConsumer",
+                        "issueCreditLimit",
+                        "localAcceptance",
+                        "payout",
+                        "payoutToTransferInstrument",
+                        "processing",
+                        "receiveFromBalanceAccount",
+                        "receiveFromPlatformPayments",
+                        "receiveFromThirdParty",
+                        "receiveFromTransferInstrument",
+                        "receiveGrants",
+                        "receivePayments",
+                        "sendToBalanceAccount",
+                        "sendToThirdParty",
+                        "sendToTransferInstrument",
+                        "thirdPartyFunding",
+                        "useCard",
+                        "useCardCommercial",
+                        "useCardConsumer",
+                        "useCardInRestrictedCountries",
+                        "useCardInRestrictedCountriesCommercial",
+                        "useCardInRestrictedCountriesConsumer",
+                        "useCardInRestrictedIndustries",
+                        "useCardInRestrictedIndustriesCommercial",
+                        "useCardInRestrictedIndustriesConsumer",
+                        "withdrawFromAtm",
+                        "withdrawFromAtmCommercial",
+                        "withdrawFromAtmConsumer",
+                        "withdrawFromAtmInRestrictedCountries",
+                        "withdrawFromAtmInRestrictedCountriesCommercial",
+                        "withdrawFromAtmInRestrictedCountriesConsumer"
+                     ],
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
+               "code" : {
+                  "description" : "The verification error code.",
+                  "type" : "string"
+               },
+               "message" : {
+                  "description" : "A description of the error.",
+                  "type" : "string"
+               },
+               "remediatingActions" : {
+                  "description" : "Contains the actions that you can take to resolve the verification error.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/RemediatingAction"
+                  },
+                  "type" : "array"
+               },
+               "subErrors" : {
+                  "description" : "Contains more granular information about the verification error.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/VerificationError-recursive"
+                  },
+                  "type" : "array"
+               },
+               "type" : {
+                  "description" : "The type of error.\n\n Possible values: **invalidInput**, **dataMissing**.",
+                  "enum" : [
+                     "dataMissing",
+                     "invalidInput",
+                     "pendingStatus"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "type" : "object"
+         },
+         "VerificationError-recursive" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "capabilities" : {
+                  "description" : "Contains the capabilities that the verification error applies to.",
+                  "items" : {
+                     "enum" : [
+                        "acceptExternalFunding",
+                        "acceptPspFunding",
+                        "acceptTransactionInRestrictedCountries",
+                        "acceptTransactionInRestrictedCountriesCommercial",
+                        "acceptTransactionInRestrictedCountriesConsumer",
+                        "acceptTransactionInRestrictedIndustries",
+                        "acceptTransactionInRestrictedIndustriesCommercial",
+                        "acceptTransactionInRestrictedIndustriesConsumer",
+                        "acquiring",
+                        "atmWithdrawal",
+                        "atmWithdrawalCommercial",
+                        "atmWithdrawalConsumer",
+                        "atmWithdrawalInRestrictedCountries",
+                        "atmWithdrawalInRestrictedCountriesCommercial",
+                        "atmWithdrawalInRestrictedCountriesConsumer",
+                        "authorisedPaymentInstrumentUser",
+                        "getGrantOffers",
+                        "issueBankAccount",
+                        "issueCard",
+                        "issueCardCommercial",
+                        "issueCardConsumer",
+                        "issueCreditLimit",
+                        "localAcceptance",
+                        "payout",
+                        "payoutToTransferInstrument",
+                        "processing",
+                        "receiveFromBalanceAccount",
+                        "receiveFromPlatformPayments",
+                        "receiveFromThirdParty",
+                        "receiveFromTransferInstrument",
+                        "receiveGrants",
+                        "receivePayments",
+                        "sendToBalanceAccount",
+                        "sendToThirdParty",
+                        "sendToTransferInstrument",
+                        "thirdPartyFunding",
+                        "useCard",
+                        "useCardCommercial",
+                        "useCardConsumer",
+                        "useCardInRestrictedCountries",
+                        "useCardInRestrictedCountriesCommercial",
+                        "useCardInRestrictedCountriesConsumer",
+                        "useCardInRestrictedIndustries",
+                        "useCardInRestrictedIndustriesCommercial",
+                        "useCardInRestrictedIndustriesConsumer",
+                        "withdrawFromAtm",
+                        "withdrawFromAtmCommercial",
+                        "withdrawFromAtmConsumer",
+                        "withdrawFromAtmInRestrictedCountries",
+                        "withdrawFromAtmInRestrictedCountriesCommercial",
+                        "withdrawFromAtmInRestrictedCountriesConsumer"
+                     ],
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
+               "code" : {
+                  "description" : "The verification error code.",
+                  "type" : "string"
+               },
+               "message" : {
+                  "description" : "A description of the error.",
+                  "type" : "string"
+               },
+               "type" : {
+                  "description" : "The type of error.\n\n Possible values: **invalidInput**, **dataMissing**.",
+                  "enum" : [
+                     "dataMissing",
+                     "invalidInput",
+                     "pendingStatus"
+                  ],
+                  "type" : "string"
+               },
+               "remediatingActions" : {
+                  "description" : "Contains the actions that you can take to resolve the verification error.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/RemediatingAction"
+                  },
+                  "type" : "array"
+               }
+            },
+            "required" : [
+               ],
             "type" : "object"
          }
       },
       "securitySchemes" : {
-         "ApiKeyAuth" : {
-            "in" : "header",
-            "name" : "X-API-Key",
-            "type" : "apiKey"
-         },
          "BasicAuth" : {
             "scheme" : "basic",
             "type" : "http"
          }
       },
       "examples" : {
-         "WebhookAck" : {
-            "summary" : "Acknowledge Webhook",
-            "value" : "[accepted]"
-         },
          "post-balancePlatform.accountHolder.created-balancePlatform-accountHolder-created" : {
-            "summary" : "Account holder created",
-            "description" : "Example webhook when an account holder was created",
+            "summary" : "Account holder created with LEM API v1, v2",
+            "description" : "Example webhook when an account holder was created with LEM API v1, v2",
             "value" : {
                "data" : {
                   "balancePlatform" : "YOUR_BALANCE_PLATFORM",
@@ -1995,11 +2282,11 @@
                            "city" : "Amsterdam",
                            "country" : "NL",
                            "postalCode" : "12345",
-                           "street" : "Teststreet 1"
+                           "street" : "Main Street 1"
                         }
                      },
                      "description" : "Shelly Eller",
-                     "legalEntityId" : "LE43319330319C8AYX89L2V59",
+                     "legalEntityId" : "LE00000000000000000000001",
                      "reference" : "YOUR_REFERENCE-2412C",
                      "capabilities" : {
                         "issueCard" : {
@@ -2033,7 +2320,7 @@
                            "verificationStatus" : "pending"
                         }
                      },
-                     "id" : "AH32272223222B5CZW6QZ2V34",
+                     "id" : "AH00000000000000000000001",
                      "status" : "Active"
                   }
                },
@@ -2041,15 +2328,14 @@
                "type" : "balancePlatform.accountHolder.created"
             }
          },
-         "post-balancePlatform.accountHolder.updated-balancePlatform-accountHolder-updated" : {
-            "summary" : "Account holder updated",
-            "description" : "Example webhook when an account holder was updated",
+         "post-balancePlatform.accountHolder.created-balancePlatform-accountHolder-created-lem-v3" : {
+            "summary" : "Account holder created with LEM API v3",
+            "description" : "Example webhook when an account holder was created with LEM API v3",
             "value" : {
                "data" : {
                   "balancePlatform" : "YOUR_BALANCE_PLATFORM",
                   "accountHolder" : {
-                     "description" : "Shelly Eller",
-                     "legalEntityId" : "LE43319330319C8AYX89L2V59",
+                     "legalEntityId" : "LE00000000000000000000001",
                      "reference" : "YOUR_REFERENCE-2412C",
                      "capabilities" : {
                         "sendToTransferInstrument" : {
@@ -2059,13 +2345,166 @@
                            "problems" : [
                               {
                                  "entity" : {
-                                    "id" : "LE43319330319C8AYX89L2V59",
+                                    "id" : "LE00000000000000000000001",
                                     "type" : "LegalEntity"
                                  },
                                  "verificationErrors" : [
                                     {
+                                       "code" : "2_902",
+                                       "message" : "Terms Of Service forms are not accepted.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "2_902",
+                                             "message" : "Accept TOS"
+                                          }
+                                       ],
+                                       "type" : "invalidInput"
+                                    }
+                                 ]
+                              },
+                              {
+                                 "entity" : {
+                                    "id" : "SE00000000000000000000001",
+                                    "type" : "BankAccount"
+                                 },
+                                 "verificationErrors" : [
+                                    {
                                        "code" : "2_8037",
-                                       "message" : "No bankStatement available to perform verification.",
+                                       "message" : "'bankStatement' was missing.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "1_703",
+                                             "message" : "Upload a bank statement"
+                                          }
+                                       ],
+                                       "type" : "dataMissing"
+                                    }
+                                 ]
+                              },
+                              {
+                                 "entity" : {
+                                    "id" : "SE00000000000000000000002",
+                                    "type" : "BankAccount"
+                                 },
+                                 "verificationErrors" : [
+                                    {
+                                       "code" : "2_8037",
+                                       "message" : "'bankStatement' was missing.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "1_703",
+                                             "message" : "Upload a bank statement"
+                                          }
+                                       ],
+                                       "type" : "dataMissing"
+                                    }
+                                 ]
+                              },
+                              {
+                                 "entity" : {
+                                    "id" : "LE00000000000000000000001",
+                                    "type" : "LegalEntity"
+                                 },
+                                 "verificationErrors" : [
+                                    {
+                                       "code" : "2_8189",
+                                       "message" : "'UBO through control' was missing.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "2_151",
+                                             "message" : "Add 'organization.entityAssociations' of type 'uboThroughControl' to legal entity"
+                                          }
+                                       ],
+                                       "type" : "dataMissing"
+                                    },
+                                    {
+                                       "code" : "1_50",
+                                       "message" : "Organization details couldn't be verified",
+                                       "subErrors" : [
+                                          {
+                                             "code" : "1_5016",
+                                             "message" : "The tax ID number couldn't be verified",
+                                             "remediatingActions" : [
+                                                {
+                                                   "code" : "1_500",
+                                                   "message" : "Update organization details"
+                                                },
+                                                {
+                                                   "code" : "1_501",
+                                                   "message" : "Upload a registration document"
+                                                }
+                                             ],
+                                             "type" : "invalidInput"
+                                          }
+                                       ],
+                                       "type" : "invalidInput"
+                                    },
+                                    {
+                                       "code" : "2_8067",
+                                       "message" : "'Signatory' was missing.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "2_124",
+                                             "message" : "Add 'organization.entityAssociations' of type 'signatory' to legal entity"
+                                          }
+                                       ],
+                                       "type" : "dataMissing"
+                                    }
+                                 ]
+                              }
+                           ],
+                           "transferInstruments" : [
+                              {
+                                 "enabled" : true,
+                                 "requested" : true,
+                                 "allowed" : false,
+                                 "id" : "SE00000000000000000000001",
+                                 "verificationStatus" : "pending"
+                              },
+                              {
+                                 "enabled" : true,
+                                 "requested" : true,
+                                 "allowed" : false,
+                                 "id" : "SE00000000000000000000002",
+                                 "verificationStatus" : "pending"
+                              }
+                           ],
+                           "verificationStatus" : "pending"
+                        }
+                     },
+                     "id" : "AH00000000000000000000001",
+                     "status" : "Active"
+                  }
+               },
+               "environment" : "live",
+               "type" : "balancePlatform.accountHolder.created"
+            }
+         },
+         "post-balancePlatform.accountHolder.updated-balancePlatform-accountHolder-updated" : {
+            "summary" : "Account holder updated with LEM API v1, v2",
+            "description" : "Example webhook when an account holder was updated with LEM API v1, v2",
+            "value" : {
+               "data" : {
+                  "balancePlatform" : "YOUR_BALANCE_PLATFORM",
+                  "accountHolder" : {
+                     "description" : "Shelly Eller",
+                     "legalEntityId" : "LE00000000000000000000001",
+                     "reference" : "YOUR_REFERENCE-2412C",
+                     "capabilities" : {
+                        "sendToTransferInstrument" : {
+                           "enabled" : true,
+                           "requested" : true,
+                           "allowed" : false,
+                           "problems" : [
+                              {
+                                 "entity" : {
+                                    "id" : "LE00000000000000000000001",
+                                    "type" : "BankAccount"
+                                 },
+                                 "verificationErrors" : [
+                                    {
+                                       "code" : "2_8037",
+                                       "message" : "'bankStatement' was missing.",
                                        "remediatingActions" : [
                                           {
                                              "code" : "1_703",
@@ -2080,11 +2519,163 @@
                            "verificationStatus" : "invalid"
                         }
                      },
-                     "id" : "AH32272223222B5CZW6QZ2V34",
+                     "id" : "AH00000000000000000000001",
                      "status" : "Active"
                   }
                },
                "environment" : "test",
+               "type" : "balancePlatform.accountHolder.updated"
+            }
+         },
+         "post-balancePlatform.accountHolder.updated-balancePlatform-accountHolder-updated-lem-v3" : {
+            "summary" : "Account holder updated with LEM API v3",
+            "description" : "Example webhook when an account holder was updated with LEM API v3",
+            "value" : {
+               "data" : {
+                  "balancePlatform" : "YOUR_BALANCE_PLATFORM",
+                  "accountHolder" : {
+                     "legalEntityId" : "LE00000000000000000000001",
+                     "reference" : "YOUR_REFERENCE-2412C",
+                     "capabilities" : {
+                        "sendToTransferInstrument" : {
+                           "enabled" : true,
+                           "requested" : true,
+                           "allowed" : false,
+                           "problems" : [
+                              {
+                                 "entity" : {
+                                    "id" : "LE00000000000000000000001",
+                                    "type" : "LegalEntity"
+                                 },
+                                 "verificationErrors" : [
+                                    {
+                                       "code" : "2_902",
+                                       "message" : "Terms Of Service forms are not accepted.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "2_902",
+                                             "message" : "Accept TOS"
+                                          }
+                                       ],
+                                       "type" : "invalidInput"
+                                    }
+                                 ]
+                              },
+                              {
+                                 "entity" : {
+                                    "id" : "SE00000000000000000000001",
+                                    "type" : "BankAccount"
+                                 },
+                                 "verificationErrors" : [
+                                    {
+                                       "code" : "2_8037",
+                                       "message" : "'bankStatement' was missing.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "1_703",
+                                             "message" : "Upload a bank statement"
+                                          }
+                                       ],
+                                       "type" : "dataMissing"
+                                    }
+                                 ]
+                              },
+                              {
+                                 "entity" : {
+                                    "id" : "SE00000000000000000000002",
+                                    "type" : "BankAccount"
+                                 },
+                                 "verificationErrors" : [
+                                    {
+                                       "code" : "2_8037",
+                                       "message" : "'bankStatement' was missing.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "1_703",
+                                             "message" : "Upload a bank statement"
+                                          }
+                                       ],
+                                       "type" : "dataMissing"
+                                    }
+                                 ]
+                              },
+                              {
+                                 "entity" : {
+                                    "id" : "LE00000000000000000000001",
+                                    "type" : "LegalEntity"
+                                 },
+                                 "verificationErrors" : [
+                                    {
+                                       "code" : "2_8189",
+                                       "message" : "'UBO through control' was missing.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "2_151",
+                                             "message" : "Add 'organization.entityAssociations' of type 'uboThroughControl' to legal entity"
+                                          }
+                                       ],
+                                       "type" : "dataMissing"
+                                    },
+                                    {
+                                       "code" : "1_50",
+                                       "message" : "Organization details couldn't be verified",
+                                       "subErrors" : [
+                                          {
+                                             "code" : "1_5016",
+                                             "message" : "The tax ID number couldn't be verified",
+                                             "remediatingActions" : [
+                                                {
+                                                   "code" : "1_500",
+                                                   "message" : "Update organization details"
+                                                },
+                                                {
+                                                   "code" : "1_501",
+                                                   "message" : "Upload a registration document"
+                                                }
+                                             ],
+                                             "type" : "invalidInput"
+                                          }
+                                       ],
+                                       "type" : "invalidInput"
+                                    },
+                                    {
+                                       "code" : "2_8067",
+                                       "message" : "'Signatory' was missing.",
+                                       "remediatingActions" : [
+                                          {
+                                             "code" : "2_124",
+                                             "message" : "Add 'organization.entityAssociations' of type 'signatory' to legal entity"
+                                          }
+                                       ],
+                                       "type" : "dataMissing"
+                                    }
+                                 ]
+                              }
+                           ],
+                           "transferInstruments" : [
+                              {
+                                 "enabled" : true,
+                                 "requested" : true,
+                                 "allowed" : false,
+                                 "id" : "SE00000000000000000000001",
+                                 "verificationStatus" : "pending"
+                              },
+                              {
+                                 "enabled" : true,
+                                 "requested" : true,
+                                 "allowed" : false,
+                                 "id" : "SE00000000000000000000002",
+                                 "verificationStatus" : "pending"
+                              }
+                           ],
+                           "verificationStatus" : "pending"
+                        }
+                     },
+                     "id" : "AH00000000000000000000001",
+                     "status" : "Active"
+                  }
+               },
+               "environment" : "live",
                "type" : "balancePlatform.accountHolder.updated"
             }
          },
@@ -2095,9 +2686,9 @@
                "data" : {
                   "balancePlatform" : "YOUR_BALANCE_PLATFORM",
                   "balanceAccount" : {
-                     "accountHolderId" : "AH3227C223222B5CZW72CCC73",
+                     "accountHolderId" : "AH00000000000000000001",
                      "defaultCurrencyCode" : "EUR",
-                     "id" : "BA3227C223222B5CZW72VCC75",
+                     "id" : "BA00000000000000000001",
                      "status" : "Active"
                   }
                },
@@ -2112,9 +2703,9 @@
                "data" : {
                   "balancePlatform" : "YOUR_BALANCE_PLATFORM",
                   "balanceAccount" : {
-                     "accountHolderId" : "AH3227C223222B5CZW72CCC73",
+                     "accountHolderId" : "AH00000000000000000001",
                      "defaultCurrencyCode" : "EUR",
-                     "id" : "BA3227C223222B5CZW72VCC75",
+                     "id" : "BA00000000000000000001",
                      "status" : "Active",
                      "timeZone" : "Europe/Amsterdam"
                   }
@@ -2129,7 +2720,7 @@
             "value" : {
                "data" : {
                   "balancePlatform" : "YOUR_BALANCE_PLATFORM",
-                  "accountId" : "BA3227C223222B5FTD99V8GRS",
+                  "accountId" : "BA00000000000000000001",
                   "sweep" : {
                      "id" : "SWPC4227C224555B5FTD2NT2JV4WN5",
                      "schedule" : {
@@ -2146,7 +2737,7 @@
                      },
                      "type" : "push",
                      "counterparty" : {
-                        "balanceAccountId" : "BA32272223222B5FTD2KR6TJD"
+                        "balanceAccountId" : "BA00000000000000000002"
                      },
                      "currency" : "EUR"
                   }
@@ -2161,7 +2752,7 @@
             "value" : {
                "data" : {
                   "balancePlatform" : "YOUR_BALANCE_PLATFORM",
-                  "accountId" : "BA3227C223222B5FTD99V8GRS",
+                  "accountId" : "BA00000000000000000001",
                   "sweep" : {
                      "id" : "SWPC4227C224555B5FTD2NT2JV4WN5",
                      "schedule" : {
@@ -2178,7 +2769,7 @@
                      },
                      "type" : "push",
                      "counterparty" : {
-                        "balanceAccountId" : "BA32272223222B5FTD2KR6TJD"
+                        "balanceAccountId" : "BA00000000000000000002"
                      },
                      "currency" : "EUR"
                   }
@@ -2193,7 +2784,7 @@
             "value" : {
                "data" : {
                   "balancePlatform" : "YOUR_BALANCE_PLATFORM",
-                  "accountId" : "BA3227C223222B5FTD99V8GRS",
+                  "accountId" : "BA00000000000000000001",
                   "sweep" : {
                      "id" : "SWPC4227C224555B5FTD2NT2JV4WN5",
                      "schedule" : {
@@ -2210,7 +2801,7 @@
                      },
                      "type" : "push",
                      "counterparty" : {
-                        "balanceAccountId" : "BA32272223222B5FTD2KR6TJD"
+                        "balanceAccountId" : "BA00000000000000000002"
                      },
                      "currency" : "EUR"
                   }
@@ -2226,7 +2817,7 @@
                "data" : {
                   "balancePlatform" : "YOUR_BALANCE_PLATFORM",
                   "paymentInstrument" : {
-                     "balanceAccountId" : "BA3227C223222B5CZW72VCC75",
+                     "balanceAccountId" : "BA00000000000000000001",
                      "description" : "C. Holden - card",
                      "issuingCountryCode" : "GB",
                      "status" : "Active",
@@ -2244,7 +2835,7 @@
                         },
                         "lastFour" : "2732"
                      },
-                     "id" : "PI32272223222B5CZW7BQ2V3T"
+                     "id" : "PI00000000000000000001"
                   }
                },
                "environment" : "test",
@@ -2258,7 +2849,7 @@
                "data" : {
                   "balancePlatform" : "YOUR_BALANCE_PLATFORM",
                   "paymentInstrument" : {
-                     "balanceAccountId" : "BA3227C223222B5CZW72VCC75",
+                     "balanceAccountId" : "BA00000000000000000001",
                      "description" : "C. Holden - card",
                      "issuingCountryCode" : "GB",
                      "status" : "Suspended",
@@ -2276,7 +2867,7 @@
                         },
                         "lastFour" : "2732"
                      },
-                     "id" : "PI32272223222B5CZW7BQ2V3T"
+                     "id" : "PI00000000000000000001"
                   }
                },
                "environment" : "test",

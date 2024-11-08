@@ -6,10 +6,10 @@ info:
   x-publicVersion: true
   title: Hosted onboarding API
   description: "This API is used for the classic integration. If you are just starting\
-    \ your implementation, refer to our [new integration guide](https://docs.adyen.com/marketplaces-and-platforms)\
+    \ your implementation, refer to our [new integration guide](https://docs.adyen.com/adyen-for-platforms-model)\
     \ instead.\n\nThe Hosted onboarding API provides endpoints that you can use to\
-    \ generate links to Adyen-hosted pages, such as an [onboarding page](https://docs.adyen.com/marketplaces-and-platforms/classic/hosted-onboarding-page)\
-    \ or a [PCI compliance questionnaire](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners).\
+    \ generate links to Adyen-hosted pages, such as an [onboarding page](https://docs.adyen.com/classic-platforms/hosted-onboarding-page)\
+    \ or a [PCI compliance questionnaire](https://docs.adyen.com/classic-platforms/platforms-for-partners).\
     \ You can provide these links to your account holders so that they can complete\
     \ their onboarding.\n\n## Authentication\nYour Adyen contact will provide your\
     \ API credential and an API key. To connect to the API, add an `X-API-Key` header\
@@ -23,15 +23,10 @@ info:
     \ using a version suffix in the endpoint URL. This suffix has the following format:\
     \ \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://cal-test.adyen.com/cal/services/Hop/v1/getOnboardingUrl\n\
     ```"
-  x-timestamp: '2023-04-11T21:25:35Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
-    url: https://www.adyen.help/hc/en-us/community/topics
-    email: developer-experience@adyen.com
-x-groups:
-- Hosted Onboarding Page
-- PCI Compliance Questionnaire Page
+    url: https://github.com/Adyen/adyen-openapi
 tags:
 - name: Hosted Onboarding Page
 - name: PCI Compliance Questionnaire Page
@@ -41,11 +36,10 @@ paths:
       tags:
       - Hosted Onboarding Page
       summary: Get a link to a Adyen-hosted onboarding page
-      description: 'Returns a link to an Adyen-hosted onboarding page (HOP) that you
+      description: Returns a link to an Adyen-hosted onboarding page (HOP) that you
         can send to your account holder. For more information on how to use HOP, refer
-        to [Hosted onboarding](https://docs.adyen.com/marketplaces-and-platforms/classic/collect-verification-details/hosted-onboarding-page). '
+        to [Hosted onboarding](https://docs.adyen.com/classic-platforms/onboard-users/hosted-onboarding-page).
       operationId: post-getOnboardingUrl
-      x-groupName: Hosted Onboarding Page
       x-sortIndex: 1
       x-methodName: getOnboardingUrl
       security:
@@ -106,9 +100,8 @@ paths:
       summary: Get a link to a PCI compliance questionnaire
       description: "Returns a link to a PCI compliance questionnaire that you can\
         \ send to your account holder.\n > You should only use this endpoint if you\
-        \ have a [partner platform setup](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners)."
+        \ have a [partner platform setup](https://docs.adyen.com/classic-platforms/platforms-for-partners)."
       operationId: post-getPciQuestionnaireUrl
-      x-groupName: PCI Compliance Questionnaire Page
       x-sortIndex: 1
       x-methodName: getPciQuestionnaireUrl
       security:
@@ -165,33 +158,35 @@ paths:
 components:
   schemas:
     CollectInformation:
+      additionalProperties: false
       properties:
         bankDetails:
-          description: Indicates whether [bank account details](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks/bank-account-check)
+          description: Indicates whether [bank account details](https://docs.adyen.com/classic-platforms/verification-process/accepted-data-format/#bank-accounts)
             must be collected. Default is **true**.
           type: boolean
         businessDetails:
-          description: Indicates whether [business details](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks/company-check)
+          description: Indicates whether [business details](https://docs.adyen.com/classic-platforms/verification-process/accepted-data-format/#organizations)
             must be collected. Default is **true**.
           type: boolean
         individualDetails:
-          description: Indicates whether [individual details](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks/identity-check)
+          description: Indicates whether [individual details](https://docs.adyen.com/classic-platforms/verification-process/accepted-data-format/#individuals)
             must be collected. Default is **true**.
           type: boolean
         legalArrangementDetails:
-          description: Indicates whether [legal arrangement details](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks/legal-arrangements)
+          description: Indicates whether [legal arrangement details](https://docs.adyen.com/classic-platforms/verification-checks/legal-arrangements)
             must be collected. Default is **true**.
           type: boolean
         pciQuestionnaire:
-          description: Indicates whether answers to a [PCI questionnaire](https://docs.adyen.com/marketplaces-and-platforms/classic/platforms-for-partners#onboard-partner-platform)
+          description: Indicates whether answers to a [PCI questionnaire](https://docs.adyen.com/classic-platforms/platforms-for-partners#onboard-partner-platform)
             must be collected. Applies only to partner platforms. Default is **true**.
           type: boolean
         shareholderDetails:
-          description: Indicates whether [shareholder details](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks/identity-check)
+          description: Indicates whether [shareholder details](https://docs.adyen.com/classic-platforms/verification-process/accepted-data-format/#individuals)
             must be collected. Defaults to **true**.
           type: boolean
       type: object
     ErrorFieldType:
+      additionalProperties: false
       properties:
         errorCode:
           description: The validation error code.
@@ -209,6 +204,7 @@ components:
         ErrorFieldType:
           $ref: '#/components/schemas/ErrorFieldType'
     FieldType:
+      additionalProperties: false
       properties:
         field:
           description: The full name of the property.
@@ -295,6 +291,7 @@ components:
           - legalBusinessName
           - legalEntity
           - legalEntityType
+          - linkedViasVirtualAccount
           - logo
           - merchantAccount
           - merchantCategoryCode
@@ -314,6 +311,7 @@ components:
           - ownerStreet
           - passport
           - passportNumber
+          - payoutMethod
           - payoutMethodCode
           - payoutSchedule
           - pciSelfAssessment
@@ -380,6 +378,7 @@ components:
           type: string
       type: object
     GetOnboardingUrlRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The account holder code you provided when you created the account
@@ -387,9 +386,9 @@ components:
           type: string
         collectInformation:
           description: Contains indicators whether the page should only collect information
-            for specific [KYC checks](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks).
+            for specific [KYC checks](https://docs.adyen.com/classic-platforms/verification-checks).
             By default, the page collects information for all KYC checks that apply
-            to the [legal entity type](https://docs.adyen.com/marketplaces-and-platforms/classic/account-holders-and-accounts#legal-entity-types).
+            to the [legal entity type](https://docs.adyen.com/classic-platforms/account-holders-and-accounts#legal-entity-types).
           $ref: '#/components/schemas/CollectInformation'
         editMode:
           description: Indicates if editing checks is allowed even if all the checks
@@ -415,7 +414,7 @@ components:
             \ in the request or if the language is not supported, the page uses the\
             \ browser language. If the browser language is not supported, the page\
             \ uses **en-US** by default.\n\nFor a list of supported languages, refer\
-            \ to [Change the page language](https://docs.adyen.com/marketplaces-and-platforms/classic/hosted-onboarding-page/customize-experience#change-page-language)."
+            \ to [Change the page language](https://docs.adyen.com/classic-platforms/hosted-onboarding-page/customize-experience#change-page-language)."
           type: string
         showPages:
           description: Contains indicators whether specific pages must be shown to
@@ -425,6 +424,7 @@ components:
       - accountHolderCode
       type: object
     GetOnboardingUrlResponse:
+      additionalProperties: false
       properties:
         invalidFields:
           x-addedInVersion: '5'
@@ -457,6 +457,7 @@ components:
           type: boolean
       type: object
     GetPciUrlRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The account holder code you provided when you created the account
@@ -471,6 +472,7 @@ components:
       - accountHolderCode
       type: object
     GetPciUrlResponse:
+      additionalProperties: false
       properties:
         invalidFields:
           x-addedInVersion: '5'
@@ -503,6 +505,7 @@ components:
           type: boolean
       type: object
     ServiceError:
+      additionalProperties: false
       properties:
         errorCode:
           description: The error code mapped to the error message.
@@ -522,6 +525,7 @@ components:
           type: integer
       type: object
     ShowPages:
+      additionalProperties: false
       properties:
         bankDetailsSummaryPage:
           description: Indicates whether the page with bank account details must be

@@ -9,30 +9,19 @@
       "version" : "2",
       "x-publicVersion" : true,
       "title" : "Legal Entity Management API",
-      "description" : "The Legal Entity Management API enables you to manage legal entities that contain information required for verification. \n## Authentication\nTo connect to the Legal Entity Management API, you must use the basic authentication credentials of your web service user. If you don't have one, contact the [Adyen Support Team](https://www.adyen.help/hc/en-us/requests/new). Use the web service user credentials to authenticate your request, for example:\n\n```\ncurl\n-U \"ws_123456@Scope.BalancePlatform_YourBalancePlatform\":\"YourWsPassword\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\nNote that when going live, you need to generate new web service user credentials to access the [live endpoints](https://docs.adyen.com/development-resources/live-endpoints).\n\n## Versioning\nThe Legal Entity Management API supports versioning of its endpoints through a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://kyc-test.adyen.com/lem/v2/legalEntities\n```\n## Going live\nWhen going live, your Adyen contact will provide your API credential for the live environment. You can then use the username and password to send requests to `https://kyc-live.adyen.com/lem/v2`.\n\n",
-      "x-timestamp" : "2023-04-25T13:22:00Z",
+      "description" : "The Legal Entity Management API enables you to manage legal entities that contain information required for verification. \n## Authentication\nEach request to the Legal Entity Management API must be signed with an API key. Generate an API key in your Customer Area if you have a [platform setup](https://docs.adyen.com/platforms/manage-access/api-credentials-web-service/#generate-api-key) or [marketplace setup](https://docs.adyen.com/marketplaces/manage-access/api-credentials-web-service/#generate-api-key).\n\n If you have an Adyen Issuing integration, [generate an API key](https://docs.adyen.com/issuing/manage-access/api-credentials-web-service/#generate-api-key) in your Balance Platform Customer Area.\n\nTo connect to the API, add an `X-API-Key` header with the API key as the value. For example:\n\n```\ncurl\n-H \"X-API-Key: YOUR_API_KEY\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\n## Versioning\nThe Legal Entity Management API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://kyc-test.adyen.com/lem/v2/legalEntities\n```\n## Going live\nWhen going live, generate an API key in your [live Customer Area](https://ca-live.adyen.com/ca/) if you have an Adyen for Platforms integration or [live Balance Platform Customer Area](https://balanceplatform-live.adyen.com/balanceplatform/) if you have an Adyen Issuing integration.You can then use the API key to send requests to `https://kyc-live.adyen.com/lem/v2`.\n\n",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
-         "url" : "https://www.adyen.help/hc/en-us/community/topics",
-         "email" : "developer-experience@adyen.com"
+         "url" : "https://github.com/Adyen/adyen-openapi"
       }
    },
-   "x-groups" : [
-      "Legal entities",
-      "Transfer instruments",
-      "Business lines",
-      "Documents",
-      "Terms of Service",
-      "Hosted Onboarding",
-      "PCI questionnaires"
-   ],
    "tags" : [
       {
          "name" : "Legal entities"
       },
       {
-         "name" : "Hosted Onboarding"
+         "name" : "Transfer instruments"
       },
       {
          "name" : "Business lines"
@@ -44,7 +33,10 @@
          "name" : "Terms of Service"
       },
       {
-         "name" : "Transfer instruments"
+         "name" : "Tax eDelivery consent"
+      },
+      {
+         "name" : "Hosted Onboarding"
       },
       {
          "name" : "PCI questionnaires"
@@ -57,10 +49,9 @@
                "Business lines"
             ],
             "summary" : "Create a business line",
-            "description" : "Creates a business line. \n\nThis resource contains information about your user's line of business, including their industry and their source of funds. Adyen uses this information to verify your users as required by payment industry regulations. Adyen informs you of the verification results through webhooks or API responses.",
+            "description" : "Creates a business line. \n\nThis resource contains information about your user's line of business, including their industry and their source of funds. Adyen uses this information to verify your users as required by payment industry regulations. Adyen informs you of the verification results through webhooks or API responses.\n\n",
             "x-addedInVersion" : "1",
             "operationId" : "post-businessLines",
-            "x-groupName" : "Business lines",
             "x-sortIndex" : 12,
             "x-methodName" : "createBusinessLine",
             "security" : [
@@ -165,7 +156,6 @@
             "description" : "Deletes a business line.\n\n >If you delete a business line linked to a [payment method](https://docs.adyen.com/development-resources/paymentmethodvariant#management-api), it can affect your merchant account's ability to use the [payment method](https://docs.adyen.com/api-explorer/Management/latest/post/merchants/_merchantId_/paymentMethodSettings). The business line is removed from all linked merchant accounts.",
             "x-addedInVersion" : "1",
             "operationId" : "delete-businessLines-id",
-            "x-groupName" : "Business lines",
             "x-sortIndex" : 14,
             "x-methodName" : "deleteBusinessLine",
             "security" : [
@@ -191,7 +181,7 @@
             ],
             "responses" : {
                "204" : {
-                  "description" : "No Content - the request has been successfully processed, but there is no additional content."
+                  "description" : "No Content - look at the actual response code for the status of the request. "
                },
                "400" : {
                   "content" : {
@@ -253,7 +243,6 @@
             "description" : "Returns the detail of a business line.",
             "x-addedInVersion" : "1",
             "operationId" : "get-businessLines-id",
-            "x-groupName" : "Business lines",
             "x-sortIndex" : 13,
             "x-methodName" : "getBusinessLine",
             "security" : [
@@ -353,7 +342,6 @@
             "description" : "Updates a business line.",
             "x-addedInVersion" : "2",
             "operationId" : "patch-businessLines-id",
-            "x-groupName" : "Business lines",
             "x-sortIndex" : 15,
             "x-methodName" : "updateBusinessLine",
             "security" : [
@@ -466,10 +454,9 @@
                "Documents"
             ],
             "summary" : "Upload a document for verification checks",
-            "description" : "Uploads a document for verification checks.\n\n Adyen uses the information from the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities) to run automated verification checks. If these checks fail, you will be notified to provide additional documents.\n\n You should only upload documents when Adyen requests additional information for the legal entity. ",
+            "description" : "Uploads a document for verification checks.\n\n Adyen uses the information from the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities) to run automated verification checks. If these checks fail, you will be notified to provide additional documents.\n\n You should only upload documents when Adyen requests additional information for the legal entity.\n\n >You can upload a maximum of 15 pages for photo IDs.",
             "x-addedInVersion" : "1",
             "operationId" : "post-documents",
-            "x-groupName" : "Documents",
             "x-sortIndex" : 4,
             "x-methodName" : "uploadDocumentForVerificationChecks",
             "security" : [
@@ -496,6 +483,17 @@
                   }
                }
             },
+            "parameters" : [
+               {
+                  "description" : "Use a suberror code as your requested verification code. You can include one code at a time in your request header. Requested verification codes can only be used in your test environment.",
+                  "example" : "1_3008",
+                  "name" : "x-requested-verification-code",
+                  "in" : "header",
+                  "schema" : {
+                     "type" : "string"
+                  }
+               }
+            ],
             "responses" : {
                "200" : {
                   "content" : {
@@ -574,7 +572,6 @@
             "description" : "Deletes a document.",
             "x-addedInVersion" : "1",
             "operationId" : "delete-documents-id",
-            "x-groupName" : "Documents",
             "x-sortIndex" : 7,
             "x-methodName" : "deleteDocument",
             "security" : [
@@ -599,15 +596,8 @@
                }
             ],
             "responses" : {
-               "200" : {
-                  "content" : {
-                     "application/json" : {
-                        "schema" : {
-                           "$ref" : "#/components/schemas/VoidResponse"
-                        }
-                     }
-                  },
-                  "description" : "OK - the request has succeeded."
+               "204" : {
+                  "description" : "No Content - look at the actual response code for the status of the request. "
                },
                "400" : {
                   "content" : {
@@ -669,7 +659,6 @@
             "description" : "Returns a document.",
             "x-addedInVersion" : "1",
             "operationId" : "get-documents-id",
-            "x-groupName" : "Documents",
             "x-sortIndex" : 5,
             "x-methodName" : "getDocument",
             "security" : [
@@ -690,6 +679,15 @@
                   "required" : true,
                   "schema" : {
                      "type" : "string"
+                  }
+               },
+               {
+                  "description" : "Do not load document content while fetching the document.",
+                  "name" : "skipContent",
+                  "in" : "query",
+                  "required" : false,
+                  "schema" : {
+                     "type" : "boolean"
                   }
                }
             ],
@@ -766,10 +764,9 @@
                "Documents"
             ],
             "summary" : "Update a document",
-            "description" : "Updates a document.",
+            "description" : "Updates a document.\n\n >You can upload a maximum of 15 pages for photo IDs.",
             "x-addedInVersion" : "1",
             "operationId" : "patch-documents-id",
-            "x-groupName" : "Documents",
             "x-sortIndex" : 6,
             "x-methodName" : "updateDocument",
             "security" : [
@@ -802,6 +799,15 @@
                   "name" : "id",
                   "in" : "path",
                   "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "description" : "Use the requested verification code 0_0001 to resolve any suberrors associated with the document. Requested verification codes can only be used in your test environment.",
+                  "example" : "0_0001",
+                  "name" : "x-requested-verification-code",
+                  "in" : "header",
                   "schema" : {
                      "type" : "string"
                   }
@@ -885,7 +891,6 @@
             "description" : "Creates a legal entity. \n\nThis resource contains information about the user that will be onboarded in your platform. Adyen uses this information to perform verification checks as required by payment industry regulations. Adyen informs you of the verification results through webhooks or API responses. \n\n",
             "x-addedInVersion" : "1",
             "operationId" : "post-legalEntities",
-            "x-groupName" : "Legal entities",
             "x-sortIndex" : 1,
             "x-methodName" : "createLegalEntity",
             "security" : [
@@ -902,6 +907,9 @@
                "content" : {
                   "application/json" : {
                      "examples" : {
+                        "createLegalEntityIndividualAU" : {
+                           "$ref" : "#/components/examples/post-legalEntities-createLegalEntityIndividualAU"
+                        },
                         "createLegalEntityIndividualNL" : {
                            "$ref" : "#/components/examples/post-legalEntities-createLegalEntityIndividualNL"
                         },
@@ -919,6 +927,9 @@
                         },
                         "createLegalEntitySolePropUS" : {
                            "$ref" : "#/components/examples/post-legalEntities-createLegalEntitySolePropUS"
+                        },
+                        "createTrustAU" : {
+                           "$ref" : "#/components/examples/post-legalEntities-createTrustAU"
                         }
                      },
                      "schema" : {
@@ -927,11 +938,25 @@
                   }
                }
             },
+            "parameters" : [
+               {
+                  "description" : "Use a suberror code as your requested verification code. You can include one code at a time in your request header. Requested verification codes can only be used in your test environment.",
+                  "example" : "1_3004",
+                  "name" : "x-requested-verification-code",
+                  "in" : "header",
+                  "schema" : {
+                     "type" : "string"
+                  }
+               }
+            ],
             "responses" : {
                "200" : {
                   "content" : {
                      "application/json" : {
                         "examples" : {
+                           "createLegalEntityIndividualAU" : {
+                              "$ref" : "#/components/examples/post-legalEntities-createLegalEntityIndividualAU-200"
+                           },
                            "createLegalEntityIndividualNL" : {
                               "$ref" : "#/components/examples/post-legalEntities-createLegalEntityIndividualNL-200"
                            },
@@ -949,6 +974,9 @@
                            },
                            "createLegalEntitySolePropUS" : {
                               "$ref" : "#/components/examples/post-legalEntities-createLegalEntitySolePropUS-200"
+                           },
+                           "createTrustAU" : {
+                              "$ref" : "#/components/examples/post-legalEntities-createTrustAU-200"
                            }
                         },
                         "schema" : {
@@ -1020,7 +1048,6 @@
             "description" : "Returns a legal entity.",
             "x-addedInVersion" : "1",
             "operationId" : "get-legalEntities-id",
-            "x-groupName" : "Legal entities",
             "x-sortIndex" : 2,
             "x-methodName" : "getLegalEntity",
             "security" : [
@@ -1120,7 +1147,6 @@
             "description" : "Updates a legal entity.\n\n >To change the legal entity type, include only the new `type` in your request. To update the `entityAssociations` array, you need to replace the entire array. For example, if the array has 3 entries and you want to remove 1 entry, you need to PATCH the resource with the remaining 2 entries.",
             "x-addedInVersion" : "1",
             "operationId" : "patch-legalEntities-id",
-            "x-groupName" : "Legal entities",
             "x-sortIndex" : 3,
             "x-methodName" : "updateLegalEntity",
             "security" : [
@@ -1145,6 +1171,12 @@
                         },
                         "updateLegalEntitySoleProp" : {
                            "$ref" : "#/components/examples/patch-legalEntities-id-updateLegalEntitySoleProp"
+                        },
+                        "updateTrustMember" : {
+                           "$ref" : "#/components/examples/patch-legalEntities-id-updateTrustMember"
+                        },
+                        "updateTrustMemberExempt" : {
+                           "$ref" : "#/components/examples/patch-legalEntities-id-updateTrustMemberExempt"
                         }
                      },
                      "schema" : {
@@ -1159,6 +1191,15 @@
                   "name" : "id",
                   "in" : "path",
                   "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "description" : "Use the requested verification code 0_0001 to resolve any suberrors associated with the legal entity. Requested verification codes can only be used in your test environment.",
+                  "example" : "0_0001",
+                  "name" : "x-requested-verification-code",
+                  "in" : "header",
                   "schema" : {
                      "type" : "string"
                   }
@@ -1177,10 +1218,130 @@
                            },
                            "updateLegalEntitySoleProp" : {
                               "$ref" : "#/components/examples/patch-legalEntities-id-updateLegalEntitySoleProp-200"
+                           },
+                           "updateTrustMember" : {
+                              "$ref" : "#/components/examples/patch-legalEntities-id-updateTrustMember-200"
+                           },
+                           "updateTrustMemberExempt" : {
+                              "$ref" : "#/components/examples/patch-legalEntities-id-updateTrustMemberExempt-200"
                            }
                         },
                         "schema" : {
                            "$ref" : "#/components/schemas/LegalEntity"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded."
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
+      "/legalEntities/{id}/acceptedTermsOfServiceDocument/{termsofserviceacceptancereference}" : {
+         "get" : {
+            "tags" : [
+               "Terms of Service"
+            ],
+            "summary" : "Get accepted Terms of Service document",
+            "description" : "Returns the accepted Terms of Service document for a legal entity.",
+            "x-addedInVersion" : "2",
+            "operationId" : "get-legalEntities-id-acceptedTermsOfServiceDocument-termsofserviceacceptancereference",
+            "x-sortIndex" : 4,
+            "x-methodName" : "getAcceptedTermsOfServiceDocument",
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "parameters" : [
+               {
+                  "description" : "The unique identifier of the legal entity. For sole proprietorship, this is the individual legal entity ID of the owner. For organizations, this is the ID of the organization.",
+                  "name" : "id",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "description" : "An Adyen-generated reference for the accepted Terms of Service.",
+                  "name" : "termsofserviceacceptancereference",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               },
+               {
+                  "description" : "The format of the Terms of Service document. Possible values: **JSON**, **PDF**, or **TXT**",
+                  "name" : "termsOfServiceDocumentFormat",
+                  "in" : "query",
+                  "required" : false,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/GetAcceptedTermsOfServiceDocumentResponse"
                         }
                      }
                   },
@@ -1248,7 +1409,6 @@
             "description" : "Returns the business lines owned by a legal entity.",
             "x-addedInVersion" : "1",
             "operationId" : "get-legalEntities-id-businessLines",
-            "x-groupName" : "Legal entities",
             "x-sortIndex" : 4,
             "x-methodName" : "getAllBusinessLinesUnderLegalEntity",
             "security" : [
@@ -1341,16 +1501,111 @@
             }
          }
       },
+      "/legalEntities/{id}/checkTaxElectronicDeliveryConsent" : {
+         "post" : {
+            "tags" : [
+               "Tax eDelivery consent"
+            ],
+            "summary" : "Check the status of consent for electronic delivery of tax forms",
+            "description" : "Returns the consent status for electronic delivery of tax forms.",
+            "x-addedInVersion" : "1",
+            "operationId" : "post-legalEntities-id-checkTaxElectronicDeliveryConsent",
+            "x-sortIndex" : 2,
+            "x-methodName" : "checkStatusOfConsentForElectronicDeliveryOfTaxForms",
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "parameters" : [
+               {
+                  "description" : "The unique identifier of the legal entity. For sole proprietorships, this is the individual legal entity ID of the owner. For organizations, this is the ID of the organization.",
+                  "name" : "id",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/CheckTaxElectronicDeliveryConsentResponse"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded."
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
       "/legalEntities/{id}/onboardingLinks" : {
          "post" : {
             "tags" : [
                "Hosted Onboarding"
             ],
             "summary" : "Get a link to an Adyen-hosted onboarding page",
-            "description" : "Returns a link to an Adyen-hosted onboarding page where you need to redirect your user.",
+            "description" : "Returns a link to an Adyen-hosted onboarding page where you need to redirect your user.\n\n",
             "x-addedInVersion" : "1",
             "operationId" : "post-legalEntities-id-onboardingLinks",
-            "x-groupName" : "Hosted Onboarding",
             "x-sortIndex" : 1,
             "x-methodName" : "getLinkToAdyenhostedOnboardingPage",
             "security" : [
@@ -1466,7 +1721,6 @@
             "description" : "Get a list of signed PCI questionnaires.",
             "x-addedInVersion" : "1",
             "operationId" : "get-legalEntities-id-pciQuestionnaires",
-            "x-groupName" : "PCI questionnaires",
             "x-sortIndex" : 3,
             "x-methodName" : "getPciQuestionnaireDetails",
             "security" : [
@@ -1565,10 +1819,9 @@
                "PCI questionnaires"
             ],
             "summary" : "Generate PCI questionnaire",
-            "description" : "Generates the required PCI questionnaire based on the user's [salesChannel](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businessLines__reqParam_salesChannels). If multiple questionnaires are required, this request creates a single consodilated document to be signed.",
+            "description" : "Generates the required PCI questionnaires based on the user's [salesChannel](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businessLines__reqParam_salesChannels).",
             "x-addedInVersion" : "1",
             "operationId" : "post-legalEntities-id-pciQuestionnaires-generatePciTemplates",
-            "x-groupName" : "PCI questionnaires",
             "x-sortIndex" : 1,
             "x-methodName" : "generatePciQuestionnaire",
             "security" : [
@@ -1597,7 +1850,7 @@
             },
             "parameters" : [
                {
-                  "description" : "The legal entity ID of the individual who will sign the PCI questionnaire.",
+                  "description" : "The unique identifier of the legal entity to get PCI questionnaire information.",
                   "name" : "id",
                   "in" : "path",
                   "required" : true,
@@ -1684,7 +1937,6 @@
             "description" : "Signs the required PCI questionnaire.",
             "x-addedInVersion" : "1",
             "operationId" : "post-legalEntities-id-pciQuestionnaires-signPciTemplates",
-            "x-groupName" : "PCI questionnaires",
             "x-sortIndex" : 2,
             "x-methodName" : "signPciQuestionnaire",
             "security" : [
@@ -1713,7 +1965,7 @@
             },
             "parameters" : [
                {
-                  "description" : "The legal entity ID of the individual who signed the PCI questionnaire.",
+                  "description" : "The legal entity ID of the user that has a contractual relationship with your platform.",
                   "name" : "id",
                   "in" : "path",
                   "required" : true,
@@ -1800,7 +2052,6 @@
             "description" : "Returns the signed PCI questionnaire.",
             "x-addedInVersion" : "1",
             "operationId" : "get-legalEntities-id-pciQuestionnaires-pciid",
-            "x-groupName" : "PCI questionnaires",
             "x-sortIndex" : 4,
             "x-methodName" : "getPciQuestionnaire",
             "security" : [
@@ -1902,6 +2153,104 @@
             }
          }
       },
+      "/legalEntities/{id}/setTaxElectronicDeliveryConsent" : {
+         "post" : {
+            "tags" : [
+               "Tax eDelivery consent"
+            ],
+            "summary" : "Set the consent status for electronic delivery of tax forms",
+            "description" : "Set the consent status for electronic delivery of tax forms.",
+            "x-addedInVersion" : "1",
+            "operationId" : "post-legalEntities-id-setTaxElectronicDeliveryConsent",
+            "x-sortIndex" : 1,
+            "x-methodName" : "setConsentStatusForElectronicDeliveryOfTaxForms",
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "requestBody" : {
+               "content" : {
+                  "application/json" : {
+                     "schema" : {
+                        "$ref" : "#/components/schemas/SetTaxElectronicDeliveryConsentRequest"
+                     }
+                  }
+               }
+            },
+            "parameters" : [
+               {
+                  "description" : "The unique identifier of the legal entity. For sole proprietorships, this is the individual legal entity ID of the owner. For organizations, this is the ID of the organization.",
+                  "name" : "id",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "description" : "No Content - look at the actual response code for the status of the request. "
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
       "/legalEntities/{id}/termsOfService" : {
          "post" : {
             "tags" : [
@@ -1911,7 +2260,6 @@
             "description" : "Returns the Terms of Service document for a legal entity.",
             "x-addedInVersion" : "1",
             "operationId" : "post-legalEntities-id-termsOfService",
-            "x-groupName" : "Terms of Service",
             "x-sortIndex" : 1,
             "x-methodName" : "getTermsOfServiceDocument",
             "security" : [
@@ -1940,7 +2288,7 @@
             },
             "parameters" : [
                {
-                  "description" : "The unique identifier of the legal entity.",
+                  "description" : "The unique identifier of the legal entity. For sole proprietorships, this is the individual legal entity ID of the owner. For organizations, this is the ID of the organization.",
                   "name" : "id",
                   "in" : "path",
                   "required" : true,
@@ -2027,7 +2375,6 @@
             "description" : "Accepts Terms of Service.",
             "x-addedInVersion" : "1",
             "operationId" : "patch-legalEntities-id-termsOfService-termsofservicedocumentid",
-            "x-groupName" : "Terms of Service",
             "x-sortIndex" : 2,
             "x-methodName" : "acceptTermsOfService",
             "security" : [
@@ -2043,6 +2390,11 @@
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "updateTermsofService" : {
+                           "$ref" : "#/components/examples/patch-legalEntities-id-termsOfService-termsofservicedocumentid-updateTermsofService"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/AcceptTermsOfServiceRequest"
                      }
@@ -2051,7 +2403,7 @@
             },
             "parameters" : [
                {
-                  "description" : "The unique identifier of the legal entity.",
+                  "description" : "The unique identifier of the legal entity.\n\nFor sole proprietorships, this is the individual legal entity ID of the owner.\n\nFor organizations, this is the ID of the organization.\n\nFor legal representatives of individuals, this is the ID of the individual.\n\n",
                   "name" : "id",
                   "in" : "path",
                   "required" : true,
@@ -2073,6 +2425,11 @@
                "200" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "updateTermsofService" : {
+                              "$ref" : "#/components/examples/patch-legalEntities-id-termsOfService-termsofservicedocumentid-updateTermsofService-200"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/AcceptTermsOfServiceResponse"
                         }
@@ -2142,7 +2499,6 @@
             "description" : "Returns Terms of Service information for a legal entity.",
             "x-addedInVersion" : "1",
             "operationId" : "get-legalEntities-id-termsOfServiceAcceptanceInfos",
-            "x-groupName" : "Terms of Service",
             "x-sortIndex" : 3,
             "x-methodName" : "getTermsOfServiceInformationForLegalEntity",
             "security" : [
@@ -2157,7 +2513,7 @@
             ],
             "parameters" : [
                {
-                  "description" : "The unique identifier of the legal entity.",
+                  "description" : "The unique identifier of the legal entity. For sole proprietorships, this is the individual legal entity ID of the owner. For organizations, this is the ID of the organization.",
                   "name" : "id",
                   "in" : "path",
                   "required" : true,
@@ -2235,16 +2591,116 @@
             }
          }
       },
+      "/legalEntities/{id}/termsOfServiceStatus" : {
+         "get" : {
+            "tags" : [
+               "Terms of Service"
+            ],
+            "summary" : "Get Terms of Service status",
+            "description" : "Returns the required types of Terms of Service that need to be accepted by a legal entity.",
+            "x-addedInVersion" : "1",
+            "operationId" : "get-legalEntities-id-termsOfServiceStatus",
+            "x-sortIndex" : 4,
+            "x-methodName" : "getTermsOfServiceStatus",
+            "security" : [
+               {
+                  "BasicAuth" : [
+                     ]
+               },
+               {
+                  "ApiKeyAuth" : [
+                     ]
+               }
+            ],
+            "parameters" : [
+               {
+                  "description" : "The unique identifier of the legal entity. For sole proprietorships, this is the individual legal entity ID of the owner. For organizations, this is the ID of the organization.",
+                  "name" : "id",
+                  "in" : "path",
+                  "required" : true,
+                  "schema" : {
+                     "type" : "string"
+                  }
+               }
+            ],
+            "responses" : {
+               "200" : {
+                  "content" : {
+                     "application/json" : {
+                        "examples" : {
+                           "success" : {
+                              "$ref" : "#/components/examples/get-legalEntities-id-termsOfServiceStatus-success-200"
+                           }
+                        },
+                        "schema" : {
+                           "$ref" : "#/components/schemas/CalculateTermsOfServiceStatusResponse"
+                        }
+                     }
+                  },
+                  "description" : "OK - the request has succeeded."
+               },
+               "400" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Bad Request - a problem reading or understanding the request."
+               },
+               "401" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unauthorized - authentication required."
+               },
+               "403" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Forbidden - insufficient permissions to process the request."
+               },
+               "422" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Unprocessable Entity - a request validation error."
+               },
+               "500" : {
+                  "content" : {
+                     "application/json" : {
+                        "schema" : {
+                           "$ref" : "#/components/schemas/ServiceError"
+                        }
+                     }
+                  },
+                  "description" : "Internal Server Error - the server could not process the request."
+               }
+            }
+         }
+      },
       "/themes" : {
          "get" : {
             "tags" : [
                "Hosted Onboarding"
             ],
             "summary" : "Get a list of hosted onboarding page themes",
-            "description" : "Returns a list of hosted onboarding page themes.",
+            "description" : "Returns a list of hosted onboarding page themes.\n\n",
             "x-addedInVersion" : "1",
             "operationId" : "get-themes",
-            "x-groupName" : "Hosted Onboarding",
             "x-sortIndex" : 2,
             "x-methodName" : "listHostedOnboardingPageThemes",
             "security" : [
@@ -2335,7 +2791,6 @@
             "description" : "Returns the details of the theme identified in the path.",
             "x-addedInVersion" : "1",
             "operationId" : "get-themes-id",
-            "x-groupName" : "Hosted Onboarding",
             "x-sortIndex" : 4,
             "x-methodName" : "getOnboardingLinkTheme",
             "security" : [
@@ -2437,7 +2892,6 @@
             "description" : "Creates a transfer instrument. \n\nA transfer instrument is a bank account that a legal entity owns. Adyen performs verification checks on the transfer instrument as required by payment industry regulations. We inform you of the verification results through webhooks or API responses.\n\nWhen the transfer instrument passes the verification checks, you can start sending funds from the balance platform to the transfer instrument (such as payouts).",
             "x-addedInVersion" : "1",
             "operationId" : "post-transferInstruments",
-            "x-groupName" : "Transfer instruments",
             "x-sortIndex" : 8,
             "x-methodName" : "createTransferInstrument",
             "security" : [
@@ -2467,6 +2921,17 @@
                   }
                }
             },
+            "parameters" : [
+               {
+                  "description" : "Use a suberror code as your requested verification code. You can include one code at a time in your request header. Requested verification codes can only be used in your test environment.",
+                  "example" : "1_7002",
+                  "name" : "x-requested-verification-code",
+                  "in" : "header",
+                  "schema" : {
+                     "type" : "string"
+                  }
+               }
+            ],
             "responses" : {
                "200" : {
                   "content" : {
@@ -2548,7 +3013,6 @@
             "description" : "Deletes a transfer instrument.",
             "x-addedInVersion" : "1",
             "operationId" : "delete-transferInstruments-id",
-            "x-groupName" : "Transfer instruments",
             "x-sortIndex" : 11,
             "x-methodName" : "deleteTransferInstrument",
             "security" : [
@@ -2574,7 +3038,7 @@
             ],
             "responses" : {
                "204" : {
-                  "description" : "No Content - the request has been successfully processed, but there is no additional content."
+                  "description" : "No Content - look at the actual response code for the status of the request. "
                },
                "400" : {
                   "content" : {
@@ -2636,7 +3100,6 @@
             "description" : "Returns the details of a transfer instrument.",
             "x-addedInVersion" : "1",
             "operationId" : "get-transferInstruments-id",
-            "x-groupName" : "Transfer instruments",
             "x-sortIndex" : 9,
             "x-methodName" : "getTransferInstrument",
             "security" : [
@@ -2736,7 +3199,6 @@
             "description" : "Updates a transfer instrument.",
             "x-addedInVersion" : "1",
             "operationId" : "patch-transferInstruments-id",
-            "x-groupName" : "Transfer instruments",
             "x-sortIndex" : 10,
             "x-methodName" : "updateTransferInstrument",
             "security" : [
@@ -2752,6 +3214,11 @@
             "requestBody" : {
                "content" : {
                   "application/json" : {
+                     "examples" : {
+                        "updateTransferInstrument" : {
+                           "$ref" : "#/components/examples/patch-transferInstruments-id-updateTransferInstrument"
+                        }
+                     },
                      "schema" : {
                         "$ref" : "#/components/schemas/TransferInstrumentInfo"
                      }
@@ -2767,12 +3234,26 @@
                   "schema" : {
                      "type" : "string"
                   }
+               },
+               {
+                  "description" : "Use the requested verification code 0_0001 to resolve any suberrors associated with the transfer instrument. Requested verification codes can only be used in your test environment.",
+                  "example" : "0_0001",
+                  "name" : "x-requested-verification-code",
+                  "in" : "header",
+                  "schema" : {
+                     "type" : "string"
+                  }
                }
             ],
             "responses" : {
                "200" : {
                   "content" : {
                      "application/json" : {
+                        "examples" : {
+                           "updateTransferInstrument" : {
+                              "$ref" : "#/components/examples/patch-transferInstruments-id-updateTransferInstrument-200"
+                           }
+                        },
                         "schema" : {
                            "$ref" : "#/components/schemas/TransferInstrument"
                         }
@@ -2837,9 +3318,10 @@
    "components" : {
       "schemas" : {
          "AcceptTermsOfServiceRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "acceptedBy" : {
-                  "description" : "The unique identifier of the user accepting the Terms of Service.",
+                  "description" : "The legal entity ID of the user accepting the Terms of Service.\n\nFor organizations, this must be the individual legal entity ID of an authorized signatory for the organization.\n\nFor sole proprietorships, this must be the individual legal entity ID of the owner.\n\nFor individuals, this must be the individual legal entity id of either the individual, parent, or guardian.\n\n",
                   "type" : "string"
                },
                "ipAddress" : {
@@ -2847,9 +3329,13 @@
                   "type" : "string"
                }
             },
+            "required" : [
+               "acceptedBy"
+            ],
             "type" : "object"
          },
          "AcceptTermsOfServiceResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "acceptedBy" : {
                   "description" : "The unique identifier of the user that accepted the Terms of Service.",
@@ -2864,7 +3350,7 @@
                   "type" : "string"
                },
                "language" : {
-                  "description" : "The language used for the Terms of Service document, specified by the two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code. For example, **nl** for Dutch.",
+                  "description" : "The language used for the Terms of Service document, specified by the two-letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code. Possible value: **en** for English.",
                   "type" : "string"
                },
                "termsOfServiceDocumentId" : {
@@ -2872,15 +3358,17 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of Terms of Service.",
+                  "description" : "The type of Terms of Service.\n\nPossible values:\n*  **adyenForPlatformsManage**\n*  **adyenIssuing**\n*  **adyenForPlatformsAdvanced**\n*  **adyenCapital**\n*  **adyenAccount**\n*  **adyenCard**\n*  **adyenFranchisee**\n*  **adyenPccr**\n*  **adyenChargeCard**\n\n",
                   "enum" : [
                      "adyenAccount",
                      "adyenCapital",
                      "adyenCard",
+                     "adyenChargeCard",
                      "adyenForPlatformsAdvanced",
                      "adyenForPlatformsManage",
                      "adyenFranchisee",
-                     "adyenIssuing"
+                     "adyenIssuing",
+                     "adyenPccr"
                   ],
                   "type" : "string"
                }
@@ -2888,6 +3376,7 @@
             "type" : "object"
          },
          "Address" : {
+            "additionalProperties" : false,
             "properties" : {
                "city" : {
                   "description" : "The name of the city. Required if `stateOrProvince` is provided.\n\nIf you specify the city, you must also send `postalCode` and `street`.",
@@ -2902,7 +3391,7 @@
                   "type" : "string"
                },
                "stateOrProvince" : {
-                  "description" : "The two-letter ISO 3166-2 state or province code. For example, **CA** in the US. \n\nIf you specify the state or province, you must also send `city`, `postalCode`, and `street`.",
+                  "description" : "The two-letter ISO 3166-2 state or province code. For example, **CA** in the US.\n\nIf you specify the state or province, you must also send `city`, `postalCode`, and `street`.",
                   "type" : "string"
                },
                "street" : {
@@ -2920,6 +3409,7 @@
             "type" : "object"
          },
          "Amount" : {
+            "additionalProperties" : false,
             "properties" : {
                "currency" : {
                   "description" : "The type of currency. Must be EUR (or EUR equivalent)",
@@ -2934,6 +3424,7 @@
             "type" : "object"
          },
          "Attachment" : {
+            "additionalProperties" : false,
             "properties" : {
                "content" : {
                   "description" : "The document in Base64-encoded string format.",
@@ -2968,6 +3459,7 @@
             "type" : "object"
          },
          "BankAccountInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountNumber" : {
                   "description" : "The bank account number (without separators).\n\n When this is provided, the `branchCode` is also required.",
@@ -3014,6 +3506,11 @@
                "iban" : {
                   "description" : "The international bank account number as defined in the [ISO-13616](https://www.iso.org/standard/81090.html) standard.",
                   "type" : "string"
+               },
+               "trustedSource" : {
+                  "description" : "Identifies if the bank account was created through [instant bank verification](https://docs.adyen.com/release-notes/platforms-and-financial-products#releaseNote=2023-05-08-hosted-onboarding).",
+                  "readOnly" : true,
+                  "type" : "boolean"
                }
             },
             "required" : [
@@ -3022,6 +3519,7 @@
             "type" : "object"
          },
          "BirthData" : {
+            "additionalProperties" : false,
             "properties" : {
                "dateOfBirth" : {
                   "description" : "The individual's date of birth, in YYYY-MM-DD format.",
@@ -3031,9 +3529,15 @@
             "type" : "object"
          },
          "BusinessLine" : {
+            "additionalProperties" : false,
             "properties" : {
                "capability" : {
-                  "description" : "The capability for which you are creating the business line. For example, **receivePayments**.",
+                  "description" : "The capability for which you are creating the business line.\n\nPossible values: **receivePayments**, **receiveFromPlatformPayments**, **issueBankAccount**",
+                  "enum" : [
+                     "receivePayments",
+                     "receiveFromPlatformPayments",
+                     "issueBankAccount"
+                  ],
                   "type" : "string"
                },
                "id" : {
@@ -3042,7 +3546,7 @@
                   "type" : "string"
                },
                "industryCode" : {
-                  "description" : "A code that represents the industry of the legal entity. For example, **4431A** for computer software stores.",
+                  "description" : "A code that represents the industry of the legal entity for [marketplaces](https://docs.adyen.com/marketplaces/verification-requirements/reference-additional-products/#list-industry-codes) or [platforms](https://docs.adyen.com/platforms/verification-requirements/reference-additional-products/#list-industry-codes). For example, **4431A** for computer software stores.",
                   "type" : "string"
                },
                "legalEntityId" : {
@@ -3081,13 +3585,19 @@
             "type" : "object"
          },
          "BusinessLineInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "capability" : {
-                  "description" : "The capability for which you are creating the business line. For example, **receivePayments**.",
+                  "description" : "The capability for which you are creating the business line.\n\nPossible values: **receivePayments**, **receiveFromPlatformPayments**, **issueBankAccount**",
+                  "enum" : [
+                     "receivePayments",
+                     "receiveFromPlatformPayments",
+                     "issueBankAccount"
+                  ],
                   "type" : "string"
                },
                "industryCode" : {
-                  "description" : "A code that represents the industry of the legal entity. For example, **4431A** for computer software stores.",
+                  "description" : "A code that represents the industry of the legal entity for [marketplaces](https://docs.adyen.com/marketplaces/verification-requirements/reference-additional-products/#list-industry-codes) or [platforms](https://docs.adyen.com/platforms/verification-requirements/reference-additional-products/#list-industry-codes). For example, **4431A** for computer software stores.",
                   "type" : "string"
                },
                "legalEntityId" : {
@@ -3125,17 +3635,10 @@
             "type" : "object"
          },
          "BusinessLineInfoUpdate" : {
+            "additionalProperties" : false,
             "properties" : {
-               "capability" : {
-                  "description" : "The capability for which you are creating the business line. For example, **receivePayments**.",
-                  "type" : "string"
-               },
                "industryCode" : {
                   "description" : "A code that represents the industry of your legal entity. For example, **4431A** for computer software stores.",
-                  "type" : "string"
-               },
-               "legalEntityId" : {
-                  "description" : "Unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities__resParam_id) that owns the business line.",
                   "type" : "string"
                },
                "salesChannels" : {
@@ -3164,6 +3667,7 @@
             "type" : "object"
          },
          "BusinessLines" : {
+            "additionalProperties" : false,
             "properties" : {
                "businessLines" : {
                   "description" : "List of business lines.",
@@ -3178,7 +3682,32 @@
             ],
             "type" : "object"
          },
+         "CalculateTermsOfServiceStatusResponse" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "termsOfServiceTypes" : {
+                  "description" : "The type of Terms of Service that the legal entity needs to accept. If empty, no Terms of Service needs to be accepted.",
+                  "items" : {
+                     "enum" : [
+                        "adyenAccount",
+                        "adyenCapital",
+                        "adyenCard",
+                        "adyenChargeCard",
+                        "adyenForPlatformsAdvanced",
+                        "adyenForPlatformsManage",
+                        "adyenFranchisee",
+                        "adyenIssuing",
+                        "adyenPccr"
+                     ],
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               }
+            },
+            "type" : "object"
+         },
          "CapabilityProblem" : {
+            "additionalProperties" : false,
             "properties" : {
                "entity" : {
                   "$ref" : "#/components/schemas/CapabilityProblemEntity"
@@ -3193,6 +3722,7 @@
             "type" : "object"
          },
          "CapabilityProblemEntity" : {
+            "additionalProperties" : false,
             "properties" : {
                "documents" : {
                   "description" : "List of document IDs corresponding to the verification errors from capabilities.",
@@ -3211,7 +3741,8 @@
                   "enum" : [
                      "BankAccount",
                      "Document",
-                     "LegalEntity"
+                     "LegalEntity",
+                     "product"
                   ],
                   "type" : "string"
                }
@@ -3219,6 +3750,7 @@
             "type" : "object"
          },
          "CapabilityProblemEntity-recursive" : {
+            "additionalProperties" : false,
             "properties" : {
                "documents" : {
                   "description" : "List of document IDs corresponding to the verification errors from capabilities.",
@@ -3234,7 +3766,8 @@
                   "enum" : [
                      "BankAccount",
                      "Document",
-                     "LegalEntity"
+                     "LegalEntity",
+                     "product"
                   ],
                   "type" : "string"
                }
@@ -3244,6 +3777,7 @@
             "type" : "object"
          },
          "CapabilitySettings" : {
+            "additionalProperties" : false,
             "properties" : {
                "amountPerIndustry" : {
                   "additionalProperties" : {
@@ -3284,7 +3818,18 @@
             },
             "type" : "object"
          },
+         "CheckTaxElectronicDeliveryConsentResponse" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "US1099k" : {
+                  "description" : "Consent to electronically deliver tax form US1099-K.",
+                  "type" : "boolean"
+               }
+            },
+            "type" : "object"
+         },
          "Document" : {
+            "additionalProperties" : false,
             "properties" : {
                "attachment" : {
                   "deprecated" : true,
@@ -3352,7 +3897,7 @@
                   "$ref" : "#/components/schemas/OwnerEntity"
                },
                "type" : {
-                  "description" : "Type of document, used when providing an ID number or uploading a document. The possible values depend on the legal entity type.\n\nWhen providing ID numbers:\n* For **individual**, the `type` values can be **driversLicense**, **identityCard**, **nationalIdNumber**, or **passport**.\n\nWhen uploading photo IDs:\n* For **individual**, the `type` values can be **identityCard**, **driversLicense**, or **passport**.\n\nWhen uploading other documents:\n* For **organization**, the `type` values can be **proofOfAddress**, **registrationDocument**, **vatDocument**, **proofOfOrganizationTaxInfo**, **proofOfOwnership**, or **proofOfIndustry**. \n\n* For **individual**, the `type` values can be **identityCard**, **driversLicense**, **passport**, **proofOfNationalIdNumber**, **proofOfResidency**, **proofOfIndustry**, or **proofOfIndividualTaxId**.\n\n* For **soleProprietorship**, the `type` values can be **constitutionalDocument**, **proofOfAddress**, or **proofOfIndustry**.\n\n* Use **bankStatement** to upload documents for a [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments__resParam_id).",
+                  "description" : "Type of document, used when providing an ID number or uploading a document. The possible values depend on the legal entity type.\n\n* For **organization**, the `type` values can be **proofOfAddress**, **registrationDocument**, **vatDocument**, **proofOfOrganizationTaxInfo**, **proofOfOwnership**, **proofOfIndustry**, **proofOfSignatory**, or **proofOfFundingOrWealthSource**.\n\n* For **individual**, the `type` values can be **identityCard**, **driversLicense**, **passport**, **liveSelfie**, **proofOfResidency**, **proofOfIndustry**, **proofOfNationalIdNumber**, **proofOfIndividualTaxId**, or **proofOfFundingOrWealthSource**.\n\n* For **soleProprietorship**, the `type` values can be **constitutionalDocument**, **proofOfAddress**, or **proofOfIndustry**.\n\n* For **trust**, the `type` value can be **constitutionalDocument**.\n\n* Use **bankStatement** to upload documents for a [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments__resParam_id).",
                   "enum" : [
                      "bankStatement",
                      "driversLicense",
@@ -3365,21 +3910,46 @@
                      "registrationDocument",
                      "vatDocument",
                      "proofOfOrganizationTaxInfo",
+                     "proofOfIndividualTaxId",
+                     "proofOfOwnership",
+                     "proofOfSignatory",
+                     "liveSelfie",
                      "proofOfIndustry",
-                     "constitutionalDocument"
+                     "constitutionalDocument",
+                     "proofOfFundingOrWealthSource"
                   ],
                   "type" : "string"
                }
             },
             "required" : [
-               "type",
                "description",
-               "owner",
-               "attachments"
+               "type"
             ],
             "type" : "object"
          },
+         "DocumentPage" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "pageName" : {
+                  "type" : "string"
+               },
+               "pageNumber" : {
+                  "format" : "int32",
+                  "type" : "integer"
+               },
+               "type" : {
+                  "enum" : [
+                     "BACK",
+                     "FRONT",
+                     "UNDEFINED"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "type" : "object"
+         },
          "DocumentReference" : {
+            "additionalProperties" : false,
             "properties" : {
                "active" : {
                   "description" : "Identifies whether the document is active and used for checks.",
@@ -3402,6 +3972,13 @@
                   "format" : "date-time",
                   "type" : "string"
                },
+               "pages" : {
+                  "description" : "List of document pages",
+                  "items" : {
+                     "$ref" : "#/components/schemas/DocumentPage"
+                  },
+                  "type" : "array"
+               },
                "type" : {
                   "description" : "Type of document, used when providing an ID number or uploading a document.",
                   "type" : "string"
@@ -3410,6 +3987,7 @@
             "type" : "object"
          },
          "EntityReference" : {
+            "additionalProperties" : false,
             "properties" : {
                "id" : {
                   "description" : "The unique identifier of the resource.",
@@ -3419,7 +3997,21 @@
             "type" : "object"
          },
          "GeneratePciDescriptionRequest" : {
+            "additionalProperties" : false,
             "properties" : {
+               "additionalSalesChannels" : {
+                  "description" : "An array of additional sales channels to generate PCI questionnaires. Include the relevant sales channels if you need your user to sign PCI questionnaires. Not required if you [create stores](https://docs.adyen.com/platforms) and [add payment methods](https://docs.adyen.com/adyen-for-platforms-model) before you generate the questionnaires.\n\nPossible values:\n*  **eCommerce**\n*  **pos**\n*  **ecomMoto**\n*  **posMoto**\n\n",
+                  "items" : {
+                     "enum" : [
+                        "eCommerce",
+                        "ecomMoto",
+                        "pos",
+                        "posMoto"
+                     ],
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
                "language" : {
                   "description" : "Sets the language of the PCI questionnaire. Its value is a two-character [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) language code, for example, **en**.",
                   "type" : "string"
@@ -3428,6 +4020,7 @@
             "type" : "object"
          },
          "GeneratePciDescriptionResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "content" : {
                   "description" : "The generated questionnaires in a base64 encoded format.",
@@ -3448,7 +4041,36 @@
             },
             "type" : "object"
          },
+         "GetAcceptedTermsOfServiceDocumentResponse" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "document" : {
+                  "description" : "The accepted Terms of Service document in the requested format represented as a Base64-encoded bytes array.",
+                  "format" : "byte",
+                  "type" : "string"
+               },
+               "id" : {
+                  "description" : "The unique identifier of the legal entity.",
+                  "type" : "string"
+               },
+               "termsOfServiceAcceptanceReference" : {
+                  "description" : "An Adyen-generated reference for the accepted Terms of Service.",
+                  "type" : "string"
+               },
+               "termsOfServiceDocumentFormat" : {
+                  "description" : "The format of the Terms of Service document.",
+                  "enum" : [
+                     "JSON",
+                     "PDF",
+                     "TXT"
+                  ],
+                  "type" : "string"
+               }
+            },
+            "type" : "object"
+         },
          "GetPciQuestionnaireInfosResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "data" : {
                   "description" : "Information about the signed PCI questionnaires.",
@@ -3461,6 +4083,7 @@
             "type" : "object"
          },
          "GetPciQuestionnaireResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "content" : {
                   "description" : "The generated questionnaire in a base64 encoded format.",
@@ -3485,6 +4108,7 @@
             "type" : "object"
          },
          "GetTermsOfServiceAcceptanceInfosResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "data" : {
                   "description" : "The Terms of Service acceptance information.",
@@ -3497,28 +4121,40 @@
             "type" : "object"
          },
          "GetTermsOfServiceDocumentRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "language" : {
-                  "description" : "The language to be used for the Terms of Service document, specified by the two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code. For example, **nl** for Dutch.",
+                  "description" : "The language to be used for the Terms of Service document, specified by the two-letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code. Possible value: **en** for English.",
+                  "type" : "string"
+               },
+               "termsOfServiceDocumentFormat" : {
+                  "description" : "The requested format for the Terms of Service document. Default value: JSON. Possible values: **JSON**, **PDF**, or **TXT**.",
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of Terms of Service.",
+                  "description" : "The type of Terms of Service.\n\nPossible values:\n*  **adyenForPlatformsManage**\n*  **adyenIssuing**\n*  **adyenForPlatformsAdvanced**\n*  **adyenCapital**\n*  **adyenAccount**\n*  **adyenCard**\n*  **adyenFranchisee**\n*  **adyenPccr**\n*  **adyenChargeCard**\n\n",
                   "enum" : [
                      "adyenAccount",
                      "adyenCapital",
                      "adyenCard",
+                     "adyenChargeCard",
                      "adyenForPlatformsAdvanced",
                      "adyenForPlatformsManage",
                      "adyenFranchisee",
-                     "adyenIssuing"
+                     "adyenIssuing",
+                     "adyenPccr"
                   ],
                   "type" : "string"
                }
             },
+            "required" : [
+               "type",
+               "language"
+            ],
             "type" : "object"
          },
          "GetTermsOfServiceDocumentResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "document" : {
                   "description" : "The Terms of Service document in Base64-encoded format.",
@@ -3530,7 +4166,11 @@
                   "type" : "string"
                },
                "language" : {
-                  "description" : "The language used for the Terms of Service document, specified by the two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code. For example, **nl** for Dutch.",
+                  "description" : "The language used for the Terms of Service document, specified by the two-letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code. Possible value: **en** for English.",
+                  "type" : "string"
+               },
+               "termsOfServiceDocumentFormat" : {
+                  "description" : "The format of the Terms of Service document.",
                   "type" : "string"
                },
                "termsOfServiceDocumentId" : {
@@ -3538,15 +4178,17 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of Terms of Service.",
+                  "description" : "The type of Terms of Service.\n\nPossible values:\n*  **adyenForPlatformsManage**\n*  **adyenIssuing**\n*  **adyenForPlatformsAdvanced**\n*  **adyenCapital**\n*  **adyenAccount**\n*  **adyenCard**\n*  **adyenFranchisee**\n*  **adyenPccr**\n*  **adyenChargeCard**\n\n",
                   "enum" : [
                      "adyenAccount",
                      "adyenCapital",
                      "adyenCard",
+                     "adyenChargeCard",
                      "adyenForPlatformsAdvanced",
                      "adyenForPlatformsManage",
                      "adyenFranchisee",
-                     "adyenIssuing"
+                     "adyenIssuing",
+                     "adyenPccr"
                   ],
                   "type" : "string"
                }
@@ -3554,14 +4196,13 @@
             "type" : "object"
          },
          "IdentificationData" : {
+            "additionalProperties" : false,
             "properties" : {
                "cardNumber" : {
                   "description" : "The card number of the document that was issued (AU only).",
                   "type" : "string"
                },
                "expiryDate" : {
-                  "deprecated" : true,
-                  "x-deprecatedInVersion" : "1",
                   "description" : "The expiry date of the document, in YYYY-MM-DD format.",
                   "type" : "string"
                },
@@ -3584,21 +4225,12 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "Type of document, used when providing an ID number or uploading a document. The possible values depend on the legal entity type.\n\nWhen providing ID numbers:\n* For **individual**, the `type` values can be **driversLicense**, **identityCard**, **nationalIdNumber**, or **passport**.\n\nWhen uploading photo IDs:\n* For **individual**, the `type` values can be **identityCard**, **driversLicense**, or **passport**.\n\nWhen uploading other documents:\n* For **organization**, the `type` values can be **proofOfAddress**, **registrationDocument**, **vatDocument**, **proofOfOrganizationTaxInfo**, **proofOfOwnership**, or **proofOfIndustry**. \n\n* For **individual**, the `type` values can be **identityCard**, **driversLicense**, **passport**, **proofOfNationalIdNumber**, **proofOfResidency**, **proofOfIndustry**, or **proofOfIndividualTaxId**.\n\n* For **soleProprietorship**, the `type` values can be **constitutionalDocument**, **proofOfAddress**, or **proofOfIndustry**.\n\n* Use **bankStatement** to upload documents for a [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments__resParam_id).",
+                  "description" : "Type of identity data. For individuals, the following types are supported:\n\n- Australia: **driversLicense**, **passport**\n\n- Hong Kong: **driversLicense**, **nationalIdNumber**, **passport**\n\n- New Zealand: **driversLicense**, **passport**\n\n- Singapore: **driversLicense**, **nationalIdNumber**, **passport** \n\n- All other supported countries: **nationalIdNumber**",
                   "enum" : [
-                     "bankStatement",
-                     "driversLicense",
-                     "identityCard",
                      "nationalIdNumber",
                      "passport",
-                     "proofOfAddress",
-                     "proofOfNationalIdNumber",
-                     "proofOfResidency",
-                     "registrationDocument",
-                     "vatDocument",
-                     "proofOfOrganizationTaxInfo",
-                     "proofOfIndustry",
-                     "constitutionalDocument"
+                     "driversLicense",
+                     "identityCard"
                   ],
                   "type" : "string"
                }
@@ -3609,6 +4241,7 @@
             "type" : "object"
          },
          "Individual" : {
+            "additionalProperties" : false,
             "properties" : {
                "birthData" : {
                   "description" : "The individual's birth information.",
@@ -3660,6 +4293,7 @@
             "type" : "object"
          },
          "LegalEntity" : {
+            "additionalProperties" : false,
             "properties" : {
                "capabilities" : {
                   "additionalProperties" : {
@@ -3725,8 +4359,12 @@
                   "readOnly" : true,
                   "type" : "array"
                },
+               "trust" : {
+                  "description" : "Information about the trust. Required if `type` is **trust**.",
+                  "$ref" : "#/components/schemas/Trust"
+               },
                "type" : {
-                  "description" : "The type of legal entity.\n\n Possible values: **individual**, **organization**, or **soleProprietorship**.",
+                  "description" : "The type of legal entity.\n\nPossible values: **individual**, **organization**, **soleProprietorship**, or **trust**.",
                   "enum" : [
                      "individual",
                      "organization",
@@ -3734,6 +4372,10 @@
                      "trust",
                      "unincorporatedPartnership"
                   ],
+                  "type" : "string"
+               },
+               "verificationPlan" : {
+                  "description" : "A key-value pair that specifies the verification process for a legal entity. Set to **upfront** for upfront verification for [marketplaces](https://docs.adyen.com/marketplaces/verification-overview/verification-types/#upfront-verification).",
                   "type" : "string"
                }
             },
@@ -3743,6 +4385,7 @@
             "type" : "object"
          },
          "LegalEntityAssociation" : {
+            "additionalProperties" : false,
             "properties" : {
                "associatorId" : {
                   "description" : "The unique identifier of another legal entity with which the `legalEntityId` is associated. When the `legalEntityId` is associated to legal entities other than the current one, the response returns all the associations.",
@@ -3750,7 +4393,7 @@
                   "type" : "string"
                },
                "entityType" : {
-                  "description" : "The legal entity type of associated legal entity. \n\nFor example, **organization**, **soleProprietorship** or **individual**. ",
+                  "description" : "The legal entity type of associated legal entity.\n\nFor example, **organization**, **soleProprietorship** or **individual**.",
                   "readOnly" : true,
                   "type" : "string"
                },
@@ -3767,15 +4410,35 @@
                   "readOnly" : true,
                   "type" : "string"
                },
+               "relationship" : {
+                  "description" : "The individual's relationship to a legal representative if the `type` is **legalRepresentative**. Possible values: **parent**, **guardian**.",
+                  "type" : "string"
+               },
+               "settlorExemptionReason" : {
+                  "description" : "Defines the Kyc Exemption Reason for a Settlor associated with a trust.\n\nFor example, **professionalServiceProvider**, **deceased**, or **contributionBelowThreshold**.",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "readOnly" : true,
+                  "type" : "array"
+               },
                "type" : {
-                  "description" : "Defines the relationship of the legal entity to the current legal entity. \n\nPossible values for organizations: **uboThroughOwnership**, **uboThroughControl**, **signatory**, or **ultimateParentCompany**. \n\nPossible values for sole proprietorships: **soleProprietorship**. ",
+                  "description" : "Defines the relationship of the legal entity to the current legal entity.\n\nPossible value for individuals: **legalRepresentative**.\n\nPossible values for organizations: **uboThroughOwnership**, **uboThroughControl**, **director**, **signatory**, or **ultimateParentCompany**.\n\nPossible values for sole proprietorships: **soleProprietorship**.\n\nPossible value for trusts: **trust**.\n\nPossible values for trust members: **definedBeneficiary**, **protector**, **secondaryTrustee**, **settlor**, **uboThroughControl**, or **uboThroughOwnership**.",
                   "enum" : [
+                     "definedBeneficiary",
+                     "director",
+                     "immediateParentCompany",
                      "pciSignatory",
+                     "protector",
+                     "secondaryTrustee",
+                     "settlor",
                      "signatory",
                      "soleProprietorship",
+                     "trust",
                      "uboThroughControl",
                      "uboThroughOwnership",
-                     "ultimateParentCompany"
+                     "ultimateParentCompany",
+                     "undefinedBeneficiary"
                   ],
                   "type" : "string"
                }
@@ -3787,9 +4450,10 @@
             "type" : "object"
          },
          "LegalEntityCapability" : {
+            "additionalProperties" : false,
             "properties" : {
                "allowed" : {
-                  "description" : "Indicates whether the capability is allowed. Adyen sets this to **true** if the verification is successful ",
+                  "description" : "Indicates whether the capability is allowed. Adyen sets this to **true** if the verification is successful.",
                   "readOnly" : true,
                   "type" : "boolean"
                },
@@ -3805,7 +4469,7 @@
                   "type" : "string"
                },
                "allowedSettings" : {
-                  "description" : "The settings that were allowed for the Legal Entity.",
+                  "description" : "The settings that are allowed for the legal entity.",
                   "readOnly" : true,
                   "$ref" : "#/components/schemas/CapabilitySettings"
                },
@@ -3818,7 +4482,7 @@
                   "type" : "array"
                },
                "requested" : {
-                  "description" : "Indicates whether the capability is requested. To check whether the Legal Entity is permitted to use the capability, ",
+                  "description" : "Indicates whether the capability is requested. To check whether the legal entity is permitted to use the capability, refer to the `allowed` field.",
                   "readOnly" : true,
                   "type" : "boolean"
                },
@@ -3834,12 +4498,13 @@
                   "type" : "string"
                },
                "requestedSettings" : {
-                  "description" : "The settings that are requested for the Legal Entity.",
+                  "description" : "The settings that are requested for the legal entity.",
                   "readOnly" : true,
                   "$ref" : "#/components/schemas/CapabilitySettings"
                },
                "transferInstruments" : {
-                  "description" : "Capability status for transfer instruments associated with legal entity",
+                  "x-addedInVersion" : "2",
+                  "description" : "The capability status of transfer instruments associated with the legal entity.",
                   "items" : {
                      "$ref" : "#/components/schemas/SupportingEntityCapability"
                   },
@@ -3855,6 +4520,7 @@
             "type" : "object"
          },
          "LegalEntityInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "capabilities" : {
                   "additionalProperties" : {
@@ -3889,8 +4555,12 @@
                   "description" : "Information about the sole proprietorship. Required if `type` is **soleProprietorship**.",
                   "$ref" : "#/components/schemas/SoleProprietorship"
                },
+               "trust" : {
+                  "description" : "Information about the trust. Required if `type` is **trust**.",
+                  "$ref" : "#/components/schemas/Trust"
+               },
                "type" : {
-                  "description" : "The type of legal entity.\n\n Possible values: **individual**, **organization**, or **soleProprietorship**.",
+                  "description" : "The type of legal entity.\n\nPossible values: **individual**, **organization**, **soleProprietorship**, or **trust**.",
                   "enum" : [
                      "individual",
                      "organization",
@@ -3898,12 +4568,17 @@
                      "trust",
                      "unincorporatedPartnership"
                   ],
+                  "type" : "string"
+               },
+               "verificationPlan" : {
+                  "description" : "A key-value pair that specifies the verification process for a legal entity. Set to **upfront** for upfront verification for [marketplaces](https://docs.adyen.com/marketplaces/verification-overview/verification-types/#upfront-verification).",
                   "type" : "string"
                }
             },
             "type" : "object"
          },
          "LegalEntityInfoRequiredType" : {
+            "additionalProperties" : false,
             "properties" : {
                "capabilities" : {
                   "additionalProperties" : {
@@ -3938,8 +4613,12 @@
                   "description" : "Information about the sole proprietorship. Required if `type` is **soleProprietorship**.",
                   "$ref" : "#/components/schemas/SoleProprietorship"
                },
+               "trust" : {
+                  "description" : "Information about the trust. Required if `type` is **trust**.",
+                  "$ref" : "#/components/schemas/Trust"
+               },
                "type" : {
-                  "description" : "The type of legal entity.\n\n Possible values: **individual**, **organization**, or **soleProprietorship**.",
+                  "description" : "The type of legal entity.\n\n Possible values: **individual**, **organization**, **soleProprietorship**, or **trust**.",
                   "enum" : [
                      "individual",
                      "organization",
@@ -3947,6 +4626,10 @@
                      "trust",
                      "unincorporatedPartnership"
                   ],
+                  "type" : "string"
+               },
+               "verificationPlan" : {
+                  "description" : "A key-value pair that specifies the verification process for a legal entity. Set to **upfront** for upfront verification for [marketplaces](https://docs.adyen.com/marketplaces/verification-overview/verification-types/#upfront-verification).",
                   "type" : "string"
                }
             },
@@ -3956,9 +4639,10 @@
             "type" : "object"
          },
          "Name" : {
+            "additionalProperties" : false,
             "properties" : {
                "firstName" : {
-                  "description" : "The individual's first name.",
+                  "description" : "The individual's first name. Must not be blank.",
                   "type" : "string"
                },
                "infix" : {
@@ -3966,7 +4650,7 @@
                   "type" : "string"
                },
                "lastName" : {
-                  "description" : "The individual's last name.",
+                  "description" : "The individual's last name. Must not be blank.",
                   "type" : "string"
                }
             },
@@ -3977,6 +4661,7 @@
             "type" : "object"
          },
          "OnboardingLink" : {
+            "additionalProperties" : false,
             "properties" : {
                "url" : {
                   "description" : "The URL of the hosted onboarding page where you need to redirect your user. This URL expires after 4 minutes and can only be used once.\n\nIf the link expires, you need to create a new link.",
@@ -3986,9 +4671,10 @@
             "type" : "object"
          },
          "OnboardingLinkInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "locale" : {
-                  "description" : "The language that will be used for the page, specified by a combination of two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language and [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes. See [possible values](https://docs.adyen.com/marketplaces-and-platforms/collect-verification-details/hosted#supported-languages). \n\nIf not specified in the request or if the language is not supported, the page uses the browser language. If the browser language is not supported, the page uses **en-US** by default.",
+                  "description" : "The language that will be used for the page, specified by a combination of two letter [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language and [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country codes. See possible valuesfor [marketplaces](https://docs.adyen.com/marketplaces/onboard-users/hosted#supported-languages) or [platforms](https://docs.adyen.com/platforms/onboard-users/hosted#supported-languages). \n\nIf not specified in the request or if the language is not supported, the page uses the browser language. If the browser language is not supported, the page uses **en-US** by default.",
                   "type" : "string"
                },
                "redirectUrl" : {
@@ -3996,11 +4682,8 @@
                   "type" : "string"
                },
                "settings" : {
-                  "additionalProperties" : {
-                     "type" : "boolean"
-                  },
-                  "description" : "Boolean key-value pairs indicating the settings for the hosted onboarding page. The keys are the settings. By default, the values are set to **true**. Set to **false** to not allow the action.\n\nPossible keys:\n\n- **changeLegalEntityType**: The user can change their legal entity type.\n\n- **editPrefilledCountry**: The user can change the country of their legal entity's address, for example the registered address of an organization.\n\n",
-                  "type" : "object"
+                  "description" : "Key-value pairs indicating the settings for the hosted onboarding page. The key represents a specific setting.",
+                  "$ref" : "#/components/schemas/OnboardingLinkSettings"
                },
                "themeId" : {
                   "description" : "The unique identifier of the hosted onboarding theme.",
@@ -4009,7 +4692,78 @@
             },
             "type" : "object"
          },
+         "OnboardingLinkSettings" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "acceptedCountries" : {
+                  "description" : "The list of countries the user can choose from in hosted onboarding when `editPrefilledCountry` is allowed.\n\nThe value must be in the two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code format.\n\nThe array is empty by default, allowing all [countries and regions supported by hosted onboarding](https://docs.adyen.com/platforms/onboard-users/#hosted-onboarding).",
+                  "items" : {
+                     "type" : "string"
+                  },
+                  "type" : "array"
+               },
+               "allowBankAccountFormatSelection" : {
+                  "description" : "Default value: **false**\n\nIndicates if the user can select the format for their payout account (if applicable).",
+                  "type" : "boolean"
+               },
+               "allowIntraRegionCrossBorderPayout" : {
+                  "description" : "Default value: **false**\n\nIndicates if the user can select a payout account in a different EU/EEA location (including Switzerland and the UK) than the location of their legal entity.",
+                  "type" : "boolean"
+               },
+               "changeLegalEntityType" : {
+                  "description" : "Default value: **true**\n\nIndicates if the user can change their legal entity type.",
+                  "type" : "boolean"
+               },
+               "editPrefilledCountry" : {
+                  "description" : "Default value: **true**\n\nIndicates if the user can change the country of their legal entity's address, for example the registered address of an organization.",
+                  "type" : "boolean"
+               },
+               "hideOnboardingIntroductionIndividual" : {
+                  "description" : "Default value: **true**\n\nIndicates whether the introduction screen is hidden for the user of the individual legal entity type.\nThe introduction screen provides brief instructions for the subsequent steps in the hosted onboarding process.",
+                  "type" : "boolean"
+               },
+               "hideOnboardingIntroductionOrganization" : {
+                  "description" : "Default value: **true**\n\nIndicates whether the introduction screen is hidden for the user of the organization legal entity type.\nThe introduction screen provides brief instructions for the subsequent steps in the hosted onboarding process.",
+                  "type" : "boolean"
+               },
+               "hideOnboardingIntroductionSoleProprietor" : {
+                  "description" : "Default value: **true**\n\nIndicates whether the introduction screen is hidden for the user of the sole proprietorship legal entity type.\nThe introduction screen provides brief instructions for the subsequent steps in the hosted onboarding process.",
+                  "type" : "boolean"
+               },
+               "hideOnboardingIntroductionTrust" : {
+                  "description" : "Default value: **true**\n\nIndicates whether the introduction screen is hidden for the user of the trust legal entity type.\nThe introduction screen provides brief instructions for the subsequent steps in the hosted onboarding process.",
+                  "type" : "boolean"
+               },
+               "instantBankVerification" : {
+                  "description" : "Default value: **true**\n\nIndicates if the user can initiate the verification process through open banking providers, like Plaid or Tink.",
+                  "type" : "boolean"
+               },
+               "requirePciSignEcomMoto" : {
+                  "description" : "Default value: **false**\n\nIndicates if the user is required to sign a PCI questionnaires for the **ecomMoto** sales channel type.",
+                  "type" : "boolean"
+               },
+               "requirePciSignEcommerce" : {
+                  "description" : "Default value: **false**\n\nIndicates if the user is required to sign a PCI questionnaires for the **eCommerce** sales channel type.",
+                  "type" : "boolean"
+               },
+               "requirePciSignPos" : {
+                  "description" : "Default value: **false**\n\nIndicates if the user is required to sign a PCI questionnaires for the **pos** sales channel type.",
+                  "type" : "boolean"
+               },
+               "requirePciSignPosMoto" : {
+                  "description" : "Default value: **false**\n\nIndicates if the user is required to sign a PCI questionnaires for the **posMoto** sales channel type.",
+                  "type" : "boolean"
+               },
+               "transferInstrumentLimit" : {
+                  "description" : "The maximum number of transfer instruments the user can create.",
+                  "format" : "int32",
+                  "type" : "integer"
+               }
+            },
+            "type" : "object"
+         },
          "OnboardingTheme" : {
+            "additionalProperties" : false,
             "properties" : {
                "createdAt" : {
                   "description" : "The creation date of the theme.",
@@ -4045,6 +4799,7 @@
             "type" : "object"
          },
          "OnboardingThemes" : {
+            "additionalProperties" : false,
             "properties" : {
                "next" : {
                   "description" : "The next page. Only present if there is a next page.",
@@ -4068,7 +4823,13 @@
             "type" : "object"
          },
          "Organization" : {
+            "additionalProperties" : false,
             "properties" : {
+               "countryOfGoverningLaw" : {
+                  "x-addedInVersion" : "2",
+                  "description" : "The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the governing country.",
+                  "type" : "string"
+               },
                "dateOfIncorporation" : {
                   "x-addedInVersion" : "2",
                   "description" : "The date when the organization was incorporated in YYYY-MM-DD format.",
@@ -4124,7 +4885,7 @@
                   "$ref" : "#/components/schemas/TaxReportingClassification"
                },
                "type" : {
-                  "description" : "Type of organization. \n\nPossible values: **associationIncorporated**, **governmentalOrganization**, **listedPublicCompany**, **nonProfit**, **partnershipIncorporated**, **privateCompany**.",
+                  "description" : "Type of organization.\n\nPossible values: **associationIncorporated**, **governmentalOrganization**, **listedPublicCompany**, **nonProfit**, **partnershipIncorporated**, **privateCompany**.",
                   "enum" : [
                      "associationIncorporated",
                      "governmentalOrganization",
@@ -4163,6 +4924,7 @@
             "type" : "object"
          },
          "OwnerEntity" : {
+            "additionalProperties" : false,
             "properties" : {
                "id" : {
                   "description" : "Unique identifier of the resource that owns the document. For `type` **legalEntity**, this value is the unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/legalentity/latest/post/legalEntities#responses-200-id). For `type` **bankAccount**, this value is the unique identifier of the [transfer instrument](https://docs.adyen.com/api-explorer/legalentity/latest/post/transferInstruments#responses-200-id).",
@@ -4180,6 +4942,7 @@
             "type" : "object"
          },
          "PciDocumentInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "createdAt" : {
                   "description" : "The date the questionnaire was created, in ISO 8601 extended format. For example, 2022-12-18T10:15:30+01:00",
@@ -4199,6 +4962,7 @@
             "type" : "object"
          },
          "PciSigningRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "pciTemplateReferences" : {
                   "description" : "The array of Adyen-generated unique identifiers for the questionnaires.",
@@ -4219,6 +4983,7 @@
             "type" : "object"
          },
          "PciSigningResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "pciQuestionnaireIds" : {
                   "description" : "The unique identifiers of the signed PCI documents.",
@@ -4235,6 +5000,7 @@
             "type" : "object"
          },
          "PhoneNumber" : {
+            "additionalProperties" : false,
             "properties" : {
                "number" : {
                   "description" : "The full phone number, including the country code. For example, **+3112345678**.",
@@ -4251,6 +5017,7 @@
             "type" : "object"
          },
          "RemediatingAction" : {
+            "additionalProperties" : false,
             "properties" : {
                "code" : {
                   "type" : "string"
@@ -4262,6 +5029,7 @@
             "type" : "object"
          },
          "ServiceError" : {
+            "additionalProperties" : false,
             "properties" : {
                "errorCode" : {
                   "description" : "The error code mapped to the error message.",
@@ -4287,7 +5055,18 @@
             },
             "type" : "object"
          },
+         "SetTaxElectronicDeliveryConsentRequest" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "US1099k" : {
+                  "description" : "Consent to electronically deliver tax form US1099-K.",
+                  "type" : "boolean"
+               }
+            },
+            "type" : "object"
+         },
          "SoleProprietorship" : {
+            "additionalProperties" : false,
             "properties" : {
                "countryOfGoverningLaw" : {
                   "description" : "The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the governing country.",
@@ -4318,6 +5097,20 @@
                   "description" : "The registration number.",
                   "type" : "string"
                },
+               "taxAbsent" : {
+                  "x-addedInVersion" : "2",
+                  "description" : "The tax information is absent.",
+                  "nullable" : true,
+                  "type" : "boolean"
+               },
+               "taxInformation" : {
+                  "x-addedInVersion" : "2",
+                  "description" : "The tax information of the entity.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/TaxInformation"
+                  },
+                  "type" : "array"
+               },
                "vatAbsenceReason" : {
                   "description" : "The reason for not providing a VAT number.\n\nPossible values: **industryExemption**, **belowTaxThreshold**.",
                   "enum" : [
@@ -4339,6 +5132,7 @@
             "type" : "object"
          },
          "SourceOfFunds" : {
+            "additionalProperties" : false,
             "properties" : {
                "acquiringBusinessLineId" : {
                   "description" : "The unique identifier of the business line that will be the source of funds.This must be a business line for a **receivePayments** or **receiveFromPlatformPayments** capability.",
@@ -4363,6 +5157,7 @@
             "type" : "object"
          },
          "StockData" : {
+            "additionalProperties" : false,
             "properties" : {
                "marketIdentifier" : {
                   "description" : "The four-digit [Market Identifier Code](https://en.wikipedia.org/wiki/Market_Identifier_Code) of the stock market where the organization's stocks are traded.",
@@ -4380,9 +5175,10 @@
             "type" : "object"
          },
          "SupportingEntityCapability" : {
+            "additionalProperties" : false,
             "properties" : {
                "allowed" : {
-                  "description" : "Indicates whether the supporting entity capability is allowed.\n\nIf a supporting entity is allowed but its parent legal entity is not, it means there are other supporting entities that failed validation.\n\n**The allowed supporting entity can still be used**",
+                  "description" : "Indicates whether the capability is allowed for the supporting entity.\n\nIf a capability is allowed for a supporting entity but not for the parent legal entity, this means the legal entity has other supporting entities that failed verification.\n\n**You can use the allowed supporting entity** regardless of the verification status of other supporting entities.",
                   "readOnly" : true,
                   "type" : "boolean"
                },
@@ -4397,7 +5193,7 @@
                   "type" : "boolean"
                },
                "verificationStatus" : {
-                  "description" : "The status of the verification checks for the supporting entity capability.\n\nPossible values:\n\n* **pending**: Adyen is running the verification.\n\n* **invalid**: The verification failed. Check if the `errors` array contains more information.\n\n* **valid**: The verification has been successfully completed.\n\n* **rejected**: Adyen has verified the information, but found reasons to not allow the capability.\n",
+                  "description" : "The status of the verification checks for the capability of the supporting entity.\n\nPossible values:\n\n* **pending**: Adyen is running the verification.\n\n* **invalid**: The verification failed. Check if the `errors` array contains more information.\n\n* **valid**: The verification has been successfully completed.\n\n* **rejected**: Adyen has verified the information, but found reasons to not allow the capability.\n",
                   "readOnly" : true,
                   "type" : "string"
                }
@@ -4405,6 +5201,7 @@
             "type" : "object"
          },
          "TaxInformation" : {
+            "additionalProperties" : false,
             "properties" : {
                "country" : {
                   "description" : "The two-letter [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code.",
@@ -4417,13 +5214,14 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The TIN type depending on the country where it was issued. Provide only for countries that have multiple tax IDs, such as Sweden, the UK, or the US. For example, provide **SSN**, **EIN**, or **ITIN** for the US.",
+                  "description" : "The TIN type depending on the country where it was issued. Only provide if the country has multiple tax IDs: Singapore, Sweden, the UK, or the US. For example, provide **SSN**, **EIN**, or **ITIN** for the US.",
                   "type" : "string"
                }
             },
             "type" : "object"
          },
          "TaxReportingClassification" : {
+            "additionalProperties" : false,
             "properties" : {
                "businessType" : {
                   "description" : "The organization's business type.\n\nPossible values: **other**, **listedPublicCompany**, **subsidiaryOfListedPublicCompany**, **governmentalOrganization**, **internationalOrganization**, **financialInstitution**.",
@@ -4433,16 +5231,16 @@
                      "subsidiaryOfListedPublicCompany",
                      "governmentalOrganization",
                      "internationalOrganization",
-                     "financialInstitution."
+                     "financialInstitution"
                   ],
                   "type" : "string"
                },
                "financialInstitutionNumber" : {
-                  "description" : "The Global Intermediary Identification Number (GIIN) required for FATCA.",
+                  "description" : "The Global Intermediary Identification Number (GIIN) required for FATCA. Only required if the organization is a US financial institution and the `businessType` is **financialInstitution**.",
                   "type" : "string"
                },
                "mainSourceOfIncome" : {
-                  "description" : "The organization's main source of income.\n\nPossible values: **businessOperation**, **realEstateSales**, **investmentInterestOrRoyalty**, **propertyRental**, **other**.",
+                  "description" : "The organization's main source of income. Only required if `businessType` is **other**.\n\nPossible values: **businessOperation**, **realEstateSales**, **investmentInterestOrRoyalty**, **propertyRental**, **other**.",
                   "enum" : [
                      "businessOperation",
                      "realEstateSales",
@@ -4466,6 +5264,7 @@
             "type" : "object"
          },
          "TermsOfServiceAcceptanceInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "acceptedBy" : {
                   "description" : "The unique identifier of the user that accepted the Terms of Service.",
@@ -4485,15 +5284,17 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of Terms of Service.",
+                  "description" : "The type of Terms of Service.\n\nPossible values:\n*  **adyenForPlatformsManage**\n*  **adyenIssuing**\n*  **adyenForPlatformsAdvanced**\n*  **adyenCapital**\n*  **adyenAccount**\n*  **adyenCard**\n*  **adyenFranchisee**\n*  **adyenPccr**\n*  **adyenChargeCard**\n\n",
                   "enum" : [
                      "adyenAccount",
                      "adyenCapital",
                      "adyenCard",
+                     "adyenChargeCard",
                      "adyenForPlatformsAdvanced",
                      "adyenForPlatformsManage",
                      "adyenFranchisee",
-                     "adyenIssuing"
+                     "adyenIssuing",
+                     "adyenPccr"
                   ],
                   "type" : "string"
                }
@@ -4501,6 +5302,7 @@
             "type" : "object"
          },
          "TransferInstrument" : {
+            "additionalProperties" : false,
             "properties" : {
                "bankAccount" : {
                   "description" : "Contains information about the legal entity's bank account.",
@@ -4541,6 +5343,7 @@
             "type" : "object"
          },
          "TransferInstrumentInfo" : {
+            "additionalProperties" : false,
             "properties" : {
                "bankAccount" : {
                   "description" : "Contains information about the legal entity's bank account.",
@@ -4567,6 +5370,7 @@
             "type" : "object"
          },
          "TransferInstrumentReference" : {
+            "additionalProperties" : false,
             "properties" : {
                "accountIdentifier" : {
                   "description" : "The masked IBAN or bank account number.",
@@ -4577,11 +5381,11 @@
                   "type" : "string"
                },
                "realLastFour" : {
-                  "description" : "Four last digits of the bank account number.",
+                  "description" : "Four last digits of the bank account number. If the transfer instrument is created using [instant bank account verification](https://docs.adyen.com/release-notes/platforms-and-financial-products#releaseNote=2023-05-08-hosted-onboarding), and it is a virtual bank account, these digits may be different from the last four digits of the masked account number.",
                   "type" : "string"
                },
                "trustedSource" : {
-                  "description" : "Identifies if the TI was created from a trusted source.",
+                  "description" : "Identifies if the bank account was created through [instant bank verification](https://docs.adyen.com/release-notes/platforms-and-financial-products#releaseNote=2023-05-08-hosted-onboarding).",
                   "readOnly" : true,
                   "type" : "boolean"
                }
@@ -4592,7 +5396,119 @@
             ],
             "type" : "object"
          },
+         "Trust" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "countryOfGoverningLaw" : {
+                  "description" : "The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code of the governing country.",
+                  "type" : "string"
+               },
+               "dateOfIncorporation" : {
+                  "x-addedInVersion" : "2",
+                  "description" : "The date when the legal arrangement was incorporated in YYYY-MM-DD format.",
+                  "type" : "string"
+               },
+               "doingBusinessAs" : {
+                  "description" : "The registered name, if different from the `name`.",
+                  "type" : "string"
+               },
+               "name" : {
+                  "description" : "The legal name.",
+                  "type" : "string"
+               },
+               "principalPlaceOfBusiness" : {
+                  "description" : "The business address. Required if the principal place of business is different from the `registeredAddress`.",
+                  "$ref" : "#/components/schemas/Address"
+               },
+               "registeredAddress" : {
+                  "description" : "The address registered at the registrar, such as the Chamber of Commerce.",
+                  "$ref" : "#/components/schemas/Address"
+               },
+               "registrationNumber" : {
+                  "description" : "The registration number.",
+                  "type" : "string"
+               },
+               "taxAbsent" : {
+                  "x-addedInVersion" : "2",
+                  "description" : "The tax information is absent.",
+                  "nullable" : true,
+                  "type" : "boolean"
+               },
+               "taxInformation" : {
+                  "x-addedInVersion" : "2",
+                  "description" : "The tax information of the entity.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/TaxInformation"
+                  },
+                  "type" : "array"
+               },
+               "type" : {
+                  "description" : "Type of trust.\n\nPossible values for Australian trusts: **cashManagementTrust**, **corporateUnitTrust**, **deceasedEstate**, **discretionaryInvestmentTrust**, **discretionaryServicesManagementTrust**, **discretionaryTradingTrust**, **firstHomeSaverAccountsTrust**, **fixedTrust**, **fixedUnitTrust**, **hybridTrust**, **listedPublicUnitTrust**, **otherTrust**, **pooledSuperannuationTrust**, **publicTradingTrust**, **unlistedPublicUnitTrust**.",
+                  "enum" : [
+                     "cashManagementTrust",
+                     "corporateUnitTrust",
+                     "deceasedEstate",
+                     "discretionaryInvestmentTrust",
+                     "discretionaryServicesManagementTrust",
+                     "discretionaryTradingTrust",
+                     "firstHomeSaverAccountsTrust",
+                     "fixedTrust",
+                     "fixedUnitTrust",
+                     "hybridTrust",
+                     "listedPublicUnitTrust",
+                     "otherTrust",
+                     "pooledSuperannuationTrust",
+                     "publicTradingTrust",
+                     "unlistedPublicUnitTrust"
+                  ],
+                  "type" : "string"
+               },
+               "undefinedBeneficiaryInfo" : {
+                  "x-addedInVersion" : "2",
+                  "description" : "The undefined beneficiary information of the entity.",
+                  "items" : {
+                     "$ref" : "#/components/schemas/UndefinedBeneficiary"
+                  },
+                  "type" : "array"
+               },
+               "vatAbsenceReason" : {
+                  "description" : "The reason for not providing a VAT number.\n\nPossible values: **industryExemption**, **belowTaxThreshold**.",
+                  "enum" : [
+                     "industryExemption",
+                     "belowTaxThreshold"
+                  ],
+                  "type" : "string"
+               },
+               "vatNumber" : {
+                  "description" : "The VAT number.",
+                  "type" : "string"
+               }
+            },
+            "required" : [
+               "name",
+               "countryOfGoverningLaw",
+               "registeredAddress",
+               "type"
+            ],
+            "type" : "object"
+         },
+         "UndefinedBeneficiary" : {
+            "additionalProperties" : false,
+            "properties" : {
+               "description" : {
+                  "description" : "The details of the undefined beneficiary.",
+                  "type" : "string"
+               },
+               "reference" : {
+                  "description" : "The reference of the undefined beneficiary.",
+                  "readOnly" : true,
+                  "type" : "string"
+               }
+            },
+            "type" : "object"
+         },
          "VerificationError" : {
+            "additionalProperties" : false,
             "properties" : {
                "capabilities" : {
                   "description" : "Contains key-value pairs that specify the actions that the legal entity can do in your platform. The key is a capability required for your integration. For example, **issueCard** for Issuing.The value is an object containing the settings for the capability.",
@@ -4619,6 +5535,7 @@
                         "issueCard",
                         "issueCardCommercial",
                         "issueCardConsumer",
+                        "issueCreditLimit",
                         "localAcceptance",
                         "payout",
                         "payoutToTransferInstrument",
@@ -4676,11 +5593,13 @@
                   "type" : "array"
                },
                "type" : {
-                  "description" : "The type of error.",
+                  "description" : "The type of error.\n\nPossible values:\n*  **invalidInput**\n*  **dataMissing**\n*  **pendingStatus**\n*  **rejected**\n*  **dataReview**\n\n",
                   "enum" : [
                      "dataMissing",
+                     "dataReview",
                      "invalidInput",
-                     "pendingStatus"
+                     "pendingStatus",
+                     "rejected"
                   ],
                   "type" : "string"
                }
@@ -4688,6 +5607,7 @@
             "type" : "object"
          },
          "VerificationError-recursive" : {
+            "additionalProperties" : false,
             "properties" : {
                "capabilities" : {
                   "description" : "Contains key-value pairs that specify the actions that the legal entity can do in your platform. The key is a capability required for your integration. For example, **issueCard** for Issuing.The value is an object containing the settings for the capability.",
@@ -4714,6 +5634,7 @@
                         "issueCard",
                         "issueCardCommercial",
                         "issueCardConsumer",
+                        "issueCreditLimit",
                         "localAcceptance",
                         "payout",
                         "payoutToTransferInstrument",
@@ -4757,11 +5678,13 @@
                   "type" : "string"
                },
                "type" : {
-                  "description" : "The type of error.",
+                  "description" : "The type of error.\n\nPossible values:\n*  **invalidInput**\n*  **dataMissing**\n*  **pendingStatus**\n*  **rejected**\n*  **dataReview**\n\n",
                   "enum" : [
                      "dataMissing",
+                     "dataReview",
                      "invalidInput",
-                     "pendingStatus"
+                     "pendingStatus",
+                     "rejected"
                   ],
                   "type" : "string"
                },
@@ -4777,13 +5700,8 @@
                ],
             "type" : "object"
          },
-         "Void" : {
-            "type" : "object"
-         },
-         "VoidResponse" : {
-            "type" : "object"
-         },
          "WebData" : {
+            "additionalProperties" : false,
             "properties" : {
                "webAddress" : {
                   "description" : "The URL of the website or the app store URL.",
@@ -4798,11 +5716,13 @@
             "type" : "object"
          },
          "WebDataExemption" : {
+            "additionalProperties" : false,
             "properties" : {
                "reason" : {
                   "description" : "The reason why the web data was not provided. Possible value: **noOnlinePresence**.",
                   "enum" : [
-                     "noOnlinePresence"
+                     "noOnlinePresence",
+                     "notCollectedDuringOnboarding"
                   ],
                   "type" : "string"
                }
@@ -4828,7 +5748,7 @@
             "value" : {
                "capability" : "issueBankAccount",
                "industryCode" : "4531",
-               "legalEntityId" : "YOUR_LEGAL_ENTITY",
+               "legalEntityId" : "LE00000000000000000000001",
                "sourceOfFunds" : {
                   "adyenProcessedFunds" : false,
                   "description" : "Funds from my flower shop business",
@@ -4856,7 +5776,7 @@
                "description" : "Registration doc for Example Company",
                "fileName" : "Registration doc for Example Company",
                "owner" : {
-                  "id" : "YOUR_LEGAL_ENTITY",
+                  "id" : "LE00000000000000000000001",
                   "type" : "legalEntity"
                },
                "id" : "SE322JV223222F5GV2N9L8GDK"
@@ -4870,7 +5790,7 @@
                   {
                      "capability" : "issueBankAccount",
                      "industryCode" : "55",
-                     "legalEntityId" : "YOUR_LEGAL_ENTITY",
+                     "legalEntityId" : "LE00000000000000000000001",
                      "sourceOfFunds" : {
                         "adyenProcessedFunds" : false,
                         "description" : "Funds from my flower shop business",
@@ -4887,7 +5807,7 @@
                   {
                      "capability" : "receivePayments",
                      "industryCode" : "339E",
-                     "legalEntityId" : "YOUR_LEGAL_ENTITY",
+                     "legalEntityId" : "LE00000000000000000000001",
                      "salesChannels" : [
                         "eCommerce",
                         "ecomMoto"
@@ -4907,7 +5827,7 @@
             "summary" : "Details of a PCI questionnaire",
             "description" : "Example response when getting the details of a PCI questionnaire",
             "value" : {
-               "content" : "JVBERi0xLjUKJdDUxdgKMTAg.....",
+               "content" : "JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==",
                "createdAt" : "2023-03-02T17:54:19.538365Z",
                "id" : "PCID422GZ22322565HHMH48CW63CPH",
                "validUntil" : "2024-03-01T17:54:19.538365Z"
@@ -4939,6 +5859,14 @@
                   "sendToTransferInstrument" : {
                      "allowed" : false,
                      "requested" : true,
+                     "transferInstruments" : [
+                        {
+                           "allowed" : false,
+                           "id" : "SE322KH223222F5GXZFNM3BGP",
+                           "requested" : true,
+                           "verificationStatus" : "pending"
+                        }
+                     ],
                      "verificationStatus" : "pending"
                   },
                   "receivePayments" : {
@@ -4980,7 +5908,14 @@
                   }
                },
                "type" : "individual",
-               "id" : "YOUR_LEGAL_ENTITY"
+               "id" : "YOUR_LEGAL_ENTITY",
+               "transferInstruments" : [
+                  {
+                     "id" : "SE322KH223222F5GXZFNM3BGP",
+                     "accountIdentifier" : "NL**ABNA******0123",
+                     "trustedSource" : false
+                  }
+               ]
             }
          },
          "get-legalEntities-id-termsOfServiceAcceptanceInfos-success-200" : {
@@ -4989,12 +5924,21 @@
             "value" : {
                "data" : [
                   {
-                     "acceptedBy" : "YOUR_LEGAL_ENTITY_2",
-                     "acceptedFor" : "YOUR_LEGAL_ENTITY_1",
+                     "acceptedBy" : "LE00000000000000000000002",
+                     "acceptedFor" : "LE00000000000000000000001",
                      "createdAt" : "2022-12-05T13:36:58.212253Z",
                      "id" : "TOSA000AB00000000B2AAAB2BA0AA0",
                      "type" : "adyenIssuing"
                   }
+               ]
+            }
+         },
+         "get-legalEntities-id-termsOfServiceStatus-success-200" : {
+            "summary" : "Terms of Service status for a legal entity",
+            "description" : "Example response when getting the type of Terms of Service",
+            "value" : {
+               "termsOfServiceTypes" : [
+                  "adyenIssuing"
                ]
             }
          },
@@ -5059,16 +6003,16 @@
          },
          "get-transferInstruments-id-success-200" : {
             "summary" : "Details of a transfer instrument",
-            "description" : "Example response when getting the details of a transfer instrument",
+            "description" : "Example response when getting the details of a new transfer instrument",
             "value" : {
                "bankAccount" : {
+                  "iban" : "NL62ABNA0000000123",
                   "countryCode" : "NL",
-                  "currencyCode" : "EUR",
-                  "iban" : "NL62ABNA0000000123"
+                  "currencyCode" : "EUR"
                },
-               "legalEntityId" : "YOUR_LEGAL_ENTITY",
+               "legalEntityId" : "LE00000000000000000000001",
                "type" : "bankAccount",
-               "id" : "SE322JV223222F5GNXSR89TMW"
+               "id" : "SE322KH223222F5GXZFNM3BGP"
             }
          },
          "patch-businessLines-id-updateBusinessLine" : {
@@ -5089,7 +6033,7 @@
             "value" : {
                "capability" : "issueBankAccount",
                "industryCode" : "55",
-               "legalEntityId" : "YOUR_LEGAL_ENTITY",
+               "legalEntityId" : "LE00000000000000000000001",
                "sourceOfFunds" : {
                   "adyenProcessedFunds" : false,
                   "description" : "Funds from my flower shop business",
@@ -5125,7 +6069,7 @@
                "description" : "Proof of industry for Example Company",
                "fileName" : "Proof of industry for Example Company",
                "owner" : {
-                  "id" : "YOUR_LEGAL_ENTITY",
+                  "id" : "LE00000000000000000000001",
                   "type" : "legalEntity"
                },
                "id" : "SE322JV223222F5GV2N9L8GDK"
@@ -5152,7 +6096,25 @@
                   }
                },
                "type" : "individual",
-               "id" : "YOUR_LEGAL_ENTITY"
+               "id" : "LE00000000000000000000001"
+            }
+         },
+         "patch-legalEntities-id-termsOfService-termsofservicedocumentid-updateTermsofService" : {
+            "summary" : "Accept the Terms of Service document",
+            "description" : "Example request for accepting the Terms of Service document",
+            "value" : {
+               "acceptedBy" : "LE00000000000000000000002"
+            }
+         },
+         "patch-legalEntities-id-termsOfService-termsofservicedocumentid-updateTermsofService-200" : {
+            "summary" : "Terms of Service document accepted",
+            "description" : "Example response when accepting a Terms of Service document",
+            "value" : {
+               "acceptedBy" : "LE00000000000000000000002",
+               "id" : "TOSA000AB00000000B2AAAB2BA0AA0",
+               "language" : "en",
+               "termsOfServiceDocumentId" : "abc123",
+               "type" : "adyenIssuing"
             }
          },
          "patch-legalEntities-id-updateLegalEntityOrganization" : {
@@ -5162,7 +6124,7 @@
                "entityAssociations" : [
                   {
                      "jobTitle" : "CEO",
-                     "legalEntityId" : "YOUR_LEGAL_ENTITY_2",
+                     "legalEntityId" : "LE00000000000000000000002",
                      "type" : "uboThroughControl"
                   }
                ]
@@ -5174,10 +6136,10 @@
             "value" : {
                "entityAssociations" : [
                   {
-                     "associatorId" : "YOUR_LEGAL_ENTITY_1",
+                     "associatorId" : "LE00000000000000000000001",
                      "entityType" : "individual",
                      "jobTitle" : "CEO",
-                     "legalEntityId" : "YOUR_LEGAL_ENTITY_2",
+                     "legalEntityId" : "LE00000000000000000000002",
                      "name" : "Simone Hopper",
                      "type" : "uboThroughControl"
                   }
@@ -5185,7 +6147,6 @@
                "organization" : {
                   "email" : "john.doe@adyen.com",
                   "phone" : {
-                     "countryCode" : "NL",
                      "number" : "646467363",
                      "type" : "mobile"
                   },
@@ -5205,11 +6166,10 @@
                      "stockNumber" : "NL012345ABC4",
                      "tickerSymbol" : "ADYN.M"
                   },
-                  "taxExempt" : false,
                   "type" : "listedPublicCompany"
                },
                "type" : "organization",
-               "id" : "YOUR_LEGAL_ENTITY_1"
+               "id" : "LE00000000000000000000001"
             }
          },
          "patch-legalEntities-id-updateLegalEntitySoleProp" : {
@@ -5218,7 +6178,7 @@
             "value" : {
                "entityAssociations" : [
                   {
-                     "legalEntityId" : "YOUR_LEGAL_ENTITY_2",
+                     "legalEntityId" : "LE00000000000000000000002",
                      "type" : "soleProprietorship"
                   }
                ]
@@ -5230,9 +6190,9 @@
             "value" : {
                "entityAssociations" : [
                   {
-                     "associatorId" : "YOUR_LEGAL_ENTITY_1",
+                     "associatorId" : "LE00000000000000000000001",
                      "entityType" : "soleProprietorship",
-                     "legalEntityId" : "YOUR_LEGAL_ENTITY_2",
+                     "legalEntityId" : "LE00000000000000000000002",
                      "type" : "soleProprietorship"
                   }
                ],
@@ -5253,7 +6213,148 @@
                   }
                },
                "type" : "individual",
-               "id" : "YOUR_LEGAL_ENTITY_1"
+               "id" : "LE00000000000000000000001"
+            }
+         },
+         "patch-legalEntities-id-updateTrustMember" : {
+            "summary" : "Associate a trust member with a trust",
+            "description" : "Example request associating a trust member with a trust",
+            "value" : {
+               "entityAssociations" : [
+                  {
+                     "legalEntityId" : "LE00000000000000000000002",
+                     "type" : "protector"
+                  }
+               ]
+            }
+         },
+         "patch-legalEntities-id-updateTrustMember-200" : {
+            "summary" : "Trust member associated",
+            "description" : "Example response for associating a trust member with a trust",
+            "value" : {
+               "entityAssociations" : [
+                  {
+                     "associatorId" : "LE00000000000000000000001",
+                     "legalEntityId" : "LE00000000000000000000002",
+                     "name" : "Simone Hopper",
+                     "type" : "protector"
+                  }
+               ],
+               "trust" : {
+                  "name" : "Example Trust",
+                  "type" : "fixedUnitTrust",
+                  "doingBusinessAs" : "West's Store",
+                  "countryOfGoverningLaw" : "AU",
+                  "taxInformation" : [
+                     {
+                        "country" : "AU",
+                        "type" : "ABN",
+                        "number" : "12345678901"
+                     }
+                  ],
+                  "registeredAddress" : {
+                     "street" : "Winfield Avenue",
+                     "city" : "Sydney",
+                     "postalCode" : "1197",
+                     "stateOrProvince" : "NSW",
+                     "country" : "AU"
+                  },
+                  "undefinedBeneficiaryInfo" : [
+                     {
+                        "description" : "My future children"
+                     }
+                  ]
+               },
+               "type" : "trust",
+               "id" : "LE00000000000000000000001"
+            }
+         },
+         "patch-legalEntities-id-updateTrustMemberExempt" : {
+            "summary" : "Associate an exempt settlor with a trust",
+            "description" : "Example request associating an exempt settlor with a trust",
+            "value" : {
+               "entityAssociations" : [
+                  {
+                     "legalEntityId" : "LE00000000000000000000002",
+                     "type" : "settlor",
+                     "entityType" : "individual",
+                     "settlorExemptionReason" : [
+                        "deceased",
+                        "professionalServiceProvider"
+                     ]
+                  }
+               ]
+            }
+         },
+         "patch-legalEntities-id-updateTrustMemberExempt-200" : {
+            "summary" : "Exempt settlor associated",
+            "description" : "Example response for associating an exempt settlor with a trust",
+            "value" : {
+               "entityAssociations" : [
+                  {
+                     "associatorId" : "LE00000000000000000000001",
+                     "legalEntityId" : "LE00000000000000000000002",
+                     "type" : "settlor",
+                     "entityType" : "individual",
+                     "settlorExemptionReason" : [
+                        "deceased",
+                        "professionalServiceProvider"
+                     ]
+                  }
+               ],
+               "trust" : {
+                  "name" : "Example Trust",
+                  "type" : "fixedUnitTrust",
+                  "doingBusinessAs" : "West's Store",
+                  "countryOfGoverningLaw" : "AU",
+                  "taxInformation" : [
+                     {
+                        "country" : "AU",
+                        "type" : "ABN",
+                        "number" : "12345678901"
+                     }
+                  ],
+                  "registeredAddress" : {
+                     "street" : "Winfield Avenue",
+                     "city" : "Sydney",
+                     "postalCode" : "1197",
+                     "stateOrProvince" : "NSW",
+                     "country" : "AU"
+                  },
+                  "undefinedBeneficiaryInfo" : [
+                     {
+                        "description" : "My future children"
+                     }
+                  ]
+               },
+               "type" : "trust",
+               "id" : "LE00000000000000000000001"
+            }
+         },
+         "patch-transferInstruments-id-updateTransferInstrument" : {
+            "summary" : "Update a transfer instrument",
+            "description" : "Example request for updating a transfer instrument",
+            "value" : {
+               "bankAccount" : {
+                  "currencyCode" : "EUR",
+                  "iban" : "NL02ABNA0123456789"
+               },
+               "legalEntityId" : "LE00000000000000000000001",
+               "type" : "bankAccount"
+            }
+         },
+         "patch-transferInstruments-id-updateTransferInstrument-200" : {
+            "summary" : "Transfer instrument updated",
+            "description" : "Example response for updating a transfer instrument",
+            "value" : {
+               "bankAccount" : {
+                  "countryCode" : "NL",
+                  "currencyCode" : "EUR",
+                  "iban" : "NL02ABNA0123456789"
+               },
+               "legalEntityId" : "LE00000000000000000000001",
+               "type" : "bankAccount",
+               "id" : "SE576BH223222F5GJVKHH6BDT"
             }
          },
          "post-businessLines-createBusinessLines-businessAccounts" : {
@@ -5267,7 +6368,7 @@
                      "webAddress" : "https://www.adyen.com"
                   }
                ],
-               "legalEntityId" : "YOUR_LEGAL_ENTITY",
+               "legalEntityId" : "LE00000000000000000000001",
                "sourceOfFunds" : {
                   "type" : "business",
                   "adyenProcessedFunds" : false,
@@ -5281,7 +6382,7 @@
             "value" : {
                "capability" : "issueBankAccount",
                "industryCode" : "4531",
-               "legalEntityId" : "YOUR_LEGAL_ENTITY",
+               "legalEntityId" : "LE00000000000000000000001",
                "sourceOfFunds" : {
                   "adyenProcessedFunds" : false,
                   "description" : "Funds from my flower shop business",
@@ -5308,7 +6409,7 @@
                ],
                "description" : "Registration doc for Example Company",
                "owner" : {
-                  "id" : "YOUR_LEGAL_ENTITY",
+                  "id" : "LE00000000000000000000001",
                   "type" : "legalEntity"
                }
             }
@@ -5326,10 +6427,73 @@
                "description" : "Registration doc for Example Company",
                "fileName" : "Registration doc for Example Company",
                "owner" : {
-                  "id" : "YOUR_LEGAL_ENTITY",
+                  "id" : "LE00000000000000000000001",
                   "type" : "legalEntity"
                },
                "id" : "SE322JV223222F5GV2N9L8GDK"
+            }
+         },
+         "post-legalEntities-createLegalEntityIndividualAU" : {
+            "summary" : "Create a legal entity for an individual residing in Australia",
+            "description" : "Example request for creating a legal entity for an individual residing in Australia",
+            "value" : {
+               "type" : "individual",
+               "individual" : {
+                  "residentialAddress" : {
+                     "city" : "Sydney",
+                     "country" : "AU",
+                     "postalCode" : "1122",
+                     "stateOrProvince" : "NSW",
+                     "street" : "Winfield Avenue",
+                     "street2" : "12"
+                  },
+                  "name" : {
+                     "firstName" : "Shelly",
+                     "lastName" : "Eller"
+                  },
+                  "identificationData" : {
+                     "issuerState" : "NSW",
+                     "number" : "1234567891",
+                     "type" : "driversLicense",
+                     "cardNumber" : "112327"
+                  },
+                  "birthData" : {
+                     "dateOfBirth" : "1991-01-01"
+                  },
+                  "email" : "s.hopper@example.com"
+               }
+            }
+         },
+         "post-legalEntities-createLegalEntityIndividualAU-200" : {
+            "summary" : "Individual legal entity created",
+            "description" : "Example response for creating a legal entity for an individual residing in Australia",
+            "value" : {
+               "individual" : {
+                  "email" : "s.hopper@example.com",
+                  "birthData" : {
+                     "dateOfBirth" : "1991-01-01"
+                  },
+                  "identificationData" : {
+                     "cardNumber" : "112327",
+                     "issuerState" : "NSW",
+                     "number" : "1234567891",
+                     "type" : "driversLicense"
+                  },
+                  "name" : {
+                     "firstName" : "Shelly",
+                     "lastName" : "Eller"
+                  },
+                  "residentialAddress" : {
+                     "city" : "Sydney",
+                     "country" : "AU",
+                     "postalCode" : "1122",
+                     "stateOrProvince" : "NSW",
+                     "street" : "Winfield Avenue",
+                     "street2" : "12"
+                  }
+               },
+               "type" : "individual",
+               "id" : "LE00000000000000000000001"
             }
          },
          "post-legalEntities-createLegalEntityIndividualNL" : {
@@ -5376,7 +6540,7 @@
                   }
                },
                "type" : "individual",
-               "id" : "YOUR_LEGAL_ENTITY"
+               "id" : "LE00000000000000000000001"
             }
          },
          "post-legalEntities-createLegalEntityIndividualUS" : {
@@ -5435,7 +6599,7 @@
                   }
                },
                "type" : "individual",
-               "id" : "YOUR_LEGAL_ENTITY"
+               "id" : "LE00000000000000000000001"
             }
          },
          "post-legalEntities-createLegalEntityOrganizationNL" : {
@@ -5459,7 +6623,7 @@
                "entityAssociations" : [
                   {
                      "jobTitle" : "CEO",
-                     "legalEntityId" : "YOUR_LEGAL_ENTITY_1",
+                     "legalEntityId" : "LE00000000000000000000001",
                      "type" : "signatory"
                   }
                ]
@@ -5471,10 +6635,10 @@
             "value" : {
                "entityAssociations" : [
                   {
-                     "associatorId" : "YOUR_LEGAL_ENTITY_2",
+                     "associatorId" : "LE00000000000000000000002",
                      "entityType" : "individual",
                      "jobTitle" : "CEO",
-                     "legalEntityId" : "YOUR_LEGAL_ENTITY_1",
+                     "legalEntityId" : "LE00000000000000000000001",
                      "name" : "Simone Hopper",
                      "type" : "signatory"
                   }
@@ -5493,7 +6657,7 @@
                   "type" : "privateCompany"
                },
                "type" : "organization",
-               "id" : "YOUR_LEGAL_ENTITY_2"
+               "id" : "LE00000000000000000000002"
             }
          },
          "post-legalEntities-createLegalEntityOrganizationUS" : {
@@ -5531,11 +6695,10 @@
                      "street" : "71 5th Avenue",
                      "street2" : "11th floor"
                   },
-                  "taxExempt" : false,
                   "type" : "privateCompany"
                },
                "type" : "organization",
-               "id" : "YOUR_LEGAL_ENTITY"
+               "id" : "LE00000000000000000000001"
             }
          },
          "post-legalEntities-createLegalEntitySolePropNL" : {
@@ -5556,7 +6719,7 @@
             }
          },
          "post-legalEntities-createLegalEntitySolePropNL-200" : {
-            "summary" : "Sole proprietor legal enity created",
+            "summary" : "Sole proprietor legal entity created",
             "description" : "Example response for creating a legal entity for a sole proprietor operating in the Netherlands",
             "value" : {
                "type" : "soleProprietorship",
@@ -5570,7 +6733,7 @@
                      "street" : "Simon Carmiggeltstraat 6 - 50"
                   }
                },
-               "id" : "YOUR_LEGAL_ENTITY"
+               "id" : "LE00000000000000000000001"
             }
          },
          "post-legalEntities-createLegalEntitySolePropUS" : {
@@ -5593,7 +6756,7 @@
             }
          },
          "post-legalEntities-createLegalEntitySolePropUS-200" : {
-            "summary" : "Sole proprietor legal enity created",
+            "summary" : "Sole proprietor legal entity created",
             "description" : "Example response for creating a legal entity for a sole proprietor operating in the US",
             "value" : {
                "type" : "soleProprietorship",
@@ -5609,13 +6772,80 @@
                      "street2" : "11th floor"
                   }
                },
-               "id" : "YOUR_LEGAL_ENTITY"
+               "id" : "LE00000000000000000000001"
+            }
+         },
+         "post-legalEntities-createTrustAU" : {
+            "summary" : "Create a legal entity for a trust in Australia",
+            "description" : "Example request for creating a legal entity for a trust in Australia",
+            "value" : {
+               "type" : "trust",
+               "trust" : {
+                  "name" : "Example Trust",
+                  "type" : "fixedUnitTrust",
+                  "doingBusinessAs" : "West's Store",
+                  "countryOfGoverningLaw" : "AU",
+                  "taxInformation" : [
+                     {
+                        "country" : "AU",
+                        "type" : "ABN",
+                        "number" : "12345678123"
+                     }
+                  ],
+                  "registeredAddress" : {
+                     "street" : "Winfield Avenue",
+                     "city" : "Sydney",
+                     "postalCode" : "1197",
+                     "stateOrProvince" : "NSW",
+                     "country" : "AU"
+                  },
+                  "undefinedBeneficiaryInfo" : [
+                     {
+                        "description" : "My future children"
+                     }
+                  ]
+               }
+            }
+         },
+         "post-legalEntities-createTrustAU-200" : {
+            "summary" : "Trust legal entity created",
+            "description" : "Example response for creating a legal entity for a trust in Australia",
+            "value" : {
+               "trust" : {
+                  "countryOfGoverningLaw" : "AU",
+                  "doingBusinessAs" : "West's Store",
+                  "name" : "Example Trust",
+                  "registeredAddress" : {
+                     "city" : "Sydney",
+                     "country" : "AU",
+                     "postalCode" : "1197",
+                     "stateOrProvince" : "NSW",
+                     "street" : "Winfield Avenue"
+                  },
+                  "taxInformation" : [
+                     {
+                        "country" : "AU",
+                        "number" : "12345678901",
+                        "type" : "ABN"
+                     }
+                  ],
+                  "type" : "fixedUnitTrust",
+                  "undefinedBeneficiaryInfo" : [
+                     {
+                        "description" : "My future children",
+                        "reference" : "SE322KH223222J5HJ6JRB75HQ"
+                     }
+                  ]
+               },
+               "type" : "trust",
+               "id" : "LE322KH223222J5HJ6JRB75C5"
             }
          },
          "post-legalEntities-id-onboardingLinks-createOnboardingLink" : {
             "summary" : "Create a hosted onboarding link",
             "description" : "Example request for creating a hosted onboarding link",
             "value" : {
+               "themeId" : "YOUR_THEME_ID",
                "redirectUrl" : "https://your.redirect-url.com/",
                "locale" : "nl-NL"
             }
@@ -5628,17 +6858,17 @@
             }
          },
          "post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire" : {
-            "summary" : "Generate the PCI questionnaire",
-            "description" : "Example request for generating the PCI questionnaire in French",
+            "summary" : "Generate PCI questionnaires",
+            "description" : "Example request for generating PCI questionnaires in French",
             "value" : {
                "language" : "fr"
             }
          },
          "post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire-200" : {
-            "summary" : "PCI questionnaire returned",
-            "description" : "Example response for getting a PCI questionnaire",
+            "summary" : "PCI questionnaires returned",
+            "description" : "Example response for getting PCI questionnaires",
             "value" : {
-               "content" : "l345JKNFj345FJLG3lk...",
+               "content" : "JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==",
                "language" : "fr",
                "pciTemplateReferences" : [
                   "PCIT-T7KC6VGL",
@@ -5647,8 +6877,8 @@
             }
          },
          "post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire" : {
-            "summary" : "Sign the PCI questionnaires",
-            "description" : "Example request for signing the PCI questionnaires",
+            "summary" : "Sign PCI questionnaires",
+            "description" : "Example request for signing PCI questionnaires",
             "value" : {
                "signedBy" : "LE00000000000000000000002",
                "pciTemplateReferences" : [
@@ -5679,23 +6909,25 @@
             "summary" : "Terms of Service document returned",
             "description" : "Example response for getting a Terms of Service document",
             "value" : {
-               "id" : "YOUR_LEGAL_ENTITY",
+               "id" : "LE00000000000000000000001",
                "type" : "adyenIssuing",
                "language" : "en",
                "document" : "JVBERi0xLjQKJcOkw7zDtsOfCjIgMCBv+f/ub0j6JPRX+E3EmC==",
-               "termsOfServiceDocumentId" : "abc123"
+               "termsOfServiceDocumentId" : "abc123",
+               "termsOfServiceDocumentFormat" : "JSON"
             }
          },
          "post-transferInstruments-createTransferInstrumentEUR" : {
             "summary" : "Add a EUR bank account",
             "description" : "Example request for creating a transfer instrument for EUR",
             "value" : {
-               "legalEntityId" : "YOUR_LEGAL_ENTITY",
+               "legalEntityId" : "LE00000000000000000000001",
                "type" : "bankAccount",
                "bankAccount" : {
                   "countryCode" : "NL",
                   "currencyCode" : "EUR",
-                  "iban" : "NL62ABNA0000000123"
+                  "iban" : "NL62ABNA0000000123",
+                  "trustedSource" : false
                }
             }
          },
@@ -5706,18 +6938,19 @@
                "bankAccount" : {
                   "countryCode" : "NL",
                   "currencyCode" : "EUR",
-                  "iban" : "NL62ABNA0000000123"
+                  "iban" : "NL62ABNA0000000123",
+                  "trustedSource" : false
                },
-               "legalEntityId" : "YOUR_LEGAL_ENTITY",
+               "legalEntityId" : "LE00000000000000000000001",
                "type" : "bankAccount",
-               "id" : "SE576BH223222F5GJVKHH6BDT"
+               "id" : "SE322KH223222F5GXZFNM3BGP"
             }
          },
          "post-transferInstruments-createTransferInstrumentUSD" : {
             "summary" : "Add a USD bank account",
             "description" : "Example request for creating a transfer instrument for USD",
             "value" : {
-               "legalEntityId" : "YOUR_LEGAL_ENTITY",
+               "legalEntityId" : "LE00000000000000000000001",
                "type" : "bankAccount",
                "bankAccount" : {
                   "countryCode" : "US",
@@ -5737,9 +6970,10 @@
                   "accountType" : "checking",
                   "branchCode" : "121202211",
                   "countryCode" : "US",
-                  "currencyCode" : "USD"
+                  "currencyCode" : "USD",
+                  "trustedSource" : false
                },
-               "legalEntityId" : "YOUR_LEGAL_ENTITY",
+               "legalEntityId" : "LE00000000000000000000001",
                "type" : "bankAccount",
                "id" : "SE322JV223222F5GJVKHH8DTC"
             }

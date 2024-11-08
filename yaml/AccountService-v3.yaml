@@ -6,12 +6,12 @@ info:
   x-publicVersion: true
   title: Account API
   description: "This API is used for the classic integration. If you are just starting\
-    \ your implementation, refer to our [new integration guide](https://docs.adyen.com/marketplaces-and-platforms)\
+    \ your implementation, refer to our [new integration guide](https://docs.adyen.com/adyen-for-platforms-model)\
     \ instead.\n\nThe Account API provides endpoints for managing account-related\
     \ entities on your platform. These related entities include account holders, accounts,\
     \ bank accounts, shareholders, and verification-related documents. The management\
     \ operations include actions such as creation, retrieval, updating, and deletion\
-    \ of them.\n\nFor more information, refer to our [documentation](https://docs.adyen.com/marketplaces-and-platforms/classic).\n\
+    \ of them.\n\nFor more information, refer to our [documentation](https://docs.adyen.com/classic-platforms).\n\
     ## Authentication\nYour Adyen contact will provide your API credential and an\
     \ API key. To connect to the API, add an `X-API-Key` header with the API key as\
     \ the value, for example:\n\n ```\ncurl\n-H \"Content-Type: application/json\"\
@@ -24,20 +24,14 @@ info:
     \ using a version suffix in the endpoint URL. This suffix has the following format:\
     \ \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://cal-test.adyen.com/cal/services/Account/v3/createAccountHolder\n\
     ```"
-  x-timestamp: '2023-04-11T21:25:35Z'
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   contact:
     name: Adyen Developer Experience team
-    url: https://www.adyen.help/hc/en-us/community/topics
-    email: developer-experience@adyen.com
-x-groups:
-- Account holders
-- Accounts
-- Verification
+    url: https://github.com/Adyen/adyen-openapi
 tags:
 - name: Account holders
-- name: Verification
 - name: Accounts
+- name: Verification
 paths:
   /closeAccount:
     post:
@@ -48,7 +42,6 @@ paths:
         transactions, pay out its funds, or reopen it. If payments are made to a closed
         account, the payments are sent to your liable account.
       operationId: post-closeAccount
-      x-groupName: Accounts
       x-sortIndex: 3
       x-methodName: closeAccount
       security:
@@ -117,13 +110,12 @@ paths:
       tags:
       - Account holders
       summary: Close an account holder
-      description: Changes the [status of an account holder](https://docs.adyen.com/marketplaces-and-platforms/classic/account-holders-and-accounts#account-holder-statuses)
+      description: Changes the [status of an account holder](https://docs.adyen.com/classic-platforms/account-holders-and-accounts#account-holder-statuses)
         to **Closed**. This state is final. If an account holder is closed, you can't
         process transactions, pay out funds, or reopen it. If payments are made to
         an account of an account holder with a **Closed** [`status`](https://docs.adyen.com/api-explorer/#/Account/latest/post/getAccountHolder__resParam_verification-accountHolder-checks-status),
         the payments are sent to your liable account.
       operationId: post-closeAccountHolder
-      x-groupName: Account holders
       x-sortIndex: 7
       x-methodName: closeAccountHolder
       security:
@@ -193,9 +185,8 @@ paths:
       - Accounts
       summary: Create an account
       description: Creates an account under an account holder. An account holder can
-        have [multiple accounts](https://docs.adyen.com/marketplaces-and-platforms/classic/account-holders-and-accounts#create-additional-accounts).
+        have [multiple accounts](https://docs.adyen.com/classic-platforms/account-holders-and-accounts#create-additional-accounts).
       operationId: post-createAccount
-      x-groupName: Accounts
       x-sortIndex: 1
       x-methodName: createAccount
       security:
@@ -264,12 +255,11 @@ paths:
       tags:
       - Account holders
       summary: Create an account holder
-      description: Creates an account holder that [represents the sub-merchant's entity](https://docs.adyen.com/marketplaces-and-platforms/classic/account-structure#your-platform)
+      description: Creates an account holder that [represents the sub-merchant's entity](https://docs.adyen.com/classic-platforms/account-structure#your-platform)
         in your platform. The details that you need to provide in the request depend
         on the sub-merchant's legal entity type. For more information, refer to [Account
-        holder and accounts](https://docs.adyen.com/marketplaces-and-platforms/classic/account-holders-and-accounts#legal-entity-types).
+        holder and accounts](https://docs.adyen.com/classic-platforms/account-holders-and-accounts#legal-entity-types).
       operationId: post-createAccountHolder
-      x-groupName: Account holders
       x-sortIndex: 1
       x-methodName: createAccountHolder
       security:
@@ -351,7 +341,6 @@ paths:
       summary: Delete bank accounts
       description: 'Deletes bank accounts associated with an account holder. '
       operationId: post-deleteBankAccounts
-      x-groupName: Verification
       x-sortIndex: 4
       x-methodName: deleteBankAccounts
       security:
@@ -423,7 +412,6 @@ paths:
       description: Deletes legal arrangements and/or legal arrangement entities associated
         with an account holder.
       operationId: post-deleteLegalArrangements
-      x-groupName: Verification
       x-sortIndex: 6
       x-methodName: deleteLegalArrangements
       security:
@@ -505,7 +493,6 @@ paths:
       summary: Delete shareholders
       description: Deletes shareholders associated with an account holder.
       operationId: post-deleteShareholders
-      x-groupName: Verification
       x-sortIndex: 7
       x-methodName: deleteShareholders
       security:
@@ -576,7 +563,6 @@ paths:
       summary: Delete signatories
       description: Deletes signatories associated with an account holder.
       operationId: post-deleteSignatories
-      x-groupName: Verification
       x-sortIndex: 8
       x-methodName: deleteSignatories
       security:
@@ -644,7 +630,6 @@ paths:
       summary: Get an account holder
       description: Returns the details of an account holder.
       operationId: post-getAccountHolder
-      x-groupName: Account holders
       x-sortIndex: 2
       x-methodName: getAccountHolder
       security:
@@ -716,9 +701,8 @@ paths:
       - Account holders
       summary: Get a tax form
       description: Generates a tax form for account holders operating in the US. For
-        more information, refer to [Providing tax forms](https://docs.adyen.com/marketplaces-and-platforms/classic/tax-forms).
+        more information, refer to [Providing tax forms](https://docs.adyen.com/classic-platforms/tax-forms).
       operationId: post-getTaxForm
-      x-groupName: Account holders
       x-sortIndex: 8
       x-methodName: getTaxForm
       security:
@@ -781,11 +765,10 @@ paths:
       - Verification
       summary: Get documents
       description: 'Returns documents that were previously uploaded for an account
-        holder. Adyen uses the documents during the [verification process](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process).
+        holder. Adyen uses the documents during the [verification process](https://docs.adyen.com/classic-platforms/verification-process).
 
         '
       operationId: post-getUploadedDocuments
-      x-groupName: Verification
       x-sortIndex: 2
       x-methodName: getUploadedDocuments
       security:
@@ -847,10 +830,9 @@ paths:
       tags:
       - Account holders
       summary: Suspend an account holder
-      description: Changes the [status of an account holder](https://docs.adyen.com/marketplaces-and-platforms/classic/account-holders-and-accounts#account-holder-statuses)
+      description: Changes the [status of an account holder](https://docs.adyen.com/classic-platforms/account-holders-and-accounts#account-holder-statuses)
         to **Suspended**.
       operationId: post-suspendAccountHolder
-      x-groupName: Account holders
       x-sortIndex: 5
       x-methodName: suspendAccountHolder
       security:
@@ -919,7 +901,7 @@ paths:
       tags:
       - Account holders
       summary: Unsuspend an account holder
-      description: "Changes the [status of an account holder](https://docs.adyen.com/marketplaces-and-platforms/classic/account-holders-and-accounts#account-holder-statuses)\
+      description: "Changes the [status of an account holder](https://docs.adyen.com/classic-platforms/account-holders-and-accounts#account-holder-statuses)\
         \ from **Suspended** to **Inactive**. \nAccount holders can have a **Suspended**\
         \ [`status`](https://docs.adyen.com/api-explorer/#/Account/latest/post/getAccountHolder__resParam_verification-accountHolder-checks-status)\
         \ if you suspend them through the [`/suspendAccountHolder`](https://docs.adyen.com/api-explorer/#/Account/v5/post/suspendAccountHolder)\
@@ -927,7 +909,6 @@ paths:
         \ account holders if they do not have verification checks with a **FAILED**\
         \ [`status`](https://docs.adyen.com/api-explorer/#/Account/latest/post/getAccountHolder__resParam_verification-accountHolder-checks-status)."
       operationId: post-unSuspendAccountHolder
-      x-groupName: Account holders
       x-sortIndex: 6
       x-methodName: unSuspendAccountHolder
       security:
@@ -998,7 +979,6 @@ paths:
       summary: Update an account
       description: Updates the description or payout schedule of an account.
       operationId: post-updateAccount
-      x-groupName: Accounts
       x-sortIndex: 2
       x-methodName: updateAccount
       security:
@@ -1082,7 +1062,6 @@ paths:
         \ provide the bank account or shareholder details without a `bankAccountUUID`\
         \ or a `shareholderCode`.\n\n"
       operationId: post-updateAccountHolder
-      x-groupName: Account holders
       x-sortIndex: 3
       x-methodName: updateAccountHolder
       security:
@@ -1160,7 +1139,6 @@ paths:
       description: Disables or enables the processing or payout state of an account
         holder.
       operationId: post-updateAccountHolderState
-      x-groupName: Account holders
       x-sortIndex: 4
       x-methodName: updateAccountHolderState
       security:
@@ -1230,9 +1208,8 @@ paths:
       - Verification
       summary: Upload a document
       description: Uploads a document for an account holder. Adyen uses the documents
-        during the [verification process](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process).
+        during the [verification process](https://docs.adyen.com/classic-platforms/verification-process).
       operationId: post-uploadDocument
-      x-groupName: Verification
       x-sortIndex: 1
       x-methodName: uploadDocument
       security:
@@ -1299,6 +1276,7 @@ paths:
 components:
   schemas:
     Account:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of the account.
@@ -1316,13 +1294,14 @@ components:
           $ref: '#/components/schemas/PayoutScheduleResponse'
       type: object
     AccountEvent:
+      additionalProperties: false
       properties:
         event:
           description: 'The event.
 
             >Permitted values: `InactivateAccount`, `RefundNotPaidOutTransfers`.
 
-            For more information, refer to [Verification checks](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process).'
+            For more information, refer to [Verification checks](https://docs.adyen.com/classic-platforms/verification-process).'
           enum:
           - InactivateAccount
           - RefundNotPaidOutTransfers
@@ -1340,6 +1319,7 @@ components:
         AccountEvent:
           $ref: '#/components/schemas/AccountEvent'
     AccountHolderDetails:
+      additionalProperties: false
       properties:
         address:
           description: The address of the account holder.
@@ -1347,7 +1327,7 @@ components:
         bankAccountDetails:
           description: Array of bank accounts associated with the account holder.
             For details about the required `bankAccountDetail` fields, see [Required
-            information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information).
+            information](https://docs.adyen.com/classic-platforms/verification-process/required-information).
           items:
             $ref: '#/components/schemas/BankAccountDetailWrapper'
           type: array
@@ -1398,14 +1378,22 @@ components:
             > Note that during an update of metadata, the omission of existing key-value
             pairs will result in the deletion of those key-value pairs.'
           type: object
+        phoneNumber:
+          description: 'The phone number of the account holder.
+
+            > Required if a `fullPhoneNumber` is not provided.'
+          $ref: '#/components/schemas/ViasPhoneNumber'
         principalBusinessAddress:
           description: The principal business address of the account holder.
           $ref: '#/components/schemas/ViasAddress'
         webAddress:
           description: The URL of the website of the account holder.
           type: string
+      required:
+      - address
       type: object
     AccountHolderStatus:
+      additionalProperties: false
       properties:
         events:
           description: A list of events scheduled for the account holder.
@@ -1435,6 +1423,7 @@ components:
       - status
       type: object
     AccountPayoutState:
+      additionalProperties: false
       properties:
         allowPayout:
           description: Indicates whether payouts are allowed. This field is the overarching
@@ -1467,6 +1456,7 @@ components:
           type: integer
       type: object
     AccountProcessingState:
+      additionalProperties: false
       properties:
         disableReason:
           description: The reason why processing has been disabled.
@@ -1495,6 +1485,7 @@ components:
         Account:
           $ref: '#/components/schemas/Account'
     Amount:
+      additionalProperties: false
       properties:
         currency:
           description: The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).
@@ -1510,11 +1501,12 @@ components:
       - currency
       type: object
     BankAccountDetail:
+      additionalProperties: false
       properties:
         accountNumber:
           description: 'The bank account number (without separators).
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         accountType:
@@ -1525,7 +1517,7 @@ components:
             The permitted values are: `checking`, `savings`.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         bankAccountName:
@@ -1558,14 +1550,14 @@ components:
         bankBicSwift:
           description: 'The bank identifier code.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         bankCity:
           description: 'The city in which the bank branch is located.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         bankCode:
@@ -1573,7 +1565,7 @@ components:
             account is registered.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         bankName:
@@ -1581,7 +1573,7 @@ components:
             is held.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         branchCode:
@@ -1595,14 +1587,14 @@ components:
 
             * Germany - Bankleitzahl
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         checkCode:
           description: 'The check code of the bank account.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         countryCode:
@@ -1611,7 +1603,7 @@ components:
             >The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. ''NL'').
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         currencyCode:
@@ -1627,13 +1619,13 @@ components:
             >The IBAN standard is defined in ISO-13616.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerCity:
           description: 'The city of residence of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerCountryCode:
@@ -1643,7 +1635,7 @@ components:
             >The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. ''NL'').
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerDateOfBirth:
@@ -1656,13 +1648,13 @@ components:
           description: 'The house name or number of the residence of the bank account
             owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerName:
           description: 'The name of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerNationality:
@@ -1672,25 +1664,25 @@ components:
             >The permitted country codes are defined in ISO-3166-1 alpha-2 (e.g. ''NL'').
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerPostalCode:
           description: 'The postal code of the residence of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerState:
           description: 'The state of residence of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         ownerStreet:
           description: 'The street name of the residence of the bank account owner.
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         primaryAccount:
@@ -1700,7 +1692,7 @@ components:
           description: 'The tax ID number.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
         urlForVerification:
@@ -1709,7 +1701,7 @@ components:
             This may be generated on bank account creation.
 
 
-            >Refer to [Required information](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process/required-information)
+            >Refer to [Required information](https://docs.adyen.com/classic-platforms/verification-process/required-information)
             for details on field requirements.'
           type: string
       type: object
@@ -1718,6 +1710,7 @@ components:
         BankAccountDetail:
           $ref: '#/components/schemas/BankAccountDetail'
     BusinessDetails:
+      additionalProperties: false
       properties:
         doingBusinessAs:
           description: The registered name of the company (if it differs from the
@@ -1735,7 +1728,7 @@ components:
         shareholders:
           description: Array containing information about individuals associated with
             the account holder either through ownership or control. For details about
-            how you can identify them, refer to [our verification guide](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-process#identify-ubos).
+            how you can identify them, refer to [our verification guide](https://docs.adyen.com/classic-platforms/verification-process#identify-ubos).
           items:
             $ref: '#/components/schemas/ShareholderContactWrapper'
           type: array
@@ -1751,6 +1744,7 @@ components:
           type: string
       type: object
     CloseAccountHolderRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the Account Holder to be closed.
@@ -1759,6 +1753,7 @@ components:
       - accountHolderCode
       type: object
     CloseAccountHolderResponse:
+      additionalProperties: false
       properties:
         accountHolderStatus:
           description: The new status of the Account Holder.
@@ -1783,6 +1778,7 @@ components:
           type: boolean
       type: object
     CloseAccountRequest:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of account to be closed.
@@ -1791,6 +1787,7 @@ components:
       - accountCode
       type: object
     CloseAccountResponse:
+      additionalProperties: false
       properties:
         pspReference:
           description: The reference of a request. Can be used to uniquely identify
@@ -1823,6 +1820,7 @@ components:
           type: boolean
       type: object
     CreateAccountHolderRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: 'Your unique identifier for the prospective account holder.
@@ -1861,7 +1859,7 @@ components:
           type: string
         processingTier:
           x-addedInVersion: '3'
-          description: The starting [processing tier](https://docs.adyen.com/marketplaces-and-platforms/classic/onboarding-and-verification/precheck-kyc-information)
+          description: The starting [processing tier](https://docs.adyen.com/classic-platforms/onboarding-and-verification/precheck-kyc-information)
             for the prospective account holder.
           format: int32
           type: integer
@@ -1871,6 +1869,7 @@ components:
       - accountHolderDetails
       type: object
     CreateAccountHolderResponse:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of a new account created for the account holder.
@@ -1916,14 +1915,21 @@ components:
           $ref: '#/components/schemas/KYCVerificationResult'
       type: object
     CreateAccountRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of Account Holder under which to create the account.
           type: string
         payoutSchedule:
-          description: 'The payout schedule of the prospective account.
+          description: 'The payout schedule for the account.
 
-            >Permitted values: `DEFAULT`, `HOLD`, `DAILY`, `WEEKLY`, `MONTHLY`.'
+
+            Possible values: `DEFAULT`, `DAILY`, `DAILY_US`, `DAILY_EU`, `DAILY_AU`,
+            `DAILY_SG`, `WEEKLY`, `WEEKLY_ON_TUE_FRI_MIDNIGHT`, `BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT`,
+            `MONTHLY`, `HOLD`.
+
+            > `HOLD` prevents scheduled payouts, but you can still initiate payouts
+            manually.'
           enum:
           - BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT
           - DAILY
@@ -1944,12 +1950,14 @@ components:
         payoutScheduleReason:
           description: 'The reason for the payout schedule choice.
 
-            >Required if the payoutSchedule is `HOLD`.'
+            > This field is required when the `payoutSchedule` parameter is set to
+            `HOLD`.'
           type: string
       required:
       - accountHolderCode
       type: object
     CreateAccountResponse:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of the new account.
@@ -1958,7 +1966,7 @@ components:
           description: The code of the account holder.
           type: string
         payoutSchedule:
-          description: The payout schedule of the account.
+          description: The details of the payout schedule added to the account.
           $ref: '#/components/schemas/PayoutScheduleResponse'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify
@@ -1991,6 +1999,7 @@ components:
           type: boolean
       type: object
     DeleteBankAccountRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the Account Holder from which to delete the Bank
@@ -2006,6 +2015,7 @@ components:
       - bankAccountUUIDs
       type: object
     DeleteLegalArrangementRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the account holder.
@@ -2020,6 +2030,7 @@ components:
       - legalArrangements
       type: object
     DeleteShareholderRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the Account Holder from which to delete the Shareholders.
@@ -2034,6 +2045,7 @@ components:
       - shareholderCodes
       type: object
     DeleteSignatoriesRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the account holder from which to delete the signatories.
@@ -2048,6 +2060,7 @@ components:
       - signatoryCodes
       type: object
     DocumentDetail:
+      additionalProperties: false
       properties:
         accountHolderCode:
           x-addedInVersion: '2'
@@ -2056,7 +2069,7 @@ components:
         bankAccountUUID:
           x-addedInVersion: '2'
           description: 'The Adyen-generated [`bankAccountUUID`](https://docs.adyen.com/api-explorer/#/Account/latest/post/createAccountHolder__resParam_accountHolderDetails-bankAccountDetails-bankAccountUUID)
-            to which the document must be linked. Refer to [Bank account check](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks/bank-account-check#uploading-a-bank-statement)
+            to which the document must be linked. Refer to [Bank account check](https://docs.adyen.com/classic-platforms/verification-checks/bank-account-check#uploading-a-bank-statement)
             for details on when a document should be submitted.
 
             >Required if the `documentType` is **BANK_STATEMENT**, where a document
@@ -2068,7 +2081,7 @@ components:
           description: Description of the document.
           type: string
         documentType:
-          description: 'The type of the document. Refer to [Verification checks](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks)
+          description: 'The type of the document. Refer to [Verification checks](https://docs.adyen.com/classic-platforms/verification-checks)
             for details on when each document type should be submitted and for the
             accepted file formats.
 
@@ -2122,7 +2135,7 @@ components:
         shareholderCode:
           x-addedInVersion: '2'
           description: 'The Adyen-generated [`shareholderCode`](https://docs.adyen.com/api-explorer/#/Account/latest/post/createAccountHolder__resParam_accountHolderDetails-businessDetails-shareholders-shareholderCode)
-            to which the document must be linked. Refer to [Verification checks](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks)
+            to which the document must be linked. Refer to [Verification checks](https://docs.adyen.com/classic-platforms/verification-checks)
             for details on when a document should be submitted.
 
             >Required if the account holder has a `legalEntity` of type **Business**
@@ -2141,6 +2154,7 @@ components:
         DocumentDetail:
           $ref: '#/components/schemas/DocumentDetail'
     ErrorFieldType:
+      additionalProperties: false
       properties:
         errorCode:
           description: The validation error code.
@@ -2158,6 +2172,7 @@ components:
         ErrorFieldType:
           $ref: '#/components/schemas/ErrorFieldType'
     FieldType:
+      additionalProperties: false
       properties:
         field:
           description: The full name of the property.
@@ -2244,6 +2259,7 @@ components:
           - legalBusinessName
           - legalEntity
           - legalEntityType
+          - linkedViasVirtualAccount
           - logo
           - merchantAccount
           - merchantCategoryCode
@@ -2263,6 +2279,7 @@ components:
           - ownerStreet
           - passport
           - passportNumber
+          - payoutMethod
           - payoutMethodCode
           - payoutSchedule
           - pciSelfAssessment
@@ -2333,6 +2350,7 @@ components:
         FieldType:
           $ref: '#/components/schemas/FieldType'
     GenericResponse:
+      additionalProperties: false
       properties:
         pspReference:
           description: The reference of a request. Can be used to uniquely identify
@@ -2354,6 +2372,7 @@ components:
           type: boolean
       type: object
     GetAccountHolderRequest:
+      additionalProperties: false
       properties:
         accountCode:
           description: 'The code of the account of which to retrieve the details.
@@ -2367,6 +2386,7 @@ components:
           type: string
       type: object
     GetAccountHolderResponse:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the account holder.
@@ -2414,6 +2434,7 @@ components:
           $ref: '#/components/schemas/KYCVerificationResult'
       type: object
     GetAccountHolderStatusResponse:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the Account Holder.
@@ -2442,6 +2463,7 @@ components:
           type: boolean
       type: object
     GetTaxFormRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The account holder code you provided when you created the account
@@ -2460,6 +2482,7 @@ components:
       - year
       type: object
     GetTaxFormResponse:
+      additionalProperties: false
       properties:
         content:
           description: The content of the tax form in the Base64 binary format.
@@ -2488,6 +2511,7 @@ components:
           type: boolean
       type: object
     GetUploadedDocumentsRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the Account Holder for which to retrieve the documents.
@@ -2503,6 +2527,7 @@ components:
       - accountHolderCode
       type: object
     GetUploadedDocumentsResponse:
+      additionalProperties: false
       properties:
         documentDetails:
           description: A list of the documents and their details.
@@ -2529,18 +2554,19 @@ components:
           type: boolean
       type: object
     IndividualDetails:
+      additionalProperties: false
       properties:
         name:
-          description: 'The name of the individual.
-
-            >Make sure your account holder registers using the name shown on their
-            Photo ID.'
+          description: "The name of the individual.\n>Make sure your account holder\
+            \ registers using the name shown on their Photo ID. \n Maximum length:\
+            \ 80 characters \n Cannot contain numbers. /n Cannot be empty."
           $ref: '#/components/schemas/ViasName'
         personalData:
           description: Personal information of the individual.
           $ref: '#/components/schemas/ViasPersonalData'
       type: object
     KYCBankAccountCheckResult:
+      additionalProperties: false
       properties:
         bankAccountUUID:
           description: The unique ID of the bank account to which the check applies.
@@ -2552,6 +2578,7 @@ components:
           type: array
       type: object
     KYCCheckResult:
+      additionalProperties: false
       properties:
         checks:
           description: A list of the checks and their statuses.
@@ -2560,6 +2587,7 @@ components:
           type: array
       type: object
     KYCCheckStatusData:
+      additionalProperties: false
       properties:
         requiredFields:
           description: A list of the fields required for execution of the check.
@@ -2609,6 +2637,7 @@ components:
       - status
       type: object
     KYCCheckSummary:
+      additionalProperties: false
       properties:
         code:
           description: The code of the check.
@@ -2621,6 +2650,7 @@ components:
       - code
       type: object
     KYCShareholderCheckResult:
+      additionalProperties: false
       properties:
         checks:
           description: A list of the checks and their statuses.
@@ -2632,6 +2662,7 @@ components:
           type: string
       type: object
     KYCSignatoryCheckResult:
+      additionalProperties: false
       properties:
         checks:
           description: A list of the checks and their statuses.
@@ -2643,6 +2674,7 @@ components:
           type: string
       type: object
     KYCVerificationResult:
+      additionalProperties: false
       properties:
         accountHolder:
           description: The results of the checks on the account holder.
@@ -2664,6 +2696,7 @@ components:
           type: array
       type: object
     LegalArrangementRequest:
+      additionalProperties: false
       properties:
         legalArrangementCode:
           description: The code of the legal arrangement to be deleted. If you also
@@ -2682,17 +2715,22 @@ components:
         LegalArrangementRequest:
           $ref: '#/components/schemas/LegalArrangementRequest'
     PayoutScheduleResponse:
+      additionalProperties: false
       properties:
         nextScheduledPayout:
           description: The date of the next scheduled payout.
           format: date-time
           type: string
         schedule:
-          description: 'The payout schedule of the account.
+          description: 'The payout schedule for the account.
 
-            Permitted values: `DEFAULT`, `DAILY`, `DAILY_US`, `DAILY_EU`, `DAILY_AU`,
+
+            Possible values: `DEFAULT`, `DAILY`, `DAILY_US`, `DAILY_EU`, `DAILY_AU`,
             `DAILY_SG`, `WEEKLY`, `WEEKLY_ON_TUE_FRI_MIDNIGHT`, `BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT`,
-            `MONTHLY`, `HOLD`.'
+            `MONTHLY`, `HOLD`.
+
+            > `HOLD` prevents scheduled payouts, but you can still initiate payouts
+            manually.'
           enum:
           - BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT
           - DAILY
@@ -2712,6 +2750,7 @@ components:
           type: string
       type: object
     PersonalDocumentData:
+      additionalProperties: false
       properties:
         expirationDate:
           description: "The expiry date of the document, \n in ISO-8601 YYYY-MM-DD\
@@ -2752,6 +2791,7 @@ components:
         PersonalDocumentData:
           $ref: '#/components/schemas/PersonalDocumentData'
     ServiceError:
+      additionalProperties: false
       properties:
         errorCode:
           description: The error code mapped to the error message.
@@ -2771,6 +2811,7 @@ components:
           type: integer
       type: object
     ShareholderContact:
+      additionalProperties: false
       properties:
         address:
           description: The address of the person.
@@ -2846,6 +2887,7 @@ components:
         ShareholderContact:
           $ref: '#/components/schemas/ShareholderContact'
     SignatoryContact:
+      additionalProperties: false
       properties:
         address:
           description: The address of the person.
@@ -2913,6 +2955,7 @@ components:
         SignatoryContact:
           $ref: '#/components/schemas/SignatoryContact'
     SuspendAccountHolderRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the account holder to be suspended.
@@ -2921,6 +2964,7 @@ components:
       - accountHolderCode
       type: object
     SuspendAccountHolderResponse:
+      additionalProperties: false
       properties:
         accountHolderStatus:
           description: The new status of the Account Holder.
@@ -2945,6 +2989,7 @@ components:
           type: boolean
       type: object
     UltimateParentCompany:
+      additionalProperties: false
       properties:
         address:
           description: Address of the ultimate parent company.
@@ -2960,6 +3005,7 @@ components:
           type: string
       type: object
     UltimateParentCompanyBusinessDetails:
+      additionalProperties: false
       properties:
         legalBusinessName:
           description: The legal name of the company.
@@ -2982,6 +3028,7 @@ components:
         UltimateParentCompany:
           $ref: '#/components/schemas/UltimateParentCompany'
     UnSuspendAccountHolderRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the account holder to be reinstated.
@@ -2990,6 +3037,7 @@ components:
       - accountHolderCode
       type: object
     UnSuspendAccountHolderResponse:
+      additionalProperties: false
       properties:
         accountHolderStatus:
           description: The new status of the Account Holder.
@@ -3014,6 +3062,7 @@ components:
           type: boolean
       type: object
     UpdateAccountHolderRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the Account Holder to be updated.
@@ -3039,6 +3088,7 @@ components:
       - accountHolderCode
       type: object
     UpdateAccountHolderResponse:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the account holder.
@@ -3086,6 +3136,7 @@ components:
           $ref: '#/components/schemas/KYCVerificationResult'
       type: object
     UpdateAccountHolderStateRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           description: The code of the Account Holder on which to update the state.
@@ -3117,12 +3168,13 @@ components:
       - disable
       type: object
     UpdateAccountRequest:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of the account to update.
           type: string
         payoutSchedule:
-          description: The details of the payout schedule, to which the account should
+          description: The details of the payout schedule to which the account must
             be updated.
           $ref: '#/components/schemas/UpdatePayoutScheduleRequest'
       required:
@@ -3130,12 +3182,14 @@ components:
       - payoutSchedule
       type: object
     UpdateAccountResponse:
+      additionalProperties: false
       properties:
         accountCode:
           description: The code of the account.
           type: string
         payoutSchedule:
-          description: The payout schedule of the account.
+          description: The details of the payout schedule to which the account is
+            updated.
           $ref: '#/components/schemas/PayoutScheduleResponse'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify
@@ -3159,18 +3213,20 @@ components:
       - accountCode
       type: object
     UpdatePayoutScheduleRequest:
+      additionalProperties: false
       properties:
         action:
           description: 'Direction on how to handle any payouts that have already been
             scheduled.
 
-            Permitted values:
 
-            * `CLOSE` will close the existing batch of payouts.
+            Possible values:
 
-            * `UPDATE` will reschedule the existing batch to the new schedule.
+            * `CLOSE`: close the existing batch of payouts.
 
-            * `NOTHING` (**default**) will allow the payout to proceed.'
+            * `UPDATE`: reschedule the existing batch to the new schedule.
+
+            * `NOTHING` (**default**): allow the payout to proceed.'
           enum:
           - CLOSE
           - NOTHING
@@ -3182,14 +3238,15 @@ components:
             > This field is required when the `schedule` parameter is set to `HOLD`.'
           type: string
         schedule:
-          description: 'The payout schedule to which the account is to be updated.
+          description: 'The new payout schedule for the account.
 
-            Permitted values: `DAILY`, `DAILY_US`, `DAILY_EU`, `DAILY_AU`, `DAILY_SG`,
-            `WEEKLY`, `WEEKLY_ON_TUE_FRI_MIDNIGHT`, `BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT`,
+
+            Possible values: `DEFAULT`, `DAILY`, `DAILY_US`, `DAILY_EU`, `DAILY_AU`,
+            `DAILY_SG`, `WEEKLY`, `WEEKLY_ON_TUE_FRI_MIDNIGHT`, `BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT`,
             `MONTHLY`, `HOLD`.
 
-            `HOLD` will prevent scheduled payouts from happening but will still allow
-            manual payouts to occur.'
+            > `HOLD` prevents scheduled payouts, but you can still initiate payouts
+            manually.'
           enum:
           - BIWEEKLY_ON_1ST_AND_15TH_AT_MIDNIGHT
           - DAILY
@@ -3211,6 +3268,7 @@ components:
       - schedule
       type: object
     UploadDocumentRequest:
+      additionalProperties: false
       properties:
         accountHolderCode:
           deprecated: true
@@ -3228,7 +3286,7 @@ components:
           description: 'The content of the document, in Base64-encoded string format.
 
 
-            To learn about document requirements, refer to [Verification checks](https://docs.adyen.com/marketplaces-and-platforms/classic/verification-checks).'
+            To learn about document requirements, refer to [Verification checks](https://docs.adyen.com/classic-platforms/verification-checks).'
           format: byte
           type: string
         documentDetail:
@@ -3245,6 +3303,7 @@ components:
       - documentContent
       type: object
     ViasAddress:
+      additionalProperties: false
       properties:
         city:
           description: The name of the city. Required if the `houseNumberOrName`,
@@ -3280,8 +3339,11 @@ components:
           description: The name of the street. Required if the `houseNumberOrName`,
             `city`, `postalCode`, or `stateOrProvince` are provided.
           type: string
+      required:
+      - country
       type: object
     ViasName:
+      additionalProperties: false
       properties:
         firstName:
           description: The first name.
@@ -3309,6 +3371,7 @@ components:
           type: string
       type: object
     ViasPersonalData:
+      additionalProperties: false
       properties:
         dateOfBirth:
           description: The person's date of birth, in ISO-8601 YYYY-MM-DD format.
@@ -3339,6 +3402,7 @@ components:
           type: string
       type: object
     ViasPhoneNumber:
+      additionalProperties: false
       properties:
         phoneCountryCode:
           description: 'The two-character country code of the phone number.
@@ -3378,7 +3442,7 @@ components:
         message: 'Unexpected input: I'
         errorType: validation
     generic-403:
-      summary: Response code 401. Forbidden.
+      summary: Response code 403. Forbidden.
       value:
         status: 403
         errorCode: '10_003'

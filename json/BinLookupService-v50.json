@@ -10,17 +10,12 @@
       "x-publicVersion" : true,
       "title" : "Adyen BinLookup API",
       "description" : "The BIN Lookup API provides endpoints for retrieving information, such as cost estimates, and 3D Secure supported version based on a given BIN.\n\n## Authentication\nYou need an [API credential](https://docs.adyen.com/development-resources/api-credentials) to authenticate to the API.\n\nIf using an API key, add an `X-API-Key` header with the API key as the value, for example:\n\n ```\ncurl\n-H \"Content-Type: application/json\" \\\n-H \"X-API-Key: YOUR_API_KEY\" \\\n...\n```\n\nAlternatively, you can use the username and password to connect to the API using basic authentication, for example:\n\n```\ncurl\n-U \"ws@Company.YOUR_COMPANY_ACCOUNT\":\"YOUR_BASIC_AUTHENTICATION_PASSWORD\" \\\n-H \"Content-Type: application/json\" \\\n...\n```\n\n## Versioning\nThe BinLookup API supports [versioning](https://docs.adyen.com/development-resources/versioning) using a version suffix in the endpoint URL. This suffix has the following format: \"vXX\", where XX is the version number.\n\nFor example:\n```\nhttps://pal-test.adyen.com/pal/servlet/BinLookup/v50/get3dsAvailability\n```## Going live\n\nTo authneticate to the live endpoints, you need an [API credential](https://docs.adyen.com/development-resources/api-credentials) from your live Customer Area.\n\nThe live endpoint URLs contain a prefix which is unique to your company account:\n```\n\nhttps://{PREFIX}-pal-live.adyenpayments.com/pal/servlet/BinLookup/v50/get3dsAvailability\n```\n\nGet your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.",
-      "x-timestamp" : "2023-04-11T19:23:59Z",
       "termsOfService" : "https://www.adyen.com/legal/terms-and-conditions",
       "contact" : {
          "name" : "Adyen Developer Experience team",
-         "url" : "https://www.adyen.help/hc/en-us/community/topics",
-         "email" : "developer-experience@adyen.com"
+         "url" : "https://github.com/Adyen/adyen-openapi"
       }
    },
-   "x-groups" : [
-      "General"
-   ],
    "tags" : [
       {
          "name" : "General"
@@ -36,7 +31,6 @@
             "description" : "Verifies whether 3D Secure is available for the specified BIN or card brand. For 3D Secure 2, this endpoint also returns device fingerprinting keys.\n\nFor more information, refer to [3D Secure 2](https://docs.adyen.com/online-payments/3d-secure/native-3ds2).",
             "x-addedInVersion" : "1",
             "operationId" : "post-get3dsAvailability",
-            "x-groupName" : "General",
             "x-sortIndex" : 0,
             "x-methodName" : "get3dsAvailability",
             "security" : [
@@ -145,7 +139,6 @@
             "summary" : "Get a fees cost estimate",
             "description" : ">This API is available only for merchants operating in Australia, the EU, and the UK.\n\nUse the Adyen Cost Estimation API to pre-calculate interchange and scheme fee costs. Knowing these costs prior actual payment authorisation gives you an opportunity to charge those costs to the cardholder, if necessary.\n\nTo retrieve this information, make the call to the `/getCostEstimate` endpoint. The response to this call contains the amount of the interchange and scheme fees charged by the network for this transaction, and also which surcharging policy is possible (based on current regulations).\n\n> Since not all information is known in advance (for example, if the cardholder will successfully authenticate via 3D Secure or if you also plan to provide additional Level 2/3 data), the returned amounts are based on a set of assumption criteria you define in the `assumptions` parameter.",
             "operationId" : "post-getCostEstimate",
-            "x-groupName" : "General",
             "x-sortIndex" : 0,
             "x-methodName" : "getCostEstimate",
             "security" : [
@@ -271,6 +264,7 @@
    "components" : {
       "schemas" : {
          "Amount" : {
+            "additionalProperties" : false,
             "properties" : {
                "currency" : {
                   "description" : "The three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes).",
@@ -291,6 +285,7 @@
             "type" : "object"
          },
          "BinDetail" : {
+            "additionalProperties" : false,
             "properties" : {
                "issuerCountry" : {
                   "description" : "The country where the card was issued.",
@@ -300,6 +295,7 @@
             "type" : "object"
          },
          "CardBin" : {
+            "additionalProperties" : false,
             "properties" : {
                "bin" : {
                   "description" : "The first 6 digit of the card number. Enable this field via merchant account settings.",
@@ -345,6 +341,7 @@
             "type" : "object"
          },
          "CostEstimateAssumptions" : {
+            "additionalProperties" : false,
             "properties" : {
                "assume3DSecureAuthenticated" : {
                   "description" : "If true, the cardholder is expected to successfully authorise via 3D Secure.",
@@ -363,6 +360,7 @@
             "type" : "object"
          },
          "CostEstimateRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "amount" : {
                   "description" : "The transaction amount used as a base for the cost estimation.",
@@ -420,6 +418,7 @@
             "type" : "object"
          },
          "CostEstimateResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "cardBin" : {
                   "description" : "Card BIN details.",
@@ -441,6 +440,7 @@
             "type" : "object"
          },
          "DSPublicKeyDetail" : {
+            "additionalProperties" : false,
             "properties" : {
                "brand" : {
                   "description" : "Card brand.",
@@ -458,11 +458,16 @@
                   "description" : "Public key. The 3D Secure 2 SDK encrypts the device information by using the DS public key.",
                   "format" : "byte",
                   "type" : "string"
+               },
+               "rootCertificates" : {
+                  "description" : "Directory Server root certificates. The 3D Secure 2 SDK verifies the ACS signed content using the rootCertificates.",
+                  "type" : "string"
                }
             },
             "type" : "object"
          },
          "MerchantDetails" : {
+            "additionalProperties" : false,
             "properties" : {
                "countryCode" : {
                   "description" : "2-letter ISO 3166 country code of the card acceptor location.\n> This parameter is required for the merchants who don't use Adyen as the payment authorisation gateway.",
@@ -482,6 +487,7 @@
             "type" : "object"
          },
          "Recurring" : {
+            "additionalProperties" : false,
             "properties" : {
                "contract" : {
                   "description" : "The type of recurring contract to be used.\nPossible values:\n* `ONECLICK` – Payment details can be used to initiate a one-click payment, where the shopper enters the [card security code (CVC/CVV)](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-security-code-cvc-cvv-cid).\n* `RECURRING` – Payment details can be used without the card security code to initiate [card-not-present transactions](https://docs.adyen.com/payments-fundamentals/payment-glossary#card-not-present-cnp).\n* `ONECLICK,RECURRING` – Payment details can be used regardless of whether the shopper is on your site or not.\n* `PAYOUT` – Payment details can be used to [make a payout](https://docs.adyen.com/online-payments/online-payouts).",
@@ -512,7 +518,9 @@
                   "description" : "The name of the token service.",
                   "enum" : [
                      "VISATOKENSERVICE",
-                     "MCTOKENSERVICE"
+                     "MCTOKENSERVICE",
+                     "AMEXTOKENSERVICE",
+                     "TOKEN_SHARING"
                   ],
                   "type" : "string"
                }
@@ -520,6 +528,7 @@
             "type" : "object"
          },
          "ServiceError" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "x-addedInVersion" : "46",
@@ -554,6 +563,7 @@
             "type" : "object"
          },
          "ThreeDS2CardRangeDetail" : {
+            "additionalProperties" : false,
             "properties" : {
                "brandCode" : {
                   "description" : "Card brand.",
@@ -579,6 +589,7 @@
             "type" : "object"
          },
          "ThreeDSAvailabilityRequest" : {
+            "additionalProperties" : false,
             "properties" : {
                "additionalData" : {
                   "additionalProperties" : {
@@ -617,6 +628,7 @@
             "type" : "object"
          },
          "ThreeDSAvailabilityResponse" : {
+            "additionalProperties" : false,
             "properties" : {
                "binDetails" : {
                   "x-addedInVersion" : "50",
